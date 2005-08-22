@@ -1,0 +1,267 @@
+// -*- mode: c++ -*-
+%module pyLikelihood
+%{
+#include "irfLoader/Loader.h"
+#include "irfInterface/IrfsFactory.h"
+#include "optimizers/Lbfgs.h"
+#include "optimizers/Drmngb.h"
+#include "optimizers/Minuit.h"
+#include "optimizers/Optimizer.h"
+#include "optimizers/Parameter.h"
+#include "optimizers/ParameterNotFound.h"
+#include "optimizers/Function.h"
+#include "optimizers/FunctionFactory.h"
+#include "optimizers/FunctionTest.h"
+#include "optimizers/Mcmc.h"
+#include "st_facilities/FitsImage.h"
+#include "st_facilities/Util.h"
+#include "Likelihood/FitsImage.h"
+#include "Likelihood/AppHelpers.h"
+#include "Likelihood/BinnedExposure.h"
+#include "Likelihood/Convolve.h"
+#include "Likelihood/Source.h"
+#include "Likelihood/DiffuseSource.h"
+#include "Likelihood/EquinoxRotation.h"
+#include "Likelihood/Event.h"
+#include "Likelihood/EventContainer.h"
+#include "Likelihood/ExposureCube.h"
+#include "Likelihood/ExposureMap.h"
+#include "Likelihood/LogParabola.h"
+#include "Likelihood/MapCubeFunction.h"
+#include "Likelihood/MeanPsf.h"
+#include "Likelihood/Npred.h"
+#include "Likelihood/OneSourceFunc.h"
+#include "Likelihood/OptEM.h"
+#include "Likelihood/PointSource.h"
+#include "Likelihood/PowerLaw2.h"
+#include "Likelihood/ResponseFunctions.h"
+#include "Likelihood/RoiCuts.h"
+#include "Likelihood/ScData.h"
+#include "Likelihood/SkyDirArg.h"
+#include "Likelihood/SkyDirFunction.h"
+#include "Likelihood/SourceFactory.h"
+#include "Likelihood/SourceModel.h"
+#include "Likelihood/SourceMap.h"
+#include "Likelihood/SpatialMap.h"
+#include "Likelihood/SrcArg.h"
+#include "Likelihood/TrapQuad.h"
+#include "Likelihood/Exception.h"
+#include "Likelihood/LogLike.h"
+#include "Likelihood/BinnedLikelihood.h"
+#include "Likelihood/Pixel.h"
+#include "Likelihood/CountsMap.h"
+#include "Likelihood/Observation.h"
+#include "src/Verbosity.h"
+#include <vector>
+#include <string>
+#include <exception>
+using optimizers::Parameter;
+using optimizers::ParameterNotFound;
+using optimizers::Function;
+using optimizers::Exception;
+%}
+%include stl.i
+%exception {
+   try {
+      $action
+   } catch (std::exception & eObj) {
+      PyErr_SetString(PyExc_RuntimeError, const_cast<char*>(eObj.what()));
+      return NULL;
+   }
+}
+%template(DoublePair) std::pair<double, double>;
+%template(EventVector) std::vector<Likelihood::Event>;
+%template(DoubleVector) std::vector<double>;
+%template(DoubleVectorVector) std::vector< std::vector<double> >;
+%template(DoubleVectorPair) std::vector< std::pair<double, double> >;
+%template(StringVector) std::vector<std::string>;
+%include $(ASTROROOT)/astro/SkyProj.h
+%include $(ASTROROOT)/astro/SkyDir.h
+%template(SkyDirVector) std::vector<astro::SkyDir>;
+%feature("autodoc", "1");
+%include $(OPTIMIZERSROOT)/optimizers/Arg.h
+%include $(OPTIMIZERSROOT)/optimizers/dArg.h
+%include $(OPTIMIZERSROOT)/optimizers/Parameter.h
+%template(ParameterVector) std::vector<optimizers::Parameter>;
+%include $(OPTIMIZERSROOT)/optimizers/Function.h
+%include $(OPTIMIZERSROOT)/optimizers/FunctionTest.h
+%include $(OPTIMIZERSROOT)/optimizers/FunctionFactory.h
+%include $(OPTIMIZERSROOT)/optimizers/Optimizer.h
+%include $(OPTIMIZERSROOT)/optimizers/Mcmc.h
+%rename(FitsImageBase) st_facilities::FitsImage;
+%include $(ST_FACILITIESROOT)/st_facilities/FitsImage.h
+%include $(ST_FACILITIESROOT)/st_facilities/Util.h
+%include $(LIKELIHOODROOT)/Likelihood/EquinoxRotation.h
+%include $(LIKELIHOODROOT)/Likelihood/FitsImage.h
+%template (FuncPair) std::pair<std::string, optimizers::Function *>;
+%template (FuncMap) std::map<std::string, optimizers::Function *>;
+%include $(LIKELIHOODROOT)/src/Verbosity.h
+%include $(LIKELIHOODROOT)/Likelihood/Convolve.h
+%include $(LIKELIHOODROOT)/Likelihood/Exception.h
+%include $(LIKELIHOODROOT)/Likelihood/ResponseFunctions.h
+%include $(LIKELIHOODROOT)/Likelihood/Event.h
+%include $(LIKELIHOODROOT)/Likelihood/Source.h
+%include $(LIKELIHOODROOT)/Likelihood/ExposureCube.h
+%include $(LIKELIHOODROOT)/Likelihood/ExposureMap.h
+%include $(LIKELIHOODROOT)/Likelihood/RoiCuts.h
+%include $(LIKELIHOODROOT)/Likelihood/ScData.h
+%include $(LIKELIHOODROOT)/Likelihood/EventContainer.h
+%include $(LIKELIHOODROOT)/Likelihood/Observation.h
+%include $(LIKELIHOODROOT)/Likelihood/BinnedExposure.h
+%include $(LIKELIHOODROOT)/Likelihood/AppHelpers.h
+%include $(LIKELIHOODROOT)/Likelihood/SourceModel.h
+%include $(LIKELIHOODROOT)/Likelihood/DiffuseSource.h
+%include $(LIKELIHOODROOT)/Likelihood/Pixel.h
+%template (PixelVector) std::vector<Likelihood::Pixel>;
+%include $(LIKELIHOODROOT)/Likelihood/CountsMap.h
+%include $(LIKELIHOODROOT)/Likelihood/SourceModel.h
+%include $(LIKELIHOODROOT)/Likelihood/LogLike.h
+%include $(LIKELIHOODROOT)/Likelihood/MeanPsf.h
+%include $(LIKELIHOODROOT)/Likelihood/BinnedLikelihood.h
+%include $(LIKELIHOODROOT)/Likelihood/Npred.h
+%include $(LIKELIHOODROOT)/Likelihood/OneSourceFunc.h
+%include $(LIKELIHOODROOT)/Likelihood/OptEM.h
+%include $(LIKELIHOODROOT)/Likelihood/PointSource.h
+%include $(LIKELIHOODROOT)/Likelihood/SourceMap.h
+%include $(LIKELIHOODROOT)/Likelihood/SkyDirArg.h
+%include $(LIKELIHOODROOT)/Likelihood/SkyDirFunction.h
+%include $(LIKELIHOODROOT)/Likelihood/SourceFactory.h
+%include $(LIKELIHOODROOT)/Likelihood/SpatialMap.h
+%include $(LIKELIHOODROOT)/Likelihood/SrcArg.h
+%include $(LIKELIHOODROOT)/Likelihood/TrapQuad.h
+%include $(LIKELIHOODROOT)/Likelihood/MapCubeFunction.h
+%extend st_facilities::FitsImage {
+   static std::string coordSys(const std::string & fitsFile) {
+      Likelihood::FitsImage image(fitsFile);
+      return image.coordSys();
+   }
+}
+%extend st_facilities::Util {
+   static std::vector<std::string> 
+      resolveFitsFiles(const std::string & infile) {
+      std::vector<std::string> outfiles;
+      st_facilities::Util::resolve_fits_files(infile, outfiles);
+      return outfiles;
+   }
+}
+%extend Likelihood::EquinoxRotation {
+   astro::SkyDir fromMapCoords(const astro::SkyDir & inDir) {
+      astro::SkyDir outDir(0, 0);
+      self->do_rotation(inDir, outDir, false);
+      return outDir;
+   }
+   astro::SkyDir toMapCoords(const astro::SkyDir & inDir) {
+      astro::SkyDir outDir(0, 0);
+      self->do_rotation(inDir, outDir, true);
+      return outDir;
+   }
+}
+%extend Likelihood::SourceFactory {
+   static optimizers::FunctionFactory * funcFactory() {
+      optimizers::FunctionFactory * myFuncFactory 
+         = new optimizers::FunctionFactory;
+      myFuncFactory->addFunc("SkyDirFunction", 
+                             new Likelihood::SkyDirFunction(), false);
+      myFuncFactory->addFunc("SpatialMap", new Likelihood::SpatialMap(), 
+                             false);
+      myFuncFactory->addFunc("MapCubeFunction",
+                             new Likelihood::MapCubeFunction(), 
+                             false);
+      myFuncFactory->addFunc("PowerLaw2",
+                             new Likelihood::PowerLaw2(), 
+                             false);
+      myFuncFactory->addFunc("LogParabola",
+                             new Likelihood::LogParabola(), 
+                             false);
+      return myFuncFactory;
+   }
+}
+%extend Likelihood::Source {
+   double flux() {
+      Likelihood::PointSource * ptsrc = 
+         dynamic_cast<Likelihood::PointSource *>(self);
+      if (ptsrc == 0) {
+         std::ostringstream message;
+         message << "Integrated flux is not available for this source.";
+         throw std::runtime_error(message.str());
+      }
+      return ptsrc->flux();
+   }
+}
+%extend Likelihood::LogLike {
+   void print_source_params() {
+      std::vector<std::string> srcNames;
+      self->getSrcNames(srcNames);
+      std::vector<Parameter> parameters;
+      for (unsigned int i = 0; i < srcNames.size(); i++) {
+         Likelihood::Source *src = self->getSource(srcNames[i]);
+         Likelihood::Source::FuncMap srcFuncs = src->getSrcFuncs();
+         srcFuncs["Spectrum"]->getParams(parameters);
+         std::cout << "\n" << srcNames[i] << ":\n";
+         for (unsigned int j = 0; j < parameters.size(); j++) {
+            std::cout << parameters[j].getName() << ": "
+                      << parameters[j].getValue() << std::endl;
+         }
+         if (!dynamic_cast<Likelihood::BinnedLikelihood *>(self)) {
+            std::cout << "Npred: "
+                      << src->Npred() << std::endl;
+         }
+      }
+   }
+   void src_param_table() {
+      std::vector<std::string> srcNames;
+      self->getSrcNames(srcNames);
+      std::vector<Parameter> parameters;
+      for (unsigned int i = 0; i < srcNames.size(); i++) {
+         Likelihood::Source *src = self->getSource(srcNames[i]);
+         Likelihood::Source::FuncMap srcFuncs = src->getSrcFuncs();
+         srcFuncs["Spectrum"]->getParams(parameters);
+         for (unsigned int j = 0; j < parameters.size(); j++) {
+            std::cout << parameters[j].getValue() << "  ";
+         }
+         std::cout << src->Npred() << "  ";
+         std::cout << srcNames[i] << std::endl;
+      }
+   }
+   int getNumFreeParams() {
+      return self->getNumFreeParams();
+   }
+   void getFreeParamValues(std::vector<double> & params) {
+      self->getFreeParamValues(params);
+   }
+   std::vector<std::string> srcNames() {
+      std::vector<std::string> my_names;
+      self->getSrcNames(my_names);
+      return my_names;
+   }
+   optimizers::Optimizer * Minuit() {
+      return new optimizers::Minuit(*self);
+   }
+   optimizers::Optimizer * Lbfgs() {
+      return new optimizers::Lbfgs(*self);
+   }
+   optimizers::Optimizer * Drmngb() {
+      return new optimizers::Drmngb(*self);
+   }
+   optimizers::Mcmc * Mcmc() {
+      return new optimizers::Mcmc(*self);
+   }
+}
+// %extend Likelihood::BinnedLikelihood {
+//    static Likelihood::
+//       BinnedLikelihood * create(const std::string & countsMapFile) {
+//       Likelihood::CountsMap * dataMap = 
+//          new Likelihood::CountsMap(countsMapFile);
+//       Likelihood::BinnedLikelihood * logLike = 
+//          new Likelihood::BinnedLikelihood(*dataMap, countsMapFile);
+//       return logLike;
+//    }
+// }
+%extend Likelihood::Event {
+   std::pair<double, double> ra_dec() const {
+      return std::make_pair(self->getDir().ra(), self->getDir().dec());
+   }
+   std::pair<double, double> sc_dir() const {
+      return std::make_pair(self->getScDir().ra(), self->getScDir().dec());
+   }
+}

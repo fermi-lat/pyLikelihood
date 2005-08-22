@@ -1,0 +1,6 @@
+PROJECT_NAME           = "pyLikelihood"
+#PROJECT_NUMBER         = "v0"
+FILE_PATTERNS          = *.h *.cxx *.c
+STRIP_CODE_COMMENTS    = NO
+EXAMPLE_PATH           = "../cmt" "." "../data" "../python"
+#QUIET                  = YES

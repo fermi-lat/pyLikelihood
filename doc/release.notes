@@ -1,0 +1,9 @@
+/**
+   @file release.notes
+   @brief package pyLikelihood
+   @author J. Chiang <jchiang@slac.stanford.edu>
+
+   @verbatim
+   v0     22-Aug-05   JC    initial import
+   @endverbatim
+*/
