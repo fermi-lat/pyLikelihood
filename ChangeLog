@@ -1,4 +1,54 @@
 ------------------------------------------------------------
+User: jchiang  Mon Aug 22 09:19:28 PDT 2005
+pyLikelihood
+
+Log Message:
+initial import from users/jchiang/pythonModules
+
+Status:
+
+Vendor Tag:	GLAST
+Release Tags:	v0
+		
+I pyLikelihood/CVS
+N pyLikelihood/.cvsignore
+N pyLikelihood/ChangeLog
+I pyLikelihood/cmt/CVS
+N pyLikelihood/cmt/requirements
+I pyLikelihood/doc/CVS
+N pyLikelihood/doc/Makefile
+N pyLikelihood/doc/Doxyfile
+N pyLikelihood/doc/release.notes
+N pyLikelihood/doc/images/Obs_dialog0.png
+N pyLikelihood/doc/images/Obs_dialog1.png
+I pyLikelihood/doc/images/CVS
+N pyLikelihood/doc/images/Analysis_dialog.png
+N pyLikelihood/doc/images/hippo_plot.png
+N pyLikelihood/doc/images/pyROOT_plot.png
+I pyLikelihood/python/CVS
+N pyLikelihood/python/SimpleDialog.py
+N pyLikelihood/python/SrcAnalysis.py
+N pyLikelihood/python/SrcModel.py
+N pyLikelihood/python/BinnedAnalysis.pyc
+N pyLikelihood/python/SrcModel.pyc
+N pyLikelihood/python/AnalysisBase.pyc
+N pyLikelihood/python/SimpleDialog.pyc
+N pyLikelihood/python/BinnedAnalysis.py
+N pyLikelihood/python/RootPlot.py
+N pyLikelihood/python/HippoPlot.py
+N pyLikelihood/python/HippoPlot.pyc
+N pyLikelihood/python/AnalysisBase.py
+N pyLikelihood/python/UnbinnedAnalysis.py
+I pyLikelihood/src/CVS
+N pyLikelihood/src/pyLikelihood.h
+N pyLikelihood/src/pyLikelihood.in
+I pyLikelihood/src/.#pyLikelihood.in.1.1.1.1
+N pyLikelihood/src/mainpage.h
+
+No conflicts created by this import
+
+    *
+------------------------------------------------------------
 User: jchiang  Sun Aug 21 21:54:25 PDT 2005
 users/jchiang/pythonModules/pyLikelihood/src
 
