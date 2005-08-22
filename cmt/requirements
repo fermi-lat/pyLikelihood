@@ -1,0 +1,14 @@
+package pyLikelihood
+version v0
+
+use Likelihood v*
+use SwigPolicy v*
+
+path_remove PYTHONPATH pyLikelihood
+path_append PYTHONPATH $(PYLIKELIHOODROOT)/$(BINDIR)
+path_append PYTHONPATH $(PYLIKELIHOODROOT)/python
+
+path_remove PYTHONPATH $(ROOTSYS)
+path_append PYTHONPATH $(ROOTSYS)/lib
+
+apply_pattern swig_module name="pyLikelihood"

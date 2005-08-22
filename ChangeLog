@@ -1,0 +1,247 @@
+------------------------------------------------------------
+User: jchiang  Sun Aug 21 21:54:25 PDT 2005
+users/jchiang/pythonModules/pyLikelihood/src
+
+Modified Files:
+	pyLikelihood.h 
+Added Files:
+	mainpage.h 
+Log Message:
+update documentation
+    *
+------------------------------------------------------------
+User: jchiang  Sun Aug 21 21:54:25 PDT 2005
+users/jchiang/pythonModules/pyLikelihood/doc/images
+
+Added Files:
+	Analysis_dialog.png Obs_dialog0.png Obs_dialog1.png 
+	hippo_plot.png pyROOT_plot.png 
+Log Message:
+update documentation
+    *
+------------------------------------------------------------
+User: jchiang  Sun Aug 21 21:54:25 PDT 2005
+users/jchiang/pythonModules/pyLikelihood/doc
+
+Added Files:
+	Doxyfile release.notes 
+Log Message:
+update documentation
+    *
+------------------------------------------------------------
+User: jchiang  Sat Aug 20 09:18:38 PDT 2005
+users/jchiang/pythonModules/pyLikelihood/src
+
+Modified Files:
+	pyLikelihood.h pyLikelihood.in 
+Log Message:
+handle ascii list for event files
+    *
+------------------------------------------------------------
+User: jchiang  Sat Aug 20 09:18:38 PDT 2005
+users/jchiang/pythonModules/pyLikelihood/python
+
+Modified Files:
+	BinnedAnalysis.py UnbinnedAnalysis.py 
+Log Message:
+handle ascii list for event files
+    *
+------------------------------------------------------------
+User: jchiang  Fri Aug 19 07:35:11 PDT 2005
+users/jchiang/pythonModules/pyLikelihood/src
+
+Modified Files:
+	pyLikelihood.h 
+Log Message:
+small update
+    *
+------------------------------------------------------------
+User: jchiang  Thu Aug 18 21:11:37 PDT 2005
+users/jchiang/pythonModules/pyLikelihood/python
+
+Modified Files:
+	AnalysisBase.py 
+Log Message:
+lazy initialization for importing root
+    *
+------------------------------------------------------------
+User: jchiang  Thu Aug 18 15:05:24 PDT 2005
+users/jchiang/pythonModules/pyLikelihood/python
+
+Modified Files:
+	AnalysisBase.py UnbinnedAnalysis.py 
+Log Message:
+set roi using all input event files
+    *
+------------------------------------------------------------
+User: jchiang  Wed Aug 17 17:53:51 PDT 2005
+users/jchiang/pythonModules/pyLikelihood/src
+
+Modified Files:
+	pyLikelihood.h 
+Log Message:
+refactoring of __repr__ methods; more doc updates
+    *
+------------------------------------------------------------
+User: jchiang  Wed Aug 17 17:53:51 PDT 2005
+users/jchiang/pythonModules/pyLikelihood/python
+
+Modified Files:
+	AnalysisBase.py BinnedAnalysis.py UnbinnedAnalysis.py 
+Log Message:
+refactoring of __repr__ methods; more doc updates
+    *
+------------------------------------------------------------
+User: jchiang  Wed Aug 17 08:10:56 PDT 2005
+users/jchiang/pythonModules/pyLikelihood/doc/images
+
+Log Message:
+Directory /nfs/slac/g/glast/ground/cvs/users/jchiang/pythonModules/pyLikelihood/doc/images added to the repository
+
+    *
+------------------------------------------------------------
+User: jchiang  Tue Aug 16 18:53:06 PDT 2005
+users/jchiang/pythonModules/pyLikelihood/src
+
+Modified Files:
+	pyLikelihood.h 
+Log Message:
+refactor modules; update documentation
+    *
+------------------------------------------------------------
+User: jchiang  Tue Aug 16 18:53:06 PDT 2005
+users/jchiang/pythonModules/pyLikelihood/python
+
+Modified Files:
+	AnalysisBase.py BinnedAnalysis.py UnbinnedAnalysis.py 
+Log Message:
+refactor modules; update documentation
+    *
+------------------------------------------------------------
+User: jchiang  Thu Aug 11 15:46:10 PDT 2005
+users/jchiang/pythonModules/pyLikelihood/python
+
+Modified Files:
+	AnalysisBase.py 
+Log Message:
+fix typo
+    *
+------------------------------------------------------------
+User: jchiang  Thu Aug 11 10:03:50 PDT 2005
+users/jchiang/pythonModules/pyLikelihood/python
+
+Modified Files:
+	AnalysisBase.py 
+Log Message:
+raise exception if plotter backend is not available
+    *
+------------------------------------------------------------
+User: jchiang  Fri Aug  5 13:42:51 PDT 2005
+users/jchiang/pythonModules/pyLikelihood/python
+
+Modified Files:
+	AnalysisBase.py RootPlot.py UnbinnedAnalysis.py 
+Log Message:
+add residual plot to new imps
+    *
+------------------------------------------------------------
+User: jchiang  Fri Aug  5 10:19:22 PDT 2005
+users/jchiang/pythonModules/pyLikelihood/python
+
+Modified Files:
+	BinnedAnalysis.py 
+Added Files:
+	AnalysisBase.py UnbinnedAnalysis.py 
+Log Message:
+add Base class and new Unbinned implementation
+    *
+------------------------------------------------------------
+User: jchiang  Fri Aug  5 08:15:21 PDT 2005
+users/jchiang/pythonModules/pyLikelihood/python
+
+Modified Files:
+	HippoPlot.py RootPlot.py 
+Log Message:
+add colors
+    *
+------------------------------------------------------------
+User: jchiang  Thu Aug  4 21:42:26 PDT 2005
+users/jchiang/pythonModules/pyLikelihood/python
+
+Modified Files:
+	BinnedAnalysis.py RootPlot.py 
+Added Files:
+	HippoPlot.py 
+Log Message:
+add HippoPlot implementation
+    *
+------------------------------------------------------------
+User: jchiang  Thu Aug  4 15:52:10 PDT 2005
+users/jchiang/pythonModules/pyLikelihood/python
+
+Modified Files:
+	BinnedAnalysis.py 
+Added Files:
+	RootPlot.py 
+Log Message:
+add plotting capability using ROOT
+    *
+------------------------------------------------------------
+User: jchiang  Thu Aug  4 15:52:10 PDT 2005
+users/jchiang/pythonModules/pyLikelihood/cmt
+
+Modified Files:
+	requirements 
+Log Message:
+add plotting capability using ROOT
+    *
+------------------------------------------------------------
+User: jchiang  Wed Aug  3 22:32:29 PDT 2005
+users/jchiang/pythonModules/pyLikelihood/python
+
+Modified Files:
+	BinnedAnalysis.py SrcAnalysis.py 
+Log Message:
+refactor _srcCnts method
+    *
+------------------------------------------------------------
+User: jchiang  Wed Aug  3 16:45:18 PDT 2005
+users/jchiang/pythonModules/pyLikelihood/python
+
+Added Files:
+	BinnedAnalysis.py 
+Log Message:
+add interface to binned analysis
+    *
+------------------------------------------------------------
+User: jchiang  Mon Jul 18 18:55:16 PDT 2005
+users/jchiang/pythonModules/pyLikelihood/src
+
+Modified Files:
+	pyLikelihood.in 
+Log Message:
+add LogParabola
+    *
+------------------------------------------------------------
+User: jchiang  Wed Jul 13 10:59:43 PDT 2005
+users/jchiang/pythonModules/pyLikelihood
+
+Log Message:
+initial import
+
+Status:
+
+Vendor Tag:	JC
+Release Tags:	v0
+		
+N users/jchiang/pythonModules/pyLikelihood/.cvsignore
+N users/jchiang/pythonModules/pyLikelihood/cmt/requirements
+N users/jchiang/pythonModules/pyLikelihood/python/SimpleDialog.py
+N users/jchiang/pythonModules/pyLikelihood/python/SrcAnalysis.py
+N users/jchiang/pythonModules/pyLikelihood/python/SrcModel.py
+N users/jchiang/pythonModules/pyLikelihood/src/pyLikelihood.h
+N users/jchiang/pythonModules/pyLikelihood/src/pyLikelihood.in
+
+No conflicts created by this import
+
+    *
