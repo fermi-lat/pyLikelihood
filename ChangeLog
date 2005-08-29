@@ -1,4 +1,15 @@
 ------------------------------------------------------------
+User: jchiang  Mon Aug 29 08:05:05 PDT 2005
+pyLikelihood/python
+
+Modified Files:
+	BinnedAnalysis.py UnbinnedAnalysis.py 
+Removed Files:
+	AnalysisBase.pyc SimpleDialog.pyc SrcModel.pyc 
+Log Message:
+test for null string filename properly; remove byte-compiled code
+    *
+------------------------------------------------------------
 User: jchiang  Wed Aug 24 16:20:09 PDT 2005
 pyLikelihood/doc/images
 
