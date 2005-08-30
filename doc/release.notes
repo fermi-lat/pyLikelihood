@@ -4,6 +4,9 @@
    @author J. Chiang <jchiang@slac.stanford.edu>
 
    @verbatim
+
+   v0r0p1 30-Aug-05   JC    add package-dependent info startup script builds
    v0     22-Aug-05   JC    initial import
+
    @endverbatim
 */
