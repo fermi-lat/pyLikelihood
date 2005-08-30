@@ -1,5 +1,5 @@
 package pyLikelihood
-version v0
+version v0r0p1
 
 use Likelihood v*
 use SwigPolicy v*
