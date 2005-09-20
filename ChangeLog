@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Tue Sep 20 15:07:16 PDT 2005
+pyLikelihood/src
+
+Modified Files:
+	pyLikelihood.in 
+Log Message:
+remove references to Wimp source
+    *
+------------------------------------------------------------
 User: jchiang  Sun Sep 18 17:21:24 PDT 2005
 pyLikelihood/src
 
