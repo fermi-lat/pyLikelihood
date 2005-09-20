@@ -52,7 +52,6 @@
 #include "Likelihood/Pixel.h"
 #include "Likelihood/CountsMap.h"
 #include "Likelihood/Observation.h"
-#include "Likelihood/Wimp.h"
 #include "src/Verbosity.h"
 #include <vector>
 #include <string>
@@ -179,9 +178,6 @@ using optimizers::Exception;
                              false);
       myFuncFactory->addFunc("LogParabola",
                              new Likelihood::LogParabola(), 
-                             false);
-      myFuncFactory->addFunc("Wimp",
-                             new Likelihood::Wimp(), 
                              false);
       return myFuncFactory;
    }
