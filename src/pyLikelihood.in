@@ -97,8 +97,6 @@ using optimizers::Exception;
 %template (FuncPair) std::pair<std::string, optimizers::Function *>;
 %template (FuncMap) std::map<std::string, optimizers::Function *>;
 %include $(LIKELIHOODROOT)/src/Verbosity.h
-%include $(LIKELIHOODROOT)/Likelihood/BrokenPowerLaw2.h
-%include $(LIKELIHOODROOT)/Likelihood/PowerLaw2.h
 %include $(LIKELIHOODROOT)/Likelihood/Convolve.h
 %include $(LIKELIHOODROOT)/Likelihood/Exception.h
 %include $(LIKELIHOODROOT)/Likelihood/ResponseFunctions.h

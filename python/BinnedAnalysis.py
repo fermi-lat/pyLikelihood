@@ -4,7 +4,7 @@ Python interface for binned likelihood.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/BinnedAnalysis.py,v 1.1.1.1 2005/08/22 16:19:27 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/BinnedAnalysis.py,v 1.2 2005/08/29 15:05:05 jchiang Exp $
 #
 
 import numarray as num
@@ -17,7 +17,7 @@ _funcFactory = pyLike.SourceFactory_funcFactory()
 
 class BinnedObs(object):
     def __init__(self, srcMaps=None, expCube=None, binnedExpMap=None,
-                 irfs='TEST'):
+                 irfs='DC1A'):
         if srcMaps is None or expCube is None:
             srcMaps, expCube, binnedExpMap, irfs = self._obsDialog(srcMaps,
                                                                    expCube)
