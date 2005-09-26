@@ -18,6 +18,7 @@
 #include "Likelihood/FitsImage.h"
 #include "Likelihood/AppHelpers.h"
 #include "Likelihood/BinnedExposure.h"
+#include "Likelihood/BrokenPowerLaw2.h"
 #include "Likelihood/Convolve.h"
 #include "Likelihood/Source.h"
 #include "Likelihood/DiffuseSource.h"
@@ -169,6 +170,9 @@ using optimizers::Exception;
                              false);
       myFuncFactory->addFunc("PowerLaw2",
                              new Likelihood::PowerLaw2(), 
+                             false);
+      myFuncFactory->addFunc("BrokenPowerLaw2",
+                             new Likelihood::BrokenPowerLaw2(), 
                              false);
       myFuncFactory->addFunc("LogParabola",
                              new Likelihood::LogParabola(), 
