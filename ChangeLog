@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Mon Sep 26 10:32:53 PDT 2005
+pyLikelihood/cmt
+
+Modified Files:
+	requirements 
+Log Message:
+change default irfs to DC1A, tagging v0r0p3
+    *
+------------------------------------------------------------
 User: jchiang  Tue Sep 20 15:07:16 PDT 2005
 pyLikelihood/src
 
