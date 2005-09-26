@@ -4,7 +4,7 @@ Python interface for unbinned likelihood
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/UnbinnedAnalysis.py,v 1.1.1.1 2005/08/22 16:19:27 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/UnbinnedAnalysis.py,v 1.2 2005/08/29 15:05:05 jchiang Exp $
 #
 
 import glob
@@ -25,7 +25,7 @@ def _resolveFileList(files):
 
 class UnbinnedObs(object):
     def __init__(self, eventFile=None, scFile=None, expMap=None,
-                 expCube=None, irfs='TEST', checkCuts=True):
+                 expCube=None, irfs='DC1A', checkCuts=True):
         self.checkCuts = checkCuts
         if eventFile is None and scFile is None:
             eventFile, scFile, expMap, expCube, irfs = self._obsDialog()
@@ -66,7 +66,7 @@ class UnbinnedObs(object):
     def _obsDialog(self):
         paramDict = map()
         paramDict['eventFile'] = Param('file', '*.fits')
-        paramDict['scFile'] = Param('file', '*scData*.fits')
+        paramDict['scFile'] = Param('file', '*.fits')
         paramDict['expMap'] = Param('file', '')
         paramDict['expCube'] = Param('file', '')
         paramDict['irfs'] = Param('string', 'TEST')
