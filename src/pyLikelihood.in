@@ -3,6 +3,7 @@
 %{
 #include "irfLoader/Loader.h"
 #include "irfInterface/IrfsFactory.h"
+#include "map_tools/SkyImage.h"
 #include "optimizers/Lbfgs.h"
 #include "optimizers/Drmngb.h"
 #include "optimizers/Minuit.h"
@@ -15,7 +16,6 @@
 #include "optimizers/Mcmc.h"
 #include "st_facilities/FitsImage.h"
 #include "st_facilities/Util.h"
-#include "Likelihood/FitsImage.h"
 #include "Likelihood/AppHelpers.h"
 #include "Likelihood/BinnedExposure.h"
 #include "Likelihood/BrokenPowerLaw2.h"
@@ -80,6 +80,7 @@ using optimizers::Exception;
 %include $(ASTROROOT)/astro/SkyDir.h
 %template(SkyDirVector) std::vector<astro::SkyDir>;
 %feature("autodoc", "1");
+%include $(MAP_TOOLSROOT)/map_tools/SkyImage.h
 %include $(OPTIMIZERSROOT)/optimizers/Arg.h
 %include $(OPTIMIZERSROOT)/optimizers/dArg.h
 %include $(OPTIMIZERSROOT)/optimizers/Parameter.h
@@ -89,11 +90,9 @@ using optimizers::Exception;
 %include $(OPTIMIZERSROOT)/optimizers/FunctionFactory.h
 %include $(OPTIMIZERSROOT)/optimizers/Optimizer.h
 %include $(OPTIMIZERSROOT)/optimizers/Mcmc.h
-%rename(FitsImageBase) st_facilities::FitsImage;
 %include $(ST_FACILITIESROOT)/st_facilities/FitsImage.h
 %include $(ST_FACILITIESROOT)/st_facilities/Util.h
 %include $(LIKELIHOODROOT)/Likelihood/EquinoxRotation.h
-%include $(LIKELIHOODROOT)/Likelihood/FitsImage.h
 %template (FuncPair) std::pair<std::string, optimizers::Function *>;
 %template (FuncMap) std::map<std::string, optimizers::Function *>;
 %include $(LIKELIHOODROOT)/src/Verbosity.h
@@ -124,19 +123,13 @@ using optimizers::Exception;
 %include $(LIKELIHOODROOT)/Likelihood/OptEM.h
 %include $(LIKELIHOODROOT)/Likelihood/PointSource.h
 %include $(LIKELIHOODROOT)/Likelihood/SourceMap.h
+%include $(LIKELIHOODROOT)/Likelihood/SpatialMap.h
 %include $(LIKELIHOODROOT)/Likelihood/SkyDirArg.h
 %include $(LIKELIHOODROOT)/Likelihood/SkyDirFunction.h
 %include $(LIKELIHOODROOT)/Likelihood/SourceFactory.h
-%include $(LIKELIHOODROOT)/Likelihood/SpatialMap.h
 %include $(LIKELIHOODROOT)/Likelihood/SrcArg.h
 %include $(LIKELIHOODROOT)/Likelihood/TrapQuad.h
 %include $(LIKELIHOODROOT)/Likelihood/MapCubeFunction.h
-%extend st_facilities::FitsImage {
-   static std::string coordSys(const std::string & fitsFile) {
-      Likelihood::FitsImage image(fitsFile);
-      return image.coordSys();
-   }
-}
 %extend st_facilities::Util {
    static std::vector<std::string> 
       resolveFitsFiles(const std::string & infile) {
