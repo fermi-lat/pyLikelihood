@@ -4,6 +4,12 @@
    @author J. Chiang <jchiang@slac.stanford.edu>
 
    @verbatim
+
+   v0r1   07-Oct-05   JC    mods for Likelihood v10r0
+   v0r0p3 26-Sep-05   JC    add BrokenPowerLaw2
+   v0r0p2 02-Sep-05   JC    enable Windows startup script generation
+   v0r0p1 30-Aug-05   JC    add package-dependent info startup script builds
    v0     22-Aug-05   JC    initial import
+
    @endverbatim
 */

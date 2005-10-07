@@ -4,7 +4,7 @@ Python interface for unbinned likelihood
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/users/jchiang/pythonModules/pyLikelihood/python/UnbinnedAnalysis.py,v 1.6 2005/08/20 16:18:38 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/UnbinnedAnalysis.py,v 1.2 2005/08/29 15:05:05 jchiang Exp $
 #
 
 import glob
@@ -25,7 +25,7 @@ def _resolveFileList(files):
 
 class UnbinnedObs(object):
     def __init__(self, eventFile=None, scFile=None, expMap=None,
-                 expCube=None, irfs='TEST', checkCuts=True):
+                 expCube=None, irfs='DC1A', checkCuts=True):
         self.checkCuts = checkCuts
         if eventFile is None and scFile is None:
             eventFile, scFile, expMap, expCube, irfs = self._obsDialog()
@@ -39,12 +39,12 @@ class UnbinnedObs(object):
         self._respFuncs = pyLike.ResponseFunctions()
         self._respFuncs.load(irfs)
         self._expMap = pyLike.ExposureMap()
-        if expMap is not None and expMap is not "":
+        if expMap is not None and expMap != "":
             self._expMap.readExposureFile(expMap)
         self._scData = pyLike.ScData()
         self._roiCuts = pyLike.RoiCuts()
         self._expCube = pyLike.ExposureCube()
-        if expCube is not None and expCube is not "":
+        if expCube is not None and expCube != "":
             self._expCube.readExposureCube(expCube)
         self._eventCont = pyLike.EventContainer(self._respFuncs, self._roiCuts,
                                                 self._scData)
@@ -66,7 +66,7 @@ class UnbinnedObs(object):
     def _obsDialog(self):
         paramDict = map()
         paramDict['eventFile'] = Param('file', '*.fits')
-        paramDict['scFile'] = Param('file', '*scData*.fits')
+        paramDict['scFile'] = Param('file', '*.fits')
         paramDict['expMap'] = Param('file', '')
         paramDict['expCube'] = Param('file', '')
         paramDict['irfs'] = Param('string', 'TEST')
