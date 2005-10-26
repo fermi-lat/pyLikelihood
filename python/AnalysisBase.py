@@ -4,7 +4,7 @@ Base clase for Likelihood analysis Python modules.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.1.1.1 2005/08/22 16:19:27 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.2 2005/09/27 15:03:30 jchiang Exp $
 #
 
 import numarray as num
@@ -19,7 +19,7 @@ class AnalysisBase(object):
     def _srcDialog(self):
         paramDict = map()
         paramDict['Source Model File'] = Param('file', '*.xml')
-        paramDict['optimizer'] = Param('string', 'Minuit')
+        paramDict['optimizer'] = Param('string', 'Drmngb')
         root = SimpleDialog(paramDict, title="Define Analysis Object:")
         root.mainloop()
         xmlFile = paramDict['Source Model File'].value()
@@ -126,6 +126,6 @@ class AnalysisBase(object):
     def freeze(self, i):
         try:
             for ii in i:
-                self.model[ii].setFree(1)
+                self.model[ii].setFree(0)
         except TypeError:
             self.model[i].setFree(0)
