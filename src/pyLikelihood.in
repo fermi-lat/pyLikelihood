@@ -27,6 +27,7 @@
 #include "Likelihood/EventContainer.h"
 #include "Likelihood/ExposureCube.h"
 #include "Likelihood/ExposureMap.h"
+#include "Likelihood/FileFunction.h"
 #include "Likelihood/LogParabola.h"
 #include "Likelihood/MapCubeFunction.h"
 #include "Likelihood/MeanPsf.h"
@@ -103,6 +104,7 @@ using optimizers::Exception;
 %include $(LIKELIHOODROOT)/Likelihood/Source.h
 %include $(LIKELIHOODROOT)/Likelihood/ExposureCube.h
 %include $(LIKELIHOODROOT)/Likelihood/ExposureMap.h
+%include $(LIKELIHOODROOT)/Likelihood/FileFunction.h
 %include $(LIKELIHOODROOT)/Likelihood/RoiCuts.h
 %include $(LIKELIHOODROOT)/Likelihood/ScData.h
 %include $(LIKELIHOODROOT)/Likelihood/EventContainer.h
@@ -170,7 +172,20 @@ using optimizers::Exception;
       myFuncFactory->addFunc("LogParabola",
                              new Likelihood::LogParabola(), 
                              false);
+      myFuncFactory->addFunc("FileFunction",
+                             new Likelihood::FileFunction(), 
+                             false);
       return myFuncFactory;
+   }
+}
+%extend::FileFunction {
+   static Likelihood::FileFunction * cast(optimizers::Function * func) {
+      Likelihood::FileFunction * file_func = 
+         dynamic_cast<Likelihood::FileFunction *>(func);
+      if (file_func == 0) {
+         throw std::runtime_error("Cannot cast to a FileFunction.");
+      }
+      return file_func;
    }
 }
 %extend Likelihood::Source {
