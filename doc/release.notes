@@ -5,6 +5,7 @@
 
    @verbatim
 
+   v0r1p1 03-Nov-05   JC    add FileFunction
    v0r1   07-Oct-05   JC    mods for Likelihood v10r0
    v0r0p3 26-Sep-05   JC    add BrokenPowerLaw2
    v0r0p2 02-Sep-05   JC    enable Windows startup script generation
