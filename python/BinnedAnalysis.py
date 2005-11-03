@@ -4,7 +4,7 @@ Python interface for binned likelihood.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/users/jchiang/pythonModules/pyLikelihood/python/BinnedAnalysis.py,v 1.8 2005/08/20 16:18:38 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/BinnedAnalysis.py,v 1.3 2005/09/26 17:32:55 jchiang Exp $
 #
 
 import numarray as num
@@ -17,7 +17,7 @@ _funcFactory = pyLike.SourceFactory_funcFactory()
 
 class BinnedObs(object):
     def __init__(self, srcMaps=None, expCube=None, binnedExpMap=None,
-                 irfs='TEST'):
+                 irfs='DC1A'):
         if srcMaps is None or expCube is None:
             srcMaps, expCube, binnedExpMap, irfs = self._obsDialog(srcMaps,
                                                                    expCube)
@@ -27,7 +27,7 @@ class BinnedObs(object):
                                   'IRFs: ' + str(irfs)))
         self.srcMaps = srcMaps
         self._createObservation(srcMaps, expCube, irfs)
-        if binnedExpMap is not None and binnedExpMap is not "":
+        if binnedExpMap is not None and binnedExpMap != "":
             pyLike.SourceMap_setBinnedExposure(binnedExpMap)
         self.countsMap = pyLike.CountsMap(srcMaps)
     def _createObservation(self, srcMaps, expCube, irfs):
@@ -60,7 +60,7 @@ class BinnedObs(object):
         else:
             paramDict['expCube'] = Param('file', expCube)
         paramDict['binnedExpMap'] = Param('file', '')
-        paramDict['irfs'] = Param('string', 'TEST')
+        paramDict['irfs'] = Param('string', 'DC1A')
         root = SimpleDialog(paramDict, title="Binned Analysis Elements:")
         root.mainloop()
         output = (paramDict['srcMaps'].value(),
@@ -70,7 +70,7 @@ class BinnedObs(object):
         return output
         
 class BinnedAnalysis(AnalysisBase):
-    def __init__(self, binnedData, srcModel=None, optimizer='Minuit'):
+    def __init__(self, binnedData, srcModel=None, optimizer='Drmngb'):
         AnalysisBase.__init__(self)
         if srcModel is None:
             srcModel, optimizer = self._srcDialog()
