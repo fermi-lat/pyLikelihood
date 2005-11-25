@@ -4,7 +4,7 @@ SourceModel interface to allow for manipulation of fit parameters.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/users/jchiang/pythonModules/pyLikelihood/python/SrcModel.py,v 1.1.1.1 2005/07/13 17:59:43 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/SrcModel.py,v 1.1.1.1 2005/08/22 16:19:27 jchiang Exp $
 #
 import sys
 import pyLikelihood as pyLike
@@ -134,5 +134,7 @@ class Parameter(object):
         self.parameter.setFree(value)
         if not value:
             self.parameter.setError(0)
+    def value(self):
+        return self.parameter.getValue()
     def __getattr__(self, attrname):
         return getattr(self.parameter, attrname)

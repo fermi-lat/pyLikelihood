@@ -14,6 +14,7 @@
 #include "optimizers/FunctionFactory.h"
 #include "optimizers/FunctionTest.h"
 #include "optimizers/Mcmc.h"
+#include "optimizers/Statistic.h"
 #include "st_facilities/FitsImage.h"
 #include "st_facilities/Util.h"
 #include "Likelihood/AppHelpers.h"
@@ -87,6 +88,7 @@ using optimizers::Exception;
 %include $(OPTIMIZERSROOT)/optimizers/Parameter.h
 %template(ParameterVector) std::vector<optimizers::Parameter>;
 %include $(OPTIMIZERSROOT)/optimizers/Function.h
+%include $(OPTIMIZERSROOT)/optimizers/Statistic.h
 %include $(OPTIMIZERSROOT)/optimizers/FunctionTest.h
 %include $(OPTIMIZERSROOT)/optimizers/FunctionFactory.h
 %include $(OPTIMIZERSROOT)/optimizers/Optimizer.h
@@ -178,7 +180,7 @@ using optimizers::Exception;
       return myFuncFactory;
    }
 }
-%extend::FileFunction {
+%extend Likelihood::FileFunction {
    static Likelihood::FileFunction * cast(optimizers::Function * func) {
       Likelihood::FileFunction * file_func = 
          dynamic_cast<Likelihood::FileFunction *>(func);
