@@ -4,11 +4,12 @@ Base clase for Likelihood analysis Python modules.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.2 2005/09/27 15:03:30 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.3 2005/10/26 21:41:15 jchiang Exp $
 #
 
 import numarray as num
 import pyLikelihood as pyLike
+from SrcModel import SourceModel
 from SimpleDialog import SimpleDialog, map, Param
 
 _plotter_package = 'root'
@@ -46,6 +47,21 @@ class AnalysisBase(object):
                 self.model[i].setError(errors[j])
                 j += 1
         return errors
+    def Ts(self, srcName, reoptimize=False):
+        src = self.logLike.getSource(srcName)
+        if src.getType() == "Point":
+            freeParams = pyLike.DoubleVector()
+            self.logLike.getFreeParamValues(freeParams)
+            logLike0 = self.logLike.value()
+            src = self.logLike.deleteSource(srcName)
+            if reoptimize:
+                myOpt = eval("self.logLike.%s()" % self.optimizer)
+                myOpt.find_min(0, 1e-5)
+            Ts_value = -2*(self.logLike.value() - logLike0)
+            self.logLike.addSource(src)
+            self.logLike.setFreeParamValues(freeParams)
+            self.model = SourceModel(self.logLike)
+            return Ts_value
     def sourceNames(self):
         srcNames = pyLike.StringVector()
         self.logLike.getSrcNames(srcNames)
@@ -117,6 +133,10 @@ class AnalysisBase(object):
         return model_counts
     def __repr__(self):
         return self._inputs
+    def __getitem__(self, name):
+        return self.model[name]
+    def __setitem__(self, name, value):
+        self.model[name] = value
     def thaw(self, i):
         try:
             for ii in i:
