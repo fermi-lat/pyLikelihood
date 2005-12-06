@@ -4,7 +4,7 @@ Python interface for unbinned likelihood
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/UnbinnedAnalysis.py,v 1.3 2005/09/26 17:32:56 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/UnbinnedAnalysis.py,v 1.4 2005/10/26 21:41:15 jchiang Exp $
 #
 
 import glob
@@ -113,7 +113,6 @@ class UnbinnedAnalysis(AnalysisBase):
                                   'Optimizer: ' + str(optimizer)))
         self.observation = observation
         self.optimizer = optimizer
-        self.events = self.observation.eventCont().events();
         self.logLike = pyLike.LogLike(self.observation.observation)
         self.logLike.readXml(srcModel, _funcFactory)
         self.logLike.computeEventResponses()
@@ -127,14 +126,7 @@ class UnbinnedAnalysis(AnalysisBase):
         self.disp = None
         self.resids = None
     def _Nobs(self):
-        nobs = []
-        for emin, emax in zip(self.energies[:-1], self.energies[1:]):
-            cnt = 0
-            for event in self.events:
-                if emin < event.getEnergy() < emax:
-                    cnt += 1
-            nobs.append(cnt)
-        return num.array(nobs, type=num.Float)
+        return num.array(self.observation.eventCont().nobs(self.energies))
     def _srcCnts(self, srcName):
         source = self.logLike.getSource(srcName)
         cnts = []

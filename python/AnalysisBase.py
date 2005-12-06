@@ -4,7 +4,7 @@ Base clase for Likelihood analysis Python modules.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.3 2005/10/26 21:41:15 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.4 2005/11/25 18:09:31 jchiang Exp $
 #
 
 import numarray as num
@@ -26,7 +26,7 @@ class AnalysisBase(object):
         xmlFile = paramDict['Source Model File'].value()
         output = (xmlFile, paramDict['optimizer'].value())
         return output
-    def setPlotter(self, plotter='root'):
+    def setPlotter(self, plotter='hippo'):
         global _plotter_package
         _plotter_package = plotter
     def __call__(self):
