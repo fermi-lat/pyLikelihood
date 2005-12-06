@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Mon Dec  5 20:26:55 PST 2005
+pyLikelihood/python
+
+Modified Files:
+	AnalysisBase.py UnbinnedAnalysis.py 
+Log Message:
+use c++ method to compute nobs
+    *
+------------------------------------------------------------
 User: jchiang  Fri Nov 25 10:09:32 PST 2005
 pyLikelihood/src
 
