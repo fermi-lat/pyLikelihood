@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Thu Jan 12 23:23:34 PST 2006
+pyLikelihood/python
+
+Modified Files:
+	AnalysisBase.py 
+Log Message:
+add scheme to better approximate Ts values
+    *
+------------------------------------------------------------
 TAG
 Tag name: ScienceToolsv6r2, operation: add
 Package: pyLikelihood
