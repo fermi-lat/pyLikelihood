@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Fri Jan 13 16:33:29 PST 2006
+pyLikelihood/src
+
+Modified Files:
+	pyLikelihood.in 
+Log Message:
+add ExpCutoff
+    *
+------------------------------------------------------------
 User: jchiang  Thu Jan 12 23:23:34 PST 2006
 pyLikelihood/python
 
