@@ -26,6 +26,7 @@
 #include "Likelihood/EquinoxRotation.h"
 #include "Likelihood/Event.h"
 #include "Likelihood/EventContainer.h"
+#include "Likelihood/ExpCutoff.h"
 #include "Likelihood/ExposureCube.h"
 #include "Likelihood/ExposureMap.h"
 #include "Likelihood/FileFunction.h"
@@ -101,6 +102,7 @@ using optimizers::Exception;
 %include $(LIKELIHOODROOT)/src/Verbosity.h
 %include $(LIKELIHOODROOT)/Likelihood/Convolve.h
 %include $(LIKELIHOODROOT)/Likelihood/Exception.h
+%include $(LIKELIHOODROOT)/Likelihood/ExpCutoff.h
 %include $(LIKELIHOODROOT)/Likelihood/ResponseFunctions.h
 %include $(LIKELIHOODROOT)/Likelihood/Event.h
 %include $(LIKELIHOODROOT)/Likelihood/Source.h
@@ -176,6 +178,9 @@ using optimizers::Exception;
                              false);
       myFuncFactory->addFunc("FileFunction",
                              new Likelihood::FileFunction(), 
+                             false);
+      myFuncFactory->addFunc("ExpCutoff",
+                             new Likelihood::ExpCutoff(), 
                              false);
       return myFuncFactory;
    }
