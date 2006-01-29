@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Sun Jan 29 14:11:26 PST 2006
+pyLikelihood/cmt
+
+Modified Files:
+	requirements 
+Log Message:
+add author line; allow different sctable to be specified
+    *
+------------------------------------------------------------
 User: jchiang  Fri Jan 13 16:33:29 PST 2006
 pyLikelihood/src
 
