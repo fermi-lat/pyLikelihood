@@ -4,28 +4,37 @@ Base clase for Likelihood analysis Python modules.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/users/jchiang/pythonModules/pyLikelihood/python/AnalysisBase.py,v 1.8 2005/08/19 04:11:37 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.5 2005/12/06 04:26:55 jchiang Exp $
 #
 
 import numarray as num
 import pyLikelihood as pyLike
+from SrcModel import SourceModel
 from SimpleDialog import SimpleDialog, map, Param
 
 _plotter_package = 'root'
 
 class AnalysisBase(object):
+    _normName = {"ConstantValue": "Value",
+                 "BrokenPowerLaw": "Prefactor",
+                 "BrokenPowerLaw2": "Integral",
+                 "PowerLaw": "Prefactor",
+                 "PowerLaw2": "Integral",
+                 "Gaussian": "Prefactor",
+                 "FileFunction": "Normalization",
+                 "LogParabola": "norm"}
     def __init__(self):
         pass
     def _srcDialog(self):
         paramDict = map()
         paramDict['Source Model File'] = Param('file', '*.xml')
-        paramDict['optimizer'] = Param('string', 'Minuit')
+        paramDict['optimizer'] = Param('string', 'Drmngb')
         root = SimpleDialog(paramDict, title="Define Analysis Object:")
         root.mainloop()
         xmlFile = paramDict['Source Model File'].value()
         output = (xmlFile, paramDict['optimizer'].value())
         return output
-    def setPlotter(self, plotter='root'):
+    def setPlotter(self, plotter='hippo'):
         global _plotter_package
         _plotter_package = plotter
     def __call__(self):
@@ -46,6 +55,54 @@ class AnalysisBase(object):
                 self.model[i].setError(errors[j])
                 j += 1
         return errors
+    def Ts(self, srcName, reoptimize=False, approx=True):
+        self.logLike.syncParams()
+        src = self.logLike.getSource(srcName)
+        if src.getType() == "Point":
+            freeParams = pyLike.DoubleVector()
+            self.logLike.getFreeParamValues(freeParams)
+            logLike0 = self.logLike.value()
+            src = self.logLike.deleteSource(srcName)
+            if reoptimize:
+                myOpt = eval("self.logLike.%s()" % self.optimizer)
+                myOpt.find_min(0, 1e-5)
+            else:
+                if approx:
+                    self._renorm()
+            Ts_value = -2*(self.logLike.value() - logLike0)
+            self.logLike.addSource(src)
+            self.logLike.setFreeParamValues(freeParams)
+            self.model = SourceModel(self.logLike)
+            return Ts_value
+    def _npredValues(self):
+        srcNames = self.sourceNames()
+        freeNpred = 0
+        totalNpred = 0
+        for src in srcNames:
+            npred = self[src].Npred()
+            totalNpred += npred
+            if self._normIsFree(src):
+                freeNpred += npred
+        return freeNpred, totalNpred
+    def _renorm(self, factor=None):
+        if factor is None:
+            freeNpred, totalNpred = self._npredValues()
+            deficit = sum(self.nobs) - totalNpred
+            self.renormFactor = 1. + deficit/freeNpred
+        else:
+            self.renormFactor = factor
+        srcNames = self.sourceNames()
+        for src in srcNames:
+            parameter = self._normPar(src)
+            if parameter.isFree():
+                oldValue = parameter.getValue()
+                parameter.setValue(oldValue*self.renormFactor)
+    def _normIsFree(self, src):
+        return self._normPar(src).isFree()
+    def _normPar(self, src):
+        spectrum = self[src].spectrum()
+        funcType = spectrum.genericName()
+        return spectrum.parameter(self._normName[funcType])
     def sourceNames(self):
         srcNames = pyLike.StringVector()
         self.logLike.getSrcNames(srcNames)
@@ -117,7 +174,19 @@ class AnalysisBase(object):
         return model_counts
     def __repr__(self):
         return self._inputs
+    def __getitem__(self, name):
+        return self.model[name]
+    def __setitem__(self, name, value):
+        self.model[name] = value
     def thaw(self, i):
-        self.model[i].setFree(1)
+        try:
+            for ii in i:
+                self.model[ii].setFree(1)
+        except TypeError:
+            self.model[i].setFree(1)
     def freeze(self, i):
-        self.model[i].setFree(0)
+        try:
+            for ii in i:
+                self.model[ii].setFree(0)
+        except TypeError:
+            self.model[i].setFree(0)
