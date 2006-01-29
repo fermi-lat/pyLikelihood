@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Sun Jan 29 14:11:27 PST 2006
+pyLikelihood/python
+
+Modified Files:
+	UnbinnedAnalysis.py 
+Log Message:
+add author line; allow different sctable to be specified
+    *
+------------------------------------------------------------
 User: jchiang  Sun Jan 29 14:11:26 PST 2006
 pyLikelihood/cmt
 
