@@ -3,10 +3,12 @@ version v0r1p2
 
 author James Chiang <jchiang@slac.stanford.edu>
 
-# $Id: requirements,v 1.8 2006/01/29 22:11:26 jchiang Exp $
+# $Id: requirements,v 1.9 2006/01/29 22:13:39 jchiang Exp $
 
 use Likelihood v*
 use SwigPolicy v*
+
+macro_append st_graph_libs " -lGX11 -lGX11TTF " WIN32 ""
 
 path_remove PYTHONPATH pyLikelihood
 path_append PYTHONPATH $(PYLIKELIHOODROOT)/$(BINDIR)
