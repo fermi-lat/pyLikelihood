@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Tue Jan 31 17:22:24 PST 2006
+pyLikelihood/cmt
+
+Modified Files:
+	requirements 
+Log Message:
+added libs somehow now needed under GlastPolicy v6r7p1 et al
+    *
+------------------------------------------------------------
 TAG
 Tag name: v0r1p2, operation: add
 Package: pyLikelihood
