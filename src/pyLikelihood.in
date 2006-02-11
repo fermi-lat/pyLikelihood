@@ -195,6 +195,16 @@ using optimizers::Exception;
       return file_func;
    }
 }
+%extend Likelihood::PointSource {
+   static Likelihood::PointSource * cast(Likelihood::Source * src) {
+      Likelihood::PointSource * ptsrc = 
+         dynamic_cast<Likelihood::PointSource *>(src);
+      if (ptsrc == 0) {
+         throw std::runtime_error("Cannot cast to a PointSource.");
+      }
+      return ptsrc;
+   }
+}
 %extend Likelihood::Source {
    double flux() {
       Likelihood::PointSource * ptsrc = 
