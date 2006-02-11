@@ -4,7 +4,7 @@ Base clase for Likelihood analysis Python modules.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.5 2005/12/06 04:26:55 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.6 2006/01/13 07:23:33 jchiang Exp $
 #
 
 import numarray as num
@@ -24,7 +24,7 @@ class AnalysisBase(object):
                  "FileFunction": "Normalization",
                  "LogParabola": "norm"}
     def __init__(self):
-        pass
+        self.maxdist = 20
     def _srcDialog(self):
         paramDict = map()
         paramDict['Source Model File'] = Param('file', '*.xml')
@@ -61,29 +61,24 @@ class AnalysisBase(object):
         if src.getType() == "Point":
             freeParams = pyLike.DoubleVector()
             self.logLike.getFreeParamValues(freeParams)
+            logLike1 = self.logLike.value()
+            self._ts_src = self.logLike.deleteSource(srcName)
             logLike0 = self.logLike.value()
-            src = self.logLike.deleteSource(srcName)
             if reoptimize:
                 myOpt = eval("self.logLike.%s()" % self.optimizer)
                 myOpt.find_min(0, 1e-5)
             else:
                 if approx:
-                    self._renorm()
-            Ts_value = -2*(self.logLike.value() - logLike0)
-            self.logLike.addSource(src)
+                    try:
+                        self._renorm()
+                    except ZeroDivisionError:
+                        pass
+            logLike0 = max(self.logLike.value(), logLike0)
+            Ts_value = 2*(logLike1 - logLike0)
+            self.logLike.addSource(self._ts_src)
             self.logLike.setFreeParamValues(freeParams)
             self.model = SourceModel(self.logLike)
             return Ts_value
-    def _npredValues(self):
-        srcNames = self.sourceNames()
-        freeNpred = 0
-        totalNpred = 0
-        for src in srcNames:
-            npred = self[src].Npred()
-            totalNpred += npred
-            if self._normIsFree(src):
-                freeNpred += npred
-        return freeNpred, totalNpred
     def _renorm(self, factor=None):
         if factor is None:
             freeNpred, totalNpred = self._npredValues()
@@ -94,11 +89,29 @@ class AnalysisBase(object):
         srcNames = self.sourceNames()
         for src in srcNames:
             parameter = self._normPar(src)
-            if parameter.isFree():
+            if parameter.isFree() and self._isDiffuseOrNearby(src):
                 oldValue = parameter.getValue()
                 parameter.setValue(oldValue*self.renormFactor)
-    def _normIsFree(self, src):
-        return self._normPar(src).isFree()
+    def _npredValues(self):
+        srcNames = self.sourceNames()
+        freeNpred = 0
+        totalNpred = 0
+        for src in srcNames:
+            npred = self[src].Npred()
+            totalNpred += npred
+            if self._normPar(src).isFree() and self._isDiffuseOrNearby(src):
+                freeNpred += npred
+        return freeNpred, totalNpred
+    def _isDiffuseOrNearby(self, srcName):
+        if self[srcName].src.getType() == 'Diffuse':
+            return True
+        elif self._separation(self._ts_src, self[srcName].src) < self.maxdist:
+            return True
+        return False
+    def _separation(self, src1, src2):
+        dir1 = pyLike.PointSource_cast(src1).getDir()
+        dir2 = pyLike.PointSource_cast(src2).getDir()
+        return dir1.difference(dir2)*180./num.pi
     def _normPar(self, src):
         spectrum = self[src].spectrum()
         funcType = spectrum.genericName()
