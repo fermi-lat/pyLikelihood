@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Sat Feb 11 09:06:22 PST 2006
+pyLikelihood/python
+
+Modified Files:
+	AnalysisBase.py 
+Log Message:
+better Ts estimator
+    *
+------------------------------------------------------------
 User: jchiang  Tue Jan 31 17:22:24 PST 2006
 pyLikelihood/cmt
 
