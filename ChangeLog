@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Thu Mar 16 08:33:37 PST 2006
+pyLikelihood/src
+
+Modified Files:
+	pyLikelihood.in 
+Log Message:
+comment out Verbosity access since SCIENCETOOLS_API macro confuses swig
+    *
+------------------------------------------------------------
 User: jchiang  Sat Feb 11 09:06:23 PST 2006
 pyLikelihood/src
 
