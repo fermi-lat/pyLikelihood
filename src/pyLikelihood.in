@@ -174,9 +174,6 @@ using optimizers::Exception;
       myFuncFactory->addFunc("PowerLaw2",
                              new Likelihood::PowerLaw2(), 
                              false);
-      myFuncFactory->addFunc("BrokenPowerLawExpCutoff",
-                             new Likelihood::BrokenPowerLawExpCutoff(), 
-                             false);
       myFuncFactory->addFunc("BrokenPowerLaw2",
                              new Likelihood::BrokenPowerLaw2(), 
                              false);
@@ -188,6 +185,9 @@ using optimizers::Exception;
                              false);
       myFuncFactory->addFunc("ExpCutoff",
                              new Likelihood::ExpCutoff(), 
+                             false);
+      myFuncFactory->addFunc("BPLExpCutoff",
+                             new Likelihood::BrokenPowerLawExpCutoff(), 
                              false);
       return myFuncFactory;
    }
