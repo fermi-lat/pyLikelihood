@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Sat Mar 25 21:12:54 PST 2006
+pyLikelihood/src
+
+Modified Files:
+	pyLikelihood.in 
+Log Message:
+use shorter name for BPLExpCutoff
+    *
+------------------------------------------------------------
 User: jchiang  Thu Mar 23 08:42:42 PST 2006
 pyLikelihood/src
 
