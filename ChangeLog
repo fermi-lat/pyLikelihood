@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Mon Apr 24 15:30:25 PDT 2006
+pyLikelihood/src
+
+Modified Files:
+	pyLikelihood.in 
+Log Message:
+initialize output st_streams
+    *
+------------------------------------------------------------
 User: jchiang  Mon Apr 24 15:30:24 PDT 2006
 pyLikelihood/python
 
