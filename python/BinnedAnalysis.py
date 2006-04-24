@@ -4,7 +4,7 @@ Python interface for binned likelihood.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/BinnedAnalysis.py,v 1.3 2005/09/26 17:32:55 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/BinnedAnalysis.py,v 1.4 2005/10/26 21:41:15 jchiang Exp $
 #
 
 import numarray as num
@@ -84,6 +84,7 @@ class BinnedAnalysis(AnalysisBase):
                                                binnedData.observation,
                                                binnedData.srcMaps,
                                                True)
+        self.logLike.initOutputStreams()
         self.logLike.readXml(srcModel, _funcFactory, False)
         self.model = SourceModel(self.logLike)
         self.energies = num.array(self.logLike.energies())

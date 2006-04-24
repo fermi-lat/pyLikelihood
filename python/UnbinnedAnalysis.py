@@ -4,7 +4,7 @@ Python interface for unbinned likelihood
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/UnbinnedAnalysis.py,v 1.5 2005/12/06 04:26:55 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/UnbinnedAnalysis.py,v 1.6 2006/01/29 22:11:26 jchiang Exp $
 #
 
 import glob
@@ -115,6 +115,7 @@ class UnbinnedAnalysis(AnalysisBase):
         self.observation = observation
         self.optimizer = optimizer
         self.logLike = pyLike.LogLike(self.observation.observation)
+        self.logLike.initOutputStreams()
         self.logLike.readXml(srcModel, _funcFactory)
         self.logLike.computeEventResponses()
         self.model = SourceModel(self.logLike)

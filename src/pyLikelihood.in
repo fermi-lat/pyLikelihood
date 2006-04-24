@@ -1,6 +1,7 @@
 // -*- mode: c++ -*-
 %module pyLikelihood
 %{
+#include "st_stream/st_stream.h"
 #include "irfLoader/Loader.h"
 #include "irfInterface/IrfsFactory.h"
 #include "map_tools/SkyImage.h"
@@ -225,6 +226,9 @@ using optimizers::Exception;
    }
 }
 %extend Likelihood::LogLike {
+   void initOutputStreams() {
+      st_stream::OStream::initStdStreams();
+   }
    void print_source_params() {
       std::vector<std::string> srcNames;
       self->getSrcNames(srcNames);
