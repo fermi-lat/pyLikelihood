@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Mon Apr 24 15:30:24 PDT 2006
+pyLikelihood/python
+
+Modified Files:
+	BinnedAnalysis.py UnbinnedAnalysis.py 
+Log Message:
+initialize output st_streams
+    *
+------------------------------------------------------------
 User: jchiang  Sat Mar 25 21:12:54 PST 2006
 pyLikelihood/src
 
