@@ -4,7 +4,7 @@ Base clase for Likelihood analysis Python modules.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.6 2006/01/13 07:23:33 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.7 2006/02/11 17:06:22 jchiang Exp $
 #
 
 import numarray as num
@@ -203,3 +203,9 @@ class AnalysisBase(object):
                 self.model[ii].setFree(0)
         except TypeError:
             self.model[i].setFree(0)
+
+def _quotefn(filename):
+    if filename is None:
+        return None
+    else:
+        return "'" + filename + "'"

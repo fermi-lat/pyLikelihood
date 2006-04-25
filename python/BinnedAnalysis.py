@@ -4,14 +4,14 @@ Python interface for binned likelihood.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/BinnedAnalysis.py,v 1.5 2006/04/24 22:30:23 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/BinnedAnalysis.py,v 1.6 2006/04/25 01:23:12 jchiang Exp $
 #
 
 import sys
 import numarray as num
 import pyLikelihood as pyLike
 from SrcModel import SourceModel
-from AnalysisBase import AnalysisBase
+from AnalysisBase import AnalysisBase, _quotefn
 from SimpleDialog import SimpleDialog, map, Param
 
 _funcFactory = pyLike.SourceFactory_funcFactory()
@@ -80,10 +80,10 @@ class BinnedObs(object):
         except:
             pass
         output.write("from BinnedAnalysis import *\n")
-        output.write(("obs = BinnedObs(%s, srcMaps='%s', expCube='%s'" +
-                      "binnedExpMap='%s', irfs='%s')\n")
-                     % (self.srcMaps, self.expCube, self.binnedExpMap,
-                        self.irfs))
+        output.write(("obs = BinnedObs(srcMaps=%s, expCube=%s, " +
+                      "binnedExpMap=%s, irfs='%s')\n")
+                     % (_quotefn(self.srcMaps), _quotefn(self.expCube),
+                        _quotefn(self.binnedExpMap), self.irfs))
         if close:
             output.close()
         
@@ -125,7 +125,8 @@ class BinnedAnalysis(AnalysisBase):
         except:
             pass
         self.binnedData.state(output)
-        output.write(("foo = BinnedAnalysis(obs, srcModel='%s', " +
-                      "optimizer='%s')\n") % (self.srcModel, self.optimizer))
+        output.write(("foo = BinnedAnalysis(obs, srcModel=%s, " +
+                      "optimizer='%s')\n")
+                     % (_quotefn(self.srcModel), self.optimizer))
         if close:
             output.close()
