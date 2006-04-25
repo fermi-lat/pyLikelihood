@@ -4,9 +4,10 @@ Python interface for unbinned likelihood
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/UnbinnedAnalysis.py,v 1.6 2006/01/29 22:11:26 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/UnbinnedAnalysis.py,v 1.7 2006/04/24 22:30:23 jchiang Exp $
 #
 
+import sys
 import glob
 import numarray as num
 import pyLikelihood as pyLike
@@ -32,6 +33,9 @@ class UnbinnedObs(object):
             eventFile, scFile, expMap, expCube, irfs = self._obsDialog()
         if checkCuts:
             self._checkCuts(eventFile, expMap, expCube)
+        self.expMap = expMap
+        self.expCube = expCube
+        self.irfs = irfs
         self._inputs = '\n'.join(('Event file(s): ' + str(eventFile),
                                   'Spacecraft file(s): ' + str(scFile),
                                   'Exposure map: ' + str(expMap),
@@ -93,16 +97,31 @@ class UnbinnedObs(object):
         self._scData.readData(scFiles[0], True, self.sctable)
         for file in scFiles[1:]:
             self._scData.readData(file)
+        self.scFiles = scFiles
     def _readEvents(self, eventFile):
         if eventFile is not None:
             eventFiles = self._fileList(eventFile)
             self._roiCuts.readCuts(eventFiles, 'EVENTS', False)
             for file in eventFiles:
                 self._eventCont.getEvents(file)
+            self.eventFiles = eventFiles
     def __getattr__(self, attrname):
         return getattr(self.observation, attrname)
     def __repr__(self):
         return self._inputs
+    def state(self, output=sys.stdout):
+        close = False
+        try:
+            output = open(output, 'w')
+            close = True
+        except:
+            pass
+        output.write("from UnbinnedAnalysis import *\n")
+        output.write(("obs = UnbinnedObs(%s, %s, expMap='%s', expCube='%s', " +
+                      "irfs='%s')\n") % (`self.eventFiles`, `self.scFiles`,
+                                         self.expMap, self.expCube, self.irfs))
+        if close:
+            output.close()
 
 class UnbinnedAnalysis(AnalysisBase):
     def __init__(self, observation, srcModel=None,  optimizer='Drmngb'):
@@ -113,6 +132,7 @@ class UnbinnedAnalysis(AnalysisBase):
                                   'Source model file: ' + str(srcModel),
                                   'Optimizer: ' + str(optimizer)))
         self.observation = observation
+        self.srcModel = srcModel
         self.optimizer = optimizer
         self.logLike = pyLike.LogLike(self.observation.observation)
         self.logLike.initOutputStreams()
@@ -135,6 +155,18 @@ class UnbinnedAnalysis(AnalysisBase):
         for emin, emax in zip(self.energies[:-1], self.energies[1:]):
             cnts.append(source.Npred(emin, emax))
         return num.array(cnts)
+    def state(self, output=sys.stdout):
+        close = False
+        try:
+            output = open(output, 'w')
+            close = False
+        except:
+            pass
+        self.observation.state(output)
+        output.write(("foo = UnbinnedAnalysis(obs, srcModel='%s', " +
+                      "optimizer='%s')\n") % (self.srcModel, self.optimizer))
+        if close:
+            output.close()
 
 if __name__ == '__main__':
     obs = UnbinnedObs('galdiffuse_events_0000.fits',

@@ -4,9 +4,10 @@ Python interface for binned likelihood.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/BinnedAnalysis.py,v 1.4 2005/10/26 21:41:15 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/BinnedAnalysis.py,v 1.5 2006/04/24 22:30:23 jchiang Exp $
 #
 
+import sys
 import numarray as num
 import pyLikelihood as pyLike
 from SrcModel import SourceModel
@@ -26,6 +27,9 @@ class BinnedObs(object):
                                   'Exposure map: ' + str(binnedExpMap),
                                   'IRFs: ' + str(irfs)))
         self.srcMaps = srcMaps
+        self.expCube = expCube
+        self.binnedExpMap =binnedExpMap
+        self.irfs = irfs
         self._createObservation(srcMaps, expCube, irfs)
         if binnedExpMap is not None and binnedExpMap != "":
             pyLike.SourceMap_setBinnedExposure(binnedExpMap)
@@ -68,6 +72,20 @@ class BinnedObs(object):
                   paramDict['binnedExpMap'].value(),
                   paramDict['irfs'].value())
         return output
+    def state(self, output=sys.stdout):
+        close = False
+        try:
+            output = open(output, 'w')
+            close = False
+        except:
+            pass
+        output.write("from BinnedAnalysis import *\n")
+        output.write(("obs = BinnedObs(%s, srcMaps='%s', expCube='%s'" +
+                      "binnedExpMap='%s', irfs='%s')\n")
+                     % (self.srcMaps, self.expCube, self.binnedExpMap,
+                        self.irfs))
+        if close:
+            output.close()
         
 class BinnedAnalysis(AnalysisBase):
     def __init__(self, binnedData, srcModel=None, optimizer='Drmngb'):
@@ -99,3 +117,15 @@ class BinnedAnalysis(AnalysisBase):
             emin, emax = self.energies[k:k+2]
             cnts.append(src.pixelCounts(emin, emax, npreds[k], npreds[k+1]))
         return num.array(cnts)
+    def state(self, output=sys.stdout):
+        close = False
+        try:
+            output = open(output, 'w')
+            close = False
+        except:
+            pass
+        self.binnedData.state(output)
+        output.write(("foo = BinnedAnalysis(obs, srcModel='%s', " +
+                      "optimizer='%s')\n") % (self.srcModel, self.optimizer))
+        if close:
+            output.close()
