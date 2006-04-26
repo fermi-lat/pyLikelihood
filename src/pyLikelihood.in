@@ -224,8 +224,9 @@ using optimizers::Exception;
    }
 }
 %extend Likelihood::LogLike {
-   void initOutputStreams() {
+   void initOutputStreams(unsigned int maxChatter=2) {
       st_stream::OStream::initStdStreams();
+      st_stream::SetMaximumChatter(maxChatter);
    }
    void print_source_params() {
       std::vector<std::string> srcNames;
