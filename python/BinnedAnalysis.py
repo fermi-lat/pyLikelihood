@@ -4,20 +4,21 @@ Python interface for binned likelihood.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/users/jchiang/pythonModules/pyLikelihood/python/BinnedAnalysis.py,v 1.8 2005/08/20 16:18:38 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/BinnedAnalysis.py,v 1.6 2006/04/25 01:23:12 jchiang Exp $
 #
 
+import sys
 import numarray as num
 import pyLikelihood as pyLike
 from SrcModel import SourceModel
-from AnalysisBase import AnalysisBase
+from AnalysisBase import AnalysisBase, _quotefn
 from SimpleDialog import SimpleDialog, map, Param
 
 _funcFactory = pyLike.SourceFactory_funcFactory()
 
 class BinnedObs(object):
     def __init__(self, srcMaps=None, expCube=None, binnedExpMap=None,
-                 irfs='TEST'):
+                 irfs='DC1A'):
         if srcMaps is None or expCube is None:
             srcMaps, expCube, binnedExpMap, irfs = self._obsDialog(srcMaps,
                                                                    expCube)
@@ -26,8 +27,11 @@ class BinnedObs(object):
                                   'Exposure map: ' + str(binnedExpMap),
                                   'IRFs: ' + str(irfs)))
         self.srcMaps = srcMaps
+        self.expCube = expCube
+        self.binnedExpMap =binnedExpMap
+        self.irfs = irfs
         self._createObservation(srcMaps, expCube, irfs)
-        if binnedExpMap is not None and binnedExpMap is not "":
+        if binnedExpMap is not None and binnedExpMap != "":
             pyLike.SourceMap_setBinnedExposure(binnedExpMap)
         self.countsMap = pyLike.CountsMap(srcMaps)
     def _createObservation(self, srcMaps, expCube, irfs):
@@ -60,7 +64,7 @@ class BinnedObs(object):
         else:
             paramDict['expCube'] = Param('file', expCube)
         paramDict['binnedExpMap'] = Param('file', '')
-        paramDict['irfs'] = Param('string', 'TEST')
+        paramDict['irfs'] = Param('string', 'DC1A')
         root = SimpleDialog(paramDict, title="Binned Analysis Elements:")
         root.mainloop()
         output = (paramDict['srcMaps'].value(),
@@ -68,9 +72,23 @@ class BinnedObs(object):
                   paramDict['binnedExpMap'].value(),
                   paramDict['irfs'].value())
         return output
+    def state(self, output=sys.stdout):
+        close = False
+        try:
+            output = open(output, 'w')
+            close = False
+        except:
+            pass
+        output.write("from BinnedAnalysis import *\n")
+        output.write(("obs = BinnedObs(srcMaps=%s, expCube=%s, " +
+                      "binnedExpMap=%s, irfs='%s')\n")
+                     % (_quotefn(self.srcMaps), _quotefn(self.expCube),
+                        _quotefn(self.binnedExpMap), self.irfs))
+        if close:
+            output.close()
         
 class BinnedAnalysis(AnalysisBase):
-    def __init__(self, binnedData, srcModel=None, optimizer='Minuit'):
+    def __init__(self, binnedData, srcModel=None, optimizer='Drmngb'):
         AnalysisBase.__init__(self)
         if srcModel is None:
             srcModel, optimizer = self._srcDialog()
@@ -84,6 +102,7 @@ class BinnedAnalysis(AnalysisBase):
                                                binnedData.observation,
                                                binnedData.srcMaps,
                                                True)
+        self.logLike.initOutputStreams()
         self.logLike.readXml(srcModel, _funcFactory, False)
         self.model = SourceModel(self.logLike)
         self.energies = num.array(self.logLike.energies())
@@ -98,3 +117,16 @@ class BinnedAnalysis(AnalysisBase):
             emin, emax = self.energies[k:k+2]
             cnts.append(src.pixelCounts(emin, emax, npreds[k], npreds[k+1]))
         return num.array(cnts)
+    def state(self, output=sys.stdout):
+        close = False
+        try:
+            output = open(output, 'w')
+            close = False
+        except:
+            pass
+        self.binnedData.state(output)
+        output.write(("foo = BinnedAnalysis(obs, srcModel=%s, " +
+                      "optimizer='%s')\n")
+                     % (_quotefn(self.srcModel), self.optimizer))
+        if close:
+            output.close()
