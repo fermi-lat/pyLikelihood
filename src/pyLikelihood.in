@@ -58,7 +58,6 @@
 #include "Likelihood/CountsMap.h"
 #include "Likelihood/Observation.h"
 #include "Likelihood/WcsMap.h"
-//#include "src/Verbosity.h"
 #include <vector>
 #include <string>
 #include <exception>
@@ -102,7 +101,6 @@ using optimizers::Exception;
 %include $(LIKELIHOODROOT)/Likelihood/EquinoxRotation.h
 %template (FuncPair) std::pair<std::string, optimizers::Function *>;
 %template (FuncMap) std::map<std::string, optimizers::Function *>;
-//%include $(LIKELIHOODROOT)/src/Verbosity.h
 %include $(LIKELIHOODROOT)/Likelihood/Convolve.h
 %include $(LIKELIHOODROOT)/Likelihood/Exception.h
 %include $(LIKELIHOODROOT)/Likelihood/ExpCutoff.h

@@ -5,6 +5,7 @@
 
    @verbatim
 
+   v0r2   26-Apr-06   JC    add state methods to analysis classes
    v0r1p3 16-Mar-06   JC    comment out Verbosity because of SCIENCETOOLS_API
                             decorator that confuses swig
    v0r1p2 29-Jan-06   JC    add better Ts approximations; added ExpCutoff
