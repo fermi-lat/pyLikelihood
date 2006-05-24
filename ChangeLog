@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Wed May 24 08:01:31 PDT 2006
+pyLikelihood/doc
+
+Modified Files:
+	release.notes 
+Log Message:
+remove central lib mods to PYTHONPATH; tagging v0r2p1
+    *
+------------------------------------------------------------
 User: jchiang  Wed May 24 08:01:14 PDT 2006
 pyLikelihood/cmt
 
