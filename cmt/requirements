@@ -1,9 +1,9 @@
 package pyLikelihood
-version v0r2
+version v0r2p1
 
 author James Chiang <jchiang@slac.stanford.edu>
 
-# $Id: requirements,v 1.11 2006/03/16 16:35:31 jchiang Exp $
+# $Id: requirements,v 1.12 2006/04/26 17:43:36 jchiang Exp $
 
 use Likelihood v*
 use SwigPolicy v*
@@ -16,10 +16,5 @@ path_append PYTHONPATH $(PYLIKELIHOODROOT)/python
 
 path_remove PYTHONPATH ROOT
 path_prepend PYTHONPATH $(ROOTSYS)/lib
-
-path_remove PYTHONPATH "" Linux "${pyLikelihood_cmtpath}/lib" \
-                          WIN32 "${pyLikelihood_cmtpath}\lib"
-path_append PYTHONPATH "" Linux "${pyLikelihood_cmtpath}/lib" \
-                          WIN32 "${pyLikelihood_cmtpath}\lib"
 
 apply_pattern swig_module name="pyLikelihood"
