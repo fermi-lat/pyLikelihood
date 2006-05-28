@@ -1,5 +1,14 @@
 ------------------------------------------------------------
 User: jchiang  Sun May 28 15:31:57 PDT 2006
+pyLikelihood/src
+
+Modified Files:
+	pyLikelihood.in 
+Log Message:
+redirect SourceModel::writeXml from AnalysisBase; expose PointSource::flux(...) to Python
+    *
+------------------------------------------------------------
+User: jchiang  Sun May 28 15:31:57 PDT 2006
 pyLikelihood/python
 
 Modified Files:
