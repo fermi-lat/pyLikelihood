@@ -222,6 +222,16 @@ using optimizers::Exception;
       }
       return ptsrc->flux();
    }
+   double flux(double emin, double emax, size_t npts=100) {
+      Likelihood::PointSource * ptsrc = 
+         dynamic_cast<Likelihood::PointSource *>(self);
+      if (ptsrc == 0) {
+         std::ostringstream message;
+         message << "Integrated flux is not available for this source.";
+         throw std::runtime_error(message.str());
+      }
+      return ptsrc->flux(emin, emax, npts);
+   }
 }
 %extend Likelihood::LogLike {
    void initOutputStreams(unsigned int maxChatter=2) {
