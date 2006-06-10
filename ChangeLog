@@ -1,5 +1,14 @@
 ------------------------------------------------------------
 User: jchiang  Sat Jun 10 16:48:24 PDT 2006
+pyLikelihood/src
+
+Modified Files:
+	pyLikelihood.in 
+Log Message:
+use optimizers::OptimizerFactory
+    *
+------------------------------------------------------------
+User: jchiang  Sat Jun 10 16:48:24 PDT 2006
 pyLikelihood/python
 
 Modified Files:
