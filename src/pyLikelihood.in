@@ -5,10 +5,8 @@
 #include "irfLoader/Loader.h"
 #include "irfInterface/IrfsFactory.h"
 #include "map_tools/SkyImage.h"
-#include "optimizers/Lbfgs.h"
-#include "optimizers/Drmngb.h"
-#include "optimizers/Minuit.h"
 #include "optimizers/Optimizer.h"
+#include "optimizers/OptimizerFactory.h"
 #include "optimizers/Parameter.h"
 #include "optimizers/ParameterNotFound.h"
 #include "optimizers/Function.h"
@@ -95,6 +93,7 @@ using optimizers::Exception;
 %include $(OPTIMIZERSROOT)/optimizers/FunctionTest.h
 %include $(OPTIMIZERSROOT)/optimizers/FunctionFactory.h
 %include $(OPTIMIZERSROOT)/optimizers/Optimizer.h
+%include $(OPTIMIZERSROOT)/optimizers/OptimizerFactory.h
 %include $(OPTIMIZERSROOT)/optimizers/Mcmc.h
 %include $(ST_FACILITIESROOT)/st_facilities/FitsImage.h
 %include $(ST_FACILITIESROOT)/st_facilities/Util.h
@@ -282,15 +281,6 @@ using optimizers::Exception;
       std::vector<std::string> my_names;
       self->getSrcNames(my_names);
       return my_names;
-   }
-   optimizers::Optimizer * Minuit() {
-      return new optimizers::Minuit(*self);
-   }
-   optimizers::Optimizer * Lbfgs() {
-      return new optimizers::Lbfgs(*self);
-   }
-   optimizers::Optimizer * Drmngb() {
-      return new optimizers::Drmngb(*self);
    }
    optimizers::Mcmc * Mcmc() {
       return new optimizers::Mcmc(*self);
