@@ -5,6 +5,7 @@
 
    @verbatim
 
+   v0r2p2 09-Jun-06   JC    expose PointSource::flux(emin, emax) to Python
    v0r2p1 24-May-06   JC    remove PYTHONPATH cr*p added because of 
                             central lib dir implementation in GlastPolicy;
                             those lines are now in SwigPolicy
