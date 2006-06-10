@@ -4,7 +4,7 @@ Base clase for Likelihood analysis Python modules.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.8 2006/04/25 03:07:17 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.9 2006/05/28 22:31:57 jchiang Exp $
 #
 
 import numarray as num
@@ -46,7 +46,8 @@ class AnalysisBase(object):
         self.logLike.syncParams()
         if optimizer is None:
             optimizer = self.optimizer
-        myOpt = eval("self.logLike.%s()" % optimizer)
+        optFactory = pyLike.OptimizerFactory_instance()
+        myOpt = optFactory.create(optimizer, self.logLike)
         myOpt.find_min(verbosity, tol)
         errors = myOpt.getUncertainty(useBase)
         j = 0
@@ -65,7 +66,8 @@ class AnalysisBase(object):
             self._ts_src = self.logLike.deleteSource(srcName)
             logLike0 = self.logLike.value()
             if reoptimize:
-                myOpt = eval("self.logLike.%s()" % self.optimizer)
+                optFactory = pyLike.OptimizerFactory_instance()
+                myOpt = optFactory.create(self.optimizer, self.logLike)
                 myOpt.find_min(0, 1e-5)
             else:
                 if approx:
