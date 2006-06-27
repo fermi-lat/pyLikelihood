@@ -4,7 +4,7 @@ Python interface for unbinned likelihood
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/UnbinnedAnalysis.py,v 1.8 2006/04/25 01:23:12 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/UnbinnedAnalysis.py,v 1.9 2006/04/25 03:07:17 jchiang Exp $
 #
 
 import sys
@@ -14,6 +14,7 @@ import pyLikelihood as pyLike
 from SrcModel import SourceModel
 from AnalysisBase import AnalysisBase, _quotefn
 from SimpleDialog import SimpleDialog, map, Param
+from Pil import Pil
 
 _funcFactory = pyLike.SourceFactory_funcFactory()
 
@@ -170,8 +171,20 @@ class UnbinnedAnalysis(AnalysisBase):
         if close:
             output.close()
 
+def unbinnedAnalysis(parfile):
+    """Return an UnbinnedAnalysis object using the data in a gtlikelihood.par
+file."""
+    pars = Pil(parfile)
+    irfs = pars['rspfunc']
+    if irfs == 'DSS':
+        irfs = 'DC2'   # need to fix this for event class subselections
+    evfiles = pyLike.Util_resolveFitsFiles(pars['evfile'])
+    scfiles = pyLike.Util_resolveFitsFiles(pars['scfile'])
+    obs = UnbinnedObs(evfiles, scfiles, expMap=pars[
+
 if __name__ == '__main__':
     obs = UnbinnedObs('galdiffuse_events_0000.fits',
                        'galdiffuse_scData_0000.fits',
                        'expMap_test.fits')
     srcAnalysis = SrcAnalysis('galdiffuse_model.xml', obs)
+
