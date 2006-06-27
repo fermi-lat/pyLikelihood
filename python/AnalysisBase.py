@@ -4,7 +4,7 @@ Base clase for Likelihood analysis Python modules.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.9 2006/05/28 22:31:57 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.10 2006/06/10 23:48:24 jchiang Exp $
 #
 
 import numarray as num
@@ -217,3 +217,10 @@ def _quotefn(filename):
         return None
     else:
         return "'" + filename + "'"
+
+def _null_file(filename):
+    if filename == 'none' or filename == '':
+        return None
+    else:
+        return filename
+

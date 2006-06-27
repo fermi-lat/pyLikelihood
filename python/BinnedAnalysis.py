@@ -4,15 +4,16 @@ Python interface for binned likelihood.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/BinnedAnalysis.py,v 1.6 2006/04/25 01:23:12 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/BinnedAnalysis.py,v 1.7 2006/04/25 03:07:17 jchiang Exp $
 #
 
 import sys
 import numarray as num
 import pyLikelihood as pyLike
 from SrcModel import SourceModel
-from AnalysisBase import AnalysisBase, _quotefn
+from AnalysisBase import AnalysisBase, _quotefn, _null_file
 from SimpleDialog import SimpleDialog, map, Param
+from Pil import Pil
 
 _funcFactory = pyLike.SourceFactory_funcFactory()
 
@@ -130,3 +131,15 @@ class BinnedAnalysis(AnalysisBase):
                      % (_quotefn(self.srcModel), self.optimizer))
         if close:
             output.close()
+
+def binnedAnalysis(parfile='gtlikelihood.par', irfs='DC1A'):
+    """Return a BinnedAnalysis object using the data in a gtlikelihood.par
+file."""
+    pars = Pil(parfile)
+    srcmaps = pars['counts_map_file']
+    expcube = _null_file(pars['exposure_cube_file'])
+    expmap = _null_file(pars['binned_exposure_map'])
+    obs = BinnedObs(srcmaps, expcube, expmap, irfs)
+    like = BinnedAnalysis(obs, pars['source_model_file'], pars['optimizer'])
+    return like
+
