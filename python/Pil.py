@@ -5,12 +5,33 @@ Interface to .par files.
 @author J. Chiang
 """
 #
-#$Header: /nfs/slac/g/glast/ground/cvs/sane/python/pil.py,v 1.8 2006/03/06 16:33:28 jchiang Exp $
+#$Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/Pil.py,v 1.1 2006/06/27 03:16:12 jchiang Exp $
 #
 
-import os, sys
+import os, sys, re
 import string
-from pfilesPath import pfilesPath
+
+ParFileError = 'ParFileError'
+def pfilesPath(parfile=None):
+    try:
+        if os.name == 'posix':
+            pattern = re.compile(";*:*")
+        else:
+            pattern = re.compile("#*;*")
+        paths = re.split(pattern, os.environ['PFILES'])
+        paths = [path for path in paths if path != '']
+    except KeyError:
+        print "Your PFILES environment variable is not set."
+        raise KeyError
+    if parfile is None:
+        return paths[0]
+    for path in paths:
+        try:
+            if parfile in os.listdir(path):
+                return path
+        except OSError:
+            pass
+    raise ParFileError, ".par file " + parfile + " not found."
 
 def accept(line):
     if (line.find('#') == 0 or len(line.split()) == 0):
