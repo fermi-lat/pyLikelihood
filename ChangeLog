@@ -1,4 +1,15 @@
 ------------------------------------------------------------
+User: jchiang  Tue Jun 27 12:28:55 PDT 2006
+pyLikelihood/src
+
+Modified Files:
+	pyLikelihood.in 
+Added Files:
+	StAppInterface.h 
+Log Message:
+use AppParGroup for parsing par files
+    *
+------------------------------------------------------------
 User: jchiang  Tue Jun 27 12:28:54 PDT 2006
 pyLikelihood/python
 
