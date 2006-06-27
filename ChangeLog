@@ -1,4 +1,15 @@
 ------------------------------------------------------------
+User: jchiang  Mon Jun 26 20:16:12 PDT 2006
+pyLikelihood/python
+
+Modified Files:
+	UnbinnedAnalysis.py 
+Added Files:
+	Pil.py 
+Log Message:
+read par files
+    *
+------------------------------------------------------------
 TAG
 Tag name: v0r2p2, operation: add
 Package: pyLikelihood
