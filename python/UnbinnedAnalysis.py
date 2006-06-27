@@ -4,7 +4,7 @@ Python interface for unbinned likelihood
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/UnbinnedAnalysis.py,v 1.10 2006/06/27 03:16:12 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/UnbinnedAnalysis.py,v 1.11 2006/06/27 04:10:47 jchiang Exp $
 #
 
 import sys
@@ -14,7 +14,6 @@ import pyLikelihood as pyLike
 from SrcModel import SourceModel
 from AnalysisBase import AnalysisBase, _quotefn, _null_file
 from SimpleDialog import SimpleDialog, map, Param
-from Pil import Pil
 
 _funcFactory = pyLike.SourceFactory_funcFactory()
 
@@ -171,22 +170,30 @@ class UnbinnedAnalysis(AnalysisBase):
         if close:
             output.close()
 
-def unbinnedAnalysis(parfile='gtlikelihood.par', irfs='DC1A'):
+def unbinnedAnalysis(mode="ql", rspfunc=None, fit_tolerance=None):
     """Return an UnbinnedAnalysis object using the data in a gtlikelihood.par
 file."""
-    pars = Pil(parfile)
+    pars = pyLike.StApp_parGroup('gtlikelihood')
+    if mode == 'ql':
+        pars.Prompt('scfile')
+        pars.Prompt('evfile')
+        pars.Prompt('exposure_map_file')
+        pars.Prompt('exposure_cube_file')
+        pars.Prompt('source_model_file')
+        pars.Prompt('optimizer')
+        pars.Save()
     evfiles = pyLike.Util_resolveFitsFiles(pars['evfile'])
     scfiles = pyLike.Util_resolveFitsFiles(pars['scfile'])
+    irfs = pars['rspfunc']
+    if rspfunc is not None:
+        irfs = rspfunc
     obs = UnbinnedObs(evfiles, scfiles,
                       expMap=_null_file(pars['exposure_map_file']),
                       expCube=_null_file(pars['exposure_cube_file']),
                       irfs=irfs)
     like = UnbinnedAnalysis(obs, pars['source_model_file'], pars['optimizer'])
+    if fit_tolerance is not None:
+        like.tol = fit_tolerance
+    else:
+        like.tol = pars.getDouble('fit_tolerance')
     return like
-
-if __name__ == '__main__':
-    obs = UnbinnedObs('galdiffuse_events_0000.fits',
-                       'galdiffuse_scData_0000.fits',
-                       'expMap_test.fits')
-    srcAnalysis = SrcAnalysis('galdiffuse_model.xml', obs)
-

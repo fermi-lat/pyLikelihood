@@ -4,7 +4,7 @@ Base clase for Likelihood analysis Python modules.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.10 2006/06/10 23:48:24 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.11 2006/06/27 04:10:47 jchiang Exp $
 #
 
 import numarray as num
@@ -25,6 +25,7 @@ class AnalysisBase(object):
                  "LogParabola": "norm"}
     def __init__(self):
         self.maxdist = 20
+        self.tol = 1e-5
     def _srcDialog(self):
         paramDict = map()
         paramDict['Source Model File'] = Param('file', '*.xml')
@@ -39,13 +40,18 @@ class AnalysisBase(object):
         _plotter_package = plotter
     def __call__(self):
         return -self.logLike.value()
-    def fit(self, verbosity=3, tol=1e-5, optimizer=None):
+    def fit(self, verbosity=3, tol=None, optimizer=None):
+        if tol is None:
+            tol = self.tol
         errors = self._errors(optimizer, verbosity, tol)
         return -self.logLike.value()
-    def _errors(self, optimizer=None, verbosity=0, tol=1e-5, useBase=False):
+    def _errors(self, optimizer=None, verbosity=0, tol=None,
+                useBase=False):
         self.logLike.syncParams()
         if optimizer is None:
             optimizer = self.optimizer
+        if tol is None:
+            tol = self.tol
         optFactory = pyLike.OptimizerFactory_instance()
         myOpt = optFactory.create(optimizer, self.logLike)
         myOpt.find_min(verbosity, tol)
@@ -209,8 +215,6 @@ class AnalysisBase(object):
         if xmlFile is None:
             xmlFile = self.srcModel
         self.logLike.writeXml(xmlFile)
-#    def __getattr__(self, attrname):
-#        return getattr(self.logLike, attrname)
 
 def _quotefn(filename):
     if filename is None:
