@@ -4,7 +4,7 @@ Python interface for binned likelihood.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/BinnedAnalysis.py,v 1.7 2006/04/25 03:07:17 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/BinnedAnalysis.py,v 1.8 2006/06/27 04:10:47 jchiang Exp $
 #
 
 import sys
@@ -13,7 +13,6 @@ import pyLikelihood as pyLike
 from SrcModel import SourceModel
 from AnalysisBase import AnalysisBase, _quotefn, _null_file
 from SimpleDialog import SimpleDialog, map, Param
-from Pil import Pil
 
 _funcFactory = pyLike.SourceFactory_funcFactory()
 
@@ -132,14 +131,27 @@ class BinnedAnalysis(AnalysisBase):
         if close:
             output.close()
 
-def binnedAnalysis(parfile='gtlikelihood.par', irfs='DC1A'):
+def binnedAnalysis(mode='ql', rspfunc=None, fit_tolerance=None):
     """Return a BinnedAnalysis object using the data in a gtlikelihood.par
 file."""
-    pars = Pil(parfile)
+    pars = pyLike.StApp_parGroup('gtlikelihood')
+    if mode == 'ql':
+        pars.Prompt('counts_map_file')
+        pars.Prompt('binned_exposure_map')
+        pars.Prompt('exposure_cube_file')
+        pars.Prompt('source_model_file')
+        pars.Prompt('optimizer')
+        pars.Save()
     srcmaps = pars['counts_map_file']
     expcube = _null_file(pars['exposure_cube_file'])
     expmap = _null_file(pars['binned_exposure_map'])
+    irfs = pars['rspfunc']
+    if rspfunc is not None:
+        irfs = rspfunc
     obs = BinnedObs(srcmaps, expcube, expmap, irfs)
     like = BinnedAnalysis(obs, pars['source_model_file'], pars['optimizer'])
+    if fit_tolerance is not None:
+        like.tol = fit_tolerance
+    else:
+        like.tol = pars.getDouble('fit_tolerance')
     return like
-

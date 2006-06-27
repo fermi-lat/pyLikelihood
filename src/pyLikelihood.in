@@ -1,6 +1,8 @@
 // -*- mode: c++ -*-
 %module pyLikelihood
 %{
+#include "st_app/AppParGroup.h"
+#include "st_app/StApp.h"
 #include "st_stream/st_stream.h"
 #include "irfLoader/Loader.h"
 #include "irfInterface/IrfsFactory.h"
@@ -56,6 +58,7 @@
 #include "Likelihood/CountsMap.h"
 #include "Likelihood/Observation.h"
 #include "Likelihood/WcsMap.h"
+#include "StAppInterface.h"
 #include <vector>
 #include <string>
 #include <exception>
@@ -79,6 +82,8 @@ using optimizers::Exception;
 %template(DoubleVectorVector) std::vector< std::vector<double> >;
 %template(DoubleVectorPair) std::vector< std::pair<double, double> >;
 %template(StringVector) std::vector<std::string>;
+%include $(ST_APPROOT)/st_app/AppParGroup.h
+%include $(ST_APPROOT)/st_app/StApp.h
 %include $(ASTROROOT)/astro/SkyProj.h
 %include $(ASTROROOT)/astro/SkyDir.h
 %template(SkyDirVector) std::vector<astro::SkyDir>;
@@ -302,5 +307,36 @@ using optimizers::Exception;
    }
    std::pair<double, double> sc_dir() const {
       return std::make_pair(self->getScDir().ra(), self->getScDir().dec());
+   }
+}
+
+%extend st_app::StApp {
+   static st_app::AppParGroup parGroup(const std::string & appName) {
+      char * argv[] = {"dummy_app"};
+      int argc(1);
+      st_app::StApp::processCommandLine(argc, argv);
+      StAppInterface foo(appName);
+      return foo.getParGroup();
+   }
+}
+%extend st_app::AppParGroup {
+   std::string __getitem__(const std::string & parname) {
+      std::string my_string = self->operator[](parname);
+      return my_string;
+   }
+   double getDouble(const std::string & parname) {
+      double my_value = self->operator[](parname);
+      return my_value;
+   }
+   int getInt(const std::string & parname) {
+      int my_value = self->operator[](parname);
+      return my_value;
+   }
+   bool getBool(const std::string & parname) {
+      bool  my_value = self->operator[](parname);
+      return my_value;
+   }
+   void Save() {
+      self->Save();
    }
 }
