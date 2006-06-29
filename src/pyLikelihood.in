@@ -22,6 +22,7 @@
 #include "Likelihood/BinnedExposure.h"
 #include "Likelihood/BrokenPowerLaw2.h"
 #include "Likelihood/Convolve.h"
+#include "Likelihood/CountsSpectra.h"
 #include "Likelihood/Source.h"
 #include "Likelihood/DiffuseSource.h"
 #include "Likelihood/EquinoxRotation.h"
@@ -128,6 +129,7 @@ using optimizers::Exception;
 %include $(LIKELIHOODROOT)/Likelihood/CountsMap.h
 %include $(LIKELIHOODROOT)/Likelihood/SourceModel.h
 %include $(LIKELIHOODROOT)/Likelihood/LogLike.h
+%include $(LIKELIHOODROOT)/Likelihood/CountsSpectra.h
 %include $(LIKELIHOODROOT)/Likelihood/MeanPsf.h
 %include $(LIKELIHOODROOT)/Likelihood/BinnedLikelihood.h
 %include $(LIKELIHOODROOT)/Likelihood/Npred.h
