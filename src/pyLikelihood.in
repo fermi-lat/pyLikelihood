@@ -59,10 +59,26 @@
 #include "Likelihood/CountsMap.h"
 #include "Likelihood/Observation.h"
 #include "Likelihood/WcsMap.h"
-#include "StAppInterface.h"
 #include <vector>
 #include <string>
 #include <exception>
+
+class StAppInterface : public st_app::StApp {
+public:
+   StAppInterface(const std::string & appName)
+      : st_app::StApp(), m_appName(appName) {}
+
+   virtual ~StAppInterface() throw() {}
+
+   virtual void run() {}
+
+   st_app::AppParGroup & getParGroup() {
+      return st_app::StApp::getParGroup(m_appName);
+   }
+private:
+   const std::string m_appName;
+};
+
 using optimizers::Parameter;
 using optimizers::ParameterNotFound;
 using optimizers::Function;
