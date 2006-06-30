@@ -1,5 +1,14 @@
 ------------------------------------------------------------
 User: jchiang  Fri Jun 30 12:49:44 PDT 2006
+pyLikelihood/src
+
+Removed Files:
+	StAppInterface.h 
+Log Message:
+tagging v0r3p1
+    *
+------------------------------------------------------------
+User: jchiang  Fri Jun 30 12:49:44 PDT 2006
 pyLikelihood/doc
 
 Modified Files:
