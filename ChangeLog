@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Fri Jun 30 12:44:59 PDT 2006
+pyLikelihood/src
+
+Modified Files:
+	pyLikelihood.in 
+Log Message:
+still more workarounds for Windows build failures
+    *
+------------------------------------------------------------
 TAG
 Tag name: v0r3, operation: add
 Package: pyLikelihood
