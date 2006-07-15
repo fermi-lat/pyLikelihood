@@ -4,7 +4,7 @@ Python interface for binned likelihood.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/BinnedAnalysis.py,v 1.8 2006/06/27 04:10:47 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/BinnedAnalysis.py,v 1.9 2006/06/27 19:28:54 jchiang Exp $
 #
 
 import sys
@@ -125,7 +125,7 @@ class BinnedAnalysis(AnalysisBase):
         except:
             pass
         self.binnedData.state(output)
-        output.write(("foo = BinnedAnalysis(obs, srcModel=%s, " +
+        output.write(("like = BinnedAnalysis(obs, srcModel=%s, " +
                       "optimizer='%s')\n")
                      % (_quotefn(self.srcModel), self.optimizer))
         if close:

@@ -4,7 +4,7 @@ Python interface for unbinned likelihood
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/UnbinnedAnalysis.py,v 1.11 2006/06/27 04:10:47 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/UnbinnedAnalysis.py,v 1.12 2006/06/27 19:28:54 jchiang Exp $
 #
 
 import sys
@@ -164,7 +164,7 @@ class UnbinnedAnalysis(AnalysisBase):
         except:
             pass
         self.observation.state(output)
-        output.write(("foo = UnbinnedAnalysis(obs, srcModel=%s, " +
+        output.write(("like = UnbinnedAnalysis(obs, srcModel=%s, " +
                       "optimizer='%s')\n")
                      % (_quotefn(self.srcModel), self.optimizer))
         if close:
