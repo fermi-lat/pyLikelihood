@@ -5,6 +5,9 @@
 
    @verbatim
 
+   v0r3p2 21-Jul-06   JC    add try/except around import SimpleDialog
+                            for installations that do not have tkinter
+                            properly installed
    v0r3p1 30-Jun-06   JC    workaround for non-sensical build failures 
                             on Windows
    v0r3   29-Jun-06   JC    add functions that read gtlikelihood.par

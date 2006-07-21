@@ -4,13 +4,16 @@ Base clase for Likelihood analysis Python modules.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.11 2006/06/27 04:10:47 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.12 2006/06/27 19:28:54 jchiang Exp $
 #
 
 import numarray as num
 import pyLikelihood as pyLike
 from SrcModel import SourceModel
-from SimpleDialog import SimpleDialog, map, Param
+try:
+    from SimpleDialog import SimpleDialog, map, Param
+except ImportError:
+    pass
 
 _plotter_package = 'root'
 
