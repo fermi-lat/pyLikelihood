@@ -1,5 +1,14 @@
 ------------------------------------------------------------
 User: jchiang  Fri Jul 21 08:45:10 PDT 2006
+pyLikelihood/doc
+
+Modified Files:
+	release.notes 
+Log Message:
+try/except around import SimpleDialog for sites w/out tkinter; tagging v0r3p2
+    *
+------------------------------------------------------------
+User: jchiang  Fri Jul 21 08:45:10 PDT 2006
 pyLikelihood/cmt
 
 Modified Files:
