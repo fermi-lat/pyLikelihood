@@ -4,7 +4,7 @@ Python interface for binned likelihood.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/BinnedAnalysis.py,v 1.9 2006/06/27 19:28:54 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/BinnedAnalysis.py,v 1.10 2006/07/15 00:31:34 jchiang Exp $
 #
 
 import sys
@@ -12,7 +12,10 @@ import numarray as num
 import pyLikelihood as pyLike
 from SrcModel import SourceModel
 from AnalysisBase import AnalysisBase, _quotefn, _null_file
-from SimpleDialog import SimpleDialog, map, Param
+try:
+    from SimpleDialog import SimpleDialog, map, Param
+except ImportError:
+    pass
 
 _funcFactory = pyLike.SourceFactory_funcFactory()
 
