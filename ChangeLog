@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Fri Jul 21 08:45:11 PDT 2006
+pyLikelihood/python
+
+Modified Files:
+	AnalysisBase.py BinnedAnalysis.py UnbinnedAnalysis.py 
+Log Message:
+try/except around import SimpleDialog for sites w/out tkinter; tagging v0r3p2
+    *
+------------------------------------------------------------
 User: jchiang  Fri Jul 21 08:45:10 PDT 2006
 pyLikelihood/doc
 
