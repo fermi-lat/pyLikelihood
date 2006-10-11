@@ -5,6 +5,9 @@
 
    @verbatim
 
+   v0r3p3 11-Oct-06   JC    add LogLike.syncParams() call to accommodate
+                            Likelihood imp that uses cached values for  
+                            computing the unbinned likelihood
    v0r3p2 21-Jul-06   JC    add try/except around import SimpleDialog
                             for installations that do not have tkinter
                             properly installed
