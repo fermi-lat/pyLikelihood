@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Wed Oct 11 10:30:49 PDT 2006
+pyLikelihood/src
+
+Modified Files:
+	pyLikelihood.in 
+Log Message:
+synch up parameters (needed for new Likelihood implementation using cached Npred, et al values for fixed sources)
+    *
+------------------------------------------------------------
 User: jchiang  Wed Oct 11 10:30:48 PDT 2006
 pyLikelihood/python
 
