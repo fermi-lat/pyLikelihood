@@ -138,7 +138,7 @@ using optimizers::Exception;
 %include $(LIKELIHOODROOT)/Likelihood/Observation.h
 %include $(LIKELIHOODROOT)/Likelihood/BinnedExposure.h
 %include $(LIKELIHOODROOT)/Likelihood/AppHelpers.h
-%include $(LIKELIHOODROOT)/Likelihood/SourceModel.h
+//%include $(LIKELIHOODROOT)/Likelihood/SourceModel.h
 %include $(LIKELIHOODROOT)/Likelihood/DiffuseSource.h
 %include $(LIKELIHOODROOT)/Likelihood/Pixel.h
 %template (PixelVector) std::vector<Likelihood::Pixel>;

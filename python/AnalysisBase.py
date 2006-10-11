@@ -4,7 +4,7 @@ Base clase for Likelihood analysis Python modules.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.12 2006/06/27 19:28:54 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.13 2006/07/21 15:45:11 jchiang Exp $
 #
 
 import numarray as num
@@ -202,6 +202,7 @@ class AnalysisBase(object):
         return self.model[name]
     def __setitem__(self, name, value):
         self.model[name] = value
+        self.logLike.syncParams()
     def thaw(self, i):
         try:
             for ii in i:
