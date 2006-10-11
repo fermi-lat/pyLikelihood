@@ -1,5 +1,14 @@
 ------------------------------------------------------------
 User: jchiang  Wed Oct 11 13:17:12 PDT 2006
+pyLikelihood/python
+
+Modified Files:
+	AnalysisBase.py 
+Log Message:
+ensure renorm factor is at least unity; tagging v0r3p4
+    *
+------------------------------------------------------------
+User: jchiang  Wed Oct 11 13:17:12 PDT 2006
 pyLikelihood/doc
 
 Modified Files:
