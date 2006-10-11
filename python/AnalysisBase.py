@@ -4,7 +4,7 @@ Base clase for Likelihood analysis Python modules.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.13 2006/07/21 15:45:11 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.14 2006/10/11 17:30:48 jchiang Exp $
 #
 
 import numarray as num
@@ -97,6 +97,8 @@ class AnalysisBase(object):
             self.renormFactor = 1. + deficit/freeNpred
         else:
             self.renormFactor = factor
+        if self.renormFactor < 1:
+            self.renormFactor = 1
         srcNames = self.sourceNames()
         for src in srcNames:
             parameter = self._normPar(src)
