@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Thu Oct 12 10:09:16 PDT 2006
+pyLikelihood/doc
+
+Modified Files:
+	release.notes 
+Log Message:
+another missing LogLike.syncParams()
+    *
+------------------------------------------------------------
 User: jchiang  Thu Oct 12 10:09:14 PDT 2006
 pyLikelihood/cmt
 
