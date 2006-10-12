@@ -5,6 +5,8 @@
 
    @verbatim
 
+   v0r3p5 12-Oct-06   JC    another missing LogLike.syncParams() in 
+                            AnalysisBase
    v0r3p4 11-Oct-06   JC    ensure renorm scale factor in AnalysisBase.py
                             is unity or greater
    v0r3p3 11-Oct-06   JC    add LogLike.syncParams() call to accommodate
