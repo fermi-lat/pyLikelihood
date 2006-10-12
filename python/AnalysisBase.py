@@ -4,7 +4,7 @@ Base clase for Likelihood analysis Python modules.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.14 2006/10/11 17:30:48 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.15 2006/10/11 20:17:12 jchiang Exp $
 #
 
 import numarray as num
@@ -84,6 +84,7 @@ class AnalysisBase(object):
                         self._renorm()
                     except ZeroDivisionError:
                         pass
+            self.logLike.syncParams()
             logLike0 = max(self.logLike.value(), logLike0)
             Ts_value = 2*(logLike1 - logLike0)
             self.logLike.addSource(self._ts_src)
