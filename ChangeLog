@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Sun Nov 12 16:02:34 PST 2006
+pyLikelihood/python
+
+Modified Files:
+	AnalysisBase.py SrcModel.py 
+Log Message:
+use LogLike::syncSrcParams
+    *
+------------------------------------------------------------
 TAG
 Tag name: v0r3p5, operation: add
 Package: pyLikelihood
