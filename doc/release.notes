@@ -2,10 +2,12 @@
    @file release.notes
    @brief package pyLikelihood
    @author J. Chiang <jchiang@slac.stanford.edu>
-   $Id$
+   $Id: release.notes,v 1.18 2006/11/13 00:04:19 jchiang Exp $
 
    @verbatim
 
+   v0r3p7 04-Dec-06   JC    check that expMap energy bounds enclose
+                            evfiles energy range
    v0r3p6 12-Nov-06   JC    use LogLike::syncSrcParams in 
                             AnalysisBase.__setitem__ for fixed sources
    v0r3p5 12-Oct-06   JC    another missing LogLike.syncParams() in 
