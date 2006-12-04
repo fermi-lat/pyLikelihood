@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Mon Dec  4 09:15:31 PST 2006
+pyLikelihood/cmt
+
+Modified Files:
+	requirements 
+Log Message:
+check that expMap energy bounds contains evfile energy range; tagging v0r3p7
+    *
+------------------------------------------------------------
 TAG
 Tag name: v0r3p6, operation: add
 Package: pyLikelihood
