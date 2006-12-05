@@ -2,8 +2,42 @@
    @file release.notes
    @brief package pyLikelihood
    @author J. Chiang <jchiang@slac.stanford.edu>
+   $Id: release.notes,v 1.19 2006/12/04 17:15:32 jchiang Exp $
 
    @verbatim
+
+   v0r3p8 05-Dec-06   JC    add AnalysisBase.writeCountsSpectra method
+   v0r3p7 04-Dec-06   JC    check that expMap energy bounds enclose
+                            evfiles energy range
+   v0r3p6 12-Nov-06   JC    use LogLike::syncSrcParams in 
+                            AnalysisBase.__setitem__ for fixed sources
+   v0r3p5 12-Oct-06   JC    another missing LogLike.syncParams() in 
+                            AnalysisBase
+   v0r3p4 11-Oct-06   JC    ensure renorm scale factor in AnalysisBase.py
+                            is unity or greater
+   v0r3p3 11-Oct-06   JC    add LogLike.syncParams() call to accommodate
+                            Likelihood imp that uses cached values for  
+                            computing the unbinned likelihood
+   v0r3p2 21-Jul-06   JC    add try/except around import SimpleDialog
+                            for installations that do not have tkinter
+                            properly installed
+   v0r3p1 30-Jun-06   JC    workaround for non-sensical build failures 
+                            on Windows
+   v0r3   29-Jun-06   JC    add functions that read gtlikelihood.par
+   v0r2p2 09-Jun-06   JC    expose PointSource::flux(emin, emax) to Python
+   v0r2p1 24-May-06   JC    remove PYTHONPATH cr*p added because of 
+                            central lib dir implementation in GlastPolicy;
+                            those lines are now in SwigPolicy
+   v0r2   26-Apr-06   JC    add state methods to analysis classes
+   v0r1p3 16-Mar-06   JC    comment out Verbosity because of SCIENCETOOLS_API
+                            decorator that confuses swig
+   v0r1p2 29-Jan-06   JC    add better Ts approximations; added ExpCutoff
+   v0r1p1 03-Nov-05   JC    add FileFunction
+   v0r1   07-Oct-05   JC    mods for Likelihood v10r0
+   v0r0p3 26-Sep-05   JC    add BrokenPowerLaw2
+   v0r0p2 02-Sep-05   JC    enable Windows startup script generation
+   v0r0p1 30-Aug-05   JC    add package-dependent info startup script builds
    v0     22-Aug-05   JC    initial import
+
    @endverbatim
 */
