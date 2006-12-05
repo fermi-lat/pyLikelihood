@@ -4,7 +4,7 @@ Base clase for Likelihood analysis Python modules.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.16 2006/10/12 17:09:17 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.17 2006/11/13 00:02:34 jchiang Exp $
 #
 
 import numarray as num
@@ -91,6 +91,14 @@ class AnalysisBase(object):
             self.logLike.setFreeParamValues(freeParams)
             self.model = SourceModel(self.logLike)
             return Ts_value
+    def writeCountsSpectra(self, outfile='counts_spectra.fits'):
+        counts = pyLike.CountsSpectra(self.logLike)
+        try:
+            emin, emax = self.observation.observation.roiCuts().getEnergyCuts()
+            counts.setEbounds(emin, emax, 21)
+        except:
+            pass
+        counts.writeTable(outfile)
     def _renorm(self, factor=None):
         if factor is None:
             freeNpred, totalNpred = self._npredValues()
