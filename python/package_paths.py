@@ -6,7 +6,7 @@ SwigPolicy/v*/src/startup_scripts.py.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/package_paths.py,v 1.1 2005/08/30 21:19:54 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/package_paths.py,v 1.2 2005/09/02 06:43:05 jchiang Exp $
 #
 
 import os
@@ -20,13 +20,9 @@ else:
 
 from swig_setup import packageroot
 
-stlibs = ['st_graph', 'optimizers', 'xmlBase', 'Likelihood', 'evtbin',
-          'dc1Response', 'g25Response', 'testResponse', 'tip']
-
-extra_paths = [('LIKELIHOODROOT',
-                os.path.join(inst_dir, '%s' % packageroot('Likelihood'))),
-               ('EVTBINROOT',
-                os.path.join(inst_dir, '%s' % packageroot('evtbin'))),
+extra_paths = [('HANDOFF_RESPONSEROOT',
+                os.path.join(inst_dir, 'irfs',
+                             '%s' %packageroot('handoff_response'))),
                ('CALDB',
                 os.path.join(inst_dir, 'irfs',
                              '%s' % packageroot('caldb'), 'CALDB')), 
