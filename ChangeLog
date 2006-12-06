@@ -1,5 +1,14 @@
 ------------------------------------------------------------
 User: jchiang  Wed Dec  6 08:14:18 PST 2006
+pyLikelihood/doc
+
+Modified Files:
+	release.notes 
+Log Message:
+update package_paths.py; tagging v0r3p9
+    *
+------------------------------------------------------------
+User: jchiang  Wed Dec  6 08:14:18 PST 2006
 pyLikelihood/cmt
 
 Modified Files:
