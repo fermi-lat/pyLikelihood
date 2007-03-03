@@ -4,7 +4,7 @@ Python interface for binned likelihood.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/BinnedAnalysis.py,v 1.10 2006/07/15 00:31:34 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/BinnedAnalysis.py,v 1.11 2006/07/21 15:45:11 jchiang Exp $
 #
 
 import sys
@@ -133,6 +133,13 @@ class BinnedAnalysis(AnalysisBase):
                      % (_quotefn(self.srcModel), self.optimizer))
         if close:
             output.close()
+    def __setitem__(self, name, value):
+        self.model[name] = value
+        self.logLike.syncParams()
+    def Ts(self, srcName, reoptimize=False, approx=False, tol=1e-5):
+        # one cannot use the renormalization approximation for binned analysis
+        return AnalysisBase.Ts(self, srcName, reoptimize=reoptimize,
+                               approx=False, tol=tol)
 
 def binnedAnalysis(mode='ql', rspfunc=None, fit_tolerance=None):
     """Return a BinnedAnalysis object using the data in a gtlikelihood.par
