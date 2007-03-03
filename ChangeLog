@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Sat Mar  3 15:27:38 PST 2007
+pyLikelihood/python
+
+Modified Files:
+	AnalysisBase.py BinnedAnalysis.py UnbinnedAnalysis.py 
+Log Message:
+overload Ts for BinnedAnalysis; refactor how spacecraft data are read in for UnbinnedAnalysis to skip unused intervals
+    *
+------------------------------------------------------------
 TAG
 Tag name: v0r3p9, operation: add
 Package: pyLikelihood
