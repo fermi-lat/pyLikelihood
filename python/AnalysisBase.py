@@ -4,7 +4,7 @@ Base clase for Likelihood analysis Python modules.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.17 2006/11/13 00:02:34 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.18 2006/12/05 22:34:39 jchiang Exp $
 #
 
 import numarray as num
@@ -65,7 +65,7 @@ class AnalysisBase(object):
                 self.model[i].setError(errors[j])
                 j += 1
         return errors
-    def Ts(self, srcName, reoptimize=False, approx=True):
+    def Ts(self, srcName, reoptimize=False, approx=True, tol=1e-5):
         self.logLike.syncParams()
         src = self.logLike.getSource(srcName)
         if src.getType() == "Point":
@@ -77,7 +77,7 @@ class AnalysisBase(object):
             if reoptimize:
                 optFactory = pyLike.OptimizerFactory_instance()
                 myOpt = optFactory.create(self.optimizer, self.logLike)
-                myOpt.find_min(0, 1e-5)
+                myOpt.find_min(0, tol)
             else:
                 if approx:
                     try:
