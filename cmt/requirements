@@ -1,14 +1,20 @@
 package pyLikelihood
-version v0
+version v0r4
+
+author James Chiang <jchiang@slac.stanford.edu>
+
+# $Id: requirements,v 1.24 2006/12/06 16:14:17 jchiang Exp $
 
 use Likelihood v*
 use SwigPolicy v*
+
+macro_append st_graph_libs " -lGX11 -lGX11TTF " WIN32 ""
 
 path_remove PYTHONPATH pyLikelihood
 path_append PYTHONPATH $(PYLIKELIHOODROOT)/$(BINDIR)
 path_append PYTHONPATH $(PYLIKELIHOODROOT)/python
 
-path_remove PYTHONPATH $(ROOTSYS)
-path_append PYTHONPATH $(ROOTSYS)/lib
+path_remove PYTHONPATH ROOT
+path_prepend PYTHONPATH $(ROOTSYS)/lib
 
 apply_pattern swig_module name="pyLikelihood"
