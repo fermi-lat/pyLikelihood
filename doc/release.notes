@@ -2,10 +2,14 @@
    @file release.notes
    @brief package pyLikelihood
    @author J. Chiang <jchiang@slac.stanford.edu>
-   $Id: release.notes,v 1.20 2006/12/05 22:35:43 jchiang Exp $
+   $Id: release.notes,v 1.21 2006/12/06 16:14:18 jchiang Exp $
 
    @verbatim
 
+   v0r4   03-Mar-07   JC    overload Ts for BinnedAnalysis since 
+                            AnalysisBase._renorm cannot be used;
+                            refactor reading of ScData in UnbinnedAnalysis
+                            to skip unused intervals
    v0r3p9 06-Dec-06   JC    update package_paths.py; start using SwigPolicy's
                             startup_scripts.py
    v0r3p8 05-Dec-06   JC    add AnalysisBase.writeCountsSpectra method
