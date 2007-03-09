@@ -2,10 +2,12 @@
    @file release.notes
    @brief package pyLikelihood
    @author J. Chiang <jchiang@slac.stanford.edu>
-   $Id: release.notes,v 1.21 2006/12/06 16:14:18 jchiang Exp $
+   $Id: release.notes,v 1.22 2007/03/03 23:29:20 jchiang Exp $
 
    @verbatim
 
+   v0r5   09-Mar-07   JC    provide AnalysisBase.deleteSource method
+                            so that the model attribute is updated.
    v0r4   03-Mar-07   JC    overload Ts for BinnedAnalysis since 
                             AnalysisBase._renorm cannot be used;
                             refactor reading of ScData in UnbinnedAnalysis
