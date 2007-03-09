@@ -2,10 +2,11 @@
    @file release.notes
    @brief package pyLikelihood
    @author J. Chiang <jchiang@slac.stanford.edu>
-   $Id: release.notes,v 1.22 2007/03/03 23:29:20 jchiang Exp $
+   $Id: release.notes,v 1.23 2007/03/09 18:15:14 jchiang Exp $
 
    @verbatim
 
+   v0r5p1 09-Mar-07   JC    provide AnalysisBase.addSource method
    v0r5   09-Mar-07   JC    provide AnalysisBase.deleteSource method
                             so that the model attribute is updated.
    v0r4   03-Mar-07   JC    overload Ts for BinnedAnalysis since 
