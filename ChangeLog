@@ -1,5 +1,14 @@
 ------------------------------------------------------------
 User: jchiang  Fri Mar  9 10:15:15 PST 2007
+pyLikelihood/python
+
+Modified Files:
+	AnalysisBase.py 
+Log Message:
+add AnalysisBase.deleteSource; tagging v0r5
+    *
+------------------------------------------------------------
+User: jchiang  Fri Mar  9 10:15:15 PST 2007
 pyLikelihood/doc
 
 Modified Files:
