@@ -40,6 +40,7 @@
 #include "Likelihood/OneSourceFunc.h"
 #include "Likelihood/OptEM.h"
 #include "Likelihood/PointSource.h"
+#include "Likelihood/PowerLawSuperExpCutoff.h"
 #include "Likelihood/PowerLaw2.h"
 #include "Likelihood/ResponseFunctions.h"
 #include "Likelihood/RoiCuts.h"
@@ -208,7 +209,10 @@ using optimizers::Exception;
                              new Likelihood::ExpCutoff(), 
                              false);
       myFuncFactory->addFunc("BPLExpCutoff",
-                             new Likelihood::BrokenPowerLawExpCutoff(), 
+                             new Likelihood::BrokenPowerLawExpCutoff(),
+                             false);
+      myFuncFactory->addFunc("PLSuperExpCutoff",
+                             new Likelihood::PowerLawSuperExpCutoff(),
                              false);
       return myFuncFactory;
    }

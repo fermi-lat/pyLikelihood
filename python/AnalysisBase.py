@@ -4,7 +4,7 @@ Base clase for Likelihood analysis Python modules.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.20 2007/03/09 18:15:15 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.21 2007/03/09 18:23:24 jchiang Exp $
 #
 
 import numarray as num
@@ -25,7 +25,8 @@ class AnalysisBase(object):
                  "PowerLaw2": "Integral",
                  "Gaussian": "Prefactor",
                  "FileFunction": "Normalization",
-                 "LogParabola": "norm"}
+                 "LogParabola": "norm",
+                 "PLSuperExpCutoff" : "Prefactor" }
     def __init__(self):
         self.maxdist = 20
         self.tol = 1e-5
