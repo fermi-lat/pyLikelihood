@@ -1,5 +1,14 @@
 ------------------------------------------------------------
 User: jchiang  Tue Mar 20 16:46:59 PDT 2007
+pyLikelihood/src
+
+Modified Files:
+	pyLikelihood.in 
+Log Message:
+integrate PowerLawSuperExpCutoff
+    *
+------------------------------------------------------------
+User: jchiang  Tue Mar 20 16:46:59 PDT 2007
 pyLikelihood/python
 
 Modified Files:
