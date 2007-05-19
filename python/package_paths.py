@@ -6,7 +6,7 @@ SwigPolicy/v*/src/startup_scripts.py.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/package_paths.py,v 1.2 2005/09/02 06:43:05 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/package_paths.py,v 1.3 2006/12/06 16:14:19 jchiang Exp $
 #
 
 import os
@@ -20,12 +20,10 @@ else:
 
 from swig_setup import packageroot
 
-extra_paths = [('HANDOFF_RESPONSEROOT',
+extra_paths = [('CALDB',
                 os.path.join(inst_dir, 'irfs',
-                             '%s' %packageroot('handoff_response'))),
-               ('CALDB',
-                os.path.join(inst_dir, 'irfs',
-                             '%s' % packageroot('caldb'), 'CALDB')), 
+                             '%s' % packageroot('caldb'), 'CALDB',
+                             'data', 'glast', 'lat')), 
                ('CALDBCONFIG',
                 os.path.join(caldb, 'software', 'tools', 'caldb.config')),
                ('CALDBALIAS',

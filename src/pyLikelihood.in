@@ -6,6 +6,8 @@
 #include "st_stream/st_stream.h"
 #include "irfLoader/Loader.h"
 #include "irfInterface/IrfsFactory.h"
+#include "map_tools/CosineBinner.h"
+#include "map_tools/Exposure.h"
 #include "map_tools/SkyImage.h"
 #include "optimizers/Optimizer.h"
 #include "optimizers/OptimizerFactory.h"
@@ -106,6 +108,8 @@ using optimizers::Exception;
 %include $(ASTROROOT)/astro/SkyDir.h
 %template(SkyDirVector) std::vector<astro::SkyDir>;
 %feature("autodoc", "1");
+%include $(MAP_TOOLSROOT)/map_tools/CosineBinner.h
+%include $(MAP_TOOLSROOT)/map_tools/Exposure.h
 %include $(MAP_TOOLSROOT)/map_tools/SkyImage.h
 %include $(OPTIMIZERSROOT)/optimizers/Arg.h
 %include $(OPTIMIZERSROOT)/optimizers/dArg.h
@@ -360,5 +364,27 @@ using optimizers::Exception;
    }
    void Save() {
       self->Save();
+   }
+}
+%extend map_tools::Exposure {
+   map_tools::CosineBinner data(const astro::SkyDir & srcDir) {
+      astro::HealpixArray<map_tools::CosineBinner> skyBinner(self->data());
+      return skyBinner[srcDir];
+   }
+}
+%extend map_tools::CosineBinner {
+   double costheta(size_t i) {
+      if (i < 0 || i >= self->size()) {
+         throw std::runtime_error("IndexError");
+      }
+      std::vector<float>::const_iterator it(self->begin() + i);
+      return self->costheta(it);
+   }
+   float __getitem__(size_t i) {
+      if (i < 0 || i >= self->size()) {
+         throw std::runtime_error("IndexError");
+      }
+//      return self->operator[](i);
+      return *(self->begin() + i);
    }
 }
