@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Wed May 23 08:34:13 PDT 2007
+pyLikelihood/cmt
+
+Modified Files:
+	requirements 
+Log Message:
+implement approx Ts calculation for BinnedAnalysis; tagging v0r6p1
+    *
+------------------------------------------------------------
 User: jchiang  Fri May 18 18:22:03 PDT 2007
 pyLikelihood/src
 
