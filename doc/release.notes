@@ -2,10 +2,11 @@
    @file release.notes
    @brief package pyLikelihood
    @author J. Chiang <jchiang@slac.stanford.edu>
-   $Id: release.notes,v 1.24 2007/03/09 18:23:24 jchiang Exp $
+   $Id: release.notes,v 1.25 2007/03/20 23:56:36 jchiang Exp $
 
    @verbatim
 
+   v0r6p1 23-May-07   JC    implement approx Ts calculation for BinnedAnalysis
    v0r6   20-Mar-07   JC    integrate Damien Parent's PowerLawSuperExpCutoff
                             function for modeling pulsar spectra
    v0r5p1 09-Mar-07   JC    provide AnalysisBase.addSource method

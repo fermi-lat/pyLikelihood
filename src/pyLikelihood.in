@@ -99,6 +99,7 @@ using optimizers::Exception;
 %template(DoublePair) std::pair<double, double>;
 %template(EventVector) std::vector<Likelihood::Event>;
 %template(DoubleVector) std::vector<double>;
+%template(FloatVector) std::vector<float>;
 %template(DoubleVectorVector) std::vector< std::vector<double> >;
 %template(DoubleVectorPair) std::vector< std::pair<double, double> >;
 %template(StringVector) std::vector<std::string>;
@@ -315,6 +316,31 @@ using optimizers::Exception;
    }
    optimizers::Mcmc * Mcmc() {
       return new optimizers::Mcmc(*self);
+   }
+}
+%extend Likelihood::BinnedLikelihood {
+   std::vector<double> modelCounts(const std::string & srcName) {
+      const Likelihood::Source * src(self->getSource(srcName));
+      const Likelihood::SourceMap & srcMap(self->sourceMap(srcName));
+      const std::vector<float> & model(srcMap.model());
+      const std::vector<float> & counts(self->countsMap().data());
+      const std::vector<double> & energies(self->energies());
+
+      size_t numpix(self->countsMap().pixels().size());
+      std::vector<double> model_counts(numpix*(energies.size() - 1), 0);
+      for (size_t k(0); k < energies.size() - 1; k++) {
+         for (size_t j(0); j < numpix; j++) {
+            size_t imin(k*numpix + j);
+            if (counts.at(imin) > 0) {
+               size_t imax(imin + numpix);
+               model_counts.at(imin) += src->pixelCounts(energies.at(k),
+                                                         energies.at(k+1),
+                                                         model.at(imin),
+                                                         model.at(imax));
+            }
+         }
+      }
+      return model_counts;
    }
 }
 // %extend Likelihood::BinnedLikelihood {
