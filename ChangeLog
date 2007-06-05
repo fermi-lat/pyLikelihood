@@ -1,5 +1,14 @@
 ------------------------------------------------------------
 User: jchiang  Tue Jun  5 11:43:03 PDT 2007
+pyLikelihood/python
+
+Modified Files:
+	BinnedAnalysis.py UnbinnedAnalysis.py 
+Log Message:
+account for name change to gtlike; tagging v0r7
+    *
+------------------------------------------------------------
+User: jchiang  Tue Jun  5 11:43:03 PDT 2007
 pyLikelihood/doc
 
 Modified Files:
