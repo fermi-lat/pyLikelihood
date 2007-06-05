@@ -4,7 +4,7 @@ Python interface for binned likelihood.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/BinnedAnalysis.py,v 1.12 2007/03/03 23:27:38 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/BinnedAnalysis.py,v 1.13 2007/05/23 15:34:13 jchiang Exp $
 #
 
 import sys
@@ -138,9 +138,9 @@ class BinnedAnalysis(AnalysisBase):
         self.logLike.syncParams()
 
 def binnedAnalysis(mode='ql', rspfunc=None, fit_tolerance=None):
-    """Return a BinnedAnalysis object using the data in a gtlikelihood.par
+    """Return a BinnedAnalysis object using the data in a gtlike.par
 file."""
-    pars = pyLike.StApp_parGroup('gtlikelihood')
+    pars = pyLike.StApp_parGroup('gtlike')
     if mode == 'ql':
         pars.Prompt('counts_map_file')
         pars.Prompt('binned_exposure_map')

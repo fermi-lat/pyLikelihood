@@ -4,7 +4,7 @@ Python interface for unbinned likelihood
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/UnbinnedAnalysis.py,v 1.15 2006/12/04 17:15:32 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/UnbinnedAnalysis.py,v 1.16 2007/03/03 23:27:38 jchiang Exp $
 #
 
 import sys
@@ -180,9 +180,9 @@ class UnbinnedAnalysis(AnalysisBase):
             output.close()
 
 def unbinnedAnalysis(mode="ql", rspfunc=None, fit_tolerance=None):
-    """Return an UnbinnedAnalysis object using the data in a gtlikelihood.par
+    """Return an UnbinnedAnalysis object using the data in a gtlike.par
 file."""
-    pars = pyLike.StApp_parGroup('gtlikelihood')
+    pars = pyLike.StApp_parGroup('gtlike')
     if mode == 'ql':
         pars.Prompt('scfile')
         pars.Prompt('evfile')
