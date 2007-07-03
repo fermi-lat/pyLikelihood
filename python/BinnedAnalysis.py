@@ -4,7 +4,7 @@ Python interface for binned likelihood.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/BinnedAnalysis.py,v 1.13 2007/05/23 15:34:13 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/BinnedAnalysis.py,v 1.14 2007/06/05 18:43:03 jchiang Exp $
 #
 
 import sys
@@ -137,27 +137,25 @@ class BinnedAnalysis(AnalysisBase):
         self.model[name] = value
         self.logLike.syncParams()
 
-def binnedAnalysis(mode='ql', rspfunc=None, fit_tolerance=None):
+def binnedAnalysis(mode='ql', irfs=None, ftol=None):
     """Return a BinnedAnalysis object using the data in a gtlike.par
 file."""
     pars = pyLike.StApp_parGroup('gtlike')
     if mode == 'ql':
-        pars.Prompt('counts_map_file')
-        pars.Prompt('binned_exposure_map')
-        pars.Prompt('exposure_cube_file')
-        pars.Prompt('source_model_file')
+        pars.Prompt('cmap')
+        pars.Prompt('bexpmap')
+        pars.Prompt('expcube')
+        pars.Prompt('srcmdl')
         pars.Prompt('optimizer')
         pars.Save()
-    srcmaps = pars['counts_map_file']
-    expcube = _null_file(pars['exposure_cube_file'])
-    expmap = _null_file(pars['binned_exposure_map'])
-    irfs = pars['rspfunc']
-    if rspfunc is not None:
-        irfs = rspfunc
+    srcmaps = pars['cmap']
+    expcube = _null_file(pars['expcube'])
+    expmap = _null_file(pars['bexpmap'])
+    irfs = pars['irfs']
     obs = BinnedObs(srcmaps, expcube, expmap, irfs)
-    like = BinnedAnalysis(obs, pars['source_model_file'], pars['optimizer'])
+    like = BinnedAnalysis(obs, pars['srcmdl'], pars['optimizer'])
     if fit_tolerance is not None:
         like.tol = fit_tolerance
     else:
-        like.tol = pars.getDouble('fit_tolerance')
+        like.tol = pars.getDouble('ftol')
     return like
