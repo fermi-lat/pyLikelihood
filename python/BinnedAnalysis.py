@@ -4,7 +4,7 @@ Python interface for binned likelihood.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/BinnedAnalysis.py,v 1.14 2007/06/05 18:43:03 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/BinnedAnalysis.py,v 1.15 2007/07/03 23:14:37 jchiang Exp $
 #
 
 import sys
@@ -154,8 +154,8 @@ file."""
     irfs = pars['irfs']
     obs = BinnedObs(srcmaps, expcube, expmap, irfs)
     like = BinnedAnalysis(obs, pars['srcmdl'], pars['optimizer'])
-    if fit_tolerance is not None:
-        like.tol = fit_tolerance
+    if ftol is not None:
+        like.tol = ftol
     else:
         like.tol = pars.getDouble('ftol')
     return like
