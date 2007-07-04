@@ -4,7 +4,7 @@ Python interface for unbinned likelihood
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/UnbinnedAnalysis.py,v 1.17 2007/06/05 18:43:03 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/UnbinnedAnalysis.py,v 1.18 2007/07/03 23:14:37 jchiang Exp $
 #
 
 import sys
@@ -199,8 +199,8 @@ file."""
                       expCube=_null_file(pars['expcube']),
                       irfs=irfs)
     like = UnbinnedAnalysis(obs, pars['srcmdl'], pars['optimizer'])
-    if fit_tolerance is not None:
-        like.tol = fit_tolerance
+    if ftol is not None:
+        like.tol = ftol
     else:
         like.tol = pars.getDouble('ftol')
     return like
