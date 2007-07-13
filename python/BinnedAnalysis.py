@@ -4,14 +4,13 @@ Python interface for binned likelihood.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/BinnedAnalysis.py,v 1.15 2007/07/03 23:14:37 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/BinnedAnalysis.py,v 1.16 2007/07/04 00:17:15 jchiang Exp $
 #
 
 import sys
-import numarray as num
 import pyLikelihood as pyLike
 from SrcModel import SourceModel
-from AnalysisBase import AnalysisBase, _quotefn, _null_file
+from AnalysisBase import AnalysisBase, _quotefn, _null_file, num
 try:
     from SimpleDialog import SimpleDialog, map, Param
 except ImportError:

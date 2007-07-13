@@ -4,10 +4,13 @@ Base clase for Likelihood analysis Python modules.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.23 2007/05/23 15:34:13 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.24 2007/06/19 16:08:30 jchiang Exp $
 #
 
-import numarray as num
+try:
+    import numarray as num
+except ImportError:
+    import numpy as num
 import pyLikelihood as pyLike
 from SrcModel import SourceModel
 try:
@@ -18,16 +21,6 @@ except ImportError:
 _plotter_package = 'root'
 
 class AnalysisBase(object):
-    _normName = {"ConstantValue": "Value",
-                 "BrokenPowerLaw": "Prefactor",
-                 "BrokenPowerLaw2": "Integral",
-                 "PowerLaw": "Prefactor",
-                 "PowerLaw2": "Integral",
-                 "Gaussian": "Prefactor",
-                 "FileFunction": "Normalization",
-                 "LogParabola": "norm",
-                 "PLSuperExpCutoff" : "Prefactor",
-                 "ExpCutoff" : "Prefactor"}
     def __init__(self):
         self.maxdist = 20
         self.tol = 1e-5
@@ -128,7 +121,6 @@ class AnalysisBase(object):
         freeNpred = 0
         totalNpred = 0
         for src in srcNames:
-#            npred = self[src].Npred()
             npred = self.logLike.NpredValue(src)
             totalNpred += npred
             if self._normPar(src).isFree() and self._isDiffuseOrNearby(src):
@@ -145,9 +137,7 @@ class AnalysisBase(object):
         dir2 = pyLike.PointSource_cast(src2).getDir()
         return dir1.difference(dir2)*180./num.pi
     def _normPar(self, src):
-        spectrum = self[src].spectrum()
-        funcType = spectrum.genericName()
-        return spectrum.parameter(self._normName[funcType])
+        return self[src].spectrum().normPar()
     def sourceNames(self):
         srcNames = pyLike.StringVector()
         self.logLike.getSrcNames(srcNames)

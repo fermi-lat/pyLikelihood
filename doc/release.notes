@@ -2,10 +2,12 @@
    @file release.notes
    @brief package pyLikelihood
    @author J. Chiang <jchiang@slac.stanford.edu>
-   $Id: release.notes,v 1.28 2007/06/19 16:10:01 jchiang Exp $
+   $Id: release.notes,v 1.29 2007/07/04 01:15:50 jchiang Exp $
 
    @verbatim
 
+   v1r0p1 13-Jul-07   JC    import numpy if numarray is not available;
+                            use Function::normPar in AnalysisBase.py
    v1     03-Jul-07   JC    account for parameter name changes in Likelihood
                             package
    v0r7p1 19-Jun-07   JC    add ExpCutoff to list of models with Prefactor-like

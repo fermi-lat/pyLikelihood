@@ -4,12 +4,15 @@ Standard plotting interface for XY plots with pyROOT backend
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/users/jchiang/pythonModules/pyLikelihood/python/RootPlot.py,v 1.4 2005/08/05 20:42:50 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/RootPlot.py,v 1.1.1.1 2005/08/22 16:19:27 jchiang Exp $
 #
 
 import sys
 from array import array
-import numarray as num
+try:
+    import numarray as num
+except:
+    import numpy as num
 from ROOT import TCanvas, TGraphErrors, TH2F
 
 _ncanvas = -1
