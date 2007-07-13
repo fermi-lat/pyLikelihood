@@ -4,11 +4,14 @@ Interface to SWIG-wrapped C++ classes.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/users/jchiang/pythonModules/pyLikelihood/python/SrcAnalysis.py,v 1.2 2005/08/04 05:32:29 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/SrcAnalysis.py,v 1.1.1.1 2005/08/22 16:19:27 jchiang Exp $
 #
 import os
 import glob
-import numarray as num
+try:
+    import numarray as num
+except ImportError:
+    import numpy as num
 import pyLikelihood as pyLike
 from SrcModel import SourceModel
 from SimpleDialog import SimpleDialog, map, Param
