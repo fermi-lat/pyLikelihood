@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Fri Jul 13 08:37:17 PDT 2007
+pyLikelihood/cmt
+
+Modified Files:
+	requirements 
+Log Message:
+use Function::normPar(); import numpy if numarray is not available; tagging v1r0p1
+    *
+------------------------------------------------------------
 TAG
 Tag name: v1, operation: add
 Package: pyLikelihood
