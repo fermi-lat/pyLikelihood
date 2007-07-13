@@ -1,5 +1,14 @@
 ------------------------------------------------------------
 User: jchiang  Fri Jul 13 08:37:17 PDT 2007
+pyLikelihood/doc
+
+Modified Files:
+	release.notes 
+Log Message:
+use Function::normPar(); import numpy if numarray is not available; tagging v1r0p1
+    *
+------------------------------------------------------------
+User: jchiang  Fri Jul 13 08:37:17 PDT 2007
 pyLikelihood/cmt
 
 Modified Files:
