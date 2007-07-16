@@ -4,7 +4,7 @@ Python interface for binned likelihood.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/BinnedAnalysis.py,v 1.16 2007/07/04 00:17:15 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/BinnedAnalysis.py,v 1.17 2007/07/13 15:37:17 jchiang Exp $
 #
 
 import sys
@@ -136,11 +136,12 @@ class BinnedAnalysis(AnalysisBase):
         self.model[name] = value
         self.logLike.syncParams()
 
-def binnedAnalysis(mode='ql', irfs=None, ftol=None):
+def binnedAnalysis(mode='ql', ftol=None):
     """Return a BinnedAnalysis object using the data in a gtlike.par
 file."""
     pars = pyLike.StApp_parGroup('gtlike')
     if mode == 'ql':
+        pars.Prompt('irfs')
         pars.Prompt('cmap')
         pars.Prompt('bexpmap')
         pars.Prompt('expcube')
@@ -150,7 +151,6 @@ file."""
     srcmaps = pars['cmap']
     expcube = _null_file(pars['expcube'])
     expmap = _null_file(pars['bexpmap'])
-    irfs = pars['irfs']
     obs = BinnedObs(srcmaps, expcube, expmap, irfs)
     like = BinnedAnalysis(obs, pars['srcmdl'], pars['optimizer'])
     if ftol is not None:
