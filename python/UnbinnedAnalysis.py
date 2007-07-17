@@ -4,7 +4,7 @@ Python interface for unbinned likelihood
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/UnbinnedAnalysis.py,v 1.20 2007/07/13 15:37:17 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/UnbinnedAnalysis.py,v 1.21 2007/07/16 21:38:32 jchiang Exp $
 #
 
 import sys
@@ -191,6 +191,7 @@ file."""
         pars.Prompt('srcmdl')
         pars.Prompt('optimizer')
         pars.Save()
+    irfs = pars['irfs']
     evfiles = pyLike.Util_resolveFitsFiles(pars['evfile'])
     scfiles = pyLike.Util_resolveFitsFiles(pars['scfile'])
     obs = UnbinnedObs(evfiles, scfiles,
