@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Tue Jul 17 08:34:45 PDT 2007
+pyLikelihood/cmt
+
+Modified Files:
+	requirements 
+Log Message:
+bug fix in unbinnedAnalysis; tagging v1r1p1
+    *
+------------------------------------------------------------
 TAG
 Tag name: v1r1, operation: add
 Package: pyLikelihood
