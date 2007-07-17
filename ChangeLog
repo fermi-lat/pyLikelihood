@@ -1,5 +1,14 @@
 ------------------------------------------------------------
 User: jchiang  Tue Jul 17 08:34:45 PDT 2007
+pyLikelihood/python
+
+Modified Files:
+	UnbinnedAnalysis.py 
+Log Message:
+bug fix in unbinnedAnalysis; tagging v1r1p1
+    *
+------------------------------------------------------------
+User: jchiang  Tue Jul 17 08:34:45 PDT 2007
 pyLikelihood/doc
 
 Modified Files:
