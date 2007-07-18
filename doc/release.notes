@@ -2,10 +2,10 @@
    @file release.notes
    @brief package pyLikelihood
    @author J. Chiang <jchiang@slac.stanford.edu>
-   $Id: release.notes,v 1.31 2007/07/16 21:39:31 jchiang Exp $
+   $Id: release.notes,v 1.32 2007/07/17 15:34:45 jchiang Exp $
 
    @verbatim
-
+   v1r1p2 17-Jul-07   JC    set irfs variable in binnedAnalysis
    v1r1p1 17-Jul-07   JC    set irfs variable in unbinnedAnalysis
    v1r1   16-Jul-07   JC    prompt for irfs in parfile input mode
    v1r0p1 13-Jul-07   JC    import numpy if numarray is not available;
