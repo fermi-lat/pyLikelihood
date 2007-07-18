@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Tue Jul 17 21:57:29 PDT 2007
+pyLikelihood/cmt
+
+Modified Files:
+	requirements 
+Log Message:
+set irfs in binnedAnalysis; tagging v1r1p2
+    *
+------------------------------------------------------------
 TAG
 Tag name: v1r1p1, operation: add
 Package: pyLikelihood
