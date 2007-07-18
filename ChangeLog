@@ -1,5 +1,14 @@
 ------------------------------------------------------------
 User: jchiang  Tue Jul 17 21:57:29 PDT 2007
+pyLikelihood/doc
+
+Modified Files:
+	release.notes 
+Log Message:
+set irfs in binnedAnalysis; tagging v1r1p2
+    *
+------------------------------------------------------------
+User: jchiang  Tue Jul 17 21:57:29 PDT 2007
 pyLikelihood/cmt
 
 Modified Files:
