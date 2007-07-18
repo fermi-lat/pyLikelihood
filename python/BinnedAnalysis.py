@@ -4,7 +4,7 @@ Python interface for binned likelihood.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/BinnedAnalysis.py,v 1.17 2007/07/13 15:37:17 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/BinnedAnalysis.py,v 1.18 2007/07/16 21:38:32 jchiang Exp $
 #
 
 import sys
@@ -151,6 +151,7 @@ file."""
     srcmaps = pars['cmap']
     expcube = _null_file(pars['expcube'])
     expmap = _null_file(pars['bexpmap'])
+    irfs = pars['irfs']
     obs = BinnedObs(srcmaps, expcube, expmap, irfs)
     like = BinnedAnalysis(obs, pars['srcmdl'], pars['optimizer'])
     if ftol is not None:
