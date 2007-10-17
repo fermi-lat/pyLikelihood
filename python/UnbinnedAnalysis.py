@@ -4,7 +4,7 @@ Python interface for unbinned likelihood
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/UnbinnedAnalysis.py,v 1.21 2007/07/16 21:38:32 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/UnbinnedAnalysis.py,v 1.22 2007/07/17 15:34:45 jchiang Exp $
 #
 
 import sys
@@ -178,21 +178,25 @@ class UnbinnedAnalysis(AnalysisBase):
         if close:
             output.close()
 
-def unbinnedAnalysis(mode="ql", ftol=None):
-    """Return an UnbinnedAnalysis object using the data in a gtlike.par
-file."""
-    pars = pyLike.StApp_parGroup('gtlike')
-    if mode == 'ql':
-        pars.Prompt('irfs')
-        pars.Prompt('scfile')
-        pars.Prompt('evfile')
-        pars.Prompt('expmap')
-        pars.Prompt('expcube')
-        pars.Prompt('srcmdl')
-        pars.Prompt('optimizer')
-        pars.Save()
+def unbinnedAnalysis(mode="ql", ftol=None, **pars):
+    """Return an UnbinnedAnalysis object using the data in gtlike.par"""
+    parnames = ('irfs', 'scfile', 'evfile', 'expmap', 'expcube', 
+                'srcmdl', 'optimizer')
+    pargroup = pyLike.StApp_parGroup('gtlike')
+    for item in parnames:
+        if not pars.has_key(item):
+            if mode == 'ql':
+                pargroup.Prompt(item)
+            try:
+                pars[item] = float(pargroup[item])
+            except ValueError:
+                pars[item] = pargroup[item]
+    pargroup.Save()
     irfs = pars['irfs']
-    evfiles = pyLike.Util_resolveFitsFiles(pars['evfile'])
+    evfilename = pars['evfile']
+    if evfilename.find('@') == 0:
+        evfilename = evfilename[1:]
+    evfiles = pyLike.Util_resolveFitsFiles(evfilename)
     scfiles = pyLike.Util_resolveFitsFiles(pars['scfile'])
     obs = UnbinnedObs(evfiles, scfiles,
                       expMap=_null_file(pars['expmap']),
@@ -202,5 +206,5 @@ file."""
     if ftol is not None:
         like.tol = ftol
     else:
-        like.tol = pars.getDouble('ftol')
+        like.tol = pargroup.getDouble('ftol')
     return like
