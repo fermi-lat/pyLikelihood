@@ -2,9 +2,11 @@
    @file release.notes
    @brief package pyLikelihood
    @author J. Chiang <jchiang@slac.stanford.edu>
-   $Id: release.notes,v 1.33 2007/07/18 04:57:29 jchiang Exp $
+   $Id: release.notes,v 1.34 2007/11/30 21:23:01 jchiang Exp $
 
    @verbatim
+   v1r2p1 30-Nov-07   JC    set covariance to None if covar flag set to False
+                            (the default)
    v1r2   30-Nov-07   JC    provide access to covariance matrix
    v1r1p2 17-Jul-07   JC    set irfs variable in binnedAnalysis
    v1r1p1 17-Jul-07   JC    set irfs variable in unbinnedAnalysis

@@ -4,7 +4,7 @@ Base clase for Likelihood analysis Python modules.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.25 2007/07/13 15:37:17 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.26 2007/11/30 21:23:01 jchiang Exp $
 #
 
 try:
@@ -58,6 +58,8 @@ class AnalysisBase(object):
         errors = myOpt.getUncertainty(useBase)
         if covar:
             self.covariance = myOpt.covarianceMatrix()
+        else:
+            self.covariance = None
         j = 0
         for i in range(len(self.model.params)):
             if self.model[i].isFree():
