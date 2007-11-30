@@ -1,5 +1,14 @@
 ------------------------------------------------------------
 User: jchiang  Fri Nov 30 13:23:01 PST 2007
+pyLikelihood/doc
+
+Modified Files:
+	release.notes 
+Log Message:
+provide access to covariance matrix; tagging v1r2
+    *
+------------------------------------------------------------
+User: jchiang  Fri Nov 30 13:23:01 PST 2007
 pyLikelihood/cmt
 
 Modified Files:
