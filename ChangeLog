@@ -1,4 +1,37 @@
 ------------------------------------------------------------
+TAG
+Tag name: v1r2, operation: add
+Package: pyLikelihood
+User: jchiang  Fri Nov 30 13:23:14 2007
+Files:
+  pyLikelihood/.cvsignore  1.1.1.1
+  pyLikelihood/ChangeLog  1.1.1.176
+  pyLikelihood/cmt/requirements  1.37
+  pyLikelihood/doc/release.notes  1.34
+  pyLikelihood/doc/Makefile  1.1.1.1
+  pyLikelihood/doc/Doxyfile  1.1.1.1
+  pyLikelihood/doc/images/hippo_plot.png  1.1.1.1
+  pyLikelihood/doc/images/hippo_plot_2.png  1.1
+  pyLikelihood/doc/images/Obs_dialog0.png  1.1.1.1
+  pyLikelihood/doc/images/Obs_dialog1.png  1.1.1.1
+  pyLikelihood/doc/images/Analysis_dialog.png  1.1.1.1
+  pyLikelihood/doc/images/pyROOT_plot.png  1.1.1.1
+  pyLikelihood/python/RootPlot.py  1.2
+  pyLikelihood/python/SrcAnalysis.py  1.2
+  pyLikelihood/python/UnbinnedAnalysis.py  1.23
+  pyLikelihood/python/AnalysisBase.py  1.26
+  pyLikelihood/python/SimpleDialog.py  1.1.1.1
+  pyLikelihood/python/SrcModel.py  1.3
+  pyLikelihood/python/HippoPlot.py  1.2
+  pyLikelihood/python/package_paths.py  1.4
+  pyLikelihood/python/test_model.py  1.1
+  pyLikelihood/python/BinnedAnalysis.py  1.20
+  pyLikelihood/src/pyLikelihood.in  1.24
+  pyLikelihood/src/mainpage.h  1.1.1.1
+  pyLikelihood/src/pyLikelihood.h  1.1.1.1
+
+    *
+------------------------------------------------------------
 User: jchiang  Fri Nov 30 13:23:01 PST 2007
 pyLikelihood/python
 
