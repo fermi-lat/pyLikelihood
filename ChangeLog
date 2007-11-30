@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Fri Nov 30 13:33:30 PST 2007
+pyLikelihood/cmt
+
+Modified Files:
+	requirements 
+Log Message:
+set default value of None for covariance matrix; tagging v1r2p1
+    *
+------------------------------------------------------------
 TAG
 Tag name: v1r2, operation: add
 Package: pyLikelihood
