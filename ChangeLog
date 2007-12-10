@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: golpa  Mon Dec 10 13:36:30 PST 2007
+pyLikelihood
+
+Added Files:
+	SConscript pyLikelihoodLib.py 
+Log Message:
+Initial import of SCons files
+    *
+------------------------------------------------------------
 TAG
 Tag name: v1r2p1, operation: add
 Package: pyLikelihood
