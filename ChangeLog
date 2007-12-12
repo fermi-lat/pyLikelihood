@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Wed Dec 12 13:09:42 PST 2007
+pyLikelihood/src
+
+Modified Files:
+	pyLikelihood.in 
+Log Message:
+use new healpix package with code migrated from astro and map_tools
+    *
+------------------------------------------------------------
 User: jchiang  Tue Dec 11 11:37:49 PST 2007
 pyLikelihood
 
