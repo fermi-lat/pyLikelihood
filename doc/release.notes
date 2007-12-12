@@ -2,9 +2,11 @@
    @file release.notes
    @brief package pyLikelihood
    @author J. Chiang <jchiang@slac.stanford.edu>
-   $Id: release.notes,v 1.34 2007/11/30 21:23:01 jchiang Exp $
+   $Id: release.notes,v 1.35 2007/11/30 21:33:30 jchiang Exp $
 
    @verbatim
+   v1r3   12-Dec-07   JC    use new healpix package for code migrated from
+                            astro and map_tools
    v1r2p1 30-Nov-07   JC    set covariance to None if covar flag set to False
                             (the default)
    v1r2   30-Nov-07   JC    provide access to covariance matrix
