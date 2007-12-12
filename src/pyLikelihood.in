@@ -6,7 +6,7 @@
 #include "st_stream/st_stream.h"
 #include "irfLoader/Loader.h"
 #include "irfInterface/IrfsFactory.h"
-#include "map_tools/CosineBinner.h"
+#include "healpix/CosineBinner.h"
 #include "map_tools/Exposure.h"
 #include "map_tools/SkyImage.h"
 #include "optimizers/Optimizer.h"
@@ -109,7 +109,7 @@ using optimizers::Exception;
 %include $(ASTROROOT)/astro/SkyDir.h
 %template(SkyDirVector) std::vector<astro::SkyDir>;
 %feature("autodoc", "1");
-%include $(MAP_TOOLSROOT)/map_tools/CosineBinner.h
+%include $(HEALPIXROOT)/healpix/CosineBinner.h
 %include $(MAP_TOOLSROOT)/map_tools/Exposure.h
 %include $(MAP_TOOLSROOT)/map_tools/SkyImage.h
 %include $(OPTIMIZERSROOT)/optimizers/Arg.h
@@ -393,12 +393,12 @@ using optimizers::Exception;
    }
 }
 %extend map_tools::Exposure {
-   map_tools::CosineBinner data(const astro::SkyDir & srcDir) {
-      astro::HealpixArray<map_tools::CosineBinner> skyBinner(self->data());
+   healpix::CosineBinner data(const astro::SkyDir & srcDir) {
+      healpix::HealpixArray<healpix::CosineBinner> skyBinner(self->data());
       return skyBinner[srcDir];
    }
 }
-%extend map_tools::CosineBinner {
+%extend healpix::CosineBinner {
    double costheta(size_t i) {
       if (i < 0 || i >= self->size()) {
          throw std::runtime_error("IndexError");
