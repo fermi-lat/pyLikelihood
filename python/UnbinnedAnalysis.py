@@ -4,7 +4,7 @@ Python interface for unbinned likelihood
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/UnbinnedAnalysis.py,v 1.22 2007/07/17 15:34:45 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/UnbinnedAnalysis.py,v 1.23 2007/10/17 20:11:08 jchiang Exp $
 #
 
 import sys
@@ -109,10 +109,11 @@ class UnbinnedObs(object):
         tmin = self._roiCuts.minTime()
         tmax = self._roiCuts.maxTime()
         scFiles = self._fileList(scFile)
-        self._scData.readData(scFiles[0], tmin, tmax, True, self.sctable)
-        for file in scFiles[1:]:
-            self._scData.readData(file, tmin, tmax)
-        self.scFiles = scFiles
+        self._scData.readData(scFiles, tmin, tmax, self.sctable)
+#        self._scData.readData(scFiles[0], tmin, tmax, True, self.sctable)
+#        for file in scFiles[1:]:
+#            self._scData.readData(file, tmin, tmax)
+#        self.scFiles = scFiles
     def __getattr__(self, attrname):
         return getattr(self.observation, attrname)
     def __repr__(self):
