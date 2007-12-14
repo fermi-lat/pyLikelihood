@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Fri Dec 14 11:18:50 PST 2007
+pyLikelihood/python
+
+Modified Files:
+	UnbinnedAnalysis.py 
+Log Message:
+use new method to read in ScData that checks for empty FT2
+    *
+------------------------------------------------------------
 TAG
 Tag name: v1r3, operation: add
 Package: pyLikelihood
