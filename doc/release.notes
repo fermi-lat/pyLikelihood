@@ -2,9 +2,12 @@
    @file release.notes
    @brief package pyLikelihood
    @author J. Chiang <jchiang@slac.stanford.edu>
-   $Id: release.notes,v 1.35 2007/11/30 21:33:30 jchiang Exp $
+   $Id: release.notes,v 1.36 2007/12/12 21:27:30 jchiang Exp $
 
    @verbatim
+   v1r3p1 14-Dec-07   JC    use new Likelihood::ScData::readData method 
+                            to read in FT2 data and check for zero number of
+                            intervals (LK-39)
    v1r3   12-Dec-07   JC    use new healpix package for code migrated from
                             astro and map_tools
    v1r2p1 30-Nov-07   JC    set covariance to None if covar flag set to False
