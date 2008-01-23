@@ -2,9 +2,12 @@
    @file release.notes
    @brief package pyLikelihood
    @author J. Chiang <jchiang@slac.stanford.edu>
-   $Id: release.notes,v 1.36 2007/12/12 21:27:30 jchiang Exp $
+   $Id: release.notes,v 1.37 2007/12/14 19:22:09 jchiang Exp $
 
    @verbatim
+   v1r3p2 23-Jan-08   JC    restore scFiles attribute in UnbinnedAnalysis.py;
+                            fix CALDBCONFIG and CALDBALIAS bugs in 
+                            package_paths.py
    v1r3p1 14-Dec-07   JC    use new Likelihood::ScData::readData method 
                             to read in FT2 data and check for zero number of
                             intervals (LK-39)
