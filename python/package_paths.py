@@ -6,7 +6,7 @@ SwigPolicy/v*/src/startup_scripts.py.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/package_paths.py,v 1.3 2006/12/06 16:14:19 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/package_paths.py,v 1.4 2007/05/19 01:22:02 jchiang Exp $
 #
 
 import os
@@ -20,11 +20,12 @@ else:
 
 from swig_setup import packageroot
 
+caldbroot = os.path.join(inst_dir, 'irfs',
+                         '%s' % packageroot('caldb'), 'CALDB')
+
 extra_paths = [('CALDB',
-                os.path.join(inst_dir, 'irfs',
-                             '%s' % packageroot('caldb'), 'CALDB',
-                             'data', 'glast', 'lat')), 
-               ('CALDBCONFIG',
-                os.path.join(caldb, 'software', 'tools', 'caldb.config')),
-               ('CALDBALIAS',
-                os.path.join(caldb, 'software', 'tools', 'alias_caldb.fits'))]
+                os.path.join(caldbroot, 'data', 'glast', 'lat')), 
+               ('CALDBCONFIG', os.path.join(caldbroot, 'software', 'tools', 
+                                            'caldb.config')),
+               ('CALDBALIAS', os.path.join(caldbroot, 'software', 'tools', 
+                                           'alias_caldb.fits'))]
