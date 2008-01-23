@@ -1,5 +1,14 @@
 ------------------------------------------------------------
 User: jchiang  Wed Jan 23 11:09:22 PST 2008
+pyLikelihood/doc
+
+Modified Files:
+	release.notes 
+Log Message:
+fix CALDB* env var bugs; tagging v1r3p2
+    *
+------------------------------------------------------------
+User: jchiang  Wed Jan 23 11:09:22 PST 2008
 pyLikelihood/cmt
 
 Modified Files:
