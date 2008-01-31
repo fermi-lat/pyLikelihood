@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: golpa  Thu Jan 31 09:21:49 PST 2008
+pyLikelihood/src
+
+Added Files:
+	pyLikelihood.i 
+Log Message:
+Added swig input to be used with SCons
+    *
+------------------------------------------------------------
 TAG
 Tag name: v1r3p2, operation: add
 Package: pyLikelihood
