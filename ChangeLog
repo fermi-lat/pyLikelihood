@@ -1,5 +1,14 @@
 ------------------------------------------------------------
 TAG
+Tag name: v1r3p2, operation: add
+Package: pyLikelihood
+User: golpa  Mon Feb  4 09:03:44 2008
+Files:
+  pyLikelihood/src/pyLikelihood.i  1.1
+
+    *
+------------------------------------------------------------
+TAG
 Tag name: pyLikelihood-01-03-02, operation: add
 Package: pyLikelihood
 User: golpa  Thu Jan 31 09:22:16 2008
