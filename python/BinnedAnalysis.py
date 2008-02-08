@@ -4,7 +4,7 @@ Python interface for binned likelihood.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/BinnedAnalysis.py,v 1.19 2007/07/18 04:57:29 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/BinnedAnalysis.py,v 1.20 2007/10/17 20:11:08 jchiang Exp $
 #
 
 import sys
@@ -94,9 +94,6 @@ class BinnedAnalysis(AnalysisBase):
         AnalysisBase.__init__(self)
         if srcModel is None:
             srcModel, optimizer = self._srcDialog()
-        self._inputs = '\n'.join((str(binnedData),
-                                  'Source model file: ' + str(srcModel),
-                                  'Optimizer: ' + str(optimizer)))
         self.binnedData = binnedData
         self.srcModel = srcModel
         self.optimizer = optimizer
@@ -110,6 +107,10 @@ class BinnedAnalysis(AnalysisBase):
         self.energies = num.array(self.logLike.energies())
         self.e_vals = num.sqrt(self.energies[:-1]*self.energies[1:])
         self.nobs = self.logLike.countsSpectrum();
+    def _inputs(self):
+        return '\n'.join((str(self.binnedData),
+                          'Source model file: ' + str(self.srcModel),
+                          'Optimizer: ' + str(self.optimizer)))
     def _srcCnts(self, srcName):
         srcMap = self.logLike.sourceMap(srcName)
         npreds = srcMap.npreds()

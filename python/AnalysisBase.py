@@ -4,7 +4,7 @@ Base clase for Likelihood analysis Python modules.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.26 2007/11/30 21:23:01 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.27 2007/11/30 21:33:30 jchiang Exp $
 #
 
 try:
@@ -214,7 +214,7 @@ class AnalysisBase(object):
                                              color=color, symbol='line')
         return model_counts
     def __repr__(self):
-        return self._inputs
+        return self._inputs()
     def __getitem__(self, name):
         return self.model[name]
     def __setitem__(self, name, value):
