@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Fri Feb  8 08:44:36 PST 2008
+pyLikelihood/cmt
+
+Modified Files:
+	requirements 
+Log Message:
+fix __repr__ method; tagging v1r3p3
+    *
+------------------------------------------------------------
 TAG
 Tag name: v1r3p2, operation: add
 Package: pyLikelihood
