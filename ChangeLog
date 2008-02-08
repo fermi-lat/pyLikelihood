@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Fri Feb  8 08:44:37 PST 2008
+pyLikelihood/python
+
+Modified Files:
+	AnalysisBase.py BinnedAnalysis.py UnbinnedAnalysis.py 
+Log Message:
+fix __repr__ method; tagging v1r3p3
+    *
+------------------------------------------------------------
 User: jchiang  Fri Feb  8 08:44:36 PST 2008
 pyLikelihood/doc
 
