@@ -1,5 +1,14 @@
 ------------------------------------------------------------
 User: jchiang  Fri Feb  8 08:44:36 PST 2008
+pyLikelihood/doc
+
+Modified Files:
+	release.notes 
+Log Message:
+fix __repr__ method; tagging v1r3p3
+    *
+------------------------------------------------------------
+User: jchiang  Fri Feb  8 08:44:36 PST 2008
 pyLikelihood/cmt
 
 Modified Files:
