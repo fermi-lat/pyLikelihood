@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: golpa  Thu Feb 21 16:28:36 PST 2008
+pyLikelihood
+
+Modified Files:
+	SConscript pyLikelihoodLib.py 
+Log Message:
+small fix to pyLikelihood library name being linked against
+    *
+------------------------------------------------------------
 TAG
 Tag name: pyLikelihood-01-03-03, operation: add
 Package: pyLikelihood
