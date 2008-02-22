@@ -1,8 +1,6 @@
 # -*- python -*-
 #
-# $Id$
-
-import glob, os, platform
+# $Id: SConscript,v 1.2 2007/12/11 19:37:49 jchiang Exp $
 
 Import('baseEnv')
 Import('listFiles')
