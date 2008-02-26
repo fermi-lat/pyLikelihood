@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: glastrm  Mon Feb 25 21:33:35 PST 2008
+ScienceTools-scons/pyLikelihood
+
+Modified Files:
+	pyLikelihoodLib.py SConscript 
+Log Message:
+Set lib dependencies up for when building libraries
+    *
+------------------------------------------------------------
 TAG
 Tag name: pyLikelihood-01-03-03, operation: mov
 Package: pyLikelihood
