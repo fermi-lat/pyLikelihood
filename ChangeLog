@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Mon Mar  3 11:45:22 PST 2008
+pyLikelihood/python
+
+Modified Files:
+	AnalysisBase.py UnbinnedAnalysis.py 
+Log Message:
+check that newValue in _renorm() lies within parameter bounds; print ImportError message in case Tcl/Tk is not installed properly
+    *
+------------------------------------------------------------
 TAG
 Tag name: pyLikelihood-01-03-03, operation: mov
 Package: pyLikelihood
