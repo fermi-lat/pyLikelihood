@@ -4,7 +4,7 @@ Python interface for unbinned likelihood
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/UnbinnedAnalysis.py,v 1.25 2007/12/18 20:48:16 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/UnbinnedAnalysis.py,v 1.26 2008/02/08 16:44:36 jchiang Exp $
 #
 
 import sys
@@ -14,7 +14,8 @@ from SrcModel import SourceModel
 from AnalysisBase import AnalysisBase, _quotefn, _null_file, num
 try:
     from SimpleDialog import SimpleDialog, map, Param
-except ImportError:
+except ImportError, message:
+    print "Caught ImportError: ", message
     pass
 
 _funcFactory = pyLike.SourceFactory_funcFactory()
