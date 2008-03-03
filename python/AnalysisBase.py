@@ -4,7 +4,7 @@ Base clase for Likelihood analysis Python modules.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.27 2007/11/30 21:33:30 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.28 2008/02/08 16:44:36 jchiang Exp $
 #
 
 try:
@@ -121,7 +121,11 @@ class AnalysisBase(object):
             parameter = self._normPar(src)
             if parameter.isFree() and self._isDiffuseOrNearby(src):
                 oldValue = parameter.getValue()
-                parameter.setValue(oldValue*self.renormFactor)
+                newValue = oldValue*self.renormFactor
+                # ensure new value is within parameter bounds
+                xmin, xmax = parameter.getBounds()
+                if xmin <= newValue and newValue <= xmax:
+                    parameter.setValue(newValue)
     def _npredValues(self):
         srcNames = self.sourceNames()
         freeNpred = 0
