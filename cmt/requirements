@@ -1,9 +1,9 @@
 package pyLikelihood
-version v1r3p3
+version v1r3p4
 
 author James Chiang <jchiang@slac.stanford.edu>
 
-# $Id: requirements,v 1.41 2008/01/23 19:09:22 jchiang Exp $
+# $Id: requirements,v 1.42 2008/02/08 16:44:36 jchiang Exp $
 
 use Likelihood v*
 use SwigPolicy v*
