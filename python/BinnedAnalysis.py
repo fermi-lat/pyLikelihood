@@ -4,7 +4,7 @@ Python interface for binned likelihood.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/BinnedAnalysis.py,v 1.20 2007/10/17 20:11:08 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/BinnedAnalysis.py,v 1.21 2008/02/08 16:44:36 jchiang Exp $
 #
 
 import sys
@@ -103,7 +103,7 @@ class BinnedAnalysis(AnalysisBase):
                                                True)
         self.logLike.initOutputStreams()
         self.logLike.readXml(srcModel, _funcFactory, False)
-        self.model = SourceModel(self.logLike)
+        self.model = SourceModel(self.logLike, srcModel)
         self.energies = num.array(self.logLike.energies())
         self.e_vals = num.sqrt(self.energies[:-1]*self.energies[1:])
         self.nobs = self.logLike.countsSpectrum();
