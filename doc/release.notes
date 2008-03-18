@@ -2,9 +2,11 @@
    @file release.notes
    @brief package pyLikelihood
    @author J. Chiang <jchiang@slac.stanford.edu>
-   $Id: release.notes,v 1.39 2008/02/08 16:44:36 jchiang Exp $
+   $Id: release.notes,v 1.40 2008/03/03 19:46:48 jchiang Exp $
 
    @verbatim
+   v1r4   18-Mar-08   JC    read xml attributes from source tag and add as
+                            Python attributes to Source objects (JBB request)
    v1r3p4 03-Mar-08   JC    check that new parameter value lies within bounds
                             in AnalysisBase._renorm()
    v1r3p3 08-Feb-08   JC    ensure [Unb,B]innedAnalysis.__repr__() returns the
