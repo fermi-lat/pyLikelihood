@@ -1,4 +1,14 @@
 ------------------------------------------------------------
+User: jchiang  Tue Mar 18 16:30:19 PDT 2008
+pyLikelihood/python
+
+Modified Files:
+	AnalysisBase.py BinnedAnalysis.py SrcModel.py 
+	UnbinnedAnalysis.py 
+Log Message:
+read xml attributes in source tag and add as python attributes to the Source objects
+    *
+------------------------------------------------------------
 TAG
 Tag name: pyLikelihood-01-03-04, operation: mov
 Package: pyLikelihood
