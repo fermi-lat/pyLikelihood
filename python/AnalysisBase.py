@@ -4,7 +4,7 @@ Base clase for Likelihood analysis Python modules.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.28 2008/02/08 16:44:36 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.29 2008/03/03 19:45:22 jchiang Exp $
 #
 
 try:
@@ -16,6 +16,7 @@ from SrcModel import SourceModel
 try:
     from SimpleDialog import SimpleDialog, map, Param
 except ImportError:
+    print "Caught ImportError: ", message
     pass
 
 _plotter_package = 'root'
@@ -240,6 +241,7 @@ class AnalysisBase(object):
         if xmlFile is None:
             xmlFile = self.srcModel
         self.logLike.writeXml(xmlFile)
+        self.srcModel = xmlFile
 
 def _quotefn(filename):
     if filename is None:

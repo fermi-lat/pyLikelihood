@@ -4,9 +4,10 @@ SourceModel interface to allow for manipulation of fit parameters.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/SrcModel.py,v 1.2 2005/11/25 18:09:31 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/SrcModel.py,v 1.3 2006/11/13 00:02:34 jchiang Exp $
 #
 import sys
+from xml.dom import minidom
 import pyLikelihood as pyLike
 
 def ids(istart=0):
@@ -16,9 +17,11 @@ def ids(istart=0):
         yield(i)
 
 class SourceModel(object):
-    def __init__(self, logLike):
+    def __init__(self, logLike, xmlFile=None):
         self.logLike = logLike
         self._loadSources()
+        if xmlFile is not None:
+            self._addXmlAttributes(xmlFile)
     def delete(self, source):
         src = self.logLike.deleteSource(source)
         self._loadSources()
@@ -39,6 +42,21 @@ class SourceModel(object):
             self.srcs[name] = Source(self.logLike.getSource(name))
         self._walk()
         self.printFreeOnly = False
+    def _addXmlAttributes(self, xmlFile):
+        srcs = minidom.parse(xmlFile).getElementsByTagName('source')
+        for item in srcs:
+            name = item.getAttribute('name').encode()
+            for key in item.attributes.keys():
+                value = item.getAttribute(key)
+                self.srcs[name].__dict__[key] = self._convertType(value)
+    def _convertType(self, value):
+        try:
+            return int(value)
+        except ValueError:
+            try:
+                return float(value)
+            except ValueError:
+                return value.encode()
     def _walk(self):
         indx = ids()
         self.params = []
