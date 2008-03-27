@@ -1,5 +1,14 @@
 ------------------------------------------------------------
 User: jchiang  Wed Mar 26 20:22:40 PDT 2008
+pyLikelihood/src
+
+Modified Files:
+	pyLikelihood.in 
+Log Message:
+changes to accommodate new event class defs
+    *
+------------------------------------------------------------
+User: jchiang  Wed Mar 26 20:22:40 PDT 2008
 pyLikelihood/python
 
 Modified Files:
