@@ -1,6 +1,6 @@
 # -*- python -*-
 #
-# $Id: SConscript,v 1.4 2008/02/26 05:33:35 glastrm Exp $
+# $Id: SConscript,v 1.5 2008/03/08 00:38:31 glast Exp $
 
 Import('baseEnv')
 Import('listFiles')
@@ -15,4 +15,5 @@ pyLikelihoodSharedLib = libEnv.SharedLibrary('_pyLikelihood',
 
 progEnv.Tool('registerObjects', package = 'pyLikelihood', 
              libraries = [pyLikelihoodStaticLib, pyLikelihoodSharedLib], 
-             includes = listFiles(['pyLikelihoood/*.h']))
+             includes = listFiles(['pyLikelihoood/*.h']),
+             python = listFiles(['python/*.py']))
