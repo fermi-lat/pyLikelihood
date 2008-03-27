@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Thu Mar 27 09:27:21 PDT 2008
+pyLikelihood
+
+Modified Files:
+	SConscript 
+Log Message:
+add .py files to build targets
+    *
+------------------------------------------------------------
 User: jchiang  Wed Mar 26 20:22:40 PDT 2008
 pyLikelihood/src
 
