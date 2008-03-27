@@ -4,7 +4,7 @@ Python interface for unbinned likelihood
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/UnbinnedAnalysis.py,v 1.27 2008/03/03 19:45:22 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/UnbinnedAnalysis.py,v 1.28 2008/03/18 23:30:19 jchiang Exp $
 #
 
 import sys
@@ -44,7 +44,9 @@ class UnbinnedObs(object):
                                   'Exposure cube: ' + str(expCube),
                                   'IRFs: ' + str(irfs)))
         self._respFuncs = pyLike.ResponseFunctions()
-        self._respFuncs.load(irfs)
+        evfiles = self._fileList(eventFile)
+        evt_types = pyLike.AppHelpers_getSelectedEvtTypes(evfiles[0],"UNBINNED")
+        self._respFuncs.load(irfs, "", evt_types)
         self._expMap = pyLike.ExposureMap()
         if expMap is not None and expMap != "":
             self._expMap.readExposureFile(expMap)

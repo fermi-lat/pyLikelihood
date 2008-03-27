@@ -102,6 +102,7 @@ using optimizers::Exception;
 %template(FloatVector) std::vector<float>;
 %template(DoubleVectorVector) std::vector< std::vector<double> >;
 %template(DoubleVectorPair) std::vector< std::pair<double, double> >;
+%template(SizetVector) std::vector<size_t>;
 %template(StringVector) std::vector<std::string>;
 %include $(ST_APPROOT)/st_app/AppParGroup.h
 %include $(ST_APPROOT)/st_app/StApp.h
@@ -173,6 +174,16 @@ using optimizers::Exception;
       std::vector<std::string> outfiles;
       st_facilities::Util::resolve_fits_files(infile, outfiles);
       return outfiles;
+   }
+}
+%extend Likelihood::AppHelpers {
+   static std::vector<size_t> 
+      getSelectedEvtTypes(const std::string & evfile,
+                          const std::string & analysisType) {
+      std::vector<size_t> evtTypes;
+      Likelihood::AppHelpers::getSelectedEvtTypes(evfile, analysisType, 
+                                                  evtTypes);
+      return evtTypes;
    }
 }
 %extend Likelihood::EquinoxRotation {
