@@ -2,9 +2,10 @@
    @file release.notes
    @brief package pyLikelihood
    @author J. Chiang <jchiang@slac.stanford.edu>
-   $Id: release.notes,v 1.40 2008/03/03 19:46:48 jchiang Exp $
+   $Id: release.notes,v 1.41 2008/03/18 23:32:01 jchiang Exp $
 
    @verbatim
+   v1r5   31-Mar-08   JC    new event class handling
    v1r4   18-Mar-08   JC    read xml attributes from source tag and add as
                             Python attributes to Source objects (JBB request)
    v1r3p4 03-Mar-08   JC    check that new parameter value lies within bounds
