@@ -4,7 +4,7 @@ Base clase for Likelihood analysis Python modules.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.29 2008/03/03 19:45:22 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.30 2008/03/18 23:30:19 jchiang Exp $
 #
 
 try:
@@ -70,29 +70,28 @@ class AnalysisBase(object):
     def Ts(self, srcName, reoptimize=False, approx=True, tol=1e-5):
         self.logLike.syncParams()
         src = self.logLike.getSource(srcName)
-        if src.getType() == "Point":
-            freeParams = pyLike.DoubleVector()
-            self.logLike.getFreeParamValues(freeParams)
-            logLike1 = self.logLike.value()
-            self._ts_src = self.logLike.deleteSource(srcName)
-            logLike0 = self.logLike.value()
-            if reoptimize:
-                optFactory = pyLike.OptimizerFactory_instance()
-                myOpt = optFactory.create(self.optimizer, self.logLike)
-                myOpt.find_min(0, tol)
-            else:
-                if approx:
-                    try:
-                        self._renorm()
-                    except ZeroDivisionError:
-                        pass
-            self.logLike.syncParams()
-            logLike0 = max(self.logLike.value(), logLike0)
-            Ts_value = 2*(logLike1 - logLike0)
-            self.logLike.addSource(self._ts_src)
-            self.logLike.setFreeParamValues(freeParams)
-            self.model = SourceModel(self.logLike)
-            return Ts_value
+        freeParams = pyLike.DoubleVector()
+        self.logLike.getFreeParamValues(freeParams)
+        logLike1 = self.logLike.value()
+        self._ts_src = self.logLike.deleteSource(srcName)
+        logLike0 = self.logLike.value()
+        if reoptimize:
+            optFactory = pyLike.OptimizerFactory_instance()
+            myOpt = optFactory.create(self.optimizer, self.logLike)
+            myOpt.find_min(0, tol)
+        else:
+            if approx:
+                try:
+                    self._renorm()
+                except ZeroDivisionError:
+                    pass
+        self.logLike.syncParams()
+        logLike0 = max(self.logLike.value(), logLike0)
+        Ts_value = 2*(logLike1 - logLike0)
+        self.logLike.addSource(self._ts_src)
+        self.logLike.setFreeParamValues(freeParams)
+        self.model = SourceModel(self.logLike)
+        return Ts_value
     def deleteSource(self, srcName):
         src = self.logLike.deleteSource(srcName)
         self.model = SourceModel(self.logLike)
@@ -138,7 +137,8 @@ class AnalysisBase(object):
                 freeNpred += npred
         return freeNpred, totalNpred
     def _isDiffuseOrNearby(self, srcName):
-        if self[srcName].src.getType() == 'Diffuse':
+        if (self[srcName].src.getType() == 'Diffuse' or 
+            self._ts_src.getType() == 'Diffuse'):
             return True
         elif self._separation(self._ts_src, self[srcName].src) < self.maxdist:
             return True
@@ -254,4 +254,3 @@ def _null_file(filename):
         return None
     else:
         return filename
-
