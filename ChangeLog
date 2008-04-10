@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Thu Apr 10 08:38:50 PDT 2008
+pyLikelihood/python
+
+Modified Files:
+	AnalysisBase.py 
+Log Message:
+enable Ts calculation for Diffuse Sources
+    *
+------------------------------------------------------------
 TAG
 Tag name: pyLikelihood-01-05-00, operation: add
 Package: pyLikelihood
