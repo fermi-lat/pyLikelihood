@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Mon Apr 14 11:46:05 PDT 2008
+pyLikelihood/python
+
+Modified Files:
+	UpperLimits.py 
+Log Message:
+avoid final refit (just resync paramters); add option to renormalize other components rather than refitting everything.
+    *
+------------------------------------------------------------
 User: jchiang  Thu Apr 10 08:38:50 PDT 2008
 pyLikelihood/python
 
