@@ -6,7 +6,7 @@
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/ASP/drpMonitoring/python/computeUpperLimit.py,v 1.3 2008/03/12 03:38:42 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/UpperLimits.py,v 1.1 2008/03/28 22:58:25 jchiang Exp $
 #
 import pyLikelihood as pyLike
 import numpy as num
@@ -28,7 +28,7 @@ class UpperLimit(object):
         self.results = []
     def compute(self, emin=100, emax=3e5, delta=2.71/2., 
                 tmpfile='temp_model.xml', fix_src_pars=False,
-                verbose=True, nsigmax=5, npts=30):
+                verbose=True, nsigmax=5, npts=30, renorm=False):
         source = self.source
         saved_pars = [par.value() for par in self.like.model.params]
 
@@ -64,14 +64,7 @@ class UpperLimit(object):
             xvals.append(x)
             par.setValue(x)
             self.like.logLike.syncSrcParams(source)
-            try:
-                self.like.fit(0)
-            except RuntimeError:
-                try:
-                    self.like.fit(0)
-                except RuntimeError:
-                    self.like.logLike.restoreBestFit()
-                    pass
+            self.fit(0, renorm=renorm)
             dlogLike.append(self.like() - logLike0)
             fluxes.append(self.like[source].flux(emin, emax))
             if verbose:
@@ -88,16 +81,56 @@ class UpperLimit(object):
                 src_spectrum.parameter(item.getName()).setFree(1)
         for value, param in zip(saved_pars, self.like.model.params):
             param.setValue(value)
-        self.like.fit(0)
+        self._resyncPars()
         xx = ((delta - dlogLike[-2])/(dlogLike[-1] - dlogLike[-2])
               *(xvals[-1] - xvals[-2]) + xvals[-2])
         ul = ((delta - dlogLike[-2])/(dlogLike[-1] - dlogLike[-2])
               *(fluxes[-1] - fluxes[-2]) + fluxes[-2])
-
         self.results.append(ULResult(ul, emin, emax, delta,
                                      fluxes, dlogLike, xvals))
-
         return ul
+    def _resyncPars(self):
+        srcNames = self.like.sourceNames()
+        for src in srcNames:
+            self.like.logLike.syncSrcParams(src)
+    def fit(self, verbosity=0, renorm=False):
+        if renorm:
+            self._renorm()
+            return
+        try:
+            self.like.fit(verbosity)
+        except RuntimeError:
+            try:
+                self.like.fit(verbosity)
+            except RuntimeError:
+                self.like.logLike.restoreBestFit()
+                pass
+    def _renorm(self):
+        freeNpred, totalNpred = self._npredValues()
+        deficit = sum(self.like.nobs) - totalNpred
+        renormFactor = 1. + deficit/freeNpred
+        if renormFactor < 1:
+            renormFactor = 1
+        srcNames = self.like.sourceNames()
+        for src in srcNames:
+            parameter = self.like._normPar(src)
+            if parameter.isFree():
+                oldValue = parameter.getValue()
+                newValue = oldValue*renormFactor
+                xmin, xmax = parameter.getBounds()
+                newValue = min(max(newValue, xmin), xmax)
+                parameter.setValue(newValue)
+        self._resyncPars()
+    def _npredValues(self):
+        srcNames = self.like.sourceNames()
+        freeNpred = 0
+        totalNpred = 0
+        for src in srcNames:
+            npred = self.like.logLike.NpredValue(src)
+            totalNpred += npred
+            if self.like._normPar(src).isFree():
+                freeNpred += npred
+        return freeNpred, totalNpred
 
 class UpperLimits(dict):
     def __init__(self, like):
