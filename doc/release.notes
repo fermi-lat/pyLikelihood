@@ -2,9 +2,11 @@
    @file release.notes
    @brief package pyLikelihood
    @author J. Chiang <jchiang@slac.stanford.edu>
-   $Id: release.notes,v 1.41 2008/03/18 23:32:01 jchiang Exp $
+   $Id: release.notes,v 1.42 2008/03/31 21:17:44 jchiang Exp $
 
    @verbatim
+   v1r5p1 15-Apr-08   JC    enable Ts calculation for diffuse sources;
+                            UpperLimits modifications.
    v1r5   31-Mar-08   JC    new event class handling
    v1r4   18-Mar-08   JC    read xml attributes from source tag and add as
                             Python attributes to Source objects (JBB request)
