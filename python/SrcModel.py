@@ -4,7 +4,7 @@ SourceModel interface to allow for manipulation of fit parameters.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/SrcModel.py,v 1.5 2008/04/18 16:53:28 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/SrcModel.py,v 1.6 2008/04/19 22:21:52 jchiang Exp $
 #
 import sys
 from xml.dom import minidom
@@ -28,6 +28,7 @@ class SourceModel(object):
         return src
     def add(self, source):
         try:
+            print "adding ", source.getName()
             self.logLike.addSource(source)
             self._loadSources()
         except:
@@ -50,7 +51,6 @@ class SourceModel(object):
                 try:
                     eval('self.srcs[name].src.%s' % key)
                 except AttributeError:
-                    print "adding attribute ", key
                     self.srcs[name].__dict__[key] = self._convertType(value)
     def _convertType(self, value):
         try:

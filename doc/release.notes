@@ -2,9 +2,10 @@
    @file release.notes
    @brief package pyLikelihood
    @author J. Chiang <jchiang@slac.stanford.edu>
-   $Id: release.notes,v 1.44 2008/04/18 19:07:49 jchiang Exp $
+   $Id: release.notes,v 1.45 2008/04/19 22:22:45 jchiang Exp $
 
    @verbatim
+   v1r5p4 19-Apr-08   JC    deleted incorrect line
    v1r5p3 19-Apr-08   JC    remove debug print statement
    v1r5p2 18-Apr-08   JC    bug-fix: avoid adding attributes from source
                             xml def to SourceModel.Source objects if the
