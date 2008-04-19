@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Sat Apr 19 15:28:58 PDT 2008
+pyLikelihood/cmt
+
+Modified Files:
+	requirements 
+Log Message:
+deleted incorrect line;tagging v1r5p4
+    *
+------------------------------------------------------------
 TAG
 Tag name: v1r5p3, operation: add
 Package: pyLikelihood
