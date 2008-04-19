@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Sat Apr 19 15:21:52 PDT 2008
+pyLikelihood/python
+
+Modified Files:
+	SrcModel.py 
+Log Message:
+remove debug statement
+    *
+------------------------------------------------------------
 TAG
 Tag name: pyLikelihood-01-05-02, operation: add
 Package: pyLikelihood
