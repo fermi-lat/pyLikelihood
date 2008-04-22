@@ -4,7 +4,7 @@ Base clase for Likelihood analysis Python modules.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.30 2008/03/18 23:30:19 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.31 2008/04/10 15:38:50 jchiang Exp $
 #
 
 try:
@@ -15,7 +15,7 @@ import pyLikelihood as pyLike
 from SrcModel import SourceModel
 try:
     from SimpleDialog import SimpleDialog, map, Param
-except ImportError:
+except ImportError, message:
     print "Caught ImportError: ", message
     pass
 
