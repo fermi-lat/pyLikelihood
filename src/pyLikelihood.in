@@ -275,6 +275,17 @@ using optimizers::Exception;
       return ptsrc->flux(emin, emax, npts);
    }
 }
+%extend Likelihood::DiffuseSource {
+   static Likelihood::DiffuseSource * 
+      downcastAsDiffuse(Likelihood::Source * src) {
+      Likelihood::DiffuseSource * diffuse =
+         dynamic_cast<Likelihood::DiffuseSource *>(src);
+      if (diffuse == 0) {
+         throw std::runtime_error("Cannot downcast as DiffuseSource.");
+      }
+      return diffuse;
+   }
+}
 %extend Likelihood::LogLike {
    void initOutputStreams(unsigned int maxChatter=2) {
       st_stream::OStream::initStdStreams();
