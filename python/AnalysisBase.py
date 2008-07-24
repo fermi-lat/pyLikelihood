@@ -4,7 +4,7 @@ Base clase for Likelihood analysis Python modules.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.31 2008/04/10 15:38:50 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.32 2008/04/22 15:37:31 jchiang Exp $
 #
 
 try:
@@ -38,6 +38,9 @@ class AnalysisBase(object):
     def setPlotter(self, plotter='hippo'):
         global _plotter_package
         _plotter_package = plotter
+        if plotter == 'hippo':
+            import hippoplotter as plot
+            return plot
     def __call__(self):
         return -self.logLike.value()
     def fit(self, verbosity=3, tol=None, optimizer=None,
@@ -46,6 +49,15 @@ class AnalysisBase(object):
             tol = self.tol
         errors = self._errors(optimizer, verbosity, tol, covar=covar)
         return -self.logLike.value()
+    def optimize(self, verbosity=3, tol=None, optimizer=None):
+        self.logLike.syncParams()
+        if optimizer is None:
+            optimizer = self.optimizer
+        if tol is None:
+            tol = self.tol
+        optFactory = pyLike.OptimizerFactory_instance()
+        myOpt = optFactory.create(optimizer, self.logLike)
+        myOpt.find_min(verbosity, tol)
     def _errors(self, optimizer=None, verbosity=0, tol=None,
                 useBase=False, covar=False):
         self.logLike.syncParams()
