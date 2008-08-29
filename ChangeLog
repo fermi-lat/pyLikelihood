@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Fri Aug 29 12:59:34 PDT 2008
+pyLikelihood/python
+
+Modified Files:
+	UpperLimits.py 
+Log Message:
+update UpperLimits.py with pyASP version that does quadratic fit and extrapolation for likelihood surface
+    *
+------------------------------------------------------------
 TAG
 Tag name: ScienceTools-09-07-00, operation: add
 Package: pyLikelihood
