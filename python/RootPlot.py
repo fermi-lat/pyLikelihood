@@ -4,7 +4,7 @@ Standard plotting interface for XY plots with pyROOT backend
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/RootPlot.py,v 1.1.1.1 2005/08/22 16:19:27 jchiang Exp $
+# $Header: /dsm/saplxglast/glast/CVSROOT/Gpipeline/python/RootPlot.py,v 1.2 2008/08/22 13:14:57 gtpiplin Exp $
 #
 
 import sys
@@ -13,16 +13,20 @@ try:
     import numarray as num
 except:
     import numpy as num
+    
 from ROOT import TCanvas, TGraphErrors, TH2F
 
 _ncanvas = -1
+
 _symbols = {'line' : ('C', 0, 1),
             'dashed' : ('C', 0, 2), 
             'dotted' : ('C', 0, 3), 
-            'dash-dot' : ('C', 0, 4), 
+            'dash-dot' : ('C', 0, 4),
+            'poly-line' : ('L',0,1),
             'point' : ('P', 0, 1),
             'plus' : ('P', 2, 1),
-            'times' : ('P', 21, 1)}
+            'times' : ('P', 3, 1)}
+
 _colors = {'black' : 1,
            'red' : 2,
            'green' : 3,
@@ -70,7 +74,7 @@ class RootPlot(object):
         self.hist.SetTitle('')
     def _drawData(self, graph, key, color):
         symbol, marker, lineStyle = _symbols[key]
-        if symbol == 'C':
+        if symbol in ['C','L']:
             graph.SetLineStyle(lineStyle)
         else:
             graph.SetMarkerStyle(marker)
