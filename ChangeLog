@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Tue Sep  2 12:50:22 PDT 2008
+pyLikelihood/python
+
+Modified Files:
+	RootPlot.py 
+Log Message:
+add David L.'s mods to RootPlot.py
+    *
+------------------------------------------------------------
 TAG
 Tag name: pyLikelihood-01-05-06, operation: add
 Package: pyLikelihood
