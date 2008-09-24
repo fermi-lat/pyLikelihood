@@ -4,7 +4,7 @@ Base clase for Likelihood analysis Python modules.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.32 2008/04/22 15:37:31 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.33 2008/07/24 05:39:29 jchiang Exp $
 #
 
 try:
@@ -104,6 +104,53 @@ class AnalysisBase(object):
         self.logLike.setFreeParamValues(freeParams)
         self.model = SourceModel(self.logLike)
         return Ts_value
+    def flux(self, srcName, emin=100, emax=3e5, energyFlux=False):
+        if energyFlux:
+            ptsrc = pyLike.PointSource_cast(self[srcName].src)
+            return ptsrc.energyFlux(emin, emax)
+        else:
+            return self[srcName].flux(emin, emax)
+    def energyFlux(self, srcName, emin=100, emax=3e5):
+        return self.flux(srcName, emin, emax, True)
+    def energyFluxError(self, srcName, emin=100, emax=3e5, npts=1000):
+        return self.fluxError(srcName, emin, emax, True, npts)
+    def fluxError(self, srcName, emin=100, emax=3e5, energyFlux=False,
+                  npts=1000):
+        par_index_map = {}
+        indx = 0
+        for src in self.sourceNames():
+            parNames = pyLike.StringVector()
+            self[src].src.spectrum().getFreeParamNames(parNames)
+            for par in parNames:
+                par_index_map["::".join((src, par))] = indx
+                indx += 1
+        #
+        # Build the source-specific covariance matrix.
+        #
+        if self.covariance is None:
+            raise RuntimeError("Covariance matrix has not been computed.")
+        covar = num.array(self.covariance)
+        if len(covar) != len(par_index_map):
+            raise RuntimeError("Covariance matrix size does not match the " +
+                               "number of free parameters.")
+        my_covar = []
+        srcpars = pyLike.StringVector()
+        self[srcName].src.spectrum().getFreeParamNames(srcpars)
+        pars = ["::".join((srcName, x)) for x in srcpars]
+        for xpar in pars:
+            ix = par_index_map[xpar]
+            my_covar.append([covar[ix][par_index_map[ypar]] for ypar in pars])
+        my_covar = num.array(my_covar)
+
+        ptsrc = pyLike.PointSource_cast(self[srcName].src)
+        if energyFlux:
+            partials = num.array([ptsrc.energyFluxDeriv(x, emin, emax, npts) 
+                                  for x in srcpars])
+        else:
+            partials = num.array([ptsrc.fluxDeriv(x, emin, emax, npts) 
+                                  for x in srcpars])
+
+        return num.sqrt(num.dot(partials, num.dot(my_covar, partials)))
     def deleteSource(self, srcName):
         src = self.logLike.deleteSource(srcName)
         self.model = SourceModel(self.logLike)

@@ -1,6 +1,7 @@
 // -*- mode: c++ -*-
 %module pyLikelihood
 %{
+//#include <fenv.h>
 #include "st_app/AppParGroup.h"
 #include "st_app/StApp.h"
 #include "st_stream/st_stream.h"
@@ -168,6 +169,13 @@ using optimizers::Exception;
 %include $(LIKELIHOODROOT)/Likelihood/TrapQuad.h
 %include $(LIKELIHOODROOT)/Likelihood/MapCubeFunction.h
 %include $(LIKELIHOODROOT)/Likelihood/WcsMap.h
+
+// %extend Likelihood::LogLike {
+//    static void enableFPE() {
+//       feenableexcept(FE_INVALID | FE_DIVBYZERO | FE_OVERFLOW);
+//    }
+// }
+
 %extend st_facilities::Util {
    static std::vector<std::string> 
       resolveFitsFiles(const std::string & infile) {
