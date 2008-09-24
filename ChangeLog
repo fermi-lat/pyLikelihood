@@ -1,5 +1,14 @@
 ------------------------------------------------------------
 User: jchiang  Wed Sep 24 09:24:57 PDT 2008
+pyLikelihood/src
+
+Modified Files:
+	pyLikelihood.in 
+Log Message:
+add methods to compute flux, energFlux, and errors
+    *
+------------------------------------------------------------
+User: jchiang  Wed Sep 24 09:24:57 PDT 2008
 pyLikelihood/python
 
 Modified Files:
