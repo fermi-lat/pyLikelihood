@@ -169,13 +169,12 @@ using optimizers::Exception;
 %include $(LIKELIHOODROOT)/Likelihood/TrapQuad.h
 %include $(LIKELIHOODROOT)/Likelihood/MapCubeFunction.h
 %include $(LIKELIHOODROOT)/Likelihood/WcsMap.h
-
+%include $(LIKELIHOODROOT)/Likelihood/CompositeLikelihood.h
 // %extend Likelihood::LogLike {
 //    static void enableFPE() {
 //       feenableexcept(FE_INVALID | FE_DIVBYZERO | FE_OVERFLOW);
 //    }
 // }
-
 %extend st_facilities::Util {
    static std::vector<std::string> 
       resolveFitsFiles(const std::string & infile) {
