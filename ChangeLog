@@ -1,5 +1,14 @@
 ------------------------------------------------------------
 User: jchiang  Fri Sep 26 11:14:52 PDT 2008
+pyLikelihood/doc
+
+Modified Files:
+	release.notes 
+Log Message:
+remove numarray imports; tagging v1r6p1
+    *
+------------------------------------------------------------
+User: jchiang  Fri Sep 26 11:14:52 PDT 2008
 pyLikelihood/cmt
 
 Modified Files:
