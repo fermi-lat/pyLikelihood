@@ -4,13 +4,10 @@ Standard plotting interface for XY plots with hippoplotter backend.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/HippoPlot.py,v 1.1.1.1 2005/08/22 16:19:27 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/HippoPlot.py,v 1.2 2007/07/13 15:37:17 jchiang Exp $
 #
 
-try:
-    import numarray as num
-except ImportError:
-    import numpy as num
+import numpy as num
 
 _symbols = {'line' : ('Line', 'Solid', 'filled_square', 1),
             'dashed' : ('Line', 'Dash', 'filled_square', 1),
