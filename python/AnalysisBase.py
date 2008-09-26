@@ -4,13 +4,10 @@ Base clase for Likelihood analysis Python modules.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.33 2008/07/24 05:39:29 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.34 2008/09/24 16:24:57 jchiang Exp $
 #
 
-try:
-    import numarray as num
-except ImportError:
-    import numpy as num
+import numpy as num
 import pyLikelihood as pyLike
 from SrcModel import SourceModel
 try:

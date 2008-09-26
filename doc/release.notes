@@ -2,9 +2,10 @@
    @file release.notes
    @brief package pyLikelihood
    @author J. Chiang <jchiang@slac.stanford.edu>
-   $Id: release.notes,v 1.48 2008/08/29 20:01:22 jchiang Exp $
+   $Id: release.notes,v 1.49 2008/09/24 16:33:17 jchiang Exp $
 
    @verbatim
+   v1r6p1 26-Sep-08   JC    remove numarray imports
    v1r6   24-Sep-08   JC    add flux, fluxError, energyFlux, energyFluxError
                             methods (using Likelihood v13r18)
    v1r5p6 29-Aug-08   JC    update UpperLimits.py to use quadratic fit and
