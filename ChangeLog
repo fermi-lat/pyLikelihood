@@ -1,5 +1,43 @@
 ------------------------------------------------------------
 TAG
+Tag name: pyLikelihood-01-06-01, operation: add
+Package: pyLikelihood
+User: glastrm  Fri Sep 26 11:30:45 2008
+Files:
+  pyLikelihood/.cvsignore  1.1.1.1
+  pyLikelihood/ChangeLog  1.1.1.293
+  pyLikelihood/pyLikelihoodLib.py  1.3
+  pyLikelihood/SConscript  1.10
+  pyLikelihood/cmt/requirements  1.53
+  pyLikelihood/doc/release.notes  1.50
+  pyLikelihood/doc/Makefile  1.1.1.1
+  pyLikelihood/doc/Doxyfile  1.1.1.1
+  pyLikelihood/doc/images/hippo_plot.png  1.1.1.1
+  pyLikelihood/doc/images/hippo_plot_2.png  1.1
+  pyLikelihood/doc/images/Obs_dialog0.png  1.1.1.1
+  pyLikelihood/doc/images/Obs_dialog1.png  1.1.1.1
+  pyLikelihood/doc/images/Analysis_dialog.png  1.1.1.1
+  pyLikelihood/doc/images/pyROOT_plot.png  1.1.1.1
+  pyLikelihood/python/RootPlot.py  1.4
+  pyLikelihood/python/CompositeLikelihood.py  1.1
+  pyLikelihood/python/SrcAnalysis.py  1.3
+  pyLikelihood/python/UpperLimits.py  1.3
+  pyLikelihood/python/UnbinnedAnalysis.py  1.30
+  pyLikelihood/python/AnalysisBase.py  1.35
+  pyLikelihood/python/SimpleDialog.py  1.1.1.1
+  pyLikelihood/python/SrcModel.py  1.7
+  pyLikelihood/python/package_paths.py  1.5
+  pyLikelihood/python/HippoPlot.py  1.3
+  pyLikelihood/python/test_model.py  1.1
+  pyLikelihood/python/BinnedAnalysis.py  1.23
+  pyLikelihood/src/pyLikelihood.in  1.31
+  pyLikelihood/src/mainpage.h  1.1.1.1
+  pyLikelihood/src/pyLikelihood.i  1.1
+  pyLikelihood/src/pyLikelihood.h  1.1.1.1
+
+    *
+------------------------------------------------------------
+TAG
 Tag name: v1r6p1, operation: mov
 Package: pyLikelihood
 User: glastrm  Fri Sep 26 11:30:40 2008
