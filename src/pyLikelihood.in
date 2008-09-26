@@ -24,6 +24,7 @@
 #include "Likelihood/AppHelpers.h"
 #include "Likelihood/BinnedExposure.h"
 #include "Likelihood/BrokenPowerLaw2.h"
+#include "Likelihood/CompositeLikelihood.h"
 #include "Likelihood/Convolve.h"
 #include "Likelihood/CountsSpectra.h"
 #include "Likelihood/Source.h"
@@ -119,7 +120,7 @@ using optimizers::Exception;
 %include $(OPTIMIZERSROOT)/optimizers/Parameter.h
 %template(ParameterVector) std::vector<optimizers::Parameter>;
 %include $(OPTIMIZERSROOT)/optimizers/Function.h
-%include $(OPTIMIZERSROOT)/optimizers/Statistic.h
+//%include $(OPTIMIZERSROOT)/optimizers/Statistic.h
 %include $(OPTIMIZERSROOT)/optimizers/FunctionTest.h
 %include $(OPTIMIZERSROOT)/optimizers/FunctionFactory.h
 %include $(OPTIMIZERSROOT)/optimizers/Optimizer.h
