@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Thu Sep 25 22:11:40 PDT 2008
+pyLikelihood/python
+
+Added Files:
+	CompositeLikelihood.py 
+Log Message:
+add CompositeLikelihood class
+    *
+------------------------------------------------------------
 User: jchiang  Thu Sep 25 17:28:22 PDT 2008
 pyLikelihood/src
 
