@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Thu Sep 25 23:02:48 PDT 2008
+pyLikelihood/src
+
+Modified Files:
+	pyLikelihood.in 
+Log Message:
+re-expose Statistic class
+    *
+------------------------------------------------------------
 User: jchiang  Thu Sep 25 22:11:40 PDT 2008
 pyLikelihood/python
 
