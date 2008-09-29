@@ -1,5 +1,14 @@
 ------------------------------------------------------------
 User: jchiang  Mon Sep 29 09:53:39 PDT 2008
+pyLikelihood/src
+
+Modified Files:
+	pyLikelihood.in 
+Log Message:
+expose Minuit, NewMinuit; add some introspection to CompositeLikelihood interface
+    *
+------------------------------------------------------------
+User: jchiang  Mon Sep 29 09:53:39 PDT 2008
 pyLikelihood/python
 
 Modified Files:
