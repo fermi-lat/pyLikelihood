@@ -4,7 +4,7 @@ Base clase for Likelihood analysis Python modules.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.34 2008/09/24 16:24:57 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.35 2008/09/26 18:14:52 jchiang Exp $
 #
 
 import numpy as num
@@ -41,10 +41,11 @@ class AnalysisBase(object):
     def __call__(self):
         return -self.logLike.value()
     def fit(self, verbosity=3, tol=None, optimizer=None,
-            covar=False):
+            covar=False, optObject=None):
         if tol is None:
             tol = self.tol
-        errors = self._errors(optimizer, verbosity, tol, covar=covar)
+        errors = self._errors(optimizer, verbosity, tol, covar=covar,
+                              optObject=optObject)
         return -self.logLike.value()
     def optimize(self, verbosity=3, tol=None, optimizer=None):
         self.logLike.syncParams()
@@ -56,14 +57,17 @@ class AnalysisBase(object):
         myOpt = optFactory.create(optimizer, self.logLike)
         myOpt.find_min(verbosity, tol)
     def _errors(self, optimizer=None, verbosity=0, tol=None,
-                useBase=False, covar=False):
+                useBase=False, covar=False, optObject=None):
         self.logLike.syncParams()
         if optimizer is None:
             optimizer = self.optimizer
         if tol is None:
             tol = self.tol
-        optFactory = pyLike.OptimizerFactory_instance()
-        myOpt = optFactory.create(optimizer, self.logLike)
+        if optObject is None:
+            optFactory = pyLike.OptimizerFactory_instance()
+            myOpt = optFactory.create(optimizer, self.logLike)
+        else:
+            myOpt = optObject
         myOpt.find_min(verbosity, tol)
         errors = myOpt.getUncertainty(useBase)
         if covar:
