@@ -6,7 +6,7 @@
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/ASP/pyASP/python/UpperLimits.py,v 1.1 2008/05/13 05:13:13 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/UpperLimits.py,v 1.3 2008/08/29 19:59:34 jchiang Exp $
 #
 import pyLikelihood as pyLike
 import numpy as num
@@ -53,7 +53,7 @@ class UpperLimit(object):
         self.results = []
     def compute(self, emin=100, emax=3e5, delta=2.71/2., 
                 tmpfile='temp_model.xml', fix_src_pars=False,
-                verbose=True, nsigmax=2, npts=5, renorm=False):
+                verbosity=1, nsigmax=2, npts=5, renorm=False):
         source = self.source
         saved_pars = [par.value() for par in self.like.model.params]
 
@@ -83,7 +83,7 @@ class UpperLimit(object):
         if dx == 0:
             dx = x0
         xvals, dlogLike, fluxes = [], [], []
-        if verbose:
+        if verbosity > 1:
             print self.like.model
         #
         # Fit a quadratic to a handful of points
@@ -95,7 +95,7 @@ class UpperLimit(object):
             self.fit(0, renorm=renorm)
             dlogLike.append(self.like() - logLike0)
             fluxes.append(self.like[source].flux(emin, emax))
-            if verbose:
+            if verbosity > 0:
                 print i, x, dlogLike[-1], fluxes[-1]
         yfit = QuadraticFit(xvals, dlogLike)
         #
@@ -111,7 +111,7 @@ class UpperLimit(object):
             fluxes.append(self.like[source].flux(emin, emax))
             yfit.add_pair(x, dlogLike[-1])
             i += 1
-            if verbose:
+            if verbosity > 0:
                 print i, x, dlogLike[-1], fluxes[-1]
         par.setFree(1)
         if fix_src_pars:
@@ -126,7 +126,7 @@ class UpperLimit(object):
               *(fluxes[-1] - fluxes[-2]) + fluxes[-2])
         self.results.append(ULResult(ul, emin, emax, delta,
                                      fluxes, dlogLike, xvals))
-        return ul
+        return ul, xx
     def _resyncPars(self):
         srcNames = self.like.sourceNames()
         for src in srcNames:

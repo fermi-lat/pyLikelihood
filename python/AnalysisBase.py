@@ -4,7 +4,7 @@ Base clase for Likelihood analysis Python modules.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.35 2008/09/26 18:14:52 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.36 2008/09/29 16:53:39 jchiang Exp $
 #
 
 import numpy as num
@@ -23,6 +23,7 @@ class AnalysisBase(object):
         self.maxdist = 20
         self.tol = 1e-5
         self.covariance = None
+        self.tolType = pyLike.RELATIVE
     def _srcDialog(self):
         paramDict = map()
         paramDict['Source Model File'] = Param('file', '*.xml')
@@ -40,6 +41,12 @@ class AnalysisBase(object):
             return plot
     def __call__(self):
         return -self.logLike.value()
+    def setFitTolType(self, tolType):
+        if tolType in (pyLike.RELATIVE, pyLike.ABSOLUTE):
+            self.tolType = tolType
+        else:
+            raise RuntimeError("Invalid fit tolerance type. " +
+                               "Valid values are 0=RELATIVE or 1=ABSOLUTE")
     def fit(self, verbosity=3, tol=None, optimizer=None,
             covar=False, optObject=None):
         if tol is None:
@@ -55,7 +62,7 @@ class AnalysisBase(object):
             tol = self.tol
         optFactory = pyLike.OptimizerFactory_instance()
         myOpt = optFactory.create(optimizer, self.logLike)
-        myOpt.find_min(verbosity, tol)
+        myOpt.find_min(verbosity, tol, self.tolType)
     def _errors(self, optimizer=None, verbosity=0, tol=None,
                 useBase=False, covar=False, optObject=None):
         self.logLike.syncParams()
