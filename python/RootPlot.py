@@ -4,13 +4,13 @@ Standard plotting interface for XY plots with pyROOT backend
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header$
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/RootPlot.py,v 1.5 2008/11/03 16:40:25 jchiang Exp $
 #
 import sys
 from array import array
 import numpy as num
     
-from ROOT import TCanvas, TGraphErrors, TH2F, gStyle
+from ROOT import TCanvas, TGraphErrors, TH2F, gStyle, TPaveText
 
 _ncanvas = -1
 
@@ -44,7 +44,7 @@ class RootPlot(object):
         self._drawAxes(xrange, yrange)
         self._setTitles(xtitle, ytitle, MainTitle)
         self._drawData(self.graphs[0], symbol, color)
-
+        self._textBoxes = []
     def _createCanvas(self, xlog, ylog):
         global _ncanvas
         _ncanvas += 1
@@ -114,6 +114,11 @@ class RootPlot(object):
         self.graphs.append(TGraphErrors(npts, xx, yy, dxx, dyy))
         self.canvas.cd()
         self._drawData(self.graphs[-1], symbol, color)
+    def addText(self, text, x1, y1, x2, y2):
+        pave = TPaveText(x1, y1, x2, y2)
+        textObj = pave.AddText(text)
+        self._textBoxes.append((pave, textObj))
+        pave.Draw()
 
 if __name__ == '__main__':
     x = num.arange(1, 50)
