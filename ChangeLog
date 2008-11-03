@@ -1,4 +1,14 @@
 ------------------------------------------------------------
+User: jchiang  Mon Nov  3 09:32:27 PST 2008
+pyLikelihood/python
+
+Modified Files:
+	RootPlot.py 
+Log Message:
+add addText(...) method to RootPlot.py
+
+    *
+------------------------------------------------------------
 User: jchiang  Mon Nov  3 08:40:25 PST 2008
 pyLikelihood/python
 
