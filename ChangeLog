@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Wed Nov  5 10:39:33 PST 2008
+pyLikelihood/src
+
+Modified Files:
+	pyLikelihood.in 
+Log Message:
+add pyLikelihood/Aeff.h and enableFPE.h to clean up pyLikelihood.in
+    *
+------------------------------------------------------------
 User: jchiang  Wed Nov  5 10:39:32 PST 2008
 pyLikelihood/pyLikelihood
 
