@@ -3,7 +3,7 @@ version v1r8
 
 author James Chiang <jchiang@slac.stanford.edu>
 
-# $Id: requirements,v 1.54 2008/09/29 19:35:00 jchiang Exp $
+# $Id: requirements,v 1.55 2008/10/29 19:54:33 jchiang Exp $
 
 use Likelihood v*
 use SwigPolicy v*
@@ -17,4 +17,5 @@ path_append PYTHONPATH $(PYLIKELIHOODROOT)/python
 path_remove PYTHONPATH ROOT
 path_prepend PYTHONPATH $(ROOTSYS)/lib
 
+apply_pattern package_include
 apply_pattern swig_module name="pyLikelihood"
