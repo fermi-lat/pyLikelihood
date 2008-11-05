@@ -1,7 +1,9 @@
 // -*- mode: c++ -*-
 %module pyLikelihood
 %{
-//#include <fenv.h>
+#ifdef TRAP_FPE
+#include <fenv.h>
+#endif
 #include "st_app/AppParGroup.h"
 #include "st_app/StApp.h"
 #include "st_stream/st_stream.h"
@@ -31,6 +33,7 @@
 #include "Likelihood/CountsSpectra.h"
 #include "Likelihood/Source.h"
 #include "Likelihood/DiffuseSource.h"
+#include "Likelihood/DMFitFunction.h"
 #include "Likelihood/EquinoxRotation.h"
 #include "Likelihood/Event.h"
 #include "Likelihood/EventContainer.h"
@@ -66,6 +69,8 @@
 #include "Likelihood/CountsMap.h"
 #include "Likelihood/Observation.h"
 #include "Likelihood/WcsMap.h"
+#include "pyLikelihood/Aeff.h"
+#include "pyLikelihood/enableFPE.h"
 #include <vector>
 #include <string>
 #include <exception>
@@ -153,6 +158,7 @@ using optimizers::Exception;
 %include $(LIKELIHOODROOT)/Likelihood/AppHelpers.h
 //%include $(LIKELIHOODROOT)/Likelihood/SourceModel.h
 %include $(LIKELIHOODROOT)/Likelihood/DiffuseSource.h
+%include $(LIKELIHOODROOT)/Likelihood/DMFitFunction.h
 %include $(LIKELIHOODROOT)/Likelihood/Pixel.h
 %template (PixelVector) std::vector<Likelihood::Pixel>;
 %include $(LIKELIHOODROOT)/Likelihood/CountsMap.h
@@ -175,11 +181,13 @@ using optimizers::Exception;
 %include $(LIKELIHOODROOT)/Likelihood/MapCubeFunction.h
 %include $(LIKELIHOODROOT)/Likelihood/WcsMap.h
 %include $(LIKELIHOODROOT)/Likelihood/CompositeLikelihood.h
-// %extend Likelihood::LogLike {
-//    static void enableFPE() {
-//       feenableexcept(FE_INVALID | FE_DIVBYZERO | FE_OVERFLOW);
-//    }
-// }
+%include $(PYLIKELIHOODROOT)/pyLikelihood/Aeff.h
+%include $(PYLIKELIHOODROOT)/pyLikelihood/enableFPE.h
+%extend Likelihood::LogLike {
+   static void enableFPE() {
+      pyLikelihood::enableFPE();
+   }
+}
 %extend st_facilities::Util {
    static std::vector<std::string> 
       resolveFitsFiles(const std::string & infile) {
@@ -241,6 +249,9 @@ using optimizers::Exception;
                              false);
       myFuncFactory->addFunc("PLSuperExpCutoff",
                              new Likelihood::PowerLawSuperExpCutoff(),
+                             false);
+      myFuncFactory->addFunc("DMFitFunction",
+                             new Likelihood::DMFitFunction(),
                              false);
       return myFuncFactory;
    }
