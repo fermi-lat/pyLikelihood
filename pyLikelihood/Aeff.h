@@ -3,7 +3,7 @@
  * @brief Interface to effective area.
  * @author J. Chiang
  *
- * $Header$
+ * $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/pyLikelihood/Aeff.h,v 1.1 2008/11/05 18:39:32 jchiang Exp $
  */
 
 #ifndef pyLikelihood_Aeff_h
@@ -52,4 +52,4 @@ private:
 
 } // namespace pyLikelihood 
 
-#endif pyLikelihood_Aeff_h
+#endif // pyLikelihood_Aeff_h

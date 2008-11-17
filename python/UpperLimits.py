@@ -6,7 +6,7 @@
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/UpperLimits.py,v 1.3 2008/08/29 19:59:34 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/UpperLimits.py,v 1.4 2008/10/29 19:52:07 jchiang Exp $
 #
 import pyLikelihood as pyLike
 import numpy as num
@@ -56,6 +56,7 @@ class UpperLimit(object):
                 verbosity=1, nsigmax=2, npts=5, renorm=False):
         source = self.source
         saved_pars = [par.value() for par in self.like.model.params]
+        saved_errors = [par.error() for par in self.like.model.params]
 
         # Fix the normalization parameter for the scan.
         src_spectrum = self.like[source].funcs['Spectrum']
@@ -78,10 +79,8 @@ class UpperLimit(object):
 
         logLike0 = self.like()
         x0 = par.getValue()
-        dx = par.error()
+        dx = self._find_dx(par, nsigmax, renorm, logLike0)
 
-        if dx == 0:
-            dx = x0
         xvals, dlogLike, fluxes = [], [], []
         if verbosity > 1:
             print self.like.model
@@ -117,8 +116,10 @@ class UpperLimit(object):
         if fix_src_pars:
             for item in freePars:
                 src_spectrum.parameter(item.getName()).setFree(1)
-        for value, param in zip(saved_pars, self.like.model.params):
+        for value, error, param in zip(saved_pars, saved_errors, 
+                                       self.like.model.params):
             param.setValue(value)
+            param.setError(error)
         self._resyncPars()
         xx = ((delta - dlogLike[-2])/(dlogLike[-1] - dlogLike[-2])
               *(xvals[-1] - xvals[-2]) + xvals[-2])
@@ -127,6 +128,21 @@ class UpperLimit(object):
         self.results.append(ULResult(ul, emin, emax, delta,
                                      fluxes, dlogLike, xvals))
         return ul, xx
+    def _find_dx(self, par, nsigmax, renorm, logLike0, niter=3, factor=2):
+        x0 = par.getValue()
+        dx = par.error()
+        if dx == 0:
+            dx = abs(par.getValue())
+        for i in range(niter):
+            par.setValue(x0 + dx*nsigmax)
+            self.like.logLike.syncSrcParams(self.source)
+            self.fit(0, renorm=renorm)
+            dlogLike = self.like() - logLike0
+            #print "_find_dx:", dx, par.getValue(), dlogLike
+            if dlogLike > 0:
+                break
+            dx = min(abs(x0), factor*dx)
+        return dx
     def _resyncPars(self):
         srcNames = self.like.sourceNames()
         for src in srcNames:
