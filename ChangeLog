@@ -1,5 +1,14 @@
 ------------------------------------------------------------
 User: jchiang  Mon Nov 17 11:08:54 PST 2008
+pyLikelihood/python
+
+Modified Files:
+	UpperLimits.py 
+Log Message:
+restore errors as well as parameter values after performing upper limit calculation; implement Jean's suggestion for increasing step size
+    *
+------------------------------------------------------------
+User: jchiang  Mon Nov 17 11:08:54 PST 2008
 pyLikelihood/pyLikelihood
 
 Modified Files:
