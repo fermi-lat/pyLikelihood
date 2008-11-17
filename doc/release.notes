@@ -2,9 +2,13 @@
    @file release.notes
    @brief package pyLikelihood
    @author J. Chiang <jchiang@slac.stanford.edu>
-   $Id: release.notes,v 1.52 2008/10/29 19:54:33 jchiang Exp $
+   $Id: release.notes,v 1.53 2008/11/05 18:41:19 jchiang Exp $
 
    @verbatim
+   v1r9p1 17-Nov-08   JC    in UpperLimits.py, restore parameter errors as 
+                            well as values after computing upper limits;
+                            implement Jean's suggestion for finding an initial
+                            step size.
    v1r9   05-Nov-08   JC    add DMFitFunction; add Aeff class for bootstrap;
                             add enableFPE for posix systems
    v1r8   29-Oct-08   JC    enable verbosity levels and output normalization    
