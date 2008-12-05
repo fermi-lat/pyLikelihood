@@ -2,9 +2,12 @@
    @file release.notes
    @brief package pyLikelihood
    @author J. Chiang <jchiang@slac.stanford.edu>
-   $Id: release.notes,v 1.53 2008/11/05 18:41:19 jchiang Exp $
+   $Id: release.notes,v 1.54 2008/11/17 19:10:37 jchiang Exp $
 
    @verbatim
+   v1r9p2 05-Dec-08   JC    provide plotSource(srcName, color) method to allow
+                            users to replot the model counts spectrum in a
+                            desired color
    v1r9p1 17-Nov-08   JC    in UpperLimits.py, restore parameter errors as 
                             well as values after computing upper limits;
                             implement Jean's suggestion for finding an initial
