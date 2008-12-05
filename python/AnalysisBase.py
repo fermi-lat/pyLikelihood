@@ -4,7 +4,7 @@ Base clase for Likelihood analysis Python modules.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.36 2008/09/29 16:53:39 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.37 2008/10/29 19:52:07 jchiang Exp $
 #
 
 import numpy as num
@@ -285,6 +285,8 @@ class AnalysisBase(object):
                                              ytitle='counts spectrum',
                                              color=color, symbol='line')
         return model_counts
+    def plotSource(self, srcName, color='black'):
+        self._plotSource(srcName, color)
     def __repr__(self):
         return self._inputs()
     def __getitem__(self, name):
