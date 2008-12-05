@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Fri Dec  5 08:23:24 PST 2008
+pyLikelihood/python
+
+Modified Files:
+	AnalysisBase.py 
+Log Message:
+provide public method for replotting model counts spectrum for a given source in a specified color
+    *
+------------------------------------------------------------
 TAG
 Tag name: ScienceTools-09-09-00, operation: add
 Package: pyLikelihood
