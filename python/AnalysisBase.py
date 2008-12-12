@@ -4,7 +4,7 @@ Base clase for Likelihood analysis Python modules.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.37 2008/10/29 19:52:07 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.38 2008/12/05 16:23:24 jchiang Exp $
 #
 
 import numpy as num
@@ -229,7 +229,7 @@ class AnalysisBase(object):
         elif _plotter_package == 'hippo':
             from HippoPlot import HippoPlot
             self.plotter = HippoPlot
-    def plot(self, oplot=0, color=None):
+    def plot(self, oplot=0, color=None, omit=()):
         try:
             self._importPlotter()
         except ImportError:
@@ -247,11 +247,13 @@ class AnalysisBase(object):
         total_counts = None
         for src in srcNames:
             if total_counts is None:
-                total_counts = self._plotSource(src, color=color)
+                total_counts = self._plotSource(src, color=color, 
+                                                show=(src not in omit))
             else:
-                total_counts += self._plotSource(src, color=color)
+                total_counts += self._plotSource(src, color=color, 
+                                                 show=(src not in omit))
         self.spectralPlot.overlay(self.e_vals, total_counts, color=color,
-                                  symbol='line')
+                                  symbol='line' )
         self._plotResiduals(total_counts, oplot=oplot, color=color)
     def _plotResiduals(self, model, oplot=0, color='black'):
         resid = (self.nobs - model)/model
@@ -273,20 +275,23 @@ class AnalysisBase(object):
                                xlog=1, ylog=1, xtitle='Energy (MeV)',
                                ytitle='counts / bin')
         return my_plot
-    def _plotSource(self, srcName, color='black'):
+    def _plotSource(self, srcName, color='black', symbol='line', show=True):
         energies = self.e_vals
+
         model_counts = self._srcCnts(srcName)
-        try:
-            self.spectralPlot.overlay(energies, model_counts, color=color,
-                                      symbol='line')
-        except AttributeError:
-            self.spectralPlot = self.plotter(energies, model_counts, xlog=1,
-                                             ylog=1, xtitle='Energy (MeV)',
-                                             ytitle='counts spectrum',
-                                             color=color, symbol='line')
+
+        if show:
+            try:
+                self.spectralPlot.overlay(energies, model_counts, color=color,
+                                          symbol=symbol)
+            except AttributeError:
+                self.spectralPlot = self.plotter(energies, model_counts, xlog=1,
+                                                 ylog=1, xtitle='Energy (MeV)',
+                                                 ytitle='counts spectrum',
+                                                 color=color, symbol=symbol)
         return model_counts
-    def plotSource(self, srcName, color='black'):
-        self._plotSource(srcName, color)
+    def plotSource(self, srcName, color='black',symbol='line'):
+        self._plotSource(srcName, color, symbol)
     def __repr__(self):
         return self._inputs()
     def __getitem__(self, name):

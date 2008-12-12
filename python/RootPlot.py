@@ -4,13 +4,11 @@ Standard plotting interface for XY plots with pyROOT backend
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/RootPlot.py,v 1.5 2008/11/03 16:40:25 jchiang Exp $
-#
 import sys
 from array import array
 import numpy as num
     
-from ROOT import TCanvas, TGraphErrors, TH2F, gStyle, TPaveText
+from ROOT import TCanvas, TGraphErrors, TH2F, gStyle, TPaveText, TLegend
 
 _ncanvas = -1
 
@@ -33,7 +31,10 @@ _colors = {'white' : 0,
            'magenta' : 6,
            'cyan' : 7}
 
+gStyle.SetFillColor(0)
 gStyle.SetPadLeftMargin(.20)
+gStyle.SetPadBottomMargin(.20)
+gStyle.SetCanvasColor(10)
         
 class RootPlot(object):
     def __init__(self, x, y, dx=None, dy=None, xlog=0, ylog=0,
@@ -72,6 +73,7 @@ class RootPlot(object):
         self.hist.GetXaxis().CenterTitle()
         self.hist.GetYaxis().SetTitle(ytitle)
         self.hist.GetYaxis().CenterTitle()
+        self.hist.GetXaxis().SetTitleOffset(1.5)
         self.hist.GetYaxis().SetTitleOffset(2.)
         self.hist.SetTitle(MainTitle)
     def _drawData(self, graph, key, color):
