@@ -4,9 +4,10 @@ Base clase for Likelihood analysis Python modules.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.38 2008/12/05 16:23:24 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.39 2008/12/12 17:09:37 jchiang Exp $
 #
 
+import sys
 import numpy as num
 import pyLikelihood as pyLike
 from SrcModel import SourceModel
@@ -23,6 +24,7 @@ class AnalysisBase(object):
         self.maxdist = 20
         self.tol = 1e-5
         self.covariance = None
+        self.covar_is_current = False
         self.tolType = pyLike.RELATIVE
     def _srcDialog(self):
         paramDict = map()
@@ -79,8 +81,9 @@ class AnalysisBase(object):
         errors = myOpt.getUncertainty(useBase)
         if covar:
             self.covariance = myOpt.covarianceMatrix()
+            self.covar_is_current = True
         else:
-            self.covariance = None
+            self.covar_is_current = False
         j = 0
         for i in range(len(self.model.params)):
             if self.model[i].isFree():
@@ -137,6 +140,9 @@ class AnalysisBase(object):
         #
         if self.covariance is None:
             raise RuntimeError("Covariance matrix has not been computed.")
+        if not self.covar_is_current:
+            sys.stderr.write("Warning: covariance matrix has not been " +
+                             "updated in the most recent fit.\n")
         covar = num.array(self.covariance)
         if len(covar) != len(par_index_map):
             raise RuntimeError("Covariance matrix size does not match the " +

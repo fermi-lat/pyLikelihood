@@ -6,7 +6,7 @@
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/UpperLimits.py,v 1.4 2008/10/29 19:52:07 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/UpperLimits.py,v 1.5 2008/11/17 19:08:54 jchiang Exp $
 #
 import pyLikelihood as pyLike
 import numpy as num
@@ -54,6 +54,8 @@ class UpperLimit(object):
     def compute(self, emin=100, emax=3e5, delta=2.71/2., 
                 tmpfile='temp_model.xml', fix_src_pars=False,
                 verbosity=1, nsigmax=2, npts=5, renorm=False):
+        # Store the value of the covariance flag
+        covar_is_current = self.like.covar_is_current
         source = self.source
         saved_pars = [par.value() for par in self.like.model.params]
         saved_errors = [par.error() for par in self.like.model.params]
@@ -127,6 +129,8 @@ class UpperLimit(object):
               *(fluxes[-1] - fluxes[-2]) + fluxes[-2])
         self.results.append(ULResult(ul, emin, emax, delta,
                                      fluxes, dlogLike, xvals))
+        # Restore value of covariance flag
+        self.like.covar_is_current = covar_is_current
         return ul, xx
     def _find_dx(self, par, nsigmax, renorm, logLike0, niter=3, factor=2):
         x0 = par.getValue()
