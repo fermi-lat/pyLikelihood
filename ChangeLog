@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Thu Jan 15 13:58:40 PST 2009
+pyLikelihood/python
+
+Modified Files:
+	AnalysisBase.py UpperLimits.py 
+Log Message:
+do not remove covariance matrix if fit(covar=False) is called, but set flag indicating status instead.  Preserve flag value when UpperLimit.compute is called
+    *
+------------------------------------------------------------
 TAG
 Tag name: ScienceTools-09-09-00, operation: add
 Package: pyLikelihood
