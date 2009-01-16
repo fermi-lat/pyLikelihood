@@ -6,7 +6,7 @@
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/UpperLimits.py,v 1.5 2008/11/17 19:08:54 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/UpperLimits.py,v 1.6 2009/01/15 21:58:40 jchiang Exp $
 #
 import pyLikelihood as pyLike
 import numpy as num
@@ -53,7 +53,8 @@ class UpperLimit(object):
         self.results = []
     def compute(self, emin=100, emax=3e5, delta=2.71/2., 
                 tmpfile='temp_model.xml', fix_src_pars=False,
-                verbosity=1, nsigmax=2, npts=5, renorm=False):
+                verbosity=1, nsigmax=2, npts=5, renorm=False,
+                mindelta=1e-2):
         # Store the value of the covariance flag
         covar_is_current = self.like.covar_is_current
         source = self.source
@@ -81,7 +82,7 @@ class UpperLimit(object):
 
         logLike0 = self.like()
         x0 = par.getValue()
-        dx = self._find_dx(par, nsigmax, renorm, logLike0)
+        dx = self._find_dx(par, nsigmax, renorm, logLike0, mindelta=mindelta)
 
         xvals, dlogLike, fluxes = [], [], []
         if verbosity > 1:
@@ -132,7 +133,14 @@ class UpperLimit(object):
         # Restore value of covariance flag
         self.like.covar_is_current = covar_is_current
         return ul, xx
-    def _find_dx(self, par, nsigmax, renorm, logLike0, niter=3, factor=2):
+    def _find_dx(self, par, nsigmax, renorm, logLike0, niter=3, factor=2,
+                 mindelta=1e-2):
+        """Find an initial dx such that the change in -log-likelihood 
+        evaluated at x0 + dx (dlogLike) is larger than mindelta.  A very 
+        small or even negative value can occur if x0 is not right
+        at the local minimum because of a large value of convergence
+        tolerance.
+        """
         x0 = par.getValue()
         dx = par.error()
         if dx == 0:
@@ -143,7 +151,7 @@ class UpperLimit(object):
             self.fit(0, renorm=renorm)
             dlogLike = self.like() - logLike0
             #print "_find_dx:", dx, par.getValue(), dlogLike
-            if dlogLike > 0:
+            if dlogLike > mindelta:
                 break
             dx = min(abs(x0), factor*dx)
         return dx
