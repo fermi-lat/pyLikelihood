@@ -2,9 +2,11 @@
    @file release.notes
    @brief package pyLikelihood
    @author J. Chiang <jchiang@slac.stanford.edu>
-   $Id: release.notes,v 1.57 2009/01/15 22:06:21 jchiang Exp $
+   $Id: release.notes,v 1.58 2009/01/16 22:21:59 jchiang Exp $
 
    @verbatim
+   v1r9p6 26-Jan-09   JC    Use AppHelpers::addFunctionPrototypes instead of
+                            adding each class explicitly
    v1r9p5 16-Jan-09   JC    Use mindelta in initial dx estimate for 
                             UpperLimit.compute.
    v1r9p4 15-Jan-09   JC    Save covariance matrix even if not updated in calls
