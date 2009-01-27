@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Mon Jan 26 16:26:03 PST 2009
+pyLikelihood/src
+
+Modified Files:
+	pyLikelihood.in 
+Log Message:
+use static function in AppHelpers to have central implementation of code to load Function prototypes
+    *
+------------------------------------------------------------
 TAG
 Tag name: pyLikelihood-01-09-05, operation: add
 Package: pyLikelihood
