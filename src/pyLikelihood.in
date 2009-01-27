@@ -222,37 +222,7 @@ using optimizers::Exception;
    static optimizers::FunctionFactory * funcFactory() {
       optimizers::FunctionFactory * myFuncFactory 
          = new optimizers::FunctionFactory;
-      myFuncFactory->addFunc("SkyDirFunction", 
-                             new Likelihood::SkyDirFunction(), false);
-      myFuncFactory->addFunc("SpatialMap", new Likelihood::SpatialMap(), 
-                             false);
-      myFuncFactory->addFunc("MapCubeFunction",
-                             new Likelihood::MapCubeFunction(), 
-                             false);
-      myFuncFactory->addFunc("PowerLaw2",
-                             new Likelihood::PowerLaw2(), 
-                             false);
-      myFuncFactory->addFunc("BrokenPowerLaw2",
-                             new Likelihood::BrokenPowerLaw2(), 
-                             false);
-      myFuncFactory->addFunc("LogParabola",
-                             new Likelihood::LogParabola(), 
-                             false);
-      myFuncFactory->addFunc("FileFunction",
-                             new Likelihood::FileFunction(), 
-                             false);
-      myFuncFactory->addFunc("ExpCutoff",
-                             new Likelihood::ExpCutoff(), 
-                             false);
-      myFuncFactory->addFunc("BPLExpCutoff",
-                             new Likelihood::BrokenPowerLawExpCutoff(),
-                             false);
-      myFuncFactory->addFunc("PLSuperExpCutoff",
-                             new Likelihood::PowerLawSuperExpCutoff(),
-                             false);
-      myFuncFactory->addFunc("DMFitFunction",
-                             new Likelihood::DMFitFunction(),
-                             false);
+      Likelihood::AppHelpers::addFunctionPrototypes(myFuncFactory);
       return myFuncFactory;
    }
 }
