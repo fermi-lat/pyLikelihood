@@ -1,6 +1,6 @@
 # -*- python -*-
 #
-# $Id: SConscript,v 1.18 2009/01/16 22:30:53 glastrm Exp $
+# $Id: SConscript,v 1.19 2009/01/27 01:31:25 glastrm Exp $
 # Authors: James Chiang <jchiang@slac.stanford.edu>
 # Version: pyLikelihood-01-09-06
 
@@ -11,9 +11,9 @@ libEnv = baseEnv.Clone()
 
 libEnv.Tool('pyLikelihoodLib', depsOnly = 1)
 pyLikelihoodStaticLib = libEnv.StaticLibrary('_pyLikelihood', 
-                                             'src/pyLikelihood.i')
+                                             'src/pyLikelihood.i', LIBPREFIX='')
 pyLikelihoodSharedLib = libEnv.SharedLibrary('_pyLikelihood', 
-                                             'src/pyLikelihood.i')
+                                             'src/pyLikelihood.i', SHLIBPREFIX='')
 
 progEnv.Tool('registerObjects', package = 'pyLikelihood', 
              libraries = [pyLikelihoodStaticLib, pyLikelihoodSharedLib], 
