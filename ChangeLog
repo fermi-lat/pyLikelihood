@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Tue Feb 17 18:04:30 PST 2009
+pyLikelihood/src
+
+Modified Files:
+	pyLikelihood.in 
+Log Message:
+provide access to DiffRespIntegrand
+    *
+------------------------------------------------------------
 User: glastrm  Fri Feb  6 09:01:01 PST 2009
 ScienceTools-scons/pyLikelihood
 
