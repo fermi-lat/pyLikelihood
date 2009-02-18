@@ -32,6 +32,7 @@
 #include "Likelihood/Convolve.h"
 #include "Likelihood/CountsSpectra.h"
 #include "Likelihood/Source.h"
+#include "Likelihood/DiffRespIntegrand.h"
 #include "Likelihood/DiffuseSource.h"
 #include "Likelihood/DMFitFunction.h"
 #include "Likelihood/EquinoxRotation.h"
@@ -118,6 +119,7 @@ using optimizers::Exception;
 %include $(ASTROROOT)/astro/SkyProj.h
 %include $(ASTROROOT)/astro/SkyDir.h
 %template(SkyDirVector) std::vector<astro::SkyDir>;
+%template(SkyDirPair) std::pair<astro::SkyDir, astro::SkyDir>;
 %feature("autodoc", "1");
 %include $(HEALPIXROOT)/healpix/CosineBinner.h
 %include $(MAP_TOOLSROOT)/map_tools/Exposure.h
@@ -158,6 +160,7 @@ using optimizers::Exception;
 %include $(LIKELIHOODROOT)/Likelihood/AppHelpers.h
 //%include $(LIKELIHOODROOT)/Likelihood/SourceModel.h
 %include $(LIKELIHOODROOT)/Likelihood/DiffuseSource.h
+%include $(LIKELIHOODROOT)/Likelihood/DiffRespIntegrand.h
 %include $(LIKELIHOODROOT)/Likelihood/DMFitFunction.h
 %include $(LIKELIHOODROOT)/Likelihood/Pixel.h
 %template (PixelVector) std::vector<Likelihood::Pixel>;
@@ -377,6 +380,14 @@ using optimizers::Exception;
    }
 }
 
+%extend Likelihood::DiffRespIntegrand {
+   static astro::SkyDir srcDir(double mu, double phi, 
+                               const Likelihood::EquinoxRotation eqRot) {
+      astro::SkyDir srcDir;
+      Likelihood::DiffRespIntegrand::getSrcDir(mu, phi, eqRot, srcDir);
+      return srcDir;
+   }
+}
 %extend st_app::StApp {
    static st_app::AppParGroup parGroup(const std::string & appName) {
       char * argv[] = {"dummy_app"};
