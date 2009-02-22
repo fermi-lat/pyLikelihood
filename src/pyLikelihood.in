@@ -44,6 +44,7 @@
 #include "Likelihood/ExposureMap.h"
 #include "Likelihood/FileFunction.h"
 #include "Likelihood/LogParabola.h"
+#include "Likelihood/MapBase.h"
 #include "Likelihood/MapCubeFunction.h"
 #include "Likelihood/MeanPsf.h"
 #include "Likelihood/Npred.h"
@@ -159,6 +160,7 @@ using optimizers::Exception;
 %include $(LIKELIHOODROOT)/Likelihood/BinnedExposure.h
 %include $(LIKELIHOODROOT)/Likelihood/AppHelpers.h
 //%include $(LIKELIHOODROOT)/Likelihood/SourceModel.h
+%include $(LIKELIHOODROOT)/Likelihood/MapBase.h
 %include $(LIKELIHOODROOT)/Likelihood/DiffuseSource.h
 %include $(LIKELIHOODROOT)/Likelihood/DiffRespIntegrand.h
 %include $(LIKELIHOODROOT)/Likelihood/DMFitFunction.h
@@ -229,6 +231,16 @@ using optimizers::Exception;
       return myFuncFactory;
    }
 }
+%extend Likelihood::SpatialMap {
+   static Likelihood::SpatialMap * cast(optimizers::Function * func) {
+      Likelihood::SpatialMap * spatial_map = 
+         dynamic_cast<Likelihood::SpatialMap *>(func);
+      if (spatial_map == 0) {
+         throw std::runtime_error("Cannot cast to a SpatialMap.");
+      }
+      return spatial_map;
+   }
+}
 %extend Likelihood::FileFunction {
    static Likelihood::FileFunction * cast(optimizers::Function * func) {
       Likelihood::FileFunction * file_func = 
@@ -253,22 +265,22 @@ using optimizers::Exception;
    double flux() {
       Likelihood::PointSource * ptsrc = 
          dynamic_cast<Likelihood::PointSource *>(self);
-      if (ptsrc == 0) {
-         std::ostringstream message;
-         message << "Integrated flux is not available for this source.";
-         throw std::runtime_error(message.str());
+      if (ptsrc != 0) {
+         return ptsrc->flux();
       }
-      return ptsrc->flux();
+      Likelihood::DiffuseSource * diffsrc = 
+         dynamic_cast<Likelihood::DiffuseSource *>(self);
+      return diffsrc->flux();
    }
    double flux(double emin, double emax, size_t npts=100) {
       Likelihood::PointSource * ptsrc = 
          dynamic_cast<Likelihood::PointSource *>(self);
-      if (ptsrc == 0) {
-         std::ostringstream message;
-         message << "Integrated flux is not available for this source.";
-         throw std::runtime_error(message.str());
+      if (ptsrc != 0) {
+         return ptsrc->flux(emin, emax, npts);
       }
-      return ptsrc->flux(emin, emax, npts);
+      Likelihood::DiffuseSource * diffsrc = 
+         dynamic_cast<Likelihood::DiffuseSource *>(self);
+      return diffsrc->flux(emin, emax, npts);
    }
 }
 %extend Likelihood::DiffuseSource {
