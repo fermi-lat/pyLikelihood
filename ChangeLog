@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Sun Feb 22 23:38:31 PST 2009
+pyLikelihood/cmt
+
+Modified Files:
+	requirements 
+Log Message:
+remove point source restriction from UpperLimits.py; tagging v1r10p1
+    *
+------------------------------------------------------------
 TAG
 Tag name: pyLikelihood-01-10-00, operation: add
 Package: pyLikelihood
