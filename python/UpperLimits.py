@@ -6,7 +6,7 @@
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/UpperLimits.py,v 1.6 2009/01/15 21:58:40 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/UpperLimits.py,v 1.7 2009/01/16 22:20:29 jchiang Exp $
 #
 import pyLikelihood as pyLike
 import numpy as num
@@ -203,8 +203,7 @@ class UpperLimits(dict):
         dict.__init__(self)
         self.like = like
         for srcName in like.sourceNames():
-            if self.like.logLike.getSource(srcName).getType() == "Point":
-                self[srcName] = UpperLimit(like, srcName)
+            self[srcName] = UpperLimit(like, srcName)
 
 if __name__ == '__main__':
     import hippoplotter as plot
