@@ -4,7 +4,7 @@ Base clase for Likelihood analysis Python modules.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.40 2009/01/15 21:58:40 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.41 2009/02/22 20:22:36 jchiang Exp $
 #
 
 import sys
@@ -117,9 +117,7 @@ class AnalysisBase(object):
         return Ts_value
     def flux(self, srcName, emin=100, emax=3e5, energyFlux=False):
         if energyFlux:
-#            ptsrc = pyLike.PointSource_cast(self[srcName].src)
-            ptsrc = self[srcName].src
-            return ptsrc.energyFlux(emin, emax)
+            return self[srcName].energyFlux(emin, emax)
         else:
             return self[srcName].flux(emin, emax)
     def energyFlux(self, srcName, emin=100, emax=3e5):
@@ -157,13 +155,12 @@ class AnalysisBase(object):
             my_covar.append([covar[ix][par_index_map[ypar]] for ypar in pars])
         my_covar = num.array(my_covar)
 
-#        ptsrc = pyLike.PointSource_cast(self[srcName].src)
-        ptsrc = self[srcName].src
         if energyFlux:
-            partials = num.array([ptsrc.energyFluxDeriv(x, emin, emax, npts) 
+            partials = num.array([self[srcName].energyFluxDeriv(x, emin,
+                                                                emax, npts) 
                                   for x in srcpars])
         else:
-            partials = num.array([ptsrc.fluxDeriv(x, emin, emax, npts) 
+            partials = num.array([self[srcName].fluxDeriv(x, emin, emax, npts) 
                                   for x in srcpars])
 
         return num.sqrt(num.dot(partials, num.dot(my_covar, partials)))

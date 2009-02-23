@@ -2,9 +2,10 @@
    @file release.notes
    @brief package pyLikelihood
    @author J. Chiang <jchiang@slac.stanford.edu>
-   $Id: release.notes,v 1.58 2009/01/16 22:21:59 jchiang Exp $
+   $Id: release.notes,v 1.59 2009/01/27 00:28:07 jchiang Exp $
 
    @verbatim
+   v1r10  22-Feb-09   JC    enable flux calculations for diffuse sources
    v1r9p6 26-Jan-09   JC    Use AppHelpers::addFunctionPrototypes instead of
                             adding each class explicitly
    v1r9p5 16-Jan-09   JC    Use mindelta in initial dx estimate for 
