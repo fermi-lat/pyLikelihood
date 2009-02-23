@@ -1,5 +1,14 @@
 ------------------------------------------------------------
 User: jchiang  Sun Feb 22 23:38:31 PST 2009
+pyLikelihood/python
+
+Modified Files:
+	UpperLimits.py 
+Log Message:
+remove point source restriction from UpperLimits.py; tagging v1r10p1
+    *
+------------------------------------------------------------
+User: jchiang  Sun Feb 22 23:38:31 PST 2009
 pyLikelihood/doc
 
 Modified Files:
