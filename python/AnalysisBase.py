@@ -4,7 +4,7 @@ Base clase for Likelihood analysis Python modules.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.41 2009/02/22 20:22:36 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.42 2009/02/23 01:18:19 jchiang Exp $
 #
 
 import sys
@@ -90,7 +90,16 @@ class AnalysisBase(object):
                 self.model[i].setError(errors[j])
                 j += 1
         return errors
+    def getExtraSourceAttributes(self):
+        source_attributes = {}
+        for src in self.model.srcNames:
+            source_attributes[src] = {}
+            for key in self.model[src].__dict__.keys():
+                if key not in ('funcs', 'src'):
+                    source_attributes[src][key] = self.model[src].__dict__[key]
+        return source_attributes
     def Ts(self, srcName, reoptimize=False, approx=True, tol=1e-5):
+        source_attributes = self.getExtraSourceAttributes()
         self.logLike.syncParams()
         src = self.logLike.getSource(srcName)
         freeParams = pyLike.DoubleVector()
@@ -114,6 +123,11 @@ class AnalysisBase(object):
         self.logLike.addSource(self._ts_src)
         self.logLike.setFreeParamValues(freeParams)
         self.model = SourceModel(self.logLike)
+        #
+        # reset the extra source attributes, if any
+        #
+        for src in source_attributes:
+            self.model[src].__dict__.update(source_attributes[src])
         return Ts_value
     def flux(self, srcName, emin=100, emax=3e5, energyFlux=False):
         if energyFlux:
