@@ -2,9 +2,11 @@
    @file release.notes
    @brief package pyLikelihood
    @author J. Chiang <jchiang@slac.stanford.edu>
-   $Id: release.notes,v 1.60 2009/02/23 01:18:19 jchiang Exp $
+   $Id: release.notes,v 1.61 2009/02/23 07:38:31 jchiang Exp $
 
    @verbatim
+   v1r11  09-Mar-09   JC    save user-supplied attributes for sources in
+                            AnalysisBase.Ts
    v1r10p1 22-Feb-09  JC    remove point source restriction from UpperLimits.py
    v1r10  22-Feb-09   JC    enable flux calculations for diffuse sources
    v1r9p6 26-Jan-09   JC    Use AppHelpers::addFunctionPrototypes instead of
