@@ -1,5 +1,14 @@
 ------------------------------------------------------------
 User: jchiang  Tue Mar 17 13:15:04 PDT 2009
+pyLikelihood/python
+
+Modified Files:
+	UpperLimits.py 
+Log Message:
+call LogLike::saveCurrentFit() after fixing normalization parameter for likelhiood scan; tagging v1r11p1
+    *
+------------------------------------------------------------
+User: jchiang  Tue Mar 17 13:15:04 PDT 2009
 pyLikelihood/doc
 
 Modified Files:
