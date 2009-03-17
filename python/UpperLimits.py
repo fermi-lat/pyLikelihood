@@ -6,7 +6,7 @@
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/UpperLimits.py,v 1.7 2009/01/16 22:20:29 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/UpperLimits.py,v 1.8 2009/02/23 07:38:31 jchiang Exp $
 #
 import pyLikelihood as pyLike
 import numpy as num
@@ -65,6 +65,10 @@ class UpperLimit(object):
         src_spectrum = self.like[source].funcs['Spectrum']
         par = src_spectrum.normPar()
         par.setFree(0)
+
+        # Update the best-fit-so-far vector after having fixed the 
+        # normalization parameter.
+        self.like.logLike.saveCurrentFit()
 
         # For weak sources that use the PowerLaw model where the
         # reference energy is too low or that use the PowerLaw2 model
