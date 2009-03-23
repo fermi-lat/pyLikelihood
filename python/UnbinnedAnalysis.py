@@ -4,7 +4,7 @@ Python interface for unbinned likelihood
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/UnbinnedAnalysis.py,v 1.29 2008/03/27 03:22:39 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/UnbinnedAnalysis.py,v 1.30 2008/09/24 16:24:57 jchiang Exp $
 #
 
 import sys
@@ -181,6 +181,17 @@ class UnbinnedAnalysis(AnalysisBase):
                      % (_quotefn(self.srcModel), self.optimizer))
         if close:
             output.close()
+    def reset_ebounds(self, new_energies):
+        eMin, eMax = self.observation.roiCuts().getEnergyCuts()
+        if eMin != min(new_energies) or eMax != max(new_energies):
+            raise RuntimeError("Range of selected energies must match "
+                               + "the data selection: "
+                               + ("(%f, %f)" % (eMin, eMax)))
+        elist = [x for x in new_energies]
+        elist.sort()
+        self.energies = num.array(elist)
+        self.e_vals = num.sqrt(self.energies[:-1]*self.energies[1:])
+        self.nobs = self._Nobs()
 
 def unbinnedAnalysis(mode="ql", ftol=None, **pars):
     """Return an UnbinnedAnalysis object using the data in gtlike.par"""
