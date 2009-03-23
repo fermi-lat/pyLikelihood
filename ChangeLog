@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Mon Mar 23 16:48:47 PDT 2009
+pyLikelihood/python
+
+Modified Files:
+	AnalysisBase.py 
+Log Message:
+switch to absolute tolerance by default (self.tol=1e-2)
+    *
+------------------------------------------------------------
 User: jchiang  Mon Mar 23 09:35:53 PDT 2009
 pyLikelihood/python
 
