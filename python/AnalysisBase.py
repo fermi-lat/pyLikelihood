@@ -4,7 +4,7 @@ Base clase for Likelihood analysis Python modules.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.42 2009/02/23 01:18:19 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.43 2009/03/09 17:21:42 jchiang Exp $
 #
 
 import sys
@@ -22,10 +22,10 @@ _plotter_package = 'root'
 class AnalysisBase(object):
     def __init__(self):
         self.maxdist = 20
-        self.tol = 1e-5
+        self.tol = 1e-2
         self.covariance = None
         self.covar_is_current = False
-        self.tolType = pyLike.RELATIVE
+        self.tolType = pyLike.ABSOLUTE
     def _srcDialog(self):
         paramDict = map()
         paramDict['Source Model File'] = Param('file', '*.xml')
