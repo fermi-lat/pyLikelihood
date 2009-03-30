@@ -6,7 +6,7 @@
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/UpperLimits.py,v 1.8 2009/02/23 07:38:31 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/UpperLimits.py,v 1.9 2009/03/17 20:15:04 jchiang Exp $
 #
 import pyLikelihood as pyLike
 import numpy as num
@@ -157,7 +157,7 @@ class UpperLimit(object):
             #print "_find_dx:", dx, par.getValue(), dlogLike
             if dlogLike > mindelta:
                 break
-            dx = min(abs(x0), factor*dx)
+            dx = max(abs(x0), factor*dx)
         return dx
     def _resyncPars(self):
         srcNames = self.like.sourceNames()
