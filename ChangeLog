@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Tue Mar 31 11:20:53 PDT 2009
+pyLikelihood/python
+
+Modified Files:
+	AnalysisBase.py CompositeLikelihood.py SrcAnalysis.py 
+Log Message:
+set tolType in each call to Optimizer::find_min
+    *
+------------------------------------------------------------
 User: jchiang  Mon Mar 30 08:03:09 PDT 2009
 pyLikelihood/python
 
