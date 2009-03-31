@@ -5,7 +5,7 @@ more natural symantics for use in python alongside other analysis classes.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/CompositeLikelihood.py,v 1.1 2008/09/26 05:11:40 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/CompositeLikelihood.py,v 1.2 2008/09/29 16:53:39 jchiang Exp $
 #
 
 import pyLikelihood as pyLike
@@ -15,14 +15,18 @@ class CompositeLikelihood(object):
         self.composite = pyLike.CompositeLikelihood()
         self.srcNames = []
         self.components = []
+        self.tolType = pyLike.ABSOLUTE
+        self.tol = 1e-2
     def addComponent(self, srcName, like):
         self.composite.addComponent(srcName, like.logLike)
         self.srcNames.append(srcName)
         self.components.append(like)
-    def fit(self, verbosity=2, tol=1e-5, optimizer='Minuit'):
+    def fit(self, verbosity=2, tol=None, optimizer='Minuit'):
         myOpt = pyLike.OptimizerFactory_instance().create(optimizer,
                                                           self.composite)
-        myOpt.find_min(verbosity, tol)
+        if tol is None:
+            tol = self.tol
+        myOpt.find_min(verbosity, tol, self.tolType)
     def __getattr__(self, attrname):
         return getattr(self.composite, attrname)
     def __repr__(self):

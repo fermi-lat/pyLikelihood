@@ -4,7 +4,7 @@ Base clase for Likelihood analysis Python modules.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.43 2009/03/09 17:21:42 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.44 2009/03/23 23:48:47 jchiang Exp $
 #
 
 import sys
@@ -26,6 +26,7 @@ class AnalysisBase(object):
         self.covariance = None
         self.covar_is_current = False
         self.tolType = pyLike.ABSOLUTE
+        self.optObject = None
     def _srcDialog(self):
         paramDict = map()
         paramDict['Source Model File'] = Param('file', '*.xml')
@@ -77,7 +78,8 @@ class AnalysisBase(object):
             myOpt = optFactory.create(optimizer, self.logLike)
         else:
             myOpt = optObject
-        myOpt.find_min(verbosity, tol)
+        self.optObject = myOpt
+        myOpt.find_min(verbosity, tol, self.tolType)
         errors = myOpt.getUncertainty(useBase)
         if covar:
             self.covariance = myOpt.covarianceMatrix()
@@ -98,7 +100,7 @@ class AnalysisBase(object):
                 if key not in ('funcs', 'src'):
                     source_attributes[src][key] = self.model[src].__dict__[key]
         return source_attributes
-    def Ts(self, srcName, reoptimize=False, approx=True, tol=1e-5):
+    def Ts(self, srcName, reoptimize=False, approx=True, tol=None):
         source_attributes = self.getExtraSourceAttributes()
         self.logLike.syncParams()
         src = self.logLike.getSource(srcName)
@@ -107,10 +109,12 @@ class AnalysisBase(object):
         logLike1 = self.logLike.value()
         self._ts_src = self.logLike.deleteSource(srcName)
         logLike0 = self.logLike.value()
+        if tol is None:
+            tol = self.tol
         if reoptimize:
             optFactory = pyLike.OptimizerFactory_instance()
             myOpt = optFactory.create(self.optimizer, self.logLike)
-            myOpt.find_min(0, tol)
+            myOpt.find_min(0, tol, self.tolType)
         else:
             if approx:
                 try:

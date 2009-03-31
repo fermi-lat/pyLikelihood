@@ -4,7 +4,7 @@ Interface to SWIG-wrapped C++ classes.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/SrcAnalysis.py,v 1.2 2007/07/13 15:37:17 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/SrcAnalysis.py,v 1.3 2008/09/26 18:14:52 jchiang Exp $
 #
 import os
 import glob
@@ -121,6 +121,7 @@ class SrcAnalysis(object):
         self.energies = eMin*num.exp(estep*num.arange(nee, type=num.Float))
         self.disp = None
         self.resids = None
+        self.tolType = pyLike.ABSOLUTE
     def _srcDialog(self):
         paramDict = map()
         paramDict['Source Model File'] = Param('file', '*.xml')
@@ -220,12 +221,12 @@ class SrcAnalysis(object):
     def fit(self, verbosity=3, tol=1e-5, optimizer=None):
         errors = self._errors(optimizer, verbosity, tol)
         return -self.logLike.value()
-    def _errors(self, optimizer=None, verbosity=0, tol=1e-5, useBase=False):
+    def _errors(self, optimizer=None, verbosity=0, tol=1e-2, useBase=False):
         self.logLike.syncParams()
         if optimizer is None:
             optimizer = self.optimizer
         myOpt = eval("self.logLike.%s()" % optimizer)
-        myOpt.find_min(verbosity, tol)
+        myOpt.find_min(verbosity, tol, self.tolType)
         errors = myOpt.getUncertainty(useBase)
         j = 0
         for i in range(len(self.model.params)):
