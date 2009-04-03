@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: glastrm  Fri Apr  3 08:51:17 PDT 2009
+ScienceTools-scons/pyLikelihood
+
+Modified Files:
+	SConscript 
+Log Message:
+Let swig setup library name
+    *
+------------------------------------------------------------
 TAG
 Tag name: pyLikelihood-01-12-01, operation: add
 Package: pyLikelihood
