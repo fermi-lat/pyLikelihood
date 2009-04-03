@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+TAG
+Tag name: v1r12p1, operation: mov
+Package: pyLikelihood
+User: glastrm  Fri Apr  3 08:52:22 2009
+Files:
+  pyLikelihood/SConscript  1.27
+
+    *
+------------------------------------------------------------
 User: glastrm  Fri Apr  3 08:51:17 PDT 2009
 ScienceTools-scons/pyLikelihood
 
