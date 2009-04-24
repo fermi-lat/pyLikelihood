@@ -1,4 +1,5 @@
 // -*- mode: c++ -*-
+// $Header$
 %module pyLikelihood
 %{
 #ifdef TRAP_FPE

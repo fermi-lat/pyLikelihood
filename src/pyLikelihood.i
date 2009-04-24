@@ -1,6 +1,10 @@
 // -*- mode: c++ -*-
+// $Header$
 %module pyLikelihood
 %{
+#ifdef TRAP_FPE
+#include <fenv.h>
+#endif
 #include "st_app/AppParGroup.h"
 #include "st_app/StApp.h"
 #include "st_stream/st_stream.h"
@@ -17,16 +21,21 @@
 #include "optimizers/FunctionFactory.h"
 #include "optimizers/FunctionTest.h"
 #include "optimizers/Mcmc.h"
+#include "optimizers/Minuit.h"
+#include "optimizers/NewMinuit.h"
 #include "optimizers/Statistic.h"
 #include "st_facilities/FitsImage.h"
 #include "st_facilities/Util.h"
 #include "Likelihood/AppHelpers.h"
 #include "Likelihood/BinnedExposure.h"
 #include "Likelihood/BrokenPowerLaw2.h"
+#include "Likelihood/CompositeLikelihood.h"
 #include "Likelihood/Convolve.h"
 #include "Likelihood/CountsSpectra.h"
 #include "Likelihood/Source.h"
+#include "Likelihood/DiffRespIntegrand.h"
 #include "Likelihood/DiffuseSource.h"
+#include "Likelihood/DMFitFunction.h"
 #include "Likelihood/EquinoxRotation.h"
 #include "Likelihood/Event.h"
 #include "Likelihood/EventContainer.h"
@@ -36,6 +45,7 @@
 #include "Likelihood/ExposureMap.h"
 #include "Likelihood/FileFunction.h"
 #include "Likelihood/LogParabola.h"
+#include "Likelihood/MapBase.h"
 #include "Likelihood/MapCubeFunction.h"
 #include "Likelihood/MeanPsf.h"
 #include "Likelihood/Npred.h"
@@ -62,6 +72,8 @@
 #include "Likelihood/CountsMap.h"
 #include "Likelihood/Observation.h"
 #include "Likelihood/WcsMap.h"
+#include "pyLikelihood/Aeff.h"
+#include "pyLikelihood/enableFPE.h"
 #include <vector>
 #include <string>
 #include <exception>
@@ -102,12 +114,14 @@ using optimizers::Exception;
 %template(FloatVector) std::vector<float>;
 %template(DoubleVectorVector) std::vector< std::vector<double> >;
 %template(DoubleVectorPair) std::vector< std::pair<double, double> >;
+%template(SizetVector) std::vector<size_t>;
 %template(StringVector) std::vector<std::string>;
 %include st_app/AppParGroup.h
 %include st_app/StApp.h
 %include astro/SkyProj.h
 %include astro/SkyDir.h
 %template(SkyDirVector) std::vector<astro::SkyDir>;
+%template(SkyDirPair) std::pair<astro::SkyDir, astro::SkyDir>;
 %feature("autodoc", "1");
 %include healpix/CosineBinner.h
 %include map_tools/Exposure.h
@@ -123,6 +137,8 @@ using optimizers::Exception;
 %include optimizers/Optimizer.h
 %include optimizers/OptimizerFactory.h
 %include optimizers/Mcmc.h
+%include optimizers/Minuit.h
+%include optimizers/NewMinuit.h
 %include st_facilities/FitsImage.h
 %include st_facilities/Util.h
 %include Likelihood/EquinoxRotation.h
@@ -145,7 +161,10 @@ using optimizers::Exception;
 %include Likelihood/BinnedExposure.h
 %include Likelihood/AppHelpers.h
 //%include Likelihood/SourceModel.h
+%include Likelihood/MapBase.h
 %include Likelihood/DiffuseSource.h
+%include Likelihood/DiffRespIntegrand.h
+%include Likelihood/DMFitFunction.h
 %include Likelihood/Pixel.h
 %template (PixelVector) std::vector<Likelihood::Pixel>;
 %include Likelihood/CountsMap.h
@@ -167,12 +186,30 @@ using optimizers::Exception;
 %include Likelihood/TrapQuad.h
 %include Likelihood/MapCubeFunction.h
 %include Likelihood/WcsMap.h
+%include Likelihood/CompositeLikelihood.h
+%include pyLikelihood/Aeff.h
+%include pyLikelihood/enableFPE.h
+%extend Likelihood::LogLike {
+   static void enableFPE() {
+      pyLikelihood::enableFPE();
+   }
+}
 %extend st_facilities::Util {
    static std::vector<std::string> 
       resolveFitsFiles(const std::string & infile) {
       std::vector<std::string> outfiles;
       st_facilities::Util::resolve_fits_files(infile, outfiles);
       return outfiles;
+   }
+}
+%extend Likelihood::AppHelpers {
+   static std::vector<size_t> 
+      getSelectedEvtTypes(const std::string & evfile,
+                          const std::string & analysisType) {
+      std::vector<size_t> evtTypes;
+      Likelihood::AppHelpers::getSelectedEvtTypes(evfile, analysisType, 
+                                                  evtTypes);
+      return evtTypes;
    }
 }
 %extend Likelihood::EquinoxRotation {
@@ -191,35 +228,18 @@ using optimizers::Exception;
    static optimizers::FunctionFactory * funcFactory() {
       optimizers::FunctionFactory * myFuncFactory 
          = new optimizers::FunctionFactory;
-      myFuncFactory->addFunc("SkyDirFunction", 
-                             new Likelihood::SkyDirFunction(), false);
-      myFuncFactory->addFunc("SpatialMap", new Likelihood::SpatialMap(), 
-                             false);
-      myFuncFactory->addFunc("MapCubeFunction",
-                             new Likelihood::MapCubeFunction(), 
-                             false);
-      myFuncFactory->addFunc("PowerLaw2",
-                             new Likelihood::PowerLaw2(), 
-                             false);
-      myFuncFactory->addFunc("BrokenPowerLaw2",
-                             new Likelihood::BrokenPowerLaw2(), 
-                             false);
-      myFuncFactory->addFunc("LogParabola",
-                             new Likelihood::LogParabola(), 
-                             false);
-      myFuncFactory->addFunc("FileFunction",
-                             new Likelihood::FileFunction(), 
-                             false);
-      myFuncFactory->addFunc("ExpCutoff",
-                             new Likelihood::ExpCutoff(), 
-                             false);
-      myFuncFactory->addFunc("BPLExpCutoff",
-                             new Likelihood::BrokenPowerLawExpCutoff(),
-                             false);
-      myFuncFactory->addFunc("PLSuperExpCutoff",
-                             new Likelihood::PowerLawSuperExpCutoff(),
-                             false);
+      Likelihood::AppHelpers::addFunctionPrototypes(myFuncFactory);
       return myFuncFactory;
+   }
+}
+%extend Likelihood::SpatialMap {
+   static Likelihood::SpatialMap * cast(optimizers::Function * func) {
+      Likelihood::SpatialMap * spatial_map = 
+         dynamic_cast<Likelihood::SpatialMap *>(func);
+      if (spatial_map == 0) {
+         throw std::runtime_error("Cannot cast to a SpatialMap.");
+      }
+      return spatial_map;
    }
 }
 %extend Likelihood::FileFunction {
@@ -246,22 +266,33 @@ using optimizers::Exception;
    double flux() {
       Likelihood::PointSource * ptsrc = 
          dynamic_cast<Likelihood::PointSource *>(self);
-      if (ptsrc == 0) {
-         std::ostringstream message;
-         message << "Integrated flux is not available for this source.";
-         throw std::runtime_error(message.str());
+      if (ptsrc != 0) {
+         return ptsrc->flux();
       }
-      return ptsrc->flux();
+      Likelihood::DiffuseSource * diffsrc = 
+         dynamic_cast<Likelihood::DiffuseSource *>(self);
+      return diffsrc->flux();
    }
    double flux(double emin, double emax, size_t npts=100) {
       Likelihood::PointSource * ptsrc = 
          dynamic_cast<Likelihood::PointSource *>(self);
-      if (ptsrc == 0) {
-         std::ostringstream message;
-         message << "Integrated flux is not available for this source.";
-         throw std::runtime_error(message.str());
+      if (ptsrc != 0) {
+         return ptsrc->flux(emin, emax, npts);
       }
-      return ptsrc->flux(emin, emax, npts);
+      Likelihood::DiffuseSource * diffsrc = 
+         dynamic_cast<Likelihood::DiffuseSource *>(self);
+      return diffsrc->flux(emin, emax, npts);
+   }
+}
+%extend Likelihood::DiffuseSource {
+   static Likelihood::DiffuseSource * 
+      downcastAsDiffuse(Likelihood::Source * src) {
+      Likelihood::DiffuseSource * diffuse =
+         dynamic_cast<Likelihood::DiffuseSource *>(src);
+      if (diffuse == 0) {
+         throw std::runtime_error("Cannot downcast as DiffuseSource.");
+      }
+      return diffuse;
    }
 }
 %extend Likelihood::LogLike {
@@ -362,6 +393,14 @@ using optimizers::Exception;
    }
 }
 
+%extend Likelihood::DiffRespIntegrand {
+   static astro::SkyDir srcDir(double mu, double phi, 
+                               const Likelihood::EquinoxRotation eqRot) {
+      astro::SkyDir srcDir;
+      Likelihood::DiffRespIntegrand::getSrcDir(mu, phi, eqRot, srcDir);
+      return srcDir;
+   }
+}
 %extend st_app::StApp {
    static st_app::AppParGroup parGroup(const std::string & appName) {
       char * argv[] = {"dummy_app"};
@@ -410,7 +449,6 @@ using optimizers::Exception;
       if (i < 0 || i >= self->size()) {
          throw std::runtime_error("IndexError");
       }
-//      return self->operator[](i);
       return *(self->begin() + i);
    }
 }
