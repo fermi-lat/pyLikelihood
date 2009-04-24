@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Fri Apr 24 08:27:37 PDT 2009
+pyLikelihood/src
+
+Modified Files:
+	pyLikelihood.i pyLikelihood.in 
+Log Message:
+.i file generated from .in file
+    *
+------------------------------------------------------------
 TAG
 Tag name: pyLikelihood-01-12-01, operation: mov
 Package: pyLikelihood
