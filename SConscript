@@ -1,6 +1,6 @@
 # -*- python -*-
 #
-# $Id: SConscript,v 1.27 2009/04/03 15:51:17 glastrm Exp $
+# $Id: SConscript,v 1.28 2009/05/15 04:31:03 glastrm Exp $
 # Authors: James Chiang <jchiang@slac.stanford.edu>
 # Version: pyLikelihood-01-12-02
 
@@ -15,5 +15,5 @@ pyLikelihoodSharedLib = libEnv.SharedLibrary('_pyLikelihood',
 
 progEnv.Tool('registerObjects', package = 'pyLikelihood', 
              libraries = [pyLikelihoodSharedLib], 
-             includes = listFiles(['pyLikelihoood/*.h']),
+             includes = listFiles(['pyLikelihood/*.h']),
              python = listFiles(['python/*.py']))
