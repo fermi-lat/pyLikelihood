@@ -2,9 +2,10 @@
    @file release.notes
    @brief package pyLikelihood
    @author J. Chiang <jchiang@slac.stanford.edu>
-   $Id: release.notes,v 1.64 2009/03/23 23:50:07 jchiang Exp $
+   $Id: release.notes,v 1.65 2009/03/31 18:22:24 jchiang Exp $
 
    @verbatim
+   v1r12p2 14-May-09  JC    use optimizers::Optimizer::find_min_only
    v1r12p1 31-Mar-09  JC    ensure tolType is set in each call to find_min
    v1r12   23-Mar-09  JC    switch to absolute fit tolerance; 
                             add UnbinnedAnalysis.reset_ebounds
