@@ -6,7 +6,7 @@
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/UpperLimits.py,v 1.9 2009/03/17 20:15:04 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/UpperLimits.py,v 1.10 2009/03/30 15:03:09 jchiang Exp $
 #
 import pyLikelihood as pyLike
 import numpy as num
@@ -168,10 +168,10 @@ class UpperLimit(object):
             self._renorm()
             return
         try:
-            self.like.fit(verbosity)
+            self.like.optimize(verbosity)
         except RuntimeError:
             try:
-                self.like.fit(verbosity)
+                self.like.optimize(verbosity)
             except RuntimeError:
                 self.like.logLike.restoreBestFit()
                 pass
