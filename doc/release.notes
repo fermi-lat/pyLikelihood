@@ -2,9 +2,11 @@
    @file release.notes
    @brief package pyLikelihood
    @author J. Chiang <jchiang@slac.stanford.edu>
-   $Id: release.notes,v 1.66 2009/05/15 04:16:26 jchiang Exp $
+   $Id: release.notes,v 1.67 2009/05/15 17:38:50 jchiang Exp $
 
    @verbatim
+   v1r12p4 20-May-09  JC    ensure the extra attributes are restored after
+                            rebuilding the SourceModel object in AnalysisBase.py
    v1r12p3 15-May-09  JC    fix typo in SConscript file for pyLikeihood/*.h 
                             includes
    v1r12p2 14-May-09  JC    use optimizers::Optimizer::find_min_only
