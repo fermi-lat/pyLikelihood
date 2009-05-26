@@ -16,9 +16,10 @@ _symbols = {'line' : ('C', 0, 1),
             'dashed' : ('C', 0, 2), 
             'dotted' : ('C', 0, 3), 
             'dash-dot' : ('C', 0, 4),
-            'poly-line' : ('L',0,1),
+            'Ldash-dot' : ('C', 0, 5 ),
+            'poly-line' : ('L',0, 1),
             'point' : ('P', 0, 1),
-            'nopoint' : ('P',1,1),
+            'nopoint' : ('P', 1, 1),
             'plus' : ('P', 2, 1),
             'times' : ('P', 3, 1)}
 
