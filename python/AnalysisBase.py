@@ -4,7 +4,7 @@ Base clase for Likelihood analysis Python modules.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.46 2009/05/15 04:15:28 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.47 2009/05/20 14:44:15 jchiang Exp $
 #
 
 import sys
@@ -100,7 +100,51 @@ class AnalysisBase(object):
                 if key not in ('funcs', 'src'):
                     source_attributes[src][key] = self.model[src].__dict__[key]
         return source_attributes
-    def Ts(self, srcName, reoptimize=False, approx=True, tol=None):
+    def Ts(self, srcName, reoptimize=False, approx=True,
+           tol=None, MaxIterations=10, verbosity=0):
+        if verbosity > 0:
+            print "*** Start Ts_dl ***"
+        source_attributes = self.getExtraSourceAttributes()
+        self.logLike.syncParams()
+        src = self.logLike.getSource(srcName)
+        freeParams = pyLike.DoubleVector()
+        self.logLike.getFreeParamValues(freeParams)
+        logLike1 = self.logLike.value()
+        self._ts_src = self.logLike.deleteSource(srcName)
+        logLike0 = self.logLike.value()
+        if tol is None:
+            tol = self.tol
+        if reoptimize:
+            if verbosity > 0:
+                print "** Do reoptimize"
+            optFactory = pyLike.OptimizerFactory_instance()
+            myOpt = optFactory.create(self.optimizer, self.logLike)
+            Niter = 1
+            while Niter <= MaxIterations:
+                try:
+                    myOpt.find_min(0, tol)
+                    break
+                except RuntimeError,e:
+                    print e
+                if verbosity > 0:
+                    print "** Iteration :",Niter
+                Niter += 1
+        else:
+            if approx:
+                try:
+                    self._renorm()
+                except ZeroDivisionError:
+                    pass
+        self.logLike.syncParams()
+        logLike0 = max(self.logLike.value(), logLike0)
+        Ts_value = 2*(logLike1 - logLike0)
+        self.logLike.addSource(self._ts_src)
+        self.logLike.setFreeParamValues(freeParams)
+        self.model = SourceModel(self.logLike)
+        for src in source_attributes:
+            self.model[src].__dict__.update(source_attributes[src])
+        return Ts_value
+    def Ts_old(self, srcName, reoptimize=False, approx=True, tol=None):
         source_attributes = self.getExtraSourceAttributes()
         self.logLike.syncParams()
         src = self.logLike.getSource(srcName)
