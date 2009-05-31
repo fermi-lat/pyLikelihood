@@ -1,4 +1,14 @@
 ------------------------------------------------------------
+User: jchiang  Sun May 31 14:17:37 PDT 2009
+pyLikelihood/python
+
+Modified Files:
+	AnalysisBase.py 
+Log Message:
+use new version of Ts provided by David L.
+
+    *
+------------------------------------------------------------
 TAG
 Tag name: pyLikelihood-01-12-05, operation: add
 Package: pyLikelihood
