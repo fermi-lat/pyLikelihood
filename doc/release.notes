@@ -2,9 +2,11 @@
    @file release.notes
    @brief package pyLikelihood
    @author J. Chiang <jchiang@slac.stanford.edu>
-   $Id: release.notes,v 1.68 2009/05/20 14:47:18 jchiang Exp $
+   $Id: release.notes,v 1.69 2009/05/31 03:31:55 jchiang Exp $
 
    @verbatim
+   v1r13   31-May-09  JC    use new version of Ts provided by David L.; move
+                            previous version to Ts_old
    v1r12p5 30-May-09  JC    pre-declare WcsMap in pyLikelihood.in
    v1r12p4 20-May-09  JC    ensure the extra attributes are restored after
                             rebuilding the SourceModel object in AnalysisBase.py
