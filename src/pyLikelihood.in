@@ -1,5 +1,5 @@
 // -*- mode: c++ -*-
-// $Header$
+// $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/src/pyLikelihood.in,v 1.37 2009/04/24 15:27:36 jchiang Exp $
 %module pyLikelihood
 %{
 #ifdef TRAP_FPE
@@ -161,6 +161,7 @@ using optimizers::Exception;
 %include $(LIKELIHOODROOT)/Likelihood/BinnedExposure.h
 %include $(LIKELIHOODROOT)/Likelihood/AppHelpers.h
 //%include $(LIKELIHOODROOT)/Likelihood/SourceModel.h
+%include $(LIKELIHOODROOT)/Likelihood/WcsMap.h
 %include $(LIKELIHOODROOT)/Likelihood/MapBase.h
 %include $(LIKELIHOODROOT)/Likelihood/DiffuseSource.h
 %include $(LIKELIHOODROOT)/Likelihood/DiffRespIntegrand.h
@@ -185,7 +186,6 @@ using optimizers::Exception;
 %include $(LIKELIHOODROOT)/Likelihood/SrcArg.h
 %include $(LIKELIHOODROOT)/Likelihood/TrapQuad.h
 %include $(LIKELIHOODROOT)/Likelihood/MapCubeFunction.h
-%include $(LIKELIHOODROOT)/Likelihood/WcsMap.h
 %include $(LIKELIHOODROOT)/Likelihood/CompositeLikelihood.h
 %include $(PYLIKELIHOODROOT)/pyLikelihood/Aeff.h
 %include $(PYLIKELIHOODROOT)/pyLikelihood/enableFPE.h
