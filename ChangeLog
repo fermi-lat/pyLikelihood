@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Sat May 30 18:05:29 PDT 2009
+pyLikelihood/src
+
+Modified Files:
+	pyLikelihood.in 
+Log Message:
+pre-declare WcsMap in swig interface
+    *
+------------------------------------------------------------
 User: jchiang  Tue May 26 08:05:34 PDT 2009
 pyLikelihood/python
 
