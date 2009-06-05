@@ -1,5 +1,14 @@
 ------------------------------------------------------------
 User: jchiang  Fri Jun  5 16:42:28 PDT 2009
+pyLikelihood/src
+
+Modified Files:
+	pyLikelihood.i pyLikelihood.in 
+Log Message:
+add SummedLikelihood.py
+    *
+------------------------------------------------------------
+User: jchiang  Fri Jun  5 16:42:28 PDT 2009
 pyLikelihood/python
 
 Added Files:
