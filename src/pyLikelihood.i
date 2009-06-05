@@ -64,6 +64,7 @@
 #include "Likelihood/SourceMap.h"
 #include "Likelihood/SpatialMap.h"
 #include "Likelihood/SrcArg.h"
+#include "Likelihood/SummedLikelihood.h"
 #include "Likelihood/TrapQuad.h"
 #include "Likelihood/Exception.h"
 #include "Likelihood/LogLike.h"
@@ -187,6 +188,7 @@ using optimizers::Exception;
 %include Likelihood/TrapQuad.h
 %include Likelihood/MapCubeFunction.h
 %include Likelihood/CompositeLikelihood.h
+%include Likelihood/SummedLikelihood.h
 %include pyLikelihood/Aeff.h
 %include pyLikelihood/enableFPE.h
 %extend Likelihood::LogLike {

@@ -1,5 +1,5 @@
 // -*- mode: c++ -*-
-// $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/src/pyLikelihood.in,v 1.37 2009/04/24 15:27:36 jchiang Exp $
+// $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/src/pyLikelihood.in,v 1.38 2009/05/31 01:05:29 jchiang Exp $
 %module pyLikelihood
 %{
 #ifdef TRAP_FPE
@@ -64,6 +64,7 @@
 #include "Likelihood/SourceMap.h"
 #include "Likelihood/SpatialMap.h"
 #include "Likelihood/SrcArg.h"
+#include "Likelihood/SummedLikelihood.h"
 #include "Likelihood/TrapQuad.h"
 #include "Likelihood/Exception.h"
 #include "Likelihood/LogLike.h"
@@ -187,6 +188,7 @@ using optimizers::Exception;
 %include $(LIKELIHOODROOT)/Likelihood/TrapQuad.h
 %include $(LIKELIHOODROOT)/Likelihood/MapCubeFunction.h
 %include $(LIKELIHOODROOT)/Likelihood/CompositeLikelihood.h
+%include $(LIKELIHOODROOT)/Likelihood/SummedLikelihood.h
 %include $(PYLIKELIHOODROOT)/pyLikelihood/Aeff.h
 %include $(PYLIKELIHOODROOT)/pyLikelihood/enableFPE.h
 %extend Likelihood::LogLike {
