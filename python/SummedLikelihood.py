@@ -5,10 +5,16 @@ more natural symantics for use in python alongside other analysis classes.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/SummedLikelihood.py,v 1.3 2009/03/31 18:20:53 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/SummedLikelihood.py,v 1.1 2009/06/05 23:42:28 jchiang Exp $
 #
 
 import pyLikelihood as pyLike
+
+class Parameter(object):
+    def __init__(self, pars):
+        self.pars = pars
+    def value(self):
+        self.pars[
 
 class SummedLikelihood(object):
     def __init__(self, optimizer='Minuit'):
@@ -23,6 +29,8 @@ class SummedLikelihood(object):
     def addComponent(self, like):
         self.logLike.addComponent(like.logLike)
         self.components.append(like)
+        if len(self.components) == 1:
+            self.model = self.components[0].model
     def fit(self, verbosity=3, tol=None, optimizer=None,
             covar=False, optObject=None):
         if tol is None:
@@ -30,6 +38,8 @@ class SummedLikelihood(object):
         errors = self._errors(optimizer, verbosity, tol, covar=covar,
                               optObject=optObject)
         return -self.logLike.value()
+    def sourceNames(self):
+        return self.components[0].sourceNames()
     def __getattr__(self, attrname):
         return getattr(self.logLike, attrname)
     def __repr__(self):
