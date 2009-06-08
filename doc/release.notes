@@ -2,9 +2,12 @@
    @file release.notes
    @brief package pyLikelihood
    @author J. Chiang <jchiang@slac.stanford.edu>
-   $Id: release.notes,v 1.69 2009/05/31 03:31:55 jchiang Exp $
+   $Id: release.notes,v 1.70 2009/05/31 21:18:56 jchiang Exp $
 
    @verbatim
+   v1r14   08-Jun-09  JC    add level of redirection for calls to 
+                            UpperLimits.like; add SummedLikelihood 
+                            object
    v1r13   31-May-09  JC    use new version of Ts provided by David L.; move
                             previous version to Ts_old
    v1r12p5 30-May-09  JC    pre-declare WcsMap in pyLikelihood.in
