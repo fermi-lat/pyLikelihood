@@ -4,7 +4,7 @@ Base clase for Likelihood analysis Python modules.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.48 2009/05/31 21:17:36 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.49 2009/06/07 03:22:07 jchiang Exp $
 #
 
 import sys
@@ -263,7 +263,7 @@ class AnalysisBase(object):
             self.renormFactor = 1
         srcNames = self.sourceNames()
         for src in srcNames:
-            parameter = self._normPar(src)
+            parameter = self.normPar(src)
             if parameter.isFree() and self._isDiffuseOrNearby(src):
                 oldValue = parameter.getValue()
                 newValue = oldValue*self.renormFactor
@@ -278,7 +278,7 @@ class AnalysisBase(object):
         for src in srcNames:
             npred = self.logLike.NpredValue(src)
             totalNpred += npred
-            if self._normPar(src).isFree() and self._isDiffuseOrNearby(src):
+            if self.normPar(src).isFree() and self._isDiffuseOrNearby(src):
                 freeNpred += npred
         return freeNpred, totalNpred
     def _isDiffuseOrNearby(self, srcName):
@@ -292,12 +292,30 @@ class AnalysisBase(object):
         dir1 = pyLike.PointSource_cast(src1).getDir()
         dir2 = pyLike.PointSource_cast(src2).getDir()
         return dir1.difference(dir2)*180./num.pi
-    def _normPar(self, src):
-        return self[src].spectrum().normPar()
+    def saveCurrentFit(self):
+        self.logLike.saveCurrentFit()
+    def restoreBestFit(self):
+        self.logLike.restoreBestFit()
+    def NpredValue(self, src):
+        return self.logLike.NpredValue(src)
+    def total_nobs(self):
+        return sum(self.nobs)
+    def syncSrcParams(self, src=None):
+        if src is not None:
+            self.logLike.syncSrcParams(src)
+        else:
+            for src in self.sourceNames():
+                self.logLike.syncSrcParams(src)
     def sourceNames(self):
         srcNames = pyLike.StringVector()
         self.logLike.getSrcNames(srcNames)
         return tuple(srcNames)
+    def syncSrcParams(self, src=None):
+        if src is not None:
+            self.logLike.syncSrcParams(src)
+        else:
+            for src in self.sourceNames():
+                self.logLike.syncSrcParams(src)
     def oplot(self, color=None):
         self.plot(oplot=1, color=color)
     def _importPlotter(self):
