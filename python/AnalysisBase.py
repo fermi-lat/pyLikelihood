@@ -4,7 +4,7 @@ Base clase for Likelihood analysis Python modules.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.49 2009/06/07 03:22:07 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.50 2009/06/08 21:51:41 jchiang Exp $
 #
 
 import sys
@@ -310,12 +310,6 @@ class AnalysisBase(object):
         srcNames = pyLike.StringVector()
         self.logLike.getSrcNames(srcNames)
         return tuple(srcNames)
-    def syncSrcParams(self, src=None):
-        if src is not None:
-            self.logLike.syncSrcParams(src)
-        else:
-            for src in self.sourceNames():
-                self.logLike.syncSrcParams(src)
     def oplot(self, color=None):
         self.plot(oplot=1, color=color)
     def _importPlotter(self):

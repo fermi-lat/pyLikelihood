@@ -6,7 +6,7 @@
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/UpperLimits.py,v 1.13 2009/06/08 06:11:41 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/UpperLimits.py,v 1.14 2009/06/08 21:51:41 jchiang Exp $
 #
 import pyLikelihood as pyLike
 import numpy as num
@@ -84,7 +84,6 @@ class UpperLimit(object):
         logLike0 = self.like()
         x0 = par.getValue()
         dx = self._find_dx(par, nsigmax, renorm, logLike0, mindelta=mindelta)
-        print dx
 
         xvals, dlogLike, fluxes = [], [], []
         if verbosity > 1:

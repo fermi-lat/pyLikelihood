@@ -5,7 +5,7 @@ more natural symantics for use in python alongside other analysis classes.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/SummedLikelihood.py,v 1.3 2009/06/08 06:11:41 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/SummedLikelihood.py,v 1.4 2009/06/08 21:51:41 jchiang Exp $
 #
 
 import pyLikelihood as pyLike
@@ -102,9 +102,8 @@ class SummedLikelihood(object):
         return sum([x.logLike.NpredValue(src) for x in self.components])
     def total_nobs(self):
         return sum([sum(x.nobs) for x in self.components])
-    def __getattr__(self, attrname):
-        print "called __getattr__ for ", attrname
-        return getattr(self.components[0], attrname)
+#    def __getattr__(self, attrname):
+#        return getattr(self.components[0], attrname)
     def __repr__(self):
         return str(self.components[0].model)
     def _syncParams(self):
