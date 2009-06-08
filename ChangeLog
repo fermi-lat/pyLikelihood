@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Mon Jun  8 15:57:33 PDT 2009
+pyLikelihood/python
+
+Modified Files:
+	AnalysisBase.py SummedLikelihood.py UpperLimits.py 
+Log Message:
+clean up debug statements
+    *
+------------------------------------------------------------
 User: jchiang  Mon Jun  8 14:51:42 PDT 2009
 pyLikelihood/python
 
