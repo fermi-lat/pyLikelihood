@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Mon Jun  8 14:51:42 PDT 2009
+pyLikelihood/python
+
+Modified Files:
+	AnalysisBase.py SummedLikelihood.py UpperLimits.py 
+Log Message:
+add level of redirection in place of direct calls to methods the logLike object of Unbinned and BinnedAnalysis, thereby enabling the corresponding methods to be reimplemented in SummedLikelihood for use in UpperLimits.py
+    *
+------------------------------------------------------------
 User: jchiang  Sun Jun  7 23:11:41 PDT 2009
 pyLikelihood/python
 
