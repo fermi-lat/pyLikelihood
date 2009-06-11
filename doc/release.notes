@@ -2,9 +2,10 @@
    @file release.notes
    @brief package pyLikelihood
    @author J. Chiang <jchiang@slac.stanford.edu>
-   $Id: release.notes,v 1.70 2009/05/31 21:18:56 jchiang Exp $
+   $Id: release.notes,v 1.71 2009/06/08 23:10:49 jchiang Exp $
 
    @verbatim
+   v1r14p1 11-Jun-09  JC    enable TS calculation for SummedLikelihood
    v1r14   08-Jun-09  JC    add level of redirection for calls to 
                             UpperLimits.like; add SummedLikelihood 
                             object
