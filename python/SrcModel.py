@@ -4,7 +4,7 @@ SourceModel interface to allow for manipulation of fit parameters.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/SrcModel.py,v 1.6 2008/04/19 22:21:52 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/SrcModel.py,v 1.7 2008/04/19 22:28:59 jchiang Exp $
 #
 import sys
 from xml.dom import minidom
@@ -79,13 +79,14 @@ class SourceModel(object):
             return self.params[srcName]
         except:
             try:
-                return self.srcs[self._findSrc(srcName)]
+                #return self.srcs[self._findSrc(srcName)]
+                return self.srcs[srcName]
             except:
                 pass
-    def _findSrc(self, name):
-        for item in self.srcNames:
-            if item.find(name) != -1:
-                return item
+#    def _findSrc(self, name):
+#        for item in self.srcNames:
+#            if item.find(name) != -1:
+#                return item
     def __repr__(self):
         lines = []
         for src in self.srcNames:
