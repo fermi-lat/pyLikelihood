@@ -2,9 +2,10 @@
    @file release.notes
    @brief package pyLikelihood
    @author J. Chiang <jchiang@slac.stanford.edu>
-   $Id: release.notes,v 1.72 2009/06/11 21:20:23 jchiang Exp $
+   $Id: release.notes,v 1.73 2009/06/17 16:11:25 jchiang Exp $
 
    @verbatim
+   v1r15   29-Jun-09  JC    interface to Minos errors
    v1r14p2 17-Jun-09  JC    disable sub-string search for source name
    v1r14p1 11-Jun-09  JC    enable TS calculation for SummedLikelihood
    v1r14   08-Jun-09  JC    add level of redirection for calls to 
