@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Mon Jun 29 14:52:55 PDT 2009
+pyLikelihood/python
+
+Modified Files:
+	AnalysisBase.py 
+Log Message:
+error handling for minos trying to set outside of parameter bounds
+    *
+------------------------------------------------------------
 User: jchiang  Mon Jun 29 13:43:36 PDT 2009
 pyLikelihood/python
 
