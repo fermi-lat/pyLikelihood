@@ -4,7 +4,7 @@ Base clase for Likelihood analysis Python modules.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.50 2009/06/08 21:51:41 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.51 2009/06/08 22:57:33 jchiang Exp $
 #
 
 import sys
@@ -91,6 +91,45 @@ class AnalysisBase(object):
             if self.model[i].isFree():
                 self.model[i].setError(errors[j])
                 j += 1
+        return errors
+    def minosError(self, *args):
+        if len(args) == 1:
+            return self._minosIndexError(args[0])
+        par_index = self.par_index(args[0], args[1])
+        return self._minosIndexError(par_index)
+    def par_index(self, srcName, parName):
+        source_names = self.sourceNames()
+        par_index = -1
+        for src in source_names:
+            pars = pyLike.ParameterVector()
+            self[src].src.spectrum().getParams(pars)
+            for par in pars:
+                par_index += 1
+                if src == srcName and par.getName() == parName:
+                    return par_index
+        raise RuntimeError("Parameter %s for source %s not found."
+                           % (parName, srcName))
+    def _minosIndexError(self, par_index):
+        if self.optObject is None:
+            raise RuntimeError("To evaluate minos errors, a fit must first be "
+                               + "performed using the Minuit or NewMinuit "
+                               + "optimizers.")
+        freeParams = pyLike.DoubleVector()
+        self.logLike.getFreeParamValues(freeParams)
+        pars = self.params()
+        if par_index not in range(len(pars)):
+            raise RuntimeError("Invalid model parameter index.")
+        free_indices = {}
+        ii = -1
+        for i, par in enumerate(pars):
+            if par.isFree():
+                ii += 1
+                free_indices[i] = ii
+        if par_index not in free_indices.keys():
+            raise RuntimeError("Cannot evaluate minos errors for a frozen "
+                               + "parameter.")
+        errors = self.optObject.Minos(free_indices[par_index])
+        self.logLike.setFreeParamValues(freeParams)
         return errors
     def getExtraSourceAttributes(self):
         source_attributes = {}
