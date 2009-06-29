@@ -4,7 +4,7 @@ Base clase for Likelihood analysis Python modules.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.51 2009/06/08 22:57:33 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.52 2009/06/29 20:43:36 jchiang Exp $
 #
 
 import sys
@@ -128,9 +128,16 @@ class AnalysisBase(object):
         if par_index not in free_indices.keys():
             raise RuntimeError("Cannot evaluate minos errors for a frozen "
                                + "parameter.")
-        errors = self.optObject.Minos(free_indices[par_index])
-        self.logLike.setFreeParamValues(freeParams)
-        return errors
+        try:
+            errors = self.optObject.Minos(free_indices[par_index])
+            self.logLike.setFreeParamValues(freeParams)
+            return errors
+        except RuntimeError, message:
+            print "Minos error encountered for parameter %i." % par_index
+            print "Attempting to reset free parameters."
+            self.thaw(par_index)
+            self.logLike.setFreeParamValues(freeParams)
+            raise RuntimeError(message)
     def getExtraSourceAttributes(self):
         source_attributes = {}
         for src in self.model.srcNames:
