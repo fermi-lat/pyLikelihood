@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: heather  Wed Jul  1 10:06:44 PDT 2009
+pyLikelihood/doc
+
+Modified Files:
+	release.notes 
+Log Message:
+add EOH to release.notes
+    *
+------------------------------------------------------------
 TAG
 Tag name: pyLikelihood-01-15-00, operation: add
 Package: pyLikelihood
