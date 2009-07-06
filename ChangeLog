@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: glastrm  Mon Jul  6 10:46:04 PDT 2009
+ScienceTools-scons/pyLikelihood
+
+Modified Files:
+	SConscript 
+Log Message:
+Use LoadableModule for creating swig modules
+    *
+------------------------------------------------------------
 User: heather  Wed Jul  1 10:06:44 PDT 2009
 pyLikelihood/doc
 
