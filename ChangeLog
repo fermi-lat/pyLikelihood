@@ -1,4 +1,14 @@
 ------------------------------------------------------------
+User: glastrm  Thu Jul  9 08:52:56 PDT 2009
+ScienceTools-scons/pyLikelihood
+
+Modified Files:
+      Tag: ScienceTools-09-15-02-swigFix
+	SConscript 
+Log Message:
+Added swig module fix
+    *
+------------------------------------------------------------
 TAG
 Tag name: ScienceTools-09-15-02-swigFix, operation: add
 Package: pyLikelihood
