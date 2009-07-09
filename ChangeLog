@@ -1,5 +1,14 @@
 ------------------------------------------------------------
 TAG
+Tag name: ScienceTools-09-15-02-swigFix, operation: add
+Package: pyLikelihood
+User: glastrm  Thu Jul  9 08:50:38 2009
+Files:
+  pyLikelihood/SConscript  1.35
+
+    *
+------------------------------------------------------------
+TAG
 Tag name: pyLikelihood-01-15-00, operation: mov
 Package: pyLikelihood
 User: glastrm  Mon Jul  6 10:57:53 2009
