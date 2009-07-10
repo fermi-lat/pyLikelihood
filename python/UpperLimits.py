@@ -6,7 +6,7 @@
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/UpperLimits.py,v 1.14 2009/06/08 21:51:41 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/UpperLimits.py,v 1.15 2009/06/08 22:57:33 jchiang Exp $
 #
 import pyLikelihood as pyLike
 import numpy as num
@@ -100,6 +100,11 @@ class UpperLimit(object):
             fluxes.append(self.like[source].flux(emin, emax))
             if verbosity > 0:
                 print i, x, dlogLike[-1], fluxes[-1]
+            if dlogLike[-1] > delta and i > 2:
+                # We have already surpassed the desired delta and 
+                # have sufficient points for a quadratic fit, 
+                # so exit this loop.
+                break
         yfit = QuadraticFit(xvals, dlogLike)
         #
         # Extend the fit until it surpasses the desired delta
@@ -125,10 +130,17 @@ class UpperLimit(object):
             param.setValue(value)
             param.setError(error)
         self._resyncPars()
-        xx = ((delta - dlogLike[-2])/(dlogLike[-1] - dlogLike[-2])
-              *(xvals[-1] - xvals[-2]) + xvals[-2])
-        ul = ((delta - dlogLike[-2])/(dlogLike[-1] - dlogLike[-2])
-              *(fluxes[-1] - fluxes[-2]) + fluxes[-2])
+        #
+        # Linear interpolation for parameter value.  Step backwards
+        # from last dlogLike value to ensure the target delta is
+        # bracketed.
+        #
+        indx = len(dlogLike) - 2
+        while delta > dlogLike[indx]:
+            indx -= 1
+        factor = (delta - dlogLike[indx])/(dlogLike[indx+1] - dlogLike[indx])
+        xx = factor*(xvals[indx+1] - xvals[indx]) + xvals[indx]
+        ul = factor*(fluxes[indx+1] - fluxes[indx]) + fluxes[indx]
         self.results.append(ULResult(ul, emin, emax, delta,
                                      fluxes, dlogLike, xvals))
         # Restore value of covariance flag
