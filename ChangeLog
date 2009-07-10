@@ -1,4 +1,14 @@
 ------------------------------------------------------------
+User: jchiang  Fri Jul 10 08:46:35 PDT 2009
+pyLikelihood/python
+
+Modified Files:
+	UpperLimits.py 
+Log Message:
+bug-fix for cases where initial evaluations for quadratic fix already surpass the target delta log-likelihood
+
+    *
+------------------------------------------------------------
 TAG
 Tag name: ScienceTools-09-15-02, operation: mov
 Package: pyLikelihood
