@@ -6,7 +6,7 @@
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/UpperLimits.py,v 1.15 2009/06/08 22:57:33 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/UpperLimits.py,v 1.16 2009/07/10 15:46:35 jchiang Exp $
 #
 import pyLikelihood as pyLike
 import numpy as num
@@ -91,6 +91,8 @@ class UpperLimit(object):
         #
         # Fit a quadratic to a handful of points
         #
+        if delta < dlogLike_est:
+            npts = max(npts, 2.*nsigmax*dx/delta)
         for i, x in enumerate(num.arange(x0, x0+nsigmax*dx, nsigmax*dx/npts)):
             xvals.append(x)
             par.setValue(x)
