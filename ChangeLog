@@ -1,4 +1,14 @@
 ------------------------------------------------------------
+User: glastrm  Tue Jul 14 08:31:07 PDT 2009
+pyLikelihood
+
+Modified Files:
+      Tag: ScienceTools-09-15-02-swigFix
+	SConscript 
+Log Message:
+fixed syntax error where pyLikelihood swig file is registered
+    *
+------------------------------------------------------------
 TAG
 Tag name: pyLikelihood-01-15-02, operation: add
 Package: pyLikelihood
