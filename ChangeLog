@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: glastrm  Wed Jul 15 09:32:08 PDT 2009
+pyLikelihood
+
+Modified Files:
+	SConscript 
+Log Message:
+Fix pyLikelihood registration of swig files
+    *
+------------------------------------------------------------
 TAG
 Tag name: ScienceTools-09-15-03, operation: add
 Package: pyLikelihood
