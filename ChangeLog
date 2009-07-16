@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jrb  Thu Jul 16 14:14:15 PDT 2009
+pyLikelihood/cmt
+
+Modified Files:
+	requirements 
+Log Message:
+Added new line - version v1r15p3
+    *
+------------------------------------------------------------
 TAG
 Tag name: v1r15p2, operation: mov
 Package: pyLikelihood
