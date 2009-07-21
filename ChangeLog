@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Tue Jul 21 06:44:00 PDT 2009
+pyLikelihood/python
+
+Modified Files:
+	UpperLimits.py 
+Log Message:
+add bayesianUL (Helene method)
+    *
+------------------------------------------------------------
 User: jrb  Mon Jul 20 10:36:54 PDT 2009
 ScienceTools-scons/pyLikelihood
 
