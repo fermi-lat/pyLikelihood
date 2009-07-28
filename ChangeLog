@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Tue Jul 28 08:25:03 PDT 2009
+pyLikelihood/python
+
+Modified Files:
+	UpperLimits.py 
+Log Message:
+back-off on bayesianUL function for now and just check in and tag fix for profile ul compute(...) function
+    *
+------------------------------------------------------------
 User: jchiang  Tue Jul 21 06:44:00 PDT 2009
 pyLikelihood/python
 
