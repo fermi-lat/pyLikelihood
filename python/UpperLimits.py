@@ -6,10 +6,8 @@
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/UpperLimits.py,v 1.17 2009/07/13 13:12:50 jchiang Exp $
+# $Header: /usr/local/CVS/SLAC/pyLikelihood/python/UpperLimits.py,v 1.17 2009/07/13 13:12:50 jchiang Exp $
 #
-import copy
-import bisect
 import pyLikelihood as pyLike
 import numpy as num
 
@@ -110,8 +108,6 @@ class UpperLimit(object):
                 # have sufficient points for a quadratic fit, 
                 # so exit this loop.
                 break
-#        print xvals
-#        print dlogLike
         yfit = QuadraticFit(xvals, dlogLike)
         #
         # Extend the fit until it surpasses the desired delta
@@ -119,12 +115,7 @@ class UpperLimit(object):
         while dlogLike[-1] < delta and len(dlogLike) < 30:
             x = yfit.xval(1.1*delta)
             xvals.append(x)
-            try:
-                par.setValue(x)
-            except RuntimeError, message:
-                print par
-                print x
-                raise RuntimeError(message)
+            par.setValue(x)
             self.like.syncSrcParams(source)
             self.fit(0, renorm=renorm)
             dlogLike.append(self.like() - logLike0)
@@ -155,75 +146,9 @@ class UpperLimit(object):
         ul = factor*(fluxes[indx+1] - fluxes[indx]) + fluxes[indx]
         self.results.append(ULResult(ul, emin, emax, delta,
                                      fluxes, dlogLike, xvals))
-        # Save profile information for debugging or for use with the
-        # "Bayesian" estimate of the confidence limit
-        self.normPars = xvals
-        self.dlogLike = dlogLike
-        self.fluxes = fluxes
-        self.normPar_prof = xx
-        self.delta = delta
         # Restore value of covariance flag
         self.like.covar_is_current = covar_is_current
         return ul, xx
-    def bayesianUL(self, cl=0.95, nsig=5, renorm=False, 
-                   emin=100, emax=3e5):
-        # Based on the confidence limit found using the profile method, 
-        # estimate the nsig-sigma bound on the normalization parameter 
-        # assuming Gaussian statistics (chi-square for 1 dof)
-        normPar_nsig = self.normPar_prof*nsig/num.sqrt(self.delta*2)
-
-        # Store the value of the covariance flag
-        covar_is_current = self.like.covar_is_current
-        source = self.source
-        saved_pars = [par.value() for par in self.like.params()]
-        saved_errors = [par.error() for par in self.like.params()]
-
-        # Fix the normalization parameter for the scan.
-        par = self.like.normPar(source)
-        par.setFree(0)
-
-        # Update the best-fit-so-far vector after having fixed the 
-        # normalization parameter.
-        self.like.saveCurrentFit()
-
-        logLike0 = self.like()
-        x0 = par.getValue()
-
-        npts = 50
-        dx = normPar_nsig/npts     # need to integrate from zero
-        xx = copy.deepcopy(self.normPars)
-        yy = copy.deepcopy(self.dlogLike)
-        fluxes = copy.deepcopy(self.fluxes)
-        for i in range(npts+1):
-            xx.append(dx*i)
-            par.setValue(xx[-1])
-            self.like.syncSrcParams(self.source)
-            self.fit(0, renorm=renorm)
-            yy.append(self.like() - logLike0)
-            fluxes.append(self.like[self.source].flux(emin, emax))
-        # sort x values; compute likelihood = exp(-dlogLike) for integral
-        indx = num.argsort(xx)
-        x = num.array([xx[i] for i in indx])
-        y = num.array([num.exp(-yy[i]) for i in indx])
-        integral_dist = [0]
-        for i in range(len(x)-1):
-            integral_dist.append(integral_dist[-1] + 
-                                 (y[i+1] + y[i])/2.*(x[i+1] - x[i]))
-        integral_dist = num.array(integral_dist)/integral_dist[-1]
-        ii = bisect.bisect(integral_dist, cl)
-        ii = min(len(integral_dist)-1, ii)
-        factor = ((integral_dist[ii] - cl)/
-                  (integral_dist[ii] - integral_dist[ii-1]))
-        xval = factor*(x[ii] - x[ii-1]) + x[ii-1]
-        flux = factor*(fluxes[ii] - fluxes[ii-1]) + fluxes[ii-1]
-        # Restore model parameters to original values
-        par.setFree(1)
-        for value, error, param in zip(saved_pars, saved_errors, 
-                                       self.like.params()):
-            param.setValue(value)
-            param.setError(error)
-        self._resyncPars()
-        return flux, xval, x, integral_dist
     def _find_dx(self, par, nsigmax, renorm, logLike0, niter=3, factor=2,
                  mindelta=1e-2):
         """Find an initial dx such that the change in -log-likelihood 
