@@ -1,5 +1,5 @@
 // -*- mode: c++ -*-
-// $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/src/pyLikelihood.in,v 1.38 2009/05/31 01:05:29 jchiang Exp $
+// $Header: /glast/ScienceTools/glast/pyLikelihood/src/pyLikelihood.i,v 1.1.1.5 2009/06/16 17:32:15 elwinter Exp $
 %module pyLikelihood
 %{
 #ifdef TRAP_FPE
