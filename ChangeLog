@@ -1,4 +1,14 @@
 ------------------------------------------------------------
+User: jchiang  Wed Aug  5 16:01:34 PDT 2009
+pyLikelihood/python
+
+Modified Files:
+	CompositeLikelihood.py 
+Log Message:
+add specialized minosError(...) function
+
+    *
+------------------------------------------------------------
 User: jchiang  Wed Aug  5 13:55:19 PDT 2009
 pyLikelihood/python
 
