@@ -5,7 +5,7 @@ more natural symantics for use in python alongside other analysis classes.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/CompositeLikelihood.py,v 1.3 2009/03/31 18:20:53 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/CompositeLikelihood.py,v 1.4 2009/08/05 20:55:19 jchiang Exp $
 #
 
 import pyLikelihood as pyLike
@@ -43,6 +43,68 @@ class CompositeLikelihood(object):
         optFactory = pyLike.OptimizerFactory_instance()
         myOpt = optFactory.create(optimizer, self.composite)
         myOpt.find_min_only(verbosity, tol, self.tolType)
+    def minosError(self, component_name, srcname, parname):
+        freeParams = pyLike.ParameterVector()
+        self.composite.getFreeParams(freeParams)
+        saved_values = [par.getValue() for par in freeParams]
+        indx = self._compositeIndex(component_name, srcname, parname)
+        if indx == -1:
+            raise RuntimeError("Invalid parameter specification")
+        try:
+            errors = self.optObject.Minos(indx)
+            self.composite.setFreeParamValues(saved_values)
+            return errors
+        except RuntimeError, message:
+            print "Minos error encountered for parameter %i." % par_index
+            print "Attempting to reset free parameters."
+            for tiedName, component in zip(self.srcNames, self.components):
+                if component_name == tiedName:
+                    component.thaw(component.par_index(srcname, parname))
+                    break
+            self.composite.setFreeParamValues(saved_values)
+            raise RuntimeError(message)
+    def _compositeIndex(self, target_component, target_src, target_par):
+        indx = -1
+        #
+        # Loop over non-tied parameters
+        #
+        for tiedName, component in zip(self.srcNames, self.components):
+            srcNames = component.sourceNames()
+            for src in srcNames:
+                if src != tiedName:
+                    spec = component.model[src].funcs['Spectrum']
+                    parnames = pyLike.StringVector()
+                    spec.getFreeParamNames(parnames)
+                    for parname in parnames:
+                        indx += 1
+                        if (target_component == tiedName and
+                            target_src == src and
+                            target_par == parname):
+                            return indx
+
+        #
+        # Loop over tied parameters for common sources (just need to do 
+        # this for the first component).
+        #
+        spec = self.components[0].model[self.srcNames[0]].funcs['Spectrum']
+        parnames = pyLike.StringVector()
+        spec.getFreeParamNames(parnames)
+        for parname in parnames:
+            if parname != spec.normPar().getName():
+                indx += 1
+                if target_src in self.srcNames and target_par == parname:
+                    return indx
+        #
+        # Loop over normalization parameters
+        #
+        for src, component in zip(self.srcNames, self.components):
+            spec = component.model[src].funcs['Spectrum']
+            if spec.normPar().isFree():
+                parname = spec.normPar().getName()
+                indx += 1
+                if target_src == src and target_par == parname:
+                    return indx
+        return indx
     def _errors(self, optimizer=None, verbosity=0, tol=None,
                 useBase=False, covar=False, optObject=None):
         self.composite.syncParams()
@@ -106,7 +168,6 @@ class CompositeLikelihood(object):
                 parname = spec.normPar().getName()
                 par_index = component.par_index(src, parname)
                 component.model[par_index].setError(norm_errors.pop(0))
-        print norm_errors
     def __getattr__(self, attrname):
         return getattr(self.composite, attrname)
     def __repr__(self):
