@@ -1,5 +1,14 @@
 ------------------------------------------------------------
 TAG
+Tag name: ScienceTools-09-15-00, operation: add
+Package: pyLikelihood
+User: glastrm  Fri Aug  7 18:46:26 2009
+Files:
+  pyLikelihood/python/SummedLikelihood.py  1.7
+
+    *
+------------------------------------------------------------
+TAG
 Tag name: pyLikelihood-01-16-00, operation: add
 Package: pyLikelihood
 User: jchiang  Thu Aug  6 11:24:15 2009
