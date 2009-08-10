@@ -1,4 +1,15 @@
 ------------------------------------------------------------
+User: jchiang  Mon Aug 10 14:31:03 PDT 2009
+pyLikelihood/python
+
+Modified Files:
+	UpperLimits.py 
+Added Files:
+	FluxDensity.py 
+Log Message:
+add FluxDensity.py for error contour calculation using covariance matrix; reinstate UpperLimits.bayesianUL method
+    *
+------------------------------------------------------------
 TAG
 Tag name: ScienceTools-09-15-03-gl2, operation: add
 Package: pyLikelihood
