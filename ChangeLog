@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Sun Aug 30 17:27:24 PDT 2009
+pyLikelihood/python
+
+Modified Files:
+	AnalysisBase.py 
+Log Message:
+check if number of free parameters changes between fits and save fit if so
+    *
+------------------------------------------------------------
 TAG
 Tag name: ScienceTools-15-01-02, operation: del
 Package: pyLikelihood
