@@ -4,7 +4,7 @@ Base clase for Likelihood analysis Python modules.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.53 2009/06/29 21:52:55 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.54 2009/08/31 00:27:23 jchiang Exp $
 #
 
 import sys
@@ -27,7 +27,6 @@ class AnalysisBase(object):
         self.covar_is_current = False
         self.tolType = pyLike.ABSOLUTE
         self.optObject = None
-        self.numFreePars = None
     def _srcDialog(self):
         paramDict = map()
         paramDict['Source Model File'] = Param('file', '*.xml')
@@ -53,10 +52,6 @@ class AnalysisBase(object):
                                "Valid values are 0=RELATIVE or 1=ABSOLUTE")
     def fit(self, verbosity=3, tol=None, optimizer=None,
             covar=False, optObject=None):
-        self.logLike.syncParams()
-        if self.numFreePars != self.logLike.getNumFreeParams():
-            self.logLike.saveCurrentFit()
-            self.numFreePars = self.logLike.getNumFreeParams()
         if tol is None:
             tol = self.tol
         errors = self._errors(optimizer, verbosity, tol, covar=covar,
