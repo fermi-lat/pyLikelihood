@@ -6,7 +6,7 @@
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /usr/local/CVS/SLAC/pyLikelihood/python/UpperLimits.py,v 1.18 2009/07/21 13:44:00 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/UpperLimits.py,v 1.20 2009/08/10 21:31:02 jchiang Exp $
 #
 import copy
 import bisect
@@ -148,7 +148,7 @@ class UpperLimit(object):
         # bracketed.
         #
         indx = len(dlogLike) - 2
-        while delta > dlogLike[indx]:
+        while delta < dlogLike[indx]:
             indx -= 1
         factor = (delta - dlogLike[indx])/(dlogLike[indx+1] - dlogLike[indx])
         xx = factor*(xvals[indx+1] - xvals[indx]) + xvals[indx]
@@ -223,7 +223,8 @@ class UpperLimit(object):
             param.setValue(value)
             param.setError(error)
         self._resyncPars()
-        return flux, xval, x, integral_dist
+        self.bayesianUL_integral = x, integral_dist
+        return flux, xval
     def _find_dx(self, par, nsigmax, renorm, logLike0, niter=3, factor=2,
                  mindelta=1e-2):
         """Find an initial dx such that the change in -log-likelihood 
