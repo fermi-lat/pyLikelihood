@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Sun Sep 20 22:36:07 PDT 2009
+pyLikelihood/python
+
+Modified Files:
+	UpperLimits.py 
+Log Message:
+bug fix for compute() function; improve interface for bayesianUL
+    *
+------------------------------------------------------------
 TAG
 Tag name: pyLikelihood-01-16-02, operation: add
 Package: pyLikelihood
