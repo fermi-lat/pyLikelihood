@@ -6,12 +6,13 @@
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/UpperLimits.py,v 1.20 2009/08/10 21:31:02 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/UpperLimits.py,v 1.21 2009/09/21 05:36:07 jchiang Exp $
 #
 import copy
 import bisect
 import pyLikelihood as pyLike
 import numpy as num
+from LikelihoodState import LikelihoodState
 
 class QuadraticFit(object):
     def __init__(self, xx, yy):
@@ -53,6 +54,7 @@ class UpperLimit(object):
         self.like = like
         self.source = source
         self.results = []
+        self.saved_state = LikelihoodState(like)
     def compute(self, emin=100, emax=3e5, delta=2.71/2., 
                 tmpfile='temp_model.xml', fix_src_pars=False,
                 verbosity=1, nsigmax=2, npts=5, renorm=False,
@@ -60,8 +62,6 @@ class UpperLimit(object):
         # Store the value of the covariance flag
         covar_is_current = self.like.covar_is_current
         source = self.source
-        saved_pars = [par.value() for par in self.like.params()]
-        saved_errors = [par.error() for par in self.like.params()]
 
         # Fix the normalization parameter for the scan.
         par = self.like.normPar(source)
@@ -110,8 +110,6 @@ class UpperLimit(object):
                 # have sufficient points for a quadratic fit, 
                 # so exit this loop.
                 break
-#        print xvals
-#        print dlogLike
         yfit = QuadraticFit(xvals, dlogLike)
         #
         # Extend the fit until it surpasses the desired delta
@@ -133,14 +131,10 @@ class UpperLimit(object):
             i += 1
             if verbosity > 0:
                 print i, x, dlogLike[-1], fluxes[-1]
-        par.setFree(1)
         if fix_src_pars:
             self.like.setFreeFlag(source, freePars, 1)
         # Restore model parameters to original values
-        for value, error, param in zip(saved_pars, saved_errors, 
-                                       self.like.params()):
-            param.setValue(value)
-            param.setError(error)
+        self.saved_state.restore()
         self._resyncPars()
         #
         # Linear interpolation for parameter value.  Step backwards
@@ -159,14 +153,13 @@ class UpperLimit(object):
         # "Bayesian" estimate of the confidence limit
         self.normPars = xvals
         self.dlogLike = dlogLike
-        self.fluxes = fluxes
         self.normPar_prof = xx
         self.delta = delta
         # Restore value of covariance flag
         self.like.covar_is_current = covar_is_current
         return ul, xx
     def bayesianUL(self, cl=0.95, nsig=5, renorm=False, 
-                   emin=100, emax=3e5):
+                   emin=100, emax=3e5, npts=50):
         # Based on the confidence limit found using the profile method, 
         # estimate the nsig-sigma bound on the normalization parameter 
         # assuming Gaussian statistics (chi-square for 1 dof)
@@ -175,8 +168,6 @@ class UpperLimit(object):
         # Store the value of the covariance flag
         covar_is_current = self.like.covar_is_current
         source = self.source
-        saved_pars = [par.value() for par in self.like.params()]
-        saved_errors = [par.error() for par in self.like.params()]
 
         # Fix the normalization parameter for the scan.
         par = self.like.normPar(source)
@@ -189,18 +180,15 @@ class UpperLimit(object):
         logLike0 = self.like()
         x0 = par.getValue()
 
-        npts = 50
         dx = normPar_nsig/npts     # need to integrate from zero
         xx = copy.deepcopy(self.normPars)
         yy = copy.deepcopy(self.dlogLike)
-        fluxes = copy.deepcopy(self.fluxes)
         for i in range(npts+1):
             xx.append(dx*i)
             par.setValue(xx[-1])
             self.like.syncSrcParams(self.source)
             self.fit(0, renorm=renorm)
             yy.append(self.like() - logLike0)
-            fluxes.append(self.like[self.source].flux(emin, emax))
         # sort x values; compute likelihood = exp(-dlogLike) for integral
         indx = num.argsort(xx)
         x = num.array([xx[i] for i in indx])
@@ -212,18 +200,16 @@ class UpperLimit(object):
         integral_dist = num.array(integral_dist)/integral_dist[-1]
         ii = bisect.bisect(integral_dist, cl)
         ii = min(len(integral_dist)-1, ii)
-        factor = ((integral_dist[ii] - cl)/
+        factor = ((cl - integral_dist[ii-1])/
                   (integral_dist[ii] - integral_dist[ii-1]))
         xval = factor*(x[ii] - x[ii-1]) + x[ii-1]
-        flux = factor*(fluxes[ii] - fluxes[ii-1]) + fluxes[ii-1]
+        par.setValue(xval)
+        self.like.syncSrcParams(self.source)
+        flux = self.like[self.source].flux(emin, emax)
         # Restore model parameters to original values
-        par.setFree(1)
-        for value, error, param in zip(saved_pars, saved_errors, 
-                                       self.like.params()):
-            param.setValue(value)
-            param.setError(error)
+        self.saved_state.restore()
         self._resyncPars()
-        self.bayesianUL_integral = x, integral_dist
+        self.bayesianUL_integral = x, integral_dist, y, yy
         return flux, xval
     def _find_dx(self, par, nsigmax, renorm, logLike0, niter=3, factor=2,
                  mindelta=1e-2):

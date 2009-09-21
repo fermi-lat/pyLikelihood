@@ -4,7 +4,7 @@ Base clase for Likelihood analysis Python modules.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.54 2009/08/31 00:27:23 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.55 2009/08/31 15:16:17 jchiang Exp $
 #
 
 import sys
@@ -22,7 +22,7 @@ _plotter_package = 'root'
 class AnalysisBase(object):
     def __init__(self):
         self.maxdist = 20
-        self.tol = 1e-2
+        self.tol = 1e-3
         self.covariance = None
         self.covar_is_current = False
         self.tolType = pyLike.ABSOLUTE
