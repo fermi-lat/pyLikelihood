@@ -1,4 +1,15 @@
 ------------------------------------------------------------
+User: jchiang  Mon Sep 21 11:28:03 PDT 2009
+pyLikelihood/python
+
+Modified Files:
+	AnalysisBase.py UpperLimits.py 
+Added Files:
+	IntegralUpperLimit.py LikelihoodState.py 
+Log Message:
+add Stephen's IntegralUpperLimit module (with modifications) and LikelihoodState.py; bug-fixes for UpperLimit.bayesianUL
+    *
+------------------------------------------------------------
 TAG
 Tag name: pyLikelihood-01-16-03, operation: add
 Package: pyLikelihood
