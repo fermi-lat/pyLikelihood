@@ -2,11 +2,12 @@
    @file release.notes
    @brief package pyLikelihood
    @author J. Chiang <jchiang@slac.stanford.edu>
-   $Id: release.notes,v 1.81 2009/08/31 00:29:38 jchiang Exp $
+   $Id: release.notes,v 1.82 2009/08/31 15:23:12 jchiang Exp $
 
    @verbatim
    * EOH *
 
+ pyLikelihood-01-16-03 20-Sep-2009 jchiang bug-fix for UpperLimit.compute
  pyLikelihood-01-16-02 31-Aug-2009 jchiang backoff on last patch tag; handle in Likelihood v15r6p1
  pyLikelihood-01-16-01 30-Aug-2009 jchiang check if number of free parameters has changed between fits
  pyLikelihood-01-16-00 06-Aug-2009 jchiang add CompositeLikelihood.minosError(...) and set errors for various components
