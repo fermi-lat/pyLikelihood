@@ -6,7 +6,7 @@
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/UpperLimits.py,v 1.21 2009/09/21 05:36:07 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/UpperLimits.py,v 1.22 2009/09/21 18:28:03 jchiang Exp $
 #
 import copy
 import bisect
@@ -172,6 +172,15 @@ class UpperLimit(object):
         # Fix the normalization parameter for the scan.
         par = self.like.normPar(source)
         par.setFree(0)
+
+        #
+        # Set the lower bound to zero
+        #
+        current_bounds = par.getBounds()
+        if current_bounds[0] != 0:
+            print ("Setting lower bound on normalization parameter " +
+                   "to zero temporarily for upper limit calculation.")
+        par.setBounds(0, current_bounds[1])
 
         # Update the best-fit-so-far vector after having fixed the 
         # normalization parameter.
