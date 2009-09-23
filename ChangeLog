@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Wed Sep 23 08:34:45 PDT 2009
+pyLikelihood/python
+
+Modified Files:
+	UpperLimits.py 
+Log Message:
+set lower bound of normalization parameter to zero for bayesianUL calculation
+    *
+------------------------------------------------------------
 TAG
 Tag name: pyLikelihood-01-17-00, operation: add
 Package: pyLikelihood
