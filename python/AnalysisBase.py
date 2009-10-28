@@ -1,10 +1,10 @@
 """
-Base clase for Likelihood analysis Python modules.
+Base class for Likelihood analysis Python modules.
 
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.55 2009/08/31 15:16:17 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.56 2009/09/21 18:28:03 jchiang Exp $
 #
 
 import sys
