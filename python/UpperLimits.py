@@ -6,7 +6,7 @@
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/UpperLimits.py,v 1.23 2009/09/23 15:34:44 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/UpperLimits.py,v 1.24 2009/10/28 04:32:52 jchiang Exp $
 #
 import copy
 import bisect
@@ -56,18 +56,21 @@ class UpperLimit(object):
     def __init__(self, like, source):
         self.like = like
         self.source = source
+        self.normPar = self.like.normPar(source)
         self.results = []
-        self.saved_state = LikelihoodState(like)
+#        self.saved_state = LikelihoodState(like)
     def compute(self, emin=100, emax=3e5, delta=2.71/2., 
                 tmpfile='temp_model.xml', fix_src_pars=False,
                 verbosity=1, nsigmax=2, npts=5, renorm=False,
                 mindelta=1e-2):
+        saved_state = LikelihoodState(self.like)
+        
         # Store the value of the covariance flag
         covar_is_current = self.like.covar_is_current
         source = self.source
 
         # Fix the normalization parameter for the scan.
-        par = self.like.normPar(source)
+        par = self.normPar
         par.setFree(0)
 
         # Update the best-fit-so-far vector after having fixed the 
@@ -137,7 +140,7 @@ class UpperLimit(object):
         if fix_src_pars:
             self.like.setFreeFlag(source, freePars, 1)
         # Restore model parameters to original values
-        self.saved_state.restore()
+        saved_state.restore()
         self._resyncPars()
         #
         # Linear interpolation for parameter value.  Step backwards
@@ -161,17 +164,22 @@ class UpperLimit(object):
         # Restore value of covariance flag
         self.like.covar_is_current = covar_is_current
         return ul, xx
+    def _logLike(self, xpar, renorm):
+        self.normPar.setValue(xpar)
+        self.like.syncSrcParams(self.source)
+        self.fit(0, renorm=renorm)
+        return self.like()
     def _errorEst(self, renorm):
         source = self.source
 
         saved_state = LikelihoodState(self.like)
 
-        logLike0 = self.like()
+        logLike0 = saved_state.negLogLike
 
         # Store the value of the covariance flag
         covar_is_current = self.like.covar_is_current
 
-        par = self.like.normPar(source)
+        par = self.normPar
         x0 = par.getValue()
         xsig = par.error()   # initial error estimate
 
@@ -185,24 +193,24 @@ class UpperLimit(object):
                    "to zero temporarily for upper limit calculation.")
         par.setBounds(0, current_bounds[1])
 
-        def logLike(xpar):
-            par.setValue(xpar)
-            self.like.syncSrcParams(self.source)
-            self.fit(0, renorm=renorm)
-            return self.like()
-
         xvals = num.arange(x0, x0 + xsig*3, (xsig*3)/10.)
-        yvals = num.array([logLike(x) for x in xvals])
+        yvals = num.array([self._logLike(x, renorm) for x in xvals])
         quadfit = QuadraticFit(xvals, yvals, xmin=x0)
         intercept, slope = quadfit.fitPars()
         sigest = num.sqrt(1./slope/2.)
 
         saved_state.restore()
+        self._resyncPars()
         self.like.covar_is_current = covar_is_current
 
         return sigest
     def bayesianUL(self, cl=0.95, nsig=5, renorm=False, 
                    emin=100, emax=3e5, npts=50):
+        saved_state = LikelihoodState(self.like)
+
+        logLike0 = saved_state.negLogLike
+        x0 = self.normPar.getValue()
+        
         normPar_nsig = self._errorEst(renorm)*nsig*4
 
         # Store the value of the covariance flag
@@ -210,7 +218,7 @@ class UpperLimit(object):
         source = self.source
 
         # Fix the normalization parameter for the scan.
-        par = self.like.normPar(source)
+        par = self.normPar
         par.setFree(0)
 
         #
@@ -222,17 +230,24 @@ class UpperLimit(object):
                    "to zero temporarily for upper limit calculation.")
         par.setBounds(0, current_bounds[1])
 
-        logLike0 = self.like()
-        x0 = par.getValue()
+        #print x0 + normPar_nsig, x0 - normPar_nsig
+        dlogLike_plus = (self._logLike(x0 + normPar_nsig, renorm)
+                         - saved_state.negLogLike)
+        dlogLike_minus = (self._logLike(max(x0 - normPar_nsig, 0), renorm)
+                          - saved_state.negLogLike)
+        #print "dlogLike_plus, dlogLike_minus: ", dlogLike_plus, dlogLike_minus
+
+        if dlogLike_minus < 0:
+            print "Better minimum found:"
+            print self.like.model
+            print "-log-likelihood = ", self.like()
+            raise RuntimeError("Better minimum found")
 
         dx = normPar_nsig/npts     # need to integrate from zero
         xx, yy = [], []
         for i in range(npts+1):
             xx.append(dx*i)
-            par.setValue(xx[-1])
-            self.like.syncSrcParams(self.source)
-            self.fit(0, renorm=renorm)
-            yy.append(self.like() - logLike0)
+            yy.append(self._logLike(xx[-1], renorm) - logLike0)
         # sort x values; compute likelihood = exp(-dlogLike) for integral
         indx = num.argsort(xx)
         x = num.array([xx[i] for i in indx])
@@ -251,7 +266,7 @@ class UpperLimit(object):
         self.like.syncSrcParams(self.source)
         flux = self.like[self.source].flux(emin, emax)
         # Restore model parameters to original values
-        self.saved_state.restore()
+        saved_state.restore()
         self._resyncPars()
         self.bayesianUL_integral = x, integral_dist, y, yy
         return flux, xval
@@ -268,10 +283,11 @@ class UpperLimit(object):
         if dx == 0:
             dx = abs(par.getValue())
         for i in range(niter):
-            par.setValue(x0 + dx*nsigmax)
-            self.like.syncSrcParams(self.source)
-            self.fit(0, renorm=renorm)
-            dlogLike = self.like() - logLike0
+#            par.setValue(x0 + dx*nsigmax)
+#            self.like.syncSrcParams(self.source)
+#            self.fit(0, renorm=renorm)
+#            dlogLike = self.like() - logLike0
+            dlogLike = self._logLike(x0 + dx*nsigmax, renorm) - logLike0
             #print "_find_dx:", dx, par.getValue(), dlogLike
             if dlogLike > mindelta:
                 break
