@@ -6,7 +6,7 @@
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/UpperLimits.py,v 1.22 2009/09/21 18:28:03 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/UpperLimits.py,v 1.23 2009/09/23 15:34:44 jchiang Exp $
 #
 import copy
 import bisect
@@ -15,17 +15,20 @@ import numpy as num
 from LikelihoodState import LikelihoodState
 
 class QuadraticFit(object):
-    def __init__(self, xx, yy):
+    def __init__(self, xx, yy, xmin=None):
         self.Sx = self.Sy = self.Sxy = self.Sxx = self.npts = 0
-        self.xmin = min(xx)
+        if xmin is None:
+            self.xmin = min(xx)
+        else:
+            self.xmin = xmin
         for x, y in zip(xx, yy):
             self.add_pair(x, y)
     def add_pair(self, x, y):
-        xx = (x-self.xmin)*(x-self.xmin)
+        xx = (x - self.xmin)*(x - self.xmin)
         self.Sx += xx
         self.Sy += y
         self.Sxy += xx*y
-        self.Sxx +=  xx*xx
+        self.Sxx += xx*xx
         self.npts += 1
     def fitPars(self):
         denominator = self.npts*self.Sxx - self.Sx*self.Sx
@@ -158,12 +161,49 @@ class UpperLimit(object):
         # Restore value of covariance flag
         self.like.covar_is_current = covar_is_current
         return ul, xx
+    def _errorEst(self, renorm):
+        source = self.source
+
+        saved_state = LikelihoodState(self.like)
+
+        logLike0 = self.like()
+
+        # Store the value of the covariance flag
+        covar_is_current = self.like.covar_is_current
+
+        par = self.like.normPar(source)
+        x0 = par.getValue()
+        xsig = par.error()   # initial error estimate
+
+        # Fix the normalization parameter for the scan.
+        par.setFree(0)
+
+        # Set the lower bound to zero
+        current_bounds = par.getBounds()
+        if current_bounds[0] != 0:
+            print ("Setting lower bound on normalization parameter " +
+                   "to zero temporarily for upper limit calculation.")
+        par.setBounds(0, current_bounds[1])
+
+        def logLike(xpar):
+            par.setValue(xpar)
+            self.like.syncSrcParams(self.source)
+            self.fit(0, renorm=renorm)
+            return self.like()
+
+        xvals = num.arange(x0, x0 + xsig*3, (xsig*3)/10.)
+        yvals = num.array([logLike(x) for x in xvals])
+        quadfit = QuadraticFit(xvals, yvals, xmin=x0)
+        intercept, slope = quadfit.fitPars()
+        sigest = num.sqrt(1./slope/2.)
+
+        saved_state.restore()
+        self.like.covar_is_current = covar_is_current
+
+        return sigest
     def bayesianUL(self, cl=0.95, nsig=5, renorm=False, 
                    emin=100, emax=3e5, npts=50):
-        # Based on the confidence limit found using the profile method, 
-        # estimate the nsig-sigma bound on the normalization parameter 
-        # assuming Gaussian statistics (chi-square for 1 dof)
-        normPar_nsig = self.normPar_prof*nsig/num.sqrt(self.delta*2)
+        normPar_nsig = self._errorEst(renorm)*nsig*4
 
         # Store the value of the covariance flag
         covar_is_current = self.like.covar_is_current
@@ -182,16 +222,11 @@ class UpperLimit(object):
                    "to zero temporarily for upper limit calculation.")
         par.setBounds(0, current_bounds[1])
 
-        # Update the best-fit-so-far vector after having fixed the 
-        # normalization parameter.
-        self.like.saveCurrentFit()
-
         logLike0 = self.like()
         x0 = par.getValue()
 
         dx = normPar_nsig/npts     # need to integrate from zero
-        xx = copy.deepcopy(self.normPars)
-        yy = copy.deepcopy(self.dlogLike)
+        xx, yy = [], []
         for i in range(npts+1):
             xx.append(dx*i)
             par.setValue(xx[-1])
