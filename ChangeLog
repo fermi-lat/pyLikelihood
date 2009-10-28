@@ -1,4 +1,14 @@
 ------------------------------------------------------------
+User: jchiang  Wed Oct 28 08:12:48 PDT 2009
+pyLikelihood/python
+
+Modified Files:
+	AnalysisBase.py 
+Log Message:
+request to set plottting line style by D. Landriu
+
+    *
+------------------------------------------------------------
 User: jchiang  Tue Oct 27 21:32:53 PDT 2009
 pyLikelihood/python
 
