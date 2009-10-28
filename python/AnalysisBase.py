@@ -4,7 +4,7 @@ Base class for Likelihood analysis Python modules.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.56 2009/09/21 18:28:03 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.57 2009/10/28 04:32:52 jchiang Exp $
 #
 
 import sys
@@ -365,7 +365,7 @@ class AnalysisBase(object):
         elif _plotter_package == 'hippo':
             from HippoPlot import HippoPlot
             self.plotter = HippoPlot
-    def plot(self, oplot=0, color=None, omit=()):
+    def plot(self, oplot=0, color=None, omit=(), symbol='line'):
         try:
             self._importPlotter()
         except ImportError:
@@ -389,7 +389,7 @@ class AnalysisBase(object):
                 total_counts += self._plotSource(src, color=color, 
                                                  show=(src not in omit))
         self.spectralPlot.overlay(self.e_vals, total_counts, color=color,
-                                  symbol='line' )
+                                  symbol=symbol)
         self._plotResiduals(total_counts, oplot=oplot, color=color)
     def _plotResiduals(self, model, oplot=0, color='black'):
         resid = (self.nobs - model)/model
