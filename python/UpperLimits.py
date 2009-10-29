@@ -6,7 +6,7 @@
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/UpperLimits.py,v 1.24 2009/10/28 04:32:52 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/UpperLimits.py,v 1.25 2009/10/28 19:38:27 jchiang Exp $
 #
 import copy
 import bisect
@@ -58,7 +58,6 @@ class UpperLimit(object):
         self.source = source
         self.normPar = self.like.normPar(source)
         self.results = []
-#        self.saved_state = LikelihoodState(like)
     def compute(self, emin=100, emax=3e5, delta=2.71/2., 
                 tmpfile='temp_model.xml', fix_src_pars=False,
                 verbosity=1, nsigmax=2, npts=5, renorm=False,
@@ -141,7 +140,6 @@ class UpperLimit(object):
             self.like.setFreeFlag(source, freePars, 1)
         # Restore model parameters to original values
         saved_state.restore()
-        self._resyncPars()
         #
         # Linear interpolation for parameter value.  Step backwards
         # from last dlogLike value to ensure the target delta is
@@ -155,8 +153,7 @@ class UpperLimit(object):
         ul = factor*(fluxes[indx+1] - fluxes[indx]) + fluxes[indx]
         self.results.append(ULResult(ul, emin, emax, delta,
                                      fluxes, dlogLike, xvals))
-        # Save profile information for debugging or for use with the
-        # "Bayesian" estimate of the confidence limit
+        # Save profile information for debugging
         self.normPars = xvals
         self.dlogLike = dlogLike
         self.normPar_prof = xx
@@ -170,10 +167,7 @@ class UpperLimit(object):
         self.fit(0, renorm=renorm)
         return self.like()
     def _errorEst(self, renorm):
-        source = self.source
-
         saved_state = LikelihoodState(self.like)
-
         logLike0 = saved_state.negLogLike
 
         # Store the value of the covariance flag
@@ -200,18 +194,18 @@ class UpperLimit(object):
         sigest = num.sqrt(1./slope/2.)
 
         saved_state.restore()
-        self._resyncPars()
         self.like.covar_is_current = covar_is_current
 
         return sigest
-    def bayesianUL(self, cl=0.95, nsig=5, renorm=False, 
+    def bayesianUL(self, cl=0.95, nsig=10, renorm=False, 
                    emin=100, emax=3e5, npts=50):
         saved_state = LikelihoodState(self.like)
 
         logLike0 = saved_state.negLogLike
         x0 = self.normPar.getValue()
         
-        normPar_nsig = self._errorEst(renorm)*nsig*4
+        errEst = self._errorEst(renorm)
+        normPar_nsig = errEst*nsig
 
         # Store the value of the covariance flag
         covar_is_current = self.like.covar_is_current
@@ -221,37 +215,36 @@ class UpperLimit(object):
         par = self.normPar
         par.setFree(0)
 
-        #
         # Set the lower bound to zero
-        #
         current_bounds = par.getBounds()
         if current_bounds[0] != 0:
             print ("Setting lower bound on normalization parameter " +
                    "to zero temporarily for upper limit calculation.")
         par.setBounds(0, current_bounds[1])
 
-        #print x0 + normPar_nsig, x0 - normPar_nsig
         dlogLike_plus = (self._logLike(x0 + normPar_nsig, renorm)
                          - saved_state.negLogLike)
         dlogLike_minus = (self._logLike(max(x0 - normPar_nsig, 0), renorm)
                           - saved_state.negLogLike)
-        #print "dlogLike_plus, dlogLike_minus: ", dlogLike_plus, dlogLike_minus
 
-        if dlogLike_minus < 0:
-            print "Better minimum found:"
-            print self.like.model
-            print "-log-likelihood = ", self.like()
-            raise RuntimeError("Better minimum found")
+        while dlogLike_plus < 10:
+            normPar_nsig += 2*errEst
+            dlogLike_plus = (self._logLike(x0 + normPar_nsig, renorm)
+                             - saved_state.negLogLike)
+            dlogLike_minus = (self._logLike(max(x0 - normPar_nsig, 0), renorm)
+                              - saved_state.negLogLike)
 
-        dx = normPar_nsig/npts     # need to integrate from zero
+        # Integrate from max(0, x0 - normPar_nsig)
+        xmin = max(0, x0 - normPar_nsig)
+        dx = (x0 + normPar_nsig - xmin)/npts
         xx, yy = [], []
         for i in range(npts+1):
-            xx.append(dx*i)
+            xx.append(xmin + dx*i)
             yy.append(self._logLike(xx[-1], renorm) - logLike0)
-        # sort x values; compute likelihood = exp(-dlogLike) for integral
-        indx = num.argsort(xx)
-        x = num.array([xx[i] for i in indx])
-        y = num.array([num.exp(-yy[i]) for i in indx])
+            
+        # Compute likelihood = exp(-dlogLike) for integral
+        x = num.array(xx)
+        y = num.exp(-num.array(yy))
         integral_dist = [0]
         for i in range(len(x)-1):
             integral_dist.append(integral_dist[-1] + 
@@ -265,10 +258,13 @@ class UpperLimit(object):
         par.setValue(xval)
         self.like.syncSrcParams(self.source)
         flux = self.like[self.source].flux(emin, emax)
+        
         # Restore model parameters to original values
         saved_state.restore()
-        self._resyncPars()
+
+        # Save profiles for debugging
         self.bayesianUL_integral = x, integral_dist, y, yy
+        
         return flux, xval
     def _find_dx(self, par, nsigmax, renorm, logLike0, niter=3, factor=2,
                  mindelta=1e-2):
