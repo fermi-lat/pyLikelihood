@@ -1,4 +1,14 @@
 ------------------------------------------------------------
+User: jchiang  Wed Oct 28 22:09:08 PDT 2009
+pyLikelihood/python
+
+Modified Files:
+	UpperLimits.py 
+Log Message:
+check dlogLike, expand integral bounds if necessary
+
+    *
+------------------------------------------------------------
 User: jchiang  Wed Oct 28 12:38:27 PDT 2009
 pyLikelihood/python
 
