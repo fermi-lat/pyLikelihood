@@ -2,11 +2,12 @@
    @file release.notes
    @brief package pyLikelihood
    @author J. Chiang <jchiang@slac.stanford.edu>
-   $Id: release.notes,v 1.85 2009/09/27 03:59:59 jchiang Exp $
+   $Id: release.notes,v 1.86 2009/10/31 21:25:03 jchiang Exp $
 
    @verbatim
    * EOH *
 
+ pyLikelihood-01-18-01 13-Nov-2009 jchiang complete SummedLikelihood.Parameter interface for use with LikelihoodState and UpperLimit classes
  pyLikelihood-01-18-00 31-Oct-2009 jchiang new version of UpperLimit.bayesianUL that can be run independently of UpperLimit.compute
  pyLikelihood-01-17-01 26-Sep-2009 jchiang set norm par lower bound to zero for bayesianUL calculation
  pyLikelihood-01-17-00 21-Sep-2009 jchiang added IntegralUpperLimit.py, LikelihoodState.py; bug-fixes for UpperLimit.bayesianUL
