@@ -1,4 +1,14 @@
 ------------------------------------------------------------
+User: jchiang  Fri Nov 13 08:20:00 PST 2009
+pyLikelihood/python
+
+Modified Files:
+	SummedLikelihood.py 
+Log Message:
+complete Parameter interface to allow use with LikelihoodState (and UpperLimits) class
+
+    *
+------------------------------------------------------------
 TAG
 Tag name: pyLikelihood-01-18-00, operation: add
 Package: pyLikelihood
