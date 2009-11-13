@@ -6,7 +6,7 @@ classes.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/SummedLikelihood.py,v 1.6 2009/06/08 23:09:03 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/SummedLikelihood.py,v 1.7 2009/06/11 19:06:55 jchiang Exp $
 #
 
 import pyLikelihood as pyLike
@@ -22,12 +22,16 @@ class Parameter(object):
         return self.pars[0].value()
     def getValue(self):
         return self.pars[0].getValue()
+    def getScale(self):
+        return self.pars[0].getScale()
     def getBounds(self):
         return self.pars[0].getBounds()
     def isFree(self):
         return self.pars[0].isFree()
     def error(self):
         return self.pars[0].error()
+    def alwaysFixed(self):
+        return self.pars[0].alwaysFixed()
     def setFree(self, flag):
         for par in self.pars:
             par.setFree(flag)
@@ -37,6 +41,15 @@ class Parameter(object):
     def setError(self, error):
         for par in self.pars:
             par.setError(error)
+    def setBounds(self, minValue, maxValue):
+        for par in self.pars:
+            par.setBounds(minValue, maxValue)
+    def setScale(self, scale):
+        for par in self.pars:
+            par.setScale(scale)
+    def setAlwaysFixed(self, alwaysFixed):
+        for par in self.pars:
+            par.setAlwaysFixed(alwaysFixed)
 
 class SummedLikelihood(object):
     def __init__(self, optimizer='Minuit'):
