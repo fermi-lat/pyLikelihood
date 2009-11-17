@@ -6,11 +6,12 @@ classes.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/SummedLikelihood.py,v 1.7 2009/06/11 19:06:55 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/SummedLikelihood.py,v 1.8 2009/11/13 16:20:00 jchiang Exp $
 #
 
 import pyLikelihood as pyLike
 from SrcModel import SourceModel
+from LikelihoodState import LikelihoodState
 
 class Parameter(object):
     "Composite parameter object."
@@ -61,6 +62,7 @@ class SummedLikelihood(object):
         self.optimizer = optimizer
         self.tolType = pyLike.ABSOLUTE
         self.tol = 1e-2
+        self.saved_state = None
     def sourceNames(self):
         return self.components[0].sourceNames()
     def addComponent(self, like):
@@ -108,11 +110,13 @@ class SummedLikelihood(object):
                     my_params[j].addParam(par)
         return my_params
     def saveCurrentFit(self):
-        for comp in self.components:
-            comp.logLike.saveCurrentFit()
+        self.saved_state = LikelihoodState(self)
     def restoreBestFit(self):
-        for comp in self.components:
-            comp.logLike.restoreBestFit()
+        if (self.saved_state is not None and 
+            self() > self.saved_state.negLogLike):
+            self.saved_state.restore()
+        else:
+            self.saveCurrentFit()
     def NpredValue(self, src):
         return sum([x.logLike.NpredValue(src) for x in self.components])
     def total_nobs(self):
