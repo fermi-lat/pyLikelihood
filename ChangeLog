@@ -1,4 +1,22 @@
 ------------------------------------------------------------
+User: jchiang  Tue Nov 17 14:16:48 PST 2009
+pyLikelihood/doc
+
+Modified Files:
+	release.notes 
+Log Message:
+stag/GoGui_auto-tag
+    *
+------------------------------------------------------------
+User: jchiang  Tue Nov 17 14:16:48 PST 2009
+pyLikelihood
+
+Modified Files:
+	SConscript 
+Log Message:
+stag/GoGui_auto-tag
+    *
+------------------------------------------------------------
 User: jchiang  Tue Nov 17 14:15:59 PST 2009
 pyLikelihood/cmt
 
