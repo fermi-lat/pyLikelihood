@@ -2,11 +2,12 @@
    @file release.notes
    @brief package pyLikelihood
    @author J. Chiang <jchiang@slac.stanford.edu>
-   $Id: release.notes,v 1.88 2009/11/17 22:16:48 jchiang Exp $
+   $Id: release.notes,v 1.89 2009/12/09 01:15:42 jrb Exp $
 
    @verbatim
    * EOH *
 
+ pyLikelihood-01-18-04 08-Dec-2009    jrb Fixed SConscript (for real this time)
  pyLikelihood-01-18-03 08-Dec-2009    jrb Fix SConscript for Windows build
  pyLikelihood-01-18-02 17-Nov-2009 jchiang re-implement SummedLikelihood.restoreBestFit and saveCurrentFit using LikelihoodState
  pyLikelihood-01-18-01 13-Nov-2009 jchiang complete SummedLikelihood.Parameter interface for use with LikelihoodState and UpperLimit classes
