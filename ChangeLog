@@ -1,4 +1,14 @@
 ------------------------------------------------------------
+User: jrb  Tue Dec  8 17:23:32 PST 2009
+ScienceTools-scons/pyLikelihood
+
+Modified Files:
+	.cvsignore SConscript 
+Log Message:
+Really commit this time
+
+    *
+------------------------------------------------------------
 TAG
 Tag name: pyLikelihood-01-18-03, operation: add
 Package: pyLikelihood
