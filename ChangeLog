@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jrb  Tue Dec  8 17:15:42 PST 2009
+ScienceTools-scons/pyLikelihood
+
+Modified Files:
+	SConscript 
+Log Message:
+stag/GoGui_auto-tag
+    *
+------------------------------------------------------------
 TAG
 Tag name: ScienceTools-09-15-06, operation: add
 Package: pyLikelihood
