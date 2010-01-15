@@ -1,12 +1,12 @@
 """
 @brief Wrapper interface for pyLikelihood.SummedLikelihood to provide
-more natural symantics for use in python alongside other analysis
+more natural semantics for use in python alongside other analysis
 classes.
 
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/SummedLikelihood.py,v 1.8 2009/11/13 16:20:00 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/SummedLikelihood.py,v 1.9 2009/11/17 22:15:21 jchiang Exp $
 #
 
 import pyLikelihood as pyLike
@@ -243,3 +243,13 @@ class SummedLikelihood(object):
                 self.components[0]._isDiffuseOrNearby(src)):
                 freeNpred += npred
         return freeNpred, totalNpred
+    def deleteSource(self, srcName):
+        src = self.components[0].deleteSource(srcName)
+        for comp in self.components[1:]:
+            comp.deleteSource(srcName)
+        self.model = self.components[0].model
+        return src
+    def addSource(self, src):
+        for comp in self.components:
+            comp.addSource(src)
+        self.model = self.components[0].model
