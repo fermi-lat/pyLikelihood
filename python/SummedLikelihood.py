@@ -6,12 +6,13 @@ classes.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/SummedLikelihood.py,v 1.9 2009/11/17 22:15:21 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/SummedLikelihood.py,v 1.10 2010/01/15 18:16:07 jchiang Exp $
 #
 
 import pyLikelihood as pyLike
 from SrcModel import SourceModel
 from LikelihoodState import LikelihoodState
+from AnalysisBase import AnalysisBase
 
 class Parameter(object):
     "Composite parameter object."
@@ -52,7 +53,7 @@ class Parameter(object):
         for par in self.pars:
             par.setAlwaysFixed(alwaysFixed)
 
-class SummedLikelihood(object):
+class SummedLikelihood(AnalysisBase):
     def __init__(self, optimizer='Minuit'):
         self.composite = pyLike.SummedLikelihood()
         self.components = []
@@ -253,3 +254,27 @@ class SummedLikelihood(object):
         for comp in self.components:
             comp.addSource(src)
         self.model = self.components[0].model
+    def minosError(self, *args):
+        raise NotImplementedError("minosError not implemented for SummedLikelihood")
+    def plot(self, *args):
+        raise NotImplementedError("plot not implemented for SummedLikelihood")
+    def setPlotter(self, *args):
+        raise NotImplementedError("setPlott not implemented for SummedLikelihood")
+    def oplot(self, *args):
+        raise NotImplementedError("oplot not implemented for SummedLikelihood")
+    def plotSource(self, *args):
+        raise NotImplementedError("plotSource not implemented for SummedLikelihood")
+    def writeCountsSpectra(self, *args):
+        raise NotImplementedError("writeCountsSpectra not implemented for SummedLikelihood")
+    def setFitTolType(self, tolType):
+        if tolType in (pyLike.RELATIVE, pyLike.ABSOLUTE):
+            for comp in self.components:
+                comp.setFitTolType(tolType)
+        else:
+            raise RuntimeError("Invalid fit tolerance type. " +
+                               "Valid values are 0=RELATIVE or 1=ABSOLUTE")
+    def setFreeFlag(self, srcName, pars, value):
+        for comp in self.components:
+            comp.setFreeFlag(srcName, pars, value)
+    def writeXml(self, xmlFile=None):
+        self.components[0].writeXml(xmlFile)
