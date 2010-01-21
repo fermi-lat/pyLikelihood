@@ -2,11 +2,12 @@
    @file release.notes
    @brief package pyLikelihood
    @author J. Chiang <jchiang@slac.stanford.edu>
-   $Id: release.notes,v 1.90 2009/12/09 01:24:25 jrb Exp $
+   $Id: release.notes,v 1.91 2010/01/15 22:28:20 jchiang Exp $
 
    @verbatim
    * EOH *
 
+ pyLikelihood-01-20-00 20-Jan-2010 jchiang added SummedLikelihood.flux, .fluxError, etc methods
  pyLikelihood-01-19-00 15-Jan-2010 jchiang added SummedLikelihood.deleteSource, .addSource methods
  pyLikelihood-01-18-04 08-Dec-2009    jrb Fixed SConscript (for real this time)
  pyLikelihood-01-18-03 08-Dec-2009    jrb Fix SConscript for Windows build
