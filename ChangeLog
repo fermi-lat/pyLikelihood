@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Wed Jan 20 20:52:43 PST 2010
+pyLikelihood/python
+
+Modified Files:
+	SummedLikelihood.py 
+Log Message:
+implement flux, fluxError, energyFlux, energyFluxError methods among others
+    *
+------------------------------------------------------------
 TAG
 Tag name: pyLikelihood-01-19-00, operation: add
 Package: pyLikelihood
