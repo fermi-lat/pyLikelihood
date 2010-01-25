@@ -6,7 +6,7 @@ classes.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/SummedLikelihood.py,v 1.10 2010/01/15 18:16:07 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/SummedLikelihood.py,v 1.11 2010/01/21 04:52:43 jchiang Exp $
 #
 
 import pyLikelihood as pyLike
@@ -212,6 +212,7 @@ class SummedLikelihood(AnalysisBase):
             comp.model = SourceModel(comp.logLike)
             for src in source_attributes:
                 comp.model[src].__dict__.update(source_attributes[src])
+        self.model = self.components[0].model
         return Ts_value
     def _renorm(self, factor=None):
         if factor is None:
