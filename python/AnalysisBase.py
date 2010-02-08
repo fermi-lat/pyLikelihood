@@ -4,7 +4,7 @@ Base class for Likelihood analysis Python modules.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.57 2009/10/28 04:32:52 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.58 2009/10/28 15:12:48 jchiang Exp $
 #
 
 import sys
@@ -14,7 +14,7 @@ from SrcModel import SourceModel
 try:
     from SimpleDialog import SimpleDialog, map, Param
 except ImportError, message:
-    print "Caught ImportError: ", message
+#    print "Caught ImportError: ", message
     pass
 
 _plotter_package = 'root'
