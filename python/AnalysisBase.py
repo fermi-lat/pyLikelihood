@@ -4,7 +4,7 @@ Base class for Likelihood analysis Python modules.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.58 2009/10/28 15:12:48 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.59 2010/02/08 22:43:34 jchiang Exp $
 #
 
 import sys
@@ -272,20 +272,22 @@ class AnalysisBase(object):
                                   for x in srcpars])
 
         return num.sqrt(num.dot(partials, num.dot(my_covar, partials)))
+    def setSpectrum(self, srcName, functionName):
+        source_attributes = self.getExtraSourceAttributes()
+        src = self.logLike.getSource(srcName)
+        src.setSpectrum(functionName)
+        self.syncSrcParams(srcName)
+        self._setSourceAttributes(source_attributes)
     def deleteSource(self, srcName):
         source_attributes = self.getExtraSourceAttributes()
         src = self.logLike.deleteSource(srcName)
-        self.model = SourceModel(self.logLike)
-        #
-        # reset the remaining extra source attributes
-        #
-        for item in source_attributes:
-            if self.model[item] is not None:
-                self.model[item].__dict__.update(source_attributes[item])
+        self._setSourceAttributes(source_attributes)
         return src
     def addSource(self, src):
         source_attributes = self.getExtraSourceAttributes()
         self.logLike.addSource(src)
+        self._setSourceAttributes(source_attributes)
+    def _setSourceAttributes(self, source_attributes):
         self.model = SourceModel(self.logLike)
         for item in source_attributes:
             if self.model[item] is not None:
