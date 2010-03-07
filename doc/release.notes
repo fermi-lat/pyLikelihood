@@ -2,11 +2,12 @@
    @file release.notes
    @brief package pyLikelihood
    @author J. Chiang <jchiang@slac.stanford.edu>
-   $Id: release.notes,v 1.93 2010/01/25 15:32:15 jchiang Exp $
+   $Id: release.notes,v 1.94 2010/02/08 22:44:34 jchiang Exp $
 
    @verbatim
    * EOH *
 
+ pyLikelihood-01-21-00 07-Mar-2010 jchiang add SummedLikelihood.setSpectrum(...); set x-axis plot range in spectral plots
  pyLikelihood-01-20-02 08-Feb-2010 jchiang comment out import _tkinter warning
  pyLikelihood-01-20-01 25-Jan-2010 jchiang updated SummedLikelihood.model after computing Ts
  pyLikelihood-01-20-00 20-Jan-2010 jchiang added SummedLikelihood.flux, .fluxError, etc methods
