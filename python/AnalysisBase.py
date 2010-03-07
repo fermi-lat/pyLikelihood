@@ -4,7 +4,7 @@ Base class for Likelihood analysis Python modules.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.59 2010/02/08 22:43:34 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.60 2010/03/07 18:22:56 jchiang Exp $
 #
 
 import sys
@@ -404,15 +404,23 @@ class AnalysisBase(object):
                                              xtitle='Energy (MeV)',
                                              ytitle='(counts - model)/model',
                                              xlog=1, color=color,
-                                             symbol='plus')
+                                             symbol='plus',
+                                             xrange=self._xrange())
             zeros = num.zeros(len(self.e_vals))
             self.residualPlot.overlay(self.e_vals, zeros, symbol='dotted')
     def _plotData(self):
         energies = self.e_vals
         my_plot = self.plotter(energies, self.nobs, dy=num.sqrt(self.nobs),
                                xlog=1, ylog=1, xtitle='Energy (MeV)',
-                               ytitle='counts / bin')
+                               ytitle='counts / bin', xrange=self._xrange())
         return my_plot
+    def _xrange(self):
+        emin = self.energies[0]
+        emax = self.energies[-1]
+        if int(num.log10(emin)) != int(num.log10(emax)):
+            return (emin, emax)
+        else:
+            return None
     def _plotSource(self, srcName, color='black', symbol='line', show=True):
         energies = self.e_vals
 
