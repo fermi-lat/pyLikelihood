@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Sun Mar  7 10:22:56 PST 2010
+pyLikelihood/python
+
+Modified Files:
+	AnalysisBase.py SummedLikelihood.py 
+Log Message:
+add setSpectrum
+    *
+------------------------------------------------------------
 TAG
 Tag name: ScienceTools-09-16-00, operation: add
 Package: pyLikelihood
