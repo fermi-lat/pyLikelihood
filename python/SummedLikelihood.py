@@ -6,7 +6,7 @@ classes.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/SummedLikelihood.py,v 1.11 2010/01/21 04:52:43 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/SummedLikelihood.py,v 1.12 2010/01/25 15:30:58 jchiang Exp $
 #
 
 import pyLikelihood as pyLike
@@ -128,7 +128,15 @@ class SummedLikelihood(AnalysisBase):
         for component in self.components:
             component.logLike.syncParams()
     def __getitem__(self, name):
-        return self.model[name]
+        item = self.model[name]
+        try:
+            item.type
+            return item
+        except AttributeError:
+            par = Parameter([item])
+            for comp in self.components[1:]:
+                par.addParam(comp[name])
+            return par
     def __setitem__(self, name, value):
         for component in self.components:
             component[name] = value
@@ -245,6 +253,10 @@ class SummedLikelihood(AnalysisBase):
                 self.components[0]._isDiffuseOrNearby(src)):
                 freeNpred += npred
         return freeNpred, totalNpred
+    def setSpectrum(self, srcName, functionName):
+        for comp in self.components:
+            comp.setSpectrum(srcName, functionName)
+        self.model = self.components[0].model
     def deleteSource(self, srcName):
         src = self.components[0].deleteSource(srcName)
         for comp in self.components[1:]:
