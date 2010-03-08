@@ -4,8 +4,10 @@
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header$
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/LikelihoodState.py,v 1.1 2009/09/21 18:28:03 jchiang Exp $
 #
+import pyLikelihood
+
 class _Parameter(object):
     "Shadow class of the optimizers::Parameter class."
     def __init__(self, par):
@@ -28,12 +30,19 @@ class _Parameter(object):
 
 class LikelihoodState(object):
     """Save the parameter state of a pyLikelihood object and provide a
-    method to restore"""
+    method to restore everything or just a specific source."""
     def __init__(self, like):
         self.negLogLike = like()
         self.like = like
         self.pars = [_Parameter(par) for par in like.params()]
-    def restore(self):
-        for par in self.pars:
-            par.setDataMembers()
+    def restore(self, srcName=None):
+        if srcName is None:
+            for par in self.pars:
+                par.setDataMembers()
+        else:
+            parNames = pyLikelihood.StringVector()
+            self.like[srcName].src.spectrum().getParamNames(parNames)
+            for parName in parNames:
+                indx = self.like.par_index(srcName, parName)
+                self.pars[indx].setDataMembers()
         self.like.syncSrcParams()
