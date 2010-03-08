@@ -1,4 +1,14 @@
 ------------------------------------------------------------
+User: jchiang  Mon Mar  8 09:11:11 PST 2010
+pyLikelihood/python
+
+Modified Files:
+	LikelihoodState.py 
+Log Message:
+extend restore method to just handle a single source.
+
+    *
+------------------------------------------------------------
 TAG
 Tag name: pyLikelihood-01-21-00, operation: add
 Package: pyLikelihood
