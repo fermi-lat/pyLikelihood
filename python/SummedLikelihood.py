@@ -6,7 +6,7 @@ classes.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/SummedLikelihood.py,v 1.12 2010/01/25 15:30:58 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/SummedLikelihood.py,v 1.13 2010/03/07 18:22:56 jchiang Exp $
 #
 
 import pyLikelihood as pyLike
@@ -52,6 +52,8 @@ class Parameter(object):
     def setAlwaysFixed(self, alwaysFixed):
         for par in self.pars:
             par.setAlwaysFixed(alwaysFixed)
+    def __getattr__(self, attrname):
+        return getattr(self.pars[0], attrname)
 
 class SummedLikelihood(AnalysisBase):
     def __init__(self, optimizer='Minuit'):
