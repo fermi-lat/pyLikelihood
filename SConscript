@@ -1,8 +1,8 @@
 # -*- python -*-
 #
-# $Id: SConscript,v 1.61 2010/03/07 20:02:33 jchiang Exp $
+# $Id: SConscript,v 1.62 2010/03/09 16:46:54 jchiang Exp $
 # Authors: James Chiang <jchiang@slac.stanford.edu>
-# Version: pyLikelihood-01-21-01
+# Version: pyLikelihood-01-21-02
 
 Import('baseEnv')
 Import('listFiles')
