@@ -4,7 +4,7 @@
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/LikelihoodState.py,v 1.1 2009/09/21 18:28:03 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/LikelihoodState.py,v 1.2 2010/03/08 17:11:10 jchiang Exp $
 #
 import pyLikelihood
 
@@ -37,12 +37,13 @@ class LikelihoodState(object):
         self.pars = [_Parameter(par) for par in like.params()]
     def restore(self, srcName=None):
         if srcName is None:
-            for par in self.pars:
-                par.setDataMembers()
+            for par, likePar in zip(self.pars, self.like.params()):
+                par.setDataMembers(likePar)
         else:
             parNames = pyLikelihood.StringVector()
             self.like[srcName].src.spectrum().getParamNames(parNames)
             for parName in parNames:
                 indx = self.like.par_index(srcName, parName)
-                self.pars[indx].setDataMembers()
+                likePar = self.like.params()[indx]
+                self.pars[indx].setDataMembers(likePar)
         self.like.syncSrcParams()
