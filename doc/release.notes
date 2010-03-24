@@ -2,11 +2,12 @@
    @file release.notes
    @brief package pyLikelihood
    @author J. Chiang <jchiang@slac.stanford.edu>
-   $Id: release.notes,v 1.96 2010/03/09 16:46:54 jchiang Exp $
+   $Id: release.notes,v 1.97 2010/03/22 03:44:29 jchiang Exp $
 
    @verbatim
    * EOH *
 
+ pyLikelihood-01-21-03 24-Mar-2010 jchiang in SummedLikelihood, save internal state for restoreBestFit functionality in calls to fit, optimize.  Nullify internal state if model is structurally altered, i.e., sources added or deleted or parameters set free or fixed.
  pyLikelihood-01-21-02 21-Mar-2010 jchiang account for spectrum object changes in LikelihoodState restore
  pyLikelihood-01-21-01 09-Mar-2010 jchiang add Parameter.__getattr__ to SummedLikelihood module
  pyLikelihood-01-21-00 07-Mar-2010 jchiang add SummedLikelihood.setSpectrum(...); set x-axis plot range in spectral plots
