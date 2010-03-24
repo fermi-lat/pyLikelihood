@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Wed Mar 24 10:54:24 PDT 2010
+pyLikelihood/python
+
+Modified Files:
+	LikelihoodState.py SummedLikelihood.py 
+Log Message:
+save internal state for restoreBestFit functionality in calls to fit, optimize.  Nullify internal state if model is structurally altered, i.e., sources added or deleted or parameters set free or fixed.
+    *
+------------------------------------------------------------
 TAG
 Tag name: pyLikelihood-01-21-02, operation: add
 Package: pyLikelihood
