@@ -6,7 +6,7 @@ classes.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/SummedLikelihood.py,v 1.13 2010/03/07 18:22:56 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/SummedLikelihood.py,v 1.14 2010/03/09 16:45:47 jchiang Exp $
 #
 
 import pyLikelihood as pyLike
@@ -87,7 +87,9 @@ class SummedLikelihood(AnalysisBase):
             tol = self.tol
         errors = self._errors(optimizer, verbosity, tol, covar=covar,
                               optObject=optObject)
-        return -self.composite.value()
+        negLogLike = -self.composite.value()
+        self.saveBestFit(negLogLike)
+        return negLogLike
     def optimize(self, verbosity=3, tol=None, optimizer=None):
         self._syncParams()
         if optimizer is None:
@@ -97,10 +99,13 @@ class SummedLikelihood(AnalysisBase):
         optFactory = pyLike.OptimizerFactory_instance()
         myOpt = optFactory.create(optimizer, self.composite)
         myOpt.find_min_only(verbosity, tol, self.tolType)
+        self.saveBestFit()
     def normPar(self, source):
         return Parameter([like.normPar(source) for like in self.components])
     def __call__(self):
-        return -self.composite.value()
+        negLogLike = -self.composite.value()
+        self.saveBestFit(negLogLike)
+        return negLogLike
     def sourceNames(self):
         return self.components[0].sourceNames()
     def params(self):
@@ -112,8 +117,14 @@ class SummedLikelihood(AnalysisBase):
                 else:
                     my_params[j].addParam(par)
         return my_params
-    def saveCurrentFit(self):
-        self.saved_state = LikelihoodState(self)
+    def saveBestFit(self, negLogLike=None):
+        if negLogLike is None:
+            negLogLike = -self.composite.value()
+        if (self.saved_state is None or 
+            negLogLike <= self.saved_state.negLogLike):
+            self.saveCurrentFit(negLogLike)
+    def saveCurrentFit(self, negLogLike=None):
+        self.saved_state = LikelihoodState(self, negLogLike)
     def restoreBestFit(self):
         if (self.saved_state is not None and 
             self() > self.saved_state.negLogLike):
@@ -146,9 +157,11 @@ class SummedLikelihood(AnalysisBase):
     def thaw(self, i):
         for component in self.components:
             component.thaw(i)
+        self.saved_state = None
     def freeze(self, i):
         for component in self.components:
             component.freeze(i)
+        self.saved_state = None
     def _errors(self, optimizer=None, verbosity=0, tol=None,
                 useBase=False, covar=False, optObject=None):
         self._syncParams()
@@ -264,11 +277,13 @@ class SummedLikelihood(AnalysisBase):
         for comp in self.components[1:]:
             comp.deleteSource(srcName)
         self.model = self.components[0].model
+        self.saved_state = None
         return src
     def addSource(self, src):
         for comp in self.components:
             comp.addSource(src)
         self.model = self.components[0].model
+        self.saved_state = None
     def minosError(self, *args):
         raise NotImplementedError("minosError not implemented for SummedLikelihood")
     def plot(self, *args):

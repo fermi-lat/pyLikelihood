@@ -4,7 +4,7 @@
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/LikelihoodState.py,v 1.2 2010/03/08 17:11:10 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/LikelihoodState.py,v 1.3 2010/03/22 03:35:57 jchiang Exp $
 #
 import pyLikelihood
 
@@ -31,8 +31,11 @@ class _Parameter(object):
 class LikelihoodState(object):
     """Save the parameter state of a pyLikelihood object and provide a
     method to restore everything or just a specific source."""
-    def __init__(self, like):
-        self.negLogLike = like()
+    def __init__(self, like, negLogLike=None):
+        if negLogLike is None:
+            self.negLogLike = like()
+        else:
+            self.negLogLike = negLogLike
         self.like = like
         self.pars = [_Parameter(par) for par in like.params()]
     def restore(self, srcName=None):
