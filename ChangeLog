@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: cohen  Mon May  3 15:28:47 PDT 2010
+pyLikelihood/python
+
+Modified Files:
+	AnalysisBase.py CompositeLikelihood.py 
+Log Message:
+add error level argument and MnContour
+    *
+------------------------------------------------------------
 TAG
 Tag name: ScienceTools-09-16-01, operation: add
 Package: pyLikelihood
