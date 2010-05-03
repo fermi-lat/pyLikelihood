@@ -5,7 +5,7 @@ more natural symantics for use in python alongside other analysis classes.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/CompositeLikelihood.py,v 1.4 2009/08/05 20:55:19 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/CompositeLikelihood.py,v 1.5 2009/08/05 23:01:34 jchiang Exp $
 #
 
 import pyLikelihood as pyLike
@@ -43,7 +43,7 @@ class CompositeLikelihood(object):
         optFactory = pyLike.OptimizerFactory_instance()
         myOpt = optFactory.create(optimizer, self.composite)
         myOpt.find_min_only(verbosity, tol, self.tolType)
-    def minosError(self, component_name, srcname, parname):
+    def minosError(self, component_name, srcname, parname,level):
         freeParams = pyLike.ParameterVector()
         self.composite.getFreeParams(freeParams)
         saved_values = [par.getValue() for par in freeParams]
@@ -51,7 +51,7 @@ class CompositeLikelihood(object):
         if indx == -1:
             raise RuntimeError("Invalid parameter specification")
         try:
-            errors = self.optObject.Minos(indx)
+            errors = self.optObject.Minos(indx,level)
             self.composite.setFreeParamValues(saved_values)
             return errors
         except RuntimeError, message:

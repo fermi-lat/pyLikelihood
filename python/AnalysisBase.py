@@ -4,7 +4,7 @@ Base class for Likelihood analysis Python modules.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.60 2010/03/07 18:22:56 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.61 2010/03/07 19:59:55 jchiang Exp $
 #
 
 import sys
@@ -94,9 +94,16 @@ class AnalysisBase(object):
         return errors
     def minosError(self, *args):
         if len(args) == 1:
+            #param passed by index, no level
             return self._minosIndexError(args[0])
+        if len(args) == 2 and args[0].__class__==int:
+            #param passed as index, level passed as 2nd arg
+            return self._minosIndexError(args[0],args[1])
         par_index = self.par_index(args[0], args[1])
-        return self._minosIndexError(par_index)
+        if len(args) == 2:
+            return self._minosIndexError(par_index)
+        else :
+            return self._minosIndexError(par_index,args[2])
     def par_index(self, srcName, parName):
         source_names = self.sourceNames()
         par_index = -1
@@ -109,7 +116,7 @@ class AnalysisBase(object):
                     return par_index
         raise RuntimeError("Parameter %s for source %s not found."
                            % (parName, srcName))
-    def _minosIndexError(self, par_index):
+    def _minosIndexError(self, par_index, level):
         if self.optObject is None:
             raise RuntimeError("To evaluate minos errors, a fit must first be "
                                + "performed using the Minuit or NewMinuit "
@@ -129,7 +136,7 @@ class AnalysisBase(object):
             raise RuntimeError("Cannot evaluate minos errors for a frozen "
                                + "parameter.")
         try:
-            errors = self.optObject.Minos(free_indices[par_index])
+            errors = self.optObject.Minos(free_indices[par_index],level)
             self.logLike.setFreeParamValues(freeParams)
             return errors
         except RuntimeError, message:
