@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: cohen  Wed May  5 14:00:41 PDT 2010
+pyLikelihood/python
+
+Modified Files:
+	AnalysisBase.py 
+Log Message:
+forgot to define a default value for level in _minosIndexError
+    *
+------------------------------------------------------------
 TAG
 Tag name: pyLikelihood-01-22-00, operation: add
 Package: pyLikelihood
