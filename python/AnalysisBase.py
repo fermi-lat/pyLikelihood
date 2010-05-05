@@ -4,7 +4,7 @@ Base class for Likelihood analysis Python modules.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.62 2010/05/03 22:28:47 cohen Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.63 2010/05/05 04:23:13 jchiang Exp $
 #
 
 import sys
@@ -116,7 +116,7 @@ class AnalysisBase(object):
                     return par_index
         raise RuntimeError("Parameter %s for source %s not found."
                            % (parName, srcName))
-    def _minosIndexError(self, par_index, level):
+    def _minosIndexError(self, par_index, level=1):
         if self.optObject is None:
             raise RuntimeError("To evaluate minos errors, a fit must first be "
                                + "performed using the Minuit or NewMinuit "
