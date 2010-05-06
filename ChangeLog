@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: cohen  Thu May  6 03:28:21 PDT 2010
+pyLikelihood/python
+
+Modified Files:
+	CompositeLikelihood.py 
+Log Message:
+provide the same API with default level value of 1 to CompositeLikelihood
+    *
+------------------------------------------------------------
 User: cohen  Wed May  5 14:00:41 PDT 2010
 pyLikelihood/python
 
