@@ -2,11 +2,12 @@
    @file release.notes
    @brief package pyLikelihood
    @author J. Chiang <jchiang@slac.stanford.edu>
-   $Id: release.notes,v 1.98 2010/03/24 17:59:19 jchiang Exp $
+   $Id: release.notes,v 1.99 2010/05/05 04:31:43 jchiang Exp $
 
    @verbatim
    * EOH *
 
+ pyLikelihood-01-22-01 06-May-2010 jchiang set defaults for level value in some minos-related functions (from JCT)
  pyLikelihood-01-22-00 04-May-2010 jchiang access to delta chi-square for Minos and MnContour (from JCT)
  pyLikelihood-01-21-03 24-Mar-2010 jchiang in SummedLikelihood, save internal state for restoreBestFit functionality in calls to fit, optimize.  Nullify internal state if model is structurally altered, i.e., sources added or deleted or parameters set free or fixed.
  pyLikelihood-01-21-02 21-Mar-2010 jchiang account for spectrum object changes in LikelihoodState restore
