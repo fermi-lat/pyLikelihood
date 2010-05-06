@@ -1,4 +1,48 @@
 ------------------------------------------------------------
+TAG
+Tag name: pyLikelihood-01-22-01, operation: add
+Package: pyLikelihood
+User: jchiang  Thu May  6 10:36:21 2010
+Files:
+  pyLikelihood/.cvsignore  1.2
+  pyLikelihood/ChangeLog  1.1.1.673
+  pyLikelihood/pyLikelihoodLib.py  1.3
+  pyLikelihood/SConscript  1.66
+  pyLikelihood/cmt/requirements  1.104
+  pyLikelihood/doc/release.notes  1.100
+  pyLikelihood/doc/Makefile  1.1.1.1
+  pyLikelihood/doc/Doxyfile  1.1.1.1
+  pyLikelihood/doc/images/hippo_plot.png  1.1.1.1
+  pyLikelihood/doc/images/hippo_plot_2.png  1.1
+  pyLikelihood/doc/images/Obs_dialog0.png  1.1.1.1
+  pyLikelihood/doc/images/Obs_dialog1.png  1.1.1.1
+  pyLikelihood/doc/images/Analysis_dialog.png  1.1.1.1
+  pyLikelihood/doc/images/pyROOT_plot.png  1.1.1.1
+  pyLikelihood/pyLikelihood/enableFPE.h  1.1
+  pyLikelihood/pyLikelihood/Aeff.h  1.2
+  pyLikelihood/python/RootPlot.py  1.8
+  pyLikelihood/python/CompositeLikelihood.py  1.7
+  pyLikelihood/python/FluxDensity.py  1.1
+  pyLikelihood/python/SummedLikelihood.py  1.15
+  pyLikelihood/python/SrcAnalysis.py  1.4
+  pyLikelihood/python/UpperLimits.py  1.27
+  pyLikelihood/python/UnbinnedAnalysis.py  1.31
+  pyLikelihood/python/SrcModel.py  1.8
+  pyLikelihood/python/SimpleDialog.py  1.1.1.1
+  pyLikelihood/python/AnalysisBase.py  1.64
+  pyLikelihood/python/IntegralUpperLimit.py  1.1
+  pyLikelihood/python/LikelihoodState.py  1.4
+  pyLikelihood/python/package_paths.py  1.5
+  pyLikelihood/python/HippoPlot.py  1.4
+  pyLikelihood/python/test_model.py  1.1
+  pyLikelihood/python/BinnedAnalysis.py  1.23
+  pyLikelihood/src/pyLikelihood.in  1.39
+  pyLikelihood/src/mainpage.h  1.1.1.1
+  pyLikelihood/src/pyLikelihood.i  1.4
+  pyLikelihood/src/pyLikelihood.h  1.1.1.1
+
+    *
+------------------------------------------------------------
 User: jchiang  Thu May  6 10:36:10 PDT 2010
 pyLikelihood/doc
 
