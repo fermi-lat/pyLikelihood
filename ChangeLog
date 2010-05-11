@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Tue May 11 08:52:30 PDT 2010
+pyLikelihood/python
+
+Modified Files:
+	AnalysisBase.py UnbinnedAnalysis.py 
+Log Message:
+code to plot weighted observed counts spectra
+    *
+------------------------------------------------------------
 TAG
 Tag name: pyLikelihood-01-22-01, operation: add
 Package: pyLikelihood
