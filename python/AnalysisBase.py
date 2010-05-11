@@ -4,7 +4,7 @@ Base class for Likelihood analysis Python modules.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.63 2010/05/05 04:23:13 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.64 2010/05/05 21:00:41 cohen Exp $
 #
 
 import sys
@@ -368,19 +368,19 @@ class AnalysisBase(object):
     def oplot(self, color=None):
         self.plot(oplot=1, color=color)
     def _importPlotter(self):
-        if _plotter_package == 'root':
-            from RootPlot import RootPlot
-            self.plotter = RootPlot
-        elif _plotter_package == 'hippo':
-            from HippoPlot import HippoPlot
-            self.plotter = HippoPlot
-    def plot(self, oplot=0, color=None, omit=(), symbol='line'):
         try:
-            self._importPlotter()
+            if _plotter_package == 'root':
+                from RootPlot import RootPlot
+                self.plotter = RootPlot
+            elif _plotter_package == 'hippo':
+                from HippoPlot import HippoPlot
+                self.plotter = HippoPlot
         except ImportError:
             raise RuntimeError, ("Sorry plotting is not available using %s.\n"
                                  % _plotter_package +
                                  "Use setPlotter to try a different plotter")
+    def plot(self, oplot=0, color=None, omit=(), symbol='line'):
+        self._importPlotter()
         if oplot == 0:
             self.spectralPlot = self._plotData()
             if color is None:
@@ -400,9 +400,11 @@ class AnalysisBase(object):
         self.spectralPlot.overlay(self.e_vals, total_counts, color=color,
                                   symbol=symbol)
         self._plotResiduals(total_counts, oplot=oplot, color=color)
-    def _plotResiduals(self, model, oplot=0, color='black'):
-        resid = (self.nobs - model)/model
-        resid_err = num.sqrt(self.nobs)/model
+    def _plotResiduals(self, model, nobs=None, oplot=0, color='black'):
+        if nobs is None:
+            nobs = self.nobs
+        resid = (nobs - model)/model
+        resid_err = num.sqrt(nobs)/model
         if oplot and hasattr(self, 'residualPlot'):
             self.residualPlot.overlay(self.e_vals, resid, dy=resid_err,
                                       color=color, symbol='plus')
@@ -415,9 +417,11 @@ class AnalysisBase(object):
                                              xrange=self._xrange())
             zeros = num.zeros(len(self.e_vals))
             self.residualPlot.overlay(self.e_vals, zeros, symbol='dotted')
-    def _plotData(self):
+    def _plotData(self, nobs=None):
+        if nobs is None:
+            nobs = self.nobs
         energies = self.e_vals
-        my_plot = self.plotter(energies, self.nobs, dy=num.sqrt(self.nobs),
+        my_plot = self.plotter(energies, nobs, dy=num.sqrt(nobs),
                                xlog=1, ylog=1, xtitle='Energy (MeV)',
                                ytitle='counts / bin', xrange=self._xrange())
         return my_plot
