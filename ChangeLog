@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Wed May 12 15:10:49 PDT 2010
+pyLikelihood/python
+
+Modified Files:
+	AnalysisBase.py HippoPlot.py RootPlot.py UnbinnedAnalysis.py 
+Log Message:
+add titles for source-specific spectra plots
+    *
+------------------------------------------------------------
 User: jchiang  Tue May 11 08:52:30 PDT 2010
 pyLikelihood/python
 
