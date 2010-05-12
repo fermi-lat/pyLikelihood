@@ -4,7 +4,7 @@ Base class for Likelihood analysis Python modules.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.64 2010/05/05 21:00:41 cohen Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.65 2010/05/11 15:52:30 jchiang Exp $
 #
 
 import sys
@@ -420,8 +420,19 @@ class AnalysisBase(object):
     def _plotData(self, nobs=None):
         if nobs is None:
             nobs = self.nobs
+            errors = num.sqrt(nobs)
+        else:
+            errors = []
+            for ntilde, nsq in zip(nobs, num.sqrt(self.nobs)):
+                if nsq == 0:
+                    errors.append(0)
+                else:
+                    errors.append(ntilde/nsq)
         energies = self.e_vals
-        my_plot = self.plotter(energies, nobs, dy=num.sqrt(nobs),
+#        my_plot = self.plotter(energies, nobs, dy=num.sqrt(nobs),
+#                               xlog=1, ylog=1, xtitle='Energy (MeV)',
+#                               ytitle='counts / bin', xrange=self._xrange())
+        my_plot = self.plotter(energies, nobs, dy=errors,
                                xlog=1, ylog=1, xtitle='Energy (MeV)',
                                ytitle='counts / bin', xrange=self._xrange())
         return my_plot

@@ -4,7 +4,7 @@ Python interface for unbinned likelihood
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/UnbinnedAnalysis.py,v 1.31 2009/03/23 16:35:52 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/UnbinnedAnalysis.py,v 1.32 2010/05/11 15:52:30 jchiang Exp $
 #
 
 import sys
@@ -167,8 +167,10 @@ class UnbinnedAnalysis(AnalysisBase):
         source = self.logLike.getSource(srcName)
         nobs = self.observation.eventCont().nobs(self.energies, source)
         self.spectralPlot = self._plotData(nobs)
+        self.spectralPlot.setTitle(srcName)
         self._plotSource(srcName, color=color)
         self._plotResiduals(self._srcCnts(srcName), nobs=nobs)
+        self.residualPlot.setTitle(srcName)
     def _srcCnts(self, srcName):
         source = self.logLike.getSource(srcName)
         cnts = []

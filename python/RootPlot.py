@@ -77,6 +77,8 @@ class RootPlot(object):
         self.hist.GetXaxis().SetTitleOffset(1.5)
         self.hist.GetYaxis().SetTitleOffset(2.)
         self.hist.SetTitle(MainTitle)
+    def setTitle(self, title):
+        self.hist.SetTitle(title)
     def _drawData(self, graph, key, color):
         symbol, marker, lineStyle = _symbols[key]
         if symbol in ['C','L']:
