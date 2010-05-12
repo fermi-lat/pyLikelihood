@@ -4,7 +4,7 @@ Standard plotting interface for XY plots with hippoplotter backend.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/HippoPlot.py,v 1.3 2008/09/26 18:14:52 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/HippoPlot.py,v 1.4 2010/03/07 19:59:55 jchiang Exp $
 #
 
 import numpy as num
@@ -75,6 +75,8 @@ class HippoPlot(object):
         self.graphs.append(self.plot.XYPlot(self.nts[-1], 'x', 'y', 
                                             xerr, yerr, oplot=1))
         self._setPointRep(self.graphs[-1], symbol, color)
+    def setTitle(self, title):
+        self.graphs[0].setTitle(title)
 
 if __name__ == '__main__':
     x = num.arange(1, 50)
