@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Thu May 13 13:31:15 PDT 2010
+ScienceTools-scons/pyLikelihood/python
+
+Modified Files:
+	HippoPlot.py RootPlot.py 
+Log Message:
+add getRange functions for plotting objects
+    *
+------------------------------------------------------------
 User: jchiang  Wed May 12 15:10:49 PDT 2010
 pyLikelihood/python
 
