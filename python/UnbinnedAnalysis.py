@@ -4,7 +4,7 @@ Python interface for unbinned likelihood
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/UnbinnedAnalysis.py,v 1.32 2010/05/11 15:52:30 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/UnbinnedAnalysis.py,v 1.33 2010/05/12 22:10:48 jchiang Exp $
 #
 
 import sys
@@ -166,11 +166,29 @@ class UnbinnedAnalysis(AnalysisBase):
         self._importPlotter()
         source = self.logLike.getSource(srcName)
         nobs = self.observation.eventCont().nobs(self.energies, source)
-        self.spectralPlot = self._plotData(nobs)
-        self.spectralPlot.setTitle(srcName)
-        self._plotSource(srcName, color=color)
-        self._plotResiduals(self._srcCnts(srcName), nobs=nobs)
-        self.residualPlot.setTitle(srcName)
+        errors = []
+        for ntilde, nsq in zip(nobs, num.sqrt(self.nobs)):
+            if nsq == 0:
+                errors.append(0)
+            else:
+                errors.append(ntilde/nsq)
+        model = self._srcCnts(srcName)
+
+        self.sourceFitPlot = self._plotData(nobs)
+        self._plotSource(srcName, color=color, display=self.sourceFitPlot)
+        self.sourceFitPlot.setTitle(srcName)
+
+        resid = nobs - model
+        resid_err = errors/model
+        self.sourceFitResiduals = self.plotter(self.e_vals, resid, dy=resid_err,
+                                               xtitle='Energy (MeV)',
+                                               ytitle='(counts - model)/model',
+                                               xlog=1, color=color,
+                                               symbol='plus',
+                                               xrange=self._xrange())
+        zeros = num.zeros(len(self.e_vals))
+        self.sourceFitResiduals.overlay(self.e_vals, zeros, symbol='dotted')
+        self.sourceFitResiduals.setTitle(srcName)
     def _srcCnts(self, srcName):
         source = self.logLike.getSource(srcName)
         cnts = []
