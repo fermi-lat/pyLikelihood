@@ -4,7 +4,7 @@ Base class for Likelihood analysis Python modules.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.65 2010/05/11 15:52:30 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/AnalysisBase.py,v 1.66 2010/05/12 22:10:48 jchiang Exp $
 #
 
 import sys
@@ -429,9 +429,6 @@ class AnalysisBase(object):
                 else:
                     errors.append(ntilde/nsq)
         energies = self.e_vals
-#        my_plot = self.plotter(energies, nobs, dy=num.sqrt(nobs),
-#                               xlog=1, ylog=1, xtitle='Energy (MeV)',
-#                               ytitle='counts / bin', xrange=self._xrange())
         my_plot = self.plotter(energies, nobs, dy=errors,
                                xlog=1, ylog=1, xtitle='Energy (MeV)',
                                ytitle='counts / bin', xrange=self._xrange())
@@ -443,15 +440,19 @@ class AnalysisBase(object):
             return (emin, emax)
         else:
             return None
-    def _plotSource(self, srcName, color='black', symbol='line', show=True):
+    def _plotSource(self, srcName, color='black', symbol='line', show=True,
+                    display=None):
         energies = self.e_vals
 
         model_counts = self._srcCnts(srcName)
 
+        if display is None:
+            display = self.spectralPlot
+
         if show:
             try:
-                self.spectralPlot.overlay(energies, model_counts, color=color,
-                                          symbol=symbol)
+                display.overlay(energies, model_counts, color=color,
+                                symbol=symbol)
             except AttributeError:
                 self.spectralPlot = self.plotter(energies, model_counts, xlog=1,
                                                  ylog=1, xtitle='Energy (MeV)',
