@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Tue May 18 17:15:23 PDT 2010
+ScienceTools-scons/pyLikelihood/python
+
+Modified Files:
+	AnalysisBase.py UnbinnedAnalysis.py 
+Log Message:
+more work on weighted counts spectra plots
+    *
+------------------------------------------------------------
 User: jchiang  Thu May 13 13:31:15 PDT 2010
 ScienceTools-scons/pyLikelihood/python
 
