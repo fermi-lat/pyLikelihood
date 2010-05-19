@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Tue May 18 20:35:09 PDT 2010
+pyLikelihood/python
+
+Modified Files:
+	UnbinnedAnalysis.py 
+Log Message:
+save multiple plotter objects in plotSourceFit
+    *
+------------------------------------------------------------
 User: jchiang  Tue May 18 17:15:23 PDT 2010
 ScienceTools-scons/pyLikelihood/python
 
