@@ -4,7 +4,7 @@ Python interface for binned likelihood.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/BinnedAnalysis.py,v 1.22 2008/03/18 23:30:19 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/BinnedAnalysis.py,v 1.23 2008/03/27 03:22:39 jchiang Exp $
 #
 
 import sys
@@ -46,6 +46,7 @@ class BinnedObs(object):
         self._roiCuts.readCuts(srcMaps, "", False)
         self._expCube = pyLike.ExposureCube()
         self._expCube.readExposureCube(expCube)
+        self._expCube.setEfficiencyFactor(self._respFuncs.efficiencyFactor())
         self._eventCont = pyLike.EventContainer(self._respFuncs,
                                                 self._roiCuts,
                                                 self._scData)
