@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Mon Jun  7 13:08:03 PDT 2010
+pyLikelihood/python
+
+Modified Files:
+	UnbinnedAnalysis.py 
+Log Message:
+set efficiency factor for expcube based on irfs
+    *
+------------------------------------------------------------
 TAG
 Tag name: pyLikelihood-01-23-00, operation: add
 Package: pyLikelihood
