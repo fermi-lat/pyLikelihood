@@ -4,7 +4,7 @@ Python interface for unbinned likelihood
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/UnbinnedAnalysis.py,v 1.34 2010/05/19 00:15:23 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/UnbinnedAnalysis.py,v 1.35 2010/05/19 03:35:09 jchiang Exp $
 #
 
 import sys
@@ -55,6 +55,7 @@ class UnbinnedObs(object):
         self._expCube = pyLike.ExposureCube()
         if expCube is not None and expCube != "":
             self._expCube.readExposureCube(expCube)
+        self._expCube.setEfficiencyFactor(self._respFuncs.efficiencyFactor())
         self._eventCont = pyLike.EventContainer(self._respFuncs, self._roiCuts,
                                                 self._scData)
         self.observation = pyLike.Observation(self._respFuncs, self._scData,
