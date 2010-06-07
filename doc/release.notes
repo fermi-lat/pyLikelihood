@@ -2,11 +2,12 @@
    @file release.notes
    @brief package pyLikelihood
    @author J. Chiang <jchiang@slac.stanford.edu>
-   $Id: release.notes,v 1.100 2010/05/06 17:36:10 jchiang Exp $
+   $Id: release.notes,v 1.101 2010/05/19 03:39:57 jchiang Exp $
 
    @verbatim
    * EOH *
 
+ pyLikelihood-01-23-01 07-Jun-2010 jchiang set efficiency factor in Unbinned- and BinnedAnalysis
  pyLikelihood-01-23-00 18-May-2010 jchiang add UnbinnedAnalysis.plotSourceFit to plot weighted counts spectra and comparison with model counts for a specific source
  pyLikelihood-01-22-01 06-May-2010 jchiang set defaults for level value in some minos-related functions (from JCT)
  pyLikelihood-01-22-00 04-May-2010 jchiang access to delta chi-square for Minos and MnContour (from JCT)
