@@ -6,7 +6,7 @@
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/UpperLimits.py,v 1.26 2009/10/29 05:09:07 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/UpperLimits.py,v 1.27 2009/10/31 21:23:06 jchiang Exp $
 #
 import copy
 import bisect
@@ -71,6 +71,7 @@ class UpperLimit(object):
         # Fix the normalization parameter for the scan.
         par = self.normPar
         par.setFree(0)
+        self.like.syncSrcParams(self.source)
 
         # Update the best-fit-so-far vector after having fixed the 
         # normalization parameter.
@@ -87,6 +88,7 @@ class UpperLimit(object):
         if fix_src_pars:
             freePars = self.like.freePars(source)
             self.like.setFreeFlag(source, freePars, 0)
+            self.like.syncSrcParams(self.source)
 
         logLike0 = self.like()
         x0 = par.getValue()
@@ -138,6 +140,7 @@ class UpperLimit(object):
                 print i, x, dlogLike[-1], fluxes[-1]
         if fix_src_pars:
             self.like.setFreeFlag(source, freePars, 1)
+            self.like.syncSrcParams(self.source)
         # Restore model parameters to original values
         saved_state.restore()
         #
@@ -179,6 +182,7 @@ class UpperLimit(object):
 
         # Fix the normalization parameter for the scan.
         par.setFree(0)
+        self.like.syncSrcParams(self.source)
 
         # Set the lower bound to zero
         current_bounds = par.getBounds()
@@ -215,6 +219,7 @@ class UpperLimit(object):
         # Fix the normalization parameter for the scan.
         par = self.normPar
         par.setFree(0)
+        self.like.syncSrcParams(self.source)
 
         # Set the lower bound to zero
         current_bounds = par.getBounds()
