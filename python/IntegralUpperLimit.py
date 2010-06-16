@@ -7,10 +7,23 @@
 
 @author Stephen Fegan <sfegan@llr.in2p3.fr>
 
-$Id: IntegralUpperLimit.py 884 2009-07-13 06:46:53Z sfegan $
+$Id: IntegralUpperLimit.py,v 1.1 2009/09/21 18:28:03 jchiang Exp $
 
 See help for IntegralUpperLimits.calc for full details.
 """
+
+# 2010-06-11: New algorithm to find integration limits. See below.
+# Renamed some of the arguments for consistence with Jim's code, in
+# particular "verbosity" and "cl". New code to allow the new search
+# algorithm to be used to calculate chi-squared style upper limit.
+
+# 2010-06-10: Add computation of probability for arbitrary flux
+# values. Allow skipping of global minimization if user has already
+# done it. Some small optimizations.
+
+# 2009-04-01: Added nuicence cach to make better initial guesses for
+# nuisance parameters by extrapolating them from previous iterations.
+# This makes Minuit quicker (at least when using strategy 0)
 
 import UnbinnedAnalysis
 import scipy.integrate
@@ -20,10 +33,6 @@ import scipy.stats
 import math
 from LikelihoodState import LikelihoodState
 
-# These functions added 2009-04-01 to make better initial guesses for
-# nuisance parameters by extrapolating them from previous iterations.
-# This makes Minuit quicker (at least when using strategy 0)
-
 def _guess_nuisance(x, like, cache):
     """Internal function which guesses the value of a nuisance
     parameter before the optimizer is called by interpolating from
@@ -31,10 +40,20 @@ def _guess_nuisance(x, like, cache):
     package."""
     X = cache.keys()
     X.sort()
-    if len(X)<2 or x>max(X) or x<min(X):
+    if len(X)<2:
         return
+    elif x>max(X):
+        _reset_nuisance(max(X), like, cache)
+        return
+    elif x<min(X):
+        _reset_nuisance(min(X), like, cache)
+        return        
+    sync_name = ""
     icache = 0
     for iparam in range(len(like.model.params)):
+        if sync_name != like[iparam].srcName:
+            like.logLike.syncSrcParams(sync_name)
+            sync_name = ""
         if(like.model[iparam].isFree()):
             Y = []
             for ix in X: Y.append(cache[ix][icache])
@@ -43,8 +62,31 @@ def _guess_nuisance(x, like, cache):
             limlo, limhi = like.model[iparam].getBounds()
             p = max(limlo, min(p, limhi))
             like.model[iparam].setValue(p)
-            like.logLike.syncSrcParams(like[iparam].srcName)
+            sync_name = like[iparam].srcName
             icache += 1
+    if sync_name != "":
+        like.logLike.syncSrcParams(sync_name)
+
+def _reset_nuisance(x, like, cache):
+    """Internal function which sets the values of the nuisance
+    parameters to those found in a previous iteration of the
+    optimizer. Not intended for use outside of this package."""
+    sync_name = ""
+    icache = 0
+    if cache.has_key(x):
+        params = cache[x]
+        for iparam in range(len(like.model.params)):
+            if sync_name != like[iparam].srcName:
+                like.logLike.syncSrcParams(sync_name)
+                sync_name = ""
+            if(like.model[iparam].isFree()):
+                like.model[iparam].setValue(params[icache])
+                sync_name = like[iparam].srcName
+                icache += 1
+        if sync_name != "":
+            like.logLike.syncSrcParams(sync_name)
+        return True
+    return False
 
 def _cache_nuisance(x, like, cache):
     """Internal function which caches the values of the nuisance
@@ -56,63 +98,83 @@ def _cache_nuisance(x, like, cache):
             params.append(like.model[iparam].value())
     cache[x] = params
 
-def _loglike(x, like, par, srcName, offset, verbose, no_optimizer,
-             nuisance_cache):
+def _loglike(x, like, par, srcName, offset, verbosity, no_optimizer,
+             optvalue_cache, nuisance_cache):
     """Internal function used by the SciPy integrator and root finder
     to evaluate the likelihood function. Not intended for use outside
     of this package."""
 
     # Optimizer uses verbosity level one smaller than given here
-    optverbose = max(verbose-1, 0)
+    optverbosity = max(verbosity-1, 0)
 
     par.setFree(0)
     par.setValue(x)
     like.logLike.syncSrcParams(srcName)
 
-    # This flag skips calling the optimizer - and is used in the case when
-    # all parameters are frozen, since some optimizers might have problems
-    # being called with nothing to do
-    if not no_optimizer:
+    # This flag skips calling the optimizer - and is used when calculating the
+    # approximate function or in the case when all parameters are frozen or
+    # since some optimizers might have problems being called with nothing to do
+    if no_optimizer:
+        return like.logLike.value() - offset
+
+    # Call the optimizer of the optimum value is not in the cache OR if
+    # we fail to reset the nuisance parameters to those previously found
+    optvalue = None
+    if ((optvalue_cache == None) or (nuisance_cache == None) or
+        (not optvalue_cache.has_key(x)) or
+        (_reset_nuisance(x, like, nuisance_cache) == False)):
         try:
-            if nuisance_cache != None:
+            if(nuisance_cache != None):
                 _guess_nuisance(x, like, nuisance_cache)
-            like.fit(optverbose)
-            if nuisance_cache != None:
+            like.optimize(optverbosity)
+            if(nuisance_cache != None):
                 _cache_nuisance(x, like, nuisance_cache)
         except RuntimeError:
-            like.fit(optverbose)
-            if nuisance_cache != None:
+            like.optimize(optverbosity)
+            if(nuisance_cache != None):
                 _cache_nuisance(x, like, nuisance_cache)
-            pass
-        pass
-    
-    return like.logLike.value() - offset
+        optvalue = like.logLike.value()
+        if(optvalue_cache != None):
+            optvalue_cache[x] = optvalue
+    else:
+        optvalue = optvalue_cache[x]
+    return optvalue - offset
 
-def _integrand(x, f_of_x, like, par, srcName, maxval, verbose=0,
-               no_optimizer = False, nuisance_cache = None):
+def _integrand(x, f_of_x, like, par, srcName, maxval, verbosity,
+               no_optimizer, optvalue_cache, nuisance_cache):
     """Internal function used by the SciPy integrator to evaluate the
     likelihood function. Not intended for use outside of this package."""
 
-    f = math.exp(_loglike(x,like,par,srcName,maxval,verbose,no_optimizer,
-                          nuisance_cache))
+    f = math.exp(_loglike(x,like,par,srcName,maxval,verbosity,no_optimizer,
+                          optvalue_cache,nuisance_cache))
     f_of_x[x] = f
-    if verbose:
+    if verbosity:
         print "Function evaluation:", x, f
     return f
 
-def _root(x, root_cache, like, par, srcName, subval, verbose=0,
-          no_optimizer = False, nuisance_cache = None):
+def _approxroot(x, approx_cache, like, par, srcName, subval, verbosity):
+    """Internal function used by the SciPy root finder to evaluate the
+    approximate likelihood function. Not intended for use outside of
+    this package."""
+
+    if approx_cache.has_key(x):
+        f = approx_cache[x]
+    else:
+        f = _loglike(x,like,par,srcName,subval,verbosity,True,None,None)
+        approx_cache[x]=f
+    if verbosity:
+        print "Approximate function root evaluation:", x, f
+    return f
+
+def _root(x, like, par, srcName, subval, verbosity,
+          no_optimizer, optvalue_cache, nuisance_cache):
     """Internal function used by the SciPy root finder to evaluate the
     likelihood function. Not intended for use outside of this package."""
 
-    if root_cache.has_key(x):
-        f = root_cache[x]
-    else:
-        f = _loglike(x,like,par,srcName,subval,verbose,no_optimizer,
-                     nuisance_cache)
-        root_cache[x]=f
-    if verbose:
-        print "Root evaluation:", x, f
+    f = _loglike(x, like, par, srcName, subval, verbosity, no_optimizer,
+                 optvalue_cache, nuisance_cache)
+    if verbosity:
+        print "Exact function root evaluation:", x, f
     return f
 
 def _splintroot(xhi, yseek, xlo, spl_rep):
@@ -133,74 +195,281 @@ def _int1droot(x, yseek, int_rep):
     passes desired threshold.  Not intended for use outside of this
     package."""
     return int_rep(x).item()-yseek
+
+def _find_interval(like, par, srcName, no_optimizer,
+                   maxval, fitval, limlo, limhi,
+                   delta_log_like_limits = 2.71/2, verbosity = 0, tol = 0.01, 
+                   no_lo_bound_search = False, nloopmax = 5,
+                   optvalue_cache = dict(), nuisance_cache = dict()):
+    """Internal function to search for interval of the normalization
+    parameter in which the log Liklihood is larger than predefined
+    value. Used to find the upper limit in the profile method and to
+    find sensable limits of integration in the Bayesian method. Use
+    the SciPy Brent method root finder to do the search. Use new fast
+    method for up to nloopmax iterations then fall back to old method."""
+
+    subval = maxval - delta_log_like_limits
+    search_xtol = limlo*0.1
+    search_ytol = tol
+
+    # 2010-06-11: NEW and FASTER algorithm to find integration
+    # limits. Instead of evaluating the real function while searching
+    # for the root (which requires calling the optimizer) instead
+    # evaluate an approximate function, in which we keep all the
+    # background parameters constant. When we find the root (flux) of
+    # the approximate function then optimize at that flux to evaluate
+    # how close the real function is there. Then repeat this up to
+    # "nloopmax" times, after which revert to old method if we haven't
+    # converged. Each time the real function is evaulated at the root
+    # of the approximate it forces the approximate function in the
+    # next iteration to equal the real function at that point (since
+    # the background parameters values are changed to those optimized
+    # at that point) and so the real and approximate functions get
+    # closer and closer around the region of the roots.
+
+    # 2009-04-16: modified to do logarithmic search before calling
+    # Brent because the minimizer does not converge very well when it
+    # is called alternatively at extreme ends of the flux range,
+    # because the "nuisance" parameters are very far from their
+    # optimal values from call to call. THIS COMMENT IS OBSOLETED
+    # BY PREVIOUS EXCEPT IF/WHEN NEW METHOD FAILS.
+
+    exact_root_evals = -len(optvalue_cache)
+    approx_root_evals = 0
     
-def calc(like, srcName, ul=0.95,\
-         verbose=0, be_very_careful=False, freeze_all=False,
+    temp_saved_state = LikelihoodState(like)
+
+    # HI BOUND
+
+    xlft = fitval
+    xrgt = limhi
+    xtst = fitval
+    ytst = delta_log_like_limits
+    iloop = 0
+
+    while (iloop<nloopmax) and (xrgt>xlft) and (abs(ytst)>search_ytol):
+        approx_cache = dict()
+        approx_cache[xtst] = ytst
+        if _approxroot(xrgt,approx_cache,like,par,srcName,subval,verbosity)<0:
+            xtst = scipy.optimize.brentq(_approxroot, xlft, xrgt,
+                                         xtol=search_xtol, 
+                                    args = (approx_cache,like,par,
+                                            srcName,subval,verbosity))
+        else:
+            xtst = xrgt
+        ytst = _root(xtst, like, par,srcName, subval, verbosity,
+                     no_optimizer, optvalue_cache, nuisance_cache)
+        if ytst<=0: xrgt=xtst
+        else: xlft=xtst
+        iloop += 1
+        approx_root_evals += len(approx_cache)-1
+        pass
+    xhi = xtst
+    yhi = ytst
+
+    if (xrgt>xlft) and (abs(ytst)>search_ytol):
+        xlft = fitval
+        for ix in optvalue_cache:
+            if(optvalue_cache[ix]-subval>0 and ix>xlft):
+                xlft = ix
+        xrgt = limhi
+        for ix in optvalue_cache:
+            if(optvalue_cache[ix]-subval<0 and ix<xrgt):
+                xrgt = ix
+        if(xrgt > max(xlft*10.0, xlft+(limhi-limlo)*1e-4)):
+            xtst = max(xlft*10.0, xlft+(limhi-limlo)*1e-4)            
+            while(xtst<xrgt and\
+                  _root(xtst, like,par, srcName, subval, verbosity,
+                        no_optimizer, optvalue_cache, nuisance_cache)>=0):
+                xtst *= 10.0
+            if(xtst<xrgt):
+                xrgt = xtst
+        if xrgt>limhi: xrgt=limhi
+        if xrgt<limhi or \
+               _root(xrgt, like, par, srcName, subval, verbosity,
+                     no_optimzier, optvalue_cache, nuisance_cache)<0:
+            xhi = scipy.optimize.brentq(_root, xlft, xrgt, xtol=search_xtol,
+                                        args = (like,par,srcName,\
+                                                subval,verbosity,no_optimizer,
+                                                optvalue_cache,nuisance_cache))
+            pass
+        yhi = _root(xhi, like, par, srcName, subval, verbosity,
+                    no_optimzier, optvalue_cache, nuisance_cache)
+        pass
+
+    temp_saved_state.restore()
+    like.logLike.syncSrcParams(srcName)
+
+    # LO BOUND
+
+    if(no_lo_bound_search):
+        xlo = fitval
+        ylo = maxval
+        exact_root_evals += len(optvalue_cache)
+        return [xlo, xhi, ylo, yhi, exact_root_evals, approx_root_evals]
+    
+    xlft = limlo
+    xrgt = fitval
+    xtst = fitval
+    ytst = delta_log_like_limits
+    iloop = 0
+
+    while (iloop<nloopmax) and (xrgt>xlft) and (abs(ytst)>search_ytol):
+        approx_cache = dict()        
+        approx_cache[xtst] = ytst
+        if _approxroot(xlft,approx_cache,like,par,srcName,subval,verbosity)<0:
+            xtst = scipy.optimize.brentq(_approxroot, xlft, xrgt,
+                                         xtol=search_xtol, 
+                                         args = (approx_cache,like,par,
+                                                 srcName,subval,verbosity))
+        else:
+            xtst = xlft
+        ytst = _root(xtst, like, par, srcName, subval, verbosity,
+                     no_optimizer, optvalue_cache, nuisance_cache)
+        if ytst<=0: xlft=xtst
+        else: xrgt=xtst
+        approx_root_evals += len(approx_cache)-1
+        iloop += 1
+        pass
+    xlo = xtst
+    ylo = ytst
+
+    if (xrgt>xlft) and (abs(ytst)>search_ytol):
+        xrgt = fitval
+        for ix in optvalue_cache:
+            if(optvalue_cache[ix]-subval>0 and ix<xrgt):
+                xrgt = ix
+        xlft = limlo
+        for ix in optvalue_cache:
+            if(optvalue_cache[ix]-subval<0 and ix<xlft):
+                xlft = ix
+        if(xlft < min(xrgt*0.1, xrgt-(limhi-limlo)*1e-4)):
+            xtst = min(xrgt*0.1, xrgt-(limhi-limlo)*1e-4)            
+            while(xtst>xlft and\
+                  _root(xtst, like,par, srcName, subval, verbosity,
+                        no_optimizer, optvalue_cache, nuisance_cache)>=0):
+                xtst *= 0.1
+            if(xtst>xlft):
+                xlft = xtst
+        if xlft<limlo: xlft=limlo
+        if xlft>limlo or \
+               _root(xlft, like, par, srcName, subval, verbosity,
+                     no_optimzier, optvalue_cache, nuisance_cache)<0:
+            xlo = scipy.optimize.brentq(_root, xlft, xrgt, xtol=search_xtol,
+                                        args = (like,par,srcName,\
+                                                subval,verbosity,no_optimizer,
+                                                optvalue_cache,nuisance_cache))
+            pass
+        ylo = _root(xlo, like, par, srcName, subval, verbosity,
+                    no_optimzier, optvalue_cache, nuisance_cache)
+        pass
+
+    temp_saved_state.restore()
+    like.logLike.syncSrcParams(srcName)
+
+    exact_root_evals += len(optvalue_cache)
+    return [xlo, xhi, ylo, yhi, exact_root_evals, approx_root_evals]
+
+def calc(like, srcName, cl=0.95, verbosity=0,
+         skip_global_opt=False, be_very_careful=False, freeze_all=False,
          delta_log_like_limits = 10.0, profile_optimizer = None,
-         emin=100, emax=3e5):
+         emin=100, emax=3e5, poi_values = []):
+    print "IntegralUpperLimits.calc() is deprecated, use calc_int() instead"
+    return calc_int(like, srcName,
+                    cl=cl,
+                    verbosity= verbosity,
+                    skip_global_opt=skip_global_opt,
+                    be_very_careful=be_very_careful,
+                    freeze_all=freeze_all,
+                    delta_log_like_limits=delta_log_like_limits,
+                    profile_optimizer=profile_optimizer,
+                    emin=emin,
+                    emax=emax,
+                    poi_values=poi_values);
+
+def calc_int(like, srcName, cl=0.95, verbosity=0,
+             skip_global_opt=False, be_very_careful=False, freeze_all=False,
+             delta_log_like_limits = 10.0, profile_optimizer = None,
+             emin=100, emax=3e5, poi_values = []):
     """Calculate an integral upper limit by direct integration.
 
   Description:
 
     Calculate an integral upper limit by integrating the likelihood
-    function up to a point which contains a given fraction of the
-    total probability. This is a fairly standard Bayesian approach to
-    calculating upper limits, which assumes a uniform prior
-    probability.  The likelihood function is not assumed to
-    be distributed as chi-squared.
+    function up to a point which contains a given fraction of the total
+    probability. This is a fairly standard Bayesian approach to
+    calculating upper limits, which assumes a uniform prior probability.
+    The likelihood function is not assumed to be distributed as
+    chi-squared.
 
     This function first uses the optimizer to find the global minimum,
     then uses the scipy.integrate.quad function to integrate the
-    likelihood function with respect to one of the parameters. During
-    the integration, the other parameters can be frozen at their
-    values found in the global minimum or optimized freely at each
-    point.
+    likelihood function with respect to one of the parameters. During the
+    integration, the other parameters can be frozen at their values found
+    in the global minimum or optimized freely at each point.
 
   Inputs:
 
     like -- a binned or unbinned likelihood object which has the
-            desired model. Be careful to freeze the index of the
-            source for which the upper limit is being if you want to
-            quote a limit with a fixed index.
+        desired model. Be careful to freeze the index of the source for
+        which the upper limit is being if you want to quote a limit with a
+        fixed index.
+
     srcName -- the name of the source for which to compute the limit.
-    ul -- probability level for the upper limit.
-    verbose -- verbosity level. A value of zero means no output will
-               be written. With a value of one the function writes
-               some values describing its progress, but the optimizers
-               don't write anything. Values larger than one direct the
-               optimizer to produce verbose output.
+
+    cl -- probability level for the upper limit.
+
+    verbosity -- verbosity level. A value of zero means no output will
+        be written. With a value of one the function writes some values
+        describing its progress, but the optimizers don't write
+        anything. Values larger than one direct the optimizer to produce
+        verbose output.
+
+    skip_global_opt -- if the model is already at the global minimum
+        value then you can direct the integrator to skip the initial step
+        to find the minimum. If you specify this option and the model is
+        NOT at the global minimum your results will likely be wrong.
+
     be_very_careful -- direct the integrator to be even more careful
-                       in integrating the function, by telling it to
-                       use a higher tolerance and to specifically pay
-                       attention to the peak in the likelihood function.
-                       More evaluations of the integrand will be made,
-                       which WILL be slower and MAY result in a more
-                       accurate limit.
+        in integrating the function, by telling it to use a higher
+        tolerance and to specifically pay attention to the peak in the
+        likelihood function.  More evaluations of the integrand will be
+        made, which WILL be slower and MAY result in a more accurate
+        limit. NOT RECOMMENDED
+
     freeze_all -- freeze all other parameters at the values of the
-                  global minimum.
+        global minimum.
+
     delta_log_like_limits -- the limits on integration is defined by
-                             the region around the global maximum in
-                             which the log likelihood is close enough
-                             to the peak value. Too small a value will
-                             mean the integral does not include a
-                             significant amount of the likelihood function.
-                             Too large a value may make the integrator
-                             miss the peak completely and get a bogus
-                             answer (although the \"be_very_careful\"
-                             option will help here).
-    profile_optimizer -- Alternative optimizer to use when computing the
-                         profile, after the global minimum has been found.
-                         Only set this if you want to use a different
-                         optimizer for calculating the profile than for
-                         calculating the global minimum.
+        the region around the global maximum in which the log likelihood
+        is close enough to the peak value. Too small a value will mean the
+        integral does not include a significant amount of the likelihood
+        function.  Too large a value may make the integrator miss the peak
+        completely and get a bogus answer (although the
+        \"be_very_careful\" option will help here).
+
+    profile_optimizer -- Alternative optimizer to use when computing
+        the profile, after the global minimum has been found.  Only set
+        this if you want to use a different optimizer for calculating the
+        profile than for calculating the global minimum.
+         
+    emin, emax -- Bounds on energy range over which the flux should be
+        integrated.
+
+    poi_values -- Points of interest: values of the normalization
+        parameter corresponding to fluxes of interest to the user. The
+        integrator will calculate the integral of the probability
+        distribution to each of these values and return them in the vector
+        \"results.poi_probs\". This parameter must be a vector, and can be
+        empty.
 
   Outputs: (limit, results)
 
-    limit -- the limit found.
+    limit -- the flux limit found.
 
-    results -- a dictionary of additional results from the calculation,
-               such as the value of the peak, the profile of the liklihood
-               and two profile-likelihood upper-limits.
+    results -- a dictionary of additional results from the
+        calculation, such as the value of the peak, the profile of the
+        liklihood and two profile-likelihood upper-limits.
   """  
     saved_state = LikelihoodState(like)
 
@@ -219,7 +488,7 @@ def calc(like, srcName, ul=0.95,\
     ###########################################################################
 
     # Optimizer uses verbosity level one smaller than given here
-    optverbose = max(verbose-1, 0)
+    optverbosity = max(verbosity-1, 0)
 
     ###########################################################################
     #
@@ -227,20 +496,24 @@ def calc(like, srcName, ul=0.95,\
     #
     ###########################################################################
 
-    # Make sure desired parameter is free during global optimization
     src_spectrum = like[srcName].funcs['Spectrum']
     par = src_spectrum.normPar()
-    par.setFree(1)
-    like.logLike.syncSrcParams(srcName)
 
-    # Perform global optimization
-    if verbose:
-        print "Finding global maximum"
-    try:
-        like.fit(optverbose)
-    except RuntimeError:
-        print "Optimizer failed to find global maximum, results may be wrong"
+    if not skip_global_opt:
+        # Make sure desired parameter is free during global optimization
+        par.setFree(1)
+        like.logLike.syncSrcParams(srcName)
+
+        # Perform global optimization
+        if verbosity:
+            print "Finding global maximum"
+        try:
+            like.fit(optverbosity)
+        except RuntimeError:
+            print "Failed to find global maximum, results may be wrong"
+            pass
         pass
+    
     original_optimizer = like.optimizer
     if profile_optimizer != None:
         like.optimizer = profile_optimizer
@@ -250,9 +523,9 @@ def calc(like, srcName, ul=0.95,\
     fitval = par.getValue()
     fiterr = par.error()
     limlo, limhi = par.getBounds()
-    if verbose:
+    if verbosity:
         print "Maximum of %g with %s = %g +/- %g"\
-              %(maxval,srcName,fitval,fiterr)
+              %(-maxval,srcName,fitval,fiterr)
 
     # Freeze all other model parameters if requested (much faster!)
     if(freeze_all):
@@ -263,6 +536,12 @@ def calc(like, srcName, ul=0.95,\
     # Freeze the parameter of interest
     par.setFree(0)
     like.logLike.syncSrcParams(srcName)
+
+    # Set up the caches for the optimum values and nuisance parameters
+    optvalue_cache = dict()
+    nuisance_cache = dict()
+    optvalue_cache[fitval] = maxval
+    _cache_nuisance(fitval, like, nuisance_cache)
 
     # Test if all parameters are frozen (could be true if we froze
     # them above or if they were frozen in the user's model
@@ -279,55 +558,23 @@ def calc(like, srcName, ul=0.95,\
     #
     ###########################################################################
 
-    # Search to find sensible limits of integration using SciPy Brent
-    # method root finder. The tolerance is set based on the lower flux
-    # limit - it's not so critical to find the integration limits with
-    # high accuracy, since it they are chosen relatively arbitrarily.
+    if verbosity:
+        print "Finding integration bounds (delta log Like=%g)"\
+              %(delta_log_like_limits)
 
-    # 2009-04-16: modified to do logarithmic search before calling
-    # Brent because the minimizer does not converge very well when it
-    # is called alternatively at extreme ends of the flux range,
-    # because the "nuisance" parameters are very far from their
-    # optimal values from call to call.
+    [xlo, xhi, ylo, yhi, exact_root_evals, approx_root_evals] = \
+    _find_interval(like, par, srcName, all_frozen,
+                   maxval, fitval, limlo, limhi,
+                   delta_log_like_limits, verbosity, like.tol,
+                   False, 5, optvalue_cache, nuisance_cache)
 
-    nuisance_cache = dict()
-    root_cache = dict()
-    subval = maxval - delta_log_like_limits
-    brent_xtol = limlo*0.1
+    if poi_values != None and len(poi_values)>0:
+        xlo = max(min(xlo, min(poi_values)/2.0), limlo)
+        xhi = min(max(xhi, max(poi_values)*2.0), limhi)
 
-    xlo = min(fitval*0.1, fitval-(limhi-limlo)*1e-4)
-    while(xlo>limlo and\
-          _root(xlo,root_cache,like,par,srcName,subval,verbose,
-                all_frozen,nuisance_cache)>=0):
-        xlo *= 0.1
-        pass
-    if xlo<limlo: xlo=limlo
-    if xlo>limlo or \
-           _root(xlo, root_cache,like,par,srcName,subval,verbose,
-                 all_frozen,nuisance_cache)<0:
-        xlo = scipy.optimize.brentq(_root, xlo, fitval, xtol=brent_xtol,
-                                    args = (root_cache,like,par,srcName,\
-                                     subval,verbose,all_frozen,nuisance_cache))
-        pass
-
-    xhi = max(fitval*10.0, fitval+(limhi-limlo)*1e-4)
-    while(xhi<limhi and\
-          _root(xhi,root_cache,like,par,srcName,subval,verbose,
-                all_frozen,nuisance_cache)>=0):
-        xhi *= 10.0
-        pass
-    if xhi>limhi: xhi=limhi
-    if xhi<limhi or \
-           _root(xhi, root_cache,like,par,srcName,subval,verbose,
-                 all_frozen,nuisance_cache)<0:
-        xhi = scipy.optimize.brentq(_root, fitval, xhi, xtol=brent_xtol,
-                                    args = (root_cache,like,par,srcName,\
-                                     subval,verbose,all_frozen,nuisance_cache))
-        pass
-
-    if verbose:
-        print "Integration bounds: %g to %g (%d fcn evals)"\
-              %(xlo,xhi,len(root_cache))
+    if verbosity:
+        print "Integration bounds: %g to %g (%d full fcn evals and %d approx)"\
+              %(xlo,xhi,exact_root_evals,approx_root_evals)
 
     ###########################################################################
     #
@@ -341,25 +588,31 @@ def calc(like, srcName, ul=0.95,\
     # evaluating the function where it counts the most.
     #
     points = []
-    epsrel = (1.0-ul)*1e-3
+    epsrel = (1.0-cl)*1e-3
     if be_very_careful:
         # In "be very careful" mode we explicitly tell "quad" that it
         # should examine more carefully the point at x=fitval, which
         # is the peak of the likelihood. We also use a tighter
         # tolerance value, but that seems to have a secondary effect.
         points = [ fitval ]
-        epsrel = (1.0-ul)*1e-8
-    
+        epsrel = (1.0-cl)*1e-8
+
+    if verbosity:
+        print "Integrating probability distribution"
+
+    nfneval = -len(optvalue_cache)
     f_of_x = dict()
     quad_ival, quad_ierr = \
           scipy.integrate.quad(_integrand, xlo, xhi,\
-                               args=(f_of_x, like, par, srcName, maxval,\
-                                     verbose, all_frozen ,nuisance_cache),\
+                               args = (f_of_x, like, par, srcName, maxval,\
+                                       verbosity, all_frozen,
+                                       optvalue_cache, nuisance_cache),\
                                points=points, epsrel=epsrel, epsabs=1)
+    nfneval += len(optvalue_cache)
 
-    if verbose:
+    if verbosity:
         print "Total integral: %g +/- %g (%d fcn evals)"\
-              %(quad_ival,quad_ierr,len(f_of_x))
+              %(quad_ival,quad_ierr,nfneval)
 
     ###########################################################################
     #
@@ -400,157 +653,395 @@ def calc(like, srcName, ul=0.95,\
     for i in range(len(x)-1):
         cint += 0.5*(f_of_x[x[i+1]]+f_of_x[x[i]])*(x[i+1]-x[i])
         Cint.append(cint)
-    int_rep = scipy.interpolate.interp1d(x, Cint)        
+    int_irep = scipy.interpolate.interp1d(x, Cint)
     xlim_trapz = scipy.optimize.brentq(_int1droot, x[0], x[-1],
-                                       args = (ul*cint, int_rep))
-    ylim_trapz = int_rep(xlim_trapz).item()/cint
+                                       args = (cl*cint, int_irep))
+    ylim_trapz = int_irep(xlim_trapz).item()/cint
 
     # Evaluate upper limit using spline
-    spl_rep = scipy.interpolate.splrep(x,y,xb=xlo,xe=xhi)
-    spl_ival = scipy.interpolate.splint(xlo,xhi,spl_rep)
+    spl_irep = scipy.interpolate.splrep(x,y,xb=xlo,xe=xhi)
+    spl_ival = scipy.interpolate.splint(xlo,xhi,spl_irep)
     xlim_spl = scipy.optimize.brentq(_splintroot, xlo, xhi, 
-                                     args = (ul*spl_ival, xlo, spl_rep))
-    ylim_spl = scipy.interpolate.splint(xlo,xlim_spl,spl_rep)/spl_ival
+                                     args = (cl*spl_ival, xlo, spl_irep))
+    ylim_spl = scipy.interpolate.splint(xlo,xlim_spl,spl_irep)/spl_ival
 
     # Test which is closest to QUADPACK adaptive method: TRAPZ or SPLINE
     if abs(spl_ival - quad_ival) < abs(trapz_ival - quad_ival):
         # Evaluate upper limit using spline
-        if verbose:
+        if verbosity:
             print "Using spline integral: %g (delta=%g)"\
                   %(spl_ival,abs(spl_ival/quad_ival-1))
         xlim = xlim_spl
         ylim = ylim_spl
-        if verbose:
+        if verbosity:
             print "Spline search: %g (P=%g)"%(xlim,ylim)
     else:
         # Evaluate upper limit using trapezoidal rule
-        if verbose:
+        if verbosity:
             print "Using trapezoidal integral: %g (delta=%g)"\
                   %(trapz_ival,abs(trapz_ival/quad_ival-1))
         xlim = xlim_trapz
         ylim = ylim_trapz
-        if verbose:
-            print "Trapezoidal search: %g (P=%g)"%(xlim,ul)
+        if verbosity:
+            print "Trapezoidal search: %g (P=%g)"%(xlim,cl)
 
     like.optimizer = original_optimizer
 
-    # Finally, since we have computed the profile likelihood,
-    # calculate the right side of the 2-sided confidence region at the
-    # UL% and 2*(UL-50)% levels under the assumption that the
-    # likelihood is distributed as chi^2 of 1 DOF. Again, use the root
-    # finder on a spline and linear representation of logL.
+    ###########################################################################
+    #
+    # Since we have computed the profile likelihood, calculate the
+    # right side of the 2-sided confidence region at the CL% and
+    # 2*(CL-50)% levels under the assumption that the likelihood is
+    # distributed as chi^2 of 1 DOF. Again, use the root finder on a
+    # spline and linear representation of logL.
+    #
+    ###########################################################################
 
-    profile_dlogL1 = -0.5*scipy.stats.chi2.isf(1-ul, 1)
-    profile_dlogL2 = -0.5*scipy.stats.chi2.isf(1-2*(ul-0.5), 1)
+    profile_dlogL1 = -0.5*scipy.stats.chi2.isf(1-cl, 1)
+    profile_dlogL2 = -0.5*scipy.stats.chi2.isf(1-2*(cl-0.5), 1)
 
-    # The apline algorithm is prone to noise in the fitted logL,
+    # The spline algorithm is prone to noise in the fitted logL,
     # especially in "be_very_careful" mode, so fall back ro a linear
     # interpolation if necessary
 
-    spl_rep = scipy.interpolate.splrep(x,logy,xb=xlo,xe=xhi)
+    spl_drep = scipy.interpolate.splrep(x,logy,xb=xlo,xe=xhi)
     spl_pflux1 = scipy.optimize.brentq(_splevroot, fitval, xhi, 
-                                       args = (profile_dlogL1, spl_rep))
+                                       args = (profile_dlogL1, spl_drep))
     spl_pflux2 = scipy.optimize.brentq(_splevroot, fitval, xhi, 
-                                       args = (profile_dlogL2, spl_rep))
+                                       args = (profile_dlogL2, spl_drep))
 
-    int_rep = scipy.interpolate.interp1d(x,logy)
+    int_drep = scipy.interpolate.interp1d(x,logy)
     int_pflux1 = scipy.optimize.brentq(_int1droot, max(min(x),fitval), max(x), 
-                                       args = (profile_dlogL1, int_rep))
+                                       args = (profile_dlogL1, int_drep))
     int_pflux2 = scipy.optimize.brentq(_int1droot, max(min(x),fitval), max(x), 
-                                       args = (profile_dlogL2, int_rep))
+                                       args = (profile_dlogL2, int_drep))
 
     if (2.0*abs(int_pflux1-spl_pflux1)/abs(int_pflux1+spl_pflux1) > 0.05 or \
         2.0*abs(int_pflux2-spl_pflux2)/abs(int_pflux2+spl_pflux2) > 0.05):
-        if verbose:
+        if verbosity:
             print "Using linear interpolation for profile UL estimate"
         profile_flux1 = int_pflux1
         profile_flux2 = int_pflux2
     else:
-        if verbose:
+        if verbosity:
             print "Using spline interpolation for profile UL estimate"
         profile_flux1 = spl_pflux1
         profile_flux2 = spl_pflux2
 
-    # Pack up all the results
-    results = dict(all_frozen     = all_frozen,
-                   ul_frac        = ul,
-                   ul_flux        = xlim,
-                   ul_trapz       = xlim_trapz,
-                   ul_spl         = xlim_spl,
-                   profile_x      = x,
-                   profile_y      = y,
-                   peak_flux      = fitval,
-                   peak_dflux     = fiterr,
-                   peak_loglike   = maxval,
-                   prof_ul_frac1  = ul,
-                   prof_ul_dlogL1 = profile_dlogL1,
-                   prof_ul_flux1  = profile_flux1,
-                   prof_ul_frac2  = 2*(ul-0.5),
-                   prof_ul_dlogL2 = profile_dlogL2,
-                   prof_ul_flux2  = profile_flux2)
-                   
-#    return xlim, results
+    ###########################################################################
+    #
+    # Evaluate the probabilities of the "points of interest" using the integral
+    #
+    ###########################################################################
 
+    poi_probs = [];
+    poi_dlogL_interp = [];
+    poi_chi2_equiv = [];
+
+    for xval in poi_values:
+        dLogL = None
+        if(xval >= xhi):
+            pval = 1.0
+        elif(xval <= xlo):
+            pval = 0.0
+        # Same test as above to decide between TRAPZ and SPLINE
+        elif abs(spl_ival - quad_ival) < abs(trapz_ival - quad_ival):
+            pval = scipy.interpolate.splint(xlo,xval,spl_irep)/spl_ival
+            dlogL = scipy.interpolate.splev(xval, spl_drep)
+        else:
+            pval = int_irep(xval).item()/cint
+            dlogL = int_drep(xval).item()                
+        poi_probs.append(pval)
+        poi_dlogL_interp.append(dlogL)
+        poi_chi2_equiv.append(scipy.stats.chi2.isf(1-pval,1))
+
+    ###########################################################################
+    #        
+    # Calculate the integral flux at the upper limit parameter value
+    #
+    ###########################################################################
+    
     # Set the parameter value that corresponds to the desired C.L.
     par.setValue(xlim)
 
     # Evaluate the flux corresponding to this upper limit.
-    ul_value = like[srcName].flux(emin, emax)
+    ul_flux = like[srcName].flux(emin, emax)
 
     saved_state.restore()
+    like.logLike.syncSrcParams(srcName)
 
-    return ul_value, results
+    # Pack up all the results
+    results = dict(all_frozen       = all_frozen,
+                   ul_frac          = cl,
+                   ul_flux          = ul_flux,
+                   ul_value         = xlim,
+                   ul_trapz         = xlim_trapz,
+                   ul_spl           = xlim_spl,
+                   int_limits       = [xlo, xhi],
+                   profile_x        = x,
+                   profile_y        = y,
+                   peak_value       = fitval,
+                   peak_dvalue      = fiterr,
+                   peak_loglike     = -maxval,
+                   prof_ul_frac1    = cl,
+                   prof_ul_dlogL1   = profile_dlogL1,
+                   prof_ul_value1   = profile_flux1,
+                   prof_ul_frac2    = 2*(cl-0.5),
+                   prof_ul_dlogL2   = profile_dlogL2,
+                   prof_ul_value2   = profile_flux2,
+                   poi_values       = poi_values,
+                   poi_probs        = poi_probs,
+                   poi_dlogL_interp = poi_dlogL_interp,
+                   poi_chi2_equiv   = poi_chi2_equiv,
+                   flux_emin        = emin,
+                   flux_emax        = emax)
+
+    return ul_flux, results
+
+def calc_chi2(like, srcName, cl=0.95, verbosity=0,
+              skip_global_opt=False, freeze_all=False,
+              profile_optimizer = None, emin=100, emax=3e5, poi_values = []):
+    """Calculate an integral upper limit by the profile likelihood (chi2) method.
+
+  Description:
+
+    Calculate an upper limit using the likelihood ratio test, i.e. by
+    supposing the Liklihood is distributed as chi-squared of one degree of
+    freedom and finding the point at which the it decreases by the
+    required amount to get an upper limit at a certain confidence limit.
+
+    This function first uses the optimizer to find the global minimum,
+    then uses the new root finding algorithm to find the point at which
+    the Likelihood decreases by the required amount. The background
+    parameters can be frozen at their values found in the global minimum
+    or optimized freely at each point.
+
+  Inputs:
+
+    like -- a binned or unbinned likelihood object which has the
+        desired model. Be careful to freeze the index of the source for
+        which the upper limit is being if you want to quote a limit with a
+        fixed index.
+
+    srcName -- the name of the source for which to compute the limit.
+
+    cl -- probability level for the upper limit.
+
+    verbosity -- verbosity level. A value of zero means no output will
+        be written. With a value of one the function writes some values
+        describing its progress, but the optimizers don't write
+        anything. Values larger than one direct the optimizer to produce
+        verbose output.
+
+    skip_global_opt -- if the model is already at the global minimum
+        value then you can direct the integrator to skip the initial step
+        to find the minimum. If you specify this option and the model is
+        NOT at the global minimum your results will likely be wrong.
+
+    freeze_all -- freeze all other parameters at the values of the
+        global minimum.
+
+    profile_optimizer -- Alternative optimizer to use when computing
+        the profile, after the global minimum has been found. Only set
+        this if you want to use a different optimizer for calculating the
+        profile than for calculating the global minimum.
+
+    emin, emax -- Bounds on energy range over which the flux should be
+        integrated.
+
+    poi_values -- Points of interest: values of the normalization
+        parameter corresponding to fluxes of interest to the user. The
+        profile likelihood be evaluated at each of these values and the
+        equivalent probability under the LRT returned in the vector
+        \"results.poi_probs\". This parameter must be a vector, and can be
+        empty.
+
+  Outputs: (limit, results)
+
+    limit -- the flux limit found.
+
+    results -- a dictionary of additional results from the calculation,
+        such as the value of the peak value etc.
+  """
+
+    saved_state = LikelihoodState(like)
+
+    ###########################################################################
+    #
+    # This function has 2 main components:
+    #
+    # 1) Find the global maximum of the likelihood function using ST
+    # 2) Find the point at which it falls by the appropriate amount
+    #
+    ###########################################################################
+
+    # Optimizer uses verbosity level one smaller than given here
+    optverbosity = max(verbosity-1, 0)
+
+    ###########################################################################
+    #
+    # 1) Find the global maximum of the likelihood function using ST
+    #
+    ###########################################################################
+
+    src_spectrum = like[srcName].funcs['Spectrum']
+    par = src_spectrum.normPar()
+
+    if not skip_global_opt:
+        # Make sure desired parameter is free during global optimization
+        par.setFree(1)
+        like.logLike.syncSrcParams(srcName)
+
+        # Perform global optimization
+        if verbosity:
+            print "Finding global maximum"
+        try:
+            like.fit(optverbosity)
+        except RuntimeError:
+            print "Failed to find global maximum, results may be wrong"
+            pass
+        pass
+    
+    original_optimizer = like.optimizer
+    if profile_optimizer != None:
+        like.optimizer = profile_optimizer
+
+    # Store values of global fit
+    maxval = like.logLike.value()
+    fitval = par.getValue()
+    fiterr = par.error()
+    limlo, limhi = par.getBounds()
+    if verbosity:
+        print "Maximum of %g with %s = %g +/- %g"\
+              %(-maxval,srcName,fitval,fiterr)
+
+    # Freeze all other model parameters if requested (much faster!)
+    if(freeze_all):
+        for i in range(len(like.model.params)):
+            like.model[i].setFree(0)
+            like.logLike.syncSrcParams(like[i].srcName)
+
+    # Freeze the parameter of interest
+    par.setFree(0)
+    like.logLike.syncSrcParams(srcName)
+
+    # Set up the caches for the optimum values and nuisance parameters
+    optvalue_cache = dict()
+    nuisance_cache = dict()
+    optvalue_cache[fitval] = maxval
+    _cache_nuisance(fitval, like, nuisance_cache)
+
+    # Test if all parameters are frozen (could be true if we froze
+    # them above or if they were frozen in the user's model
+    all_frozen = True
+    for i in range(len(like.model.params)):
+        if like.model[i].isFree():
+            all_frozen = False
+            break
+
+    ###########################################################################
+    #
+    # 2) Find the point at which the likelihood has fallen by the
+    #    appropriate amount
+    #
+    ###########################################################################
+
+    delta_log_like = 0.5*scipy.stats.chi2.isf(1-2*(cl-0.5), 1)
+
+    if verbosity:
+        print "Finding limit (delta log Like=%g)"\
+              %(delta_log_like)
+
+    [xunused, xlim, yunused, ylim, exact_root_evals, approx_root_evals] = \
+    _find_interval(like, par, srcName, all_frozen,
+                   maxval, fitval, limlo, limhi,
+                   delta_log_like, verbosity, like.tol,
+                   True, 5, optvalue_cache, nuisance_cache)
+
+    if verbosity:
+        print "Limit: %g (%d full fcn evals and %d approx)"\
+              %(xlim,exact_root_evals,approx_root_evals)
+
+    ###########################################################################
+    #
+    # Evaluate the probabilities of the "points of interest" using the LRT
+    #
+    ###########################################################################
+    
+    poi_dlogL = [];
+    poi_probs = [];
+    for xval in poi_values:
+        if(xval >= limhi):
+            dlogL = None
+            pval = 1.0
+        elif(xval <= limlo):
+            dlogL = None
+            pval = 0.0
+        else:
+            dlogL = _loglike(xval, like, par, srcName, maxval, verbosity,
+                             all_frozen, optvalue_cache, nuisance_cache)
+            if(xval<fitval):
+                pval = 0.5*(1-scipy.stats.chi2.cdf(-2*dlogL,1))
+            else:
+                pval = 0.5*(1+scipy.stats.chi2.cdf(-2*dlogL,1))
+            if verbosity:
+                print "POI %g: Delta log Like = %g (Pr=%g)"%(xval,dlogL,pval)
+
+        poi_probs.append(pval)
+        poi_dlogL.append(dlogL)
+    
+    like.optimizer = original_optimizer
+
+    ###########################################################################
+    #        
+    # Calculate the integral flux at the upper limit parameter value
+    #
+    ###########################################################################
+    
+    # Set the parameter value that corresponds to the desired C.L.
+    par.setValue(xlim)
+
+    # Evaluate the flux corresponding to this upper limit.
+    ul_flux = like[srcName].flux(emin, emax)
+
+    saved_state.restore()
+    like.logLike.syncSrcParams(srcName)
+
+    # Pack up all the results
+    results = dict(all_frozen     = all_frozen,
+                   ul_frac        = cl,
+                   ul_flux        = ul_flux,
+                   ul_value       = xlim,
+                   ul_loglike     = -maxval+ylim-delta_log_like,
+                   ul_dloglike    = ylim-delta_log_like,
+                   peak_value     = fitval,
+                   peak_dvalue    = fiterr,
+                   peak_loglike   = -maxval,
+                   poi_values     = poi_values,
+                   poi_probs      = poi_probs,
+                   poi_dlogL      = poi_dlogL,
+                   flux_emin      = emin,
+                   flux_emax      = emax)
+
+    return ul_flux, results
+    
 
 if __name__ == "__main__":
     import sys
 
-    if(len(sys.argv)>2):
-        srcName = sys.argv[1]
-        base = sys.argv[2]
-    elif(len(sys.argv)>1):
-        srcName = sys.argv[1]
-        base = '/home/sfegan/Analysis/Glast/Extragalactic/Run2_200MeV/'+srcName+'/'+srcName
-    else:
-        srcName = '1ES_1255+244'
-        base = '/home/sfegan/Analysis/Glast/Extragalactic/Run2_200MeV/'+srcName+'/'+srcName
+    srcName = "EMS0001"
+    obs = UnbinnedAnalysis.UnbinnedObs('ft1_roi.fits',
+                                       scFile    = 'ft2.fits',
+                                       expMap    = 'expMap.fits',
+                                       expCube   = 'expCube.fits',
+                                       irfs      = 'P6_V9_DIFFUSE')
 
-    obs = UnbinnedAnalysis.UnbinnedObs(eventFile = base+'_ev_roi.fits',
-#                      scFile    = '/sps/glast/sfegan/data/FT2.fits',
-                      scFile    = '/sps/glast/sfegan/TestSim/FT2_orbit8_v2.fits',
-                      expMap    = base+'_expMap.fits',
-                      expCube   = base+'_expCube.fits',
-                      irfs      = 'P6_V1_DIFFUSE')
-
-    # By using InteractiveMinuit the commands given to the Minuit
-    # optimizer can be customized. There is no need to calculate error
-    # estimates on the nuisance parameters while doing the profile, so
-    # it's much quicker to use strategy zero and to not run the
-    # "HESSE" step, whch calculates the covariance matrix. Also, for
-    # increased reliability use MINIMIZE rather than MIGRAD, which
-    # allows the SIMPLEX method to be called if necessary.
-
-    # Using STR 0 and omitting HESSE speeds things up by a large
-    # fraction - should also work on gttsmap and gtfindsrc :-)
-
-    min_opt = 'InteractiveMinuit,MIN 0 $TOL,HESSE,.q'
-    pro_opt = 'InteractiveMinuit,SET STR 0,MIN 0 $TOL,.q'
-
-    # If you want to use the "be_very_careful" option, with all the
-    # parameters free, then you should set the convergence tolerance
-    # to be quite tight so that convergence noise doesn't spoil the
-    # spline fitting. You can do that through ST or directly here if
-    # you are using InteractiveMinuit (as follows)
-    #
-    # pro_opt = 'InteractiveMinuit,SET STR 0,MIN 0 0.01,.q'
-
-    # If you don't have InteractiveMinuit then just use regular
-    # Minuit (or whichever is your favourite optimizer)
-    #
-    # min_opt = 'Minuit'
-    # pro_opt = None
-
-    like = UnbinnedAnalysis.UnbinnedAnalysis(obs, base+'_model.xml',\
-                                             min_opt)
+    #min_opt = 'InteractiveMinuit,MIN 0 $TOL,HESSE,.q'
+    #pro_opt = 'InteractiveMinuit,SET STR 0,MIN 0 $TOL,.q'
+    min_opt = 'MINUIT'
+    pro_opt = None
+    
+    like = UnbinnedAnalysis.UnbinnedAnalysis(obs, 'model.xml', min_opt)
 
     src_spectrum = like[srcName].funcs['Spectrum']
     par = src_spectrum.getParam("Index")
@@ -559,11 +1050,7 @@ if __name__ == "__main__":
         par.setValue(-2.0)
         like.logLike.syncSrcParams(srcName)
 
-    ul, results = calc(like, srcName, verbose=1,
-                       profile_optimizer = pro_opt,
-                       be_very_careful=False, freeze_all=False)
-#                       be_very_careful=True, freeze_all=False)
-#                       be_very_careful=True, freeze_all=True)
+    ul, results = calc_int(like, srcName, verbosity=1)
 
     print results
     
