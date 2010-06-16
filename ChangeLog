@@ -1,4 +1,15 @@
 ------------------------------------------------------------
+User: sfegan  Wed Jun 16 03:22:39 PDT 2010
+pyLikelihood/python
+
+Modified Files:
+	IntegralUpperLimit.py 
+Log Message:
+Changes to respond to Jean's request for a quicker computation and
+additional features. See http://confluence.slac.stanford.edu/x/ZBZpBQ
+
+    *
+------------------------------------------------------------
 TAG
 Tag name: pyLikelihood-01-23-02, operation: add
 Package: pyLikelihood
