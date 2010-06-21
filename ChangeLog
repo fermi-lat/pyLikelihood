@@ -1,4 +1,14 @@
 ------------------------------------------------------------
+User: sfegan  Mon Jun 21 01:23:23 PDT 2010
+pyLikelihood/python
+
+Modified Files:
+	IntegralUpperLimit.py 
+Log Message:
+Fix error in reporting logL in results
+
+    *
+------------------------------------------------------------
 TAG
 Tag name: ScienceTools-09-17-00, operation: add
 Package: pyLikelihood
