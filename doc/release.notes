@@ -2,11 +2,12 @@
    @file release.notes
    @brief package pyLikelihood
    @author J. Chiang <jchiang@slac.stanford.edu>
-   $Id: release.notes,v 1.102 2010/06/07 20:51:11 jchiang Exp $
+   $Id: release.notes,v 1.103 2010/06/14 21:51:02 jchiang Exp $
 
    @verbatim
    * EOH *
 
+ pyLikelihood-01-24-00 05-Jul-2010 jchiang Steve Fegan's improved IntegralUpperLimits implementation
  pyLikelihood-01-23-02 14-Jun-2010 jchiang call syncSrcParams in UpperLimits.py after setFree is called
  pyLikelihood-01-23-01 07-Jun-2010 jchiang set efficiency factor in Unbinned- and BinnedAnalysis
  pyLikelihood-01-23-00 18-May-2010 jchiang add UnbinnedAnalysis.plotSourceFit to plot weighted counts spectra and comparison with model counts for a specific source
