@@ -1,4 +1,14 @@
 ------------------------------------------------------------
+User: jchiang  Fri Jul  9 13:12:49 PDT 2010
+ScienceTools-scons/pyLikelihood/python
+
+Modified Files:
+	Composite2.py 
+Log Message:
+simplify tieParameters interface
+
+    *
+------------------------------------------------------------
 User: jchiang  Fri Jul  9 12:20:22 PDT 2010
 ScienceTools-scons/pyLikelihood/python
 
