@@ -5,7 +5,7 @@ more natural symantics for use in python alongside other analysis classes.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/Composite2.py,v 1.1 2010/07/09 07:03:11 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/Composite2.py,v 1.2 2010/07/09 19:20:22 jchiang Exp $
 #
 
 import pyLikelihood as pyLike
@@ -24,7 +24,9 @@ class Composite2(object):
         self.composite.addComponent(like.logLike)
         self.components.append(like)
     def tieParameters(self, pars):
-        self.composite.tieParameters(pars)
+        my_pars = tuple([(x[0].logLike, x[0].par_index(x[1], x[2])) 
+                         for x in pars])
+        self.composite.tieParameters(my_pars)
     def __call__(self):
         return -self.composite.value()
     def fit(self, verbosity=3, tol=None, optimizer=None,
