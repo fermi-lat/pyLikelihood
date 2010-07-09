@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Fri Jul  9 00:03:12 PDT 2010
+ScienceTools-scons/pyLikelihood/src
+
+Modified Files:
+	pyLikelihood.i pyLikelihood.in 
+Log Message:
+add Composite2.py
+    *
+------------------------------------------------------------
 User: jchiang  Fri Jul  9 00:03:11 PDT 2010
 ScienceTools-scons/pyLikelihood/python
 
