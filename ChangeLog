@@ -1,5 +1,14 @@
 ------------------------------------------------------------
 User: jchiang  Fri Jul  9 23:13:10 PDT 2010
+ScienceTools-scons/pyLikelihood/src
+
+Modified Files:
+	pyLikelihood.i 
+Log Message:
+use Composite2::setErrors to set internal errors; rebuild SourceModel from scratch for AnalysisBase objects
+    *
+------------------------------------------------------------
+User: jchiang  Fri Jul  9 23:13:10 PDT 2010
 ScienceTools-scons/pyLikelihood/python
 
 Modified Files:
