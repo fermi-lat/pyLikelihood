@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Fri Jul  9 19:11:43 PDT 2010
+ScienceTools-scons/pyLikelihood/src
+
+Modified Files:
+	pyLikelihood.i pyLikelihood.in 
+Log Message:
+comment out Composite2 implementation for tagging
+    *
+------------------------------------------------------------
 User: jchiang  Fri Jul  9 13:12:49 PDT 2010
 ScienceTools-scons/pyLikelihood/python
 
