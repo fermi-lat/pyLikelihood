@@ -2,11 +2,12 @@
    @file release.notes
    @brief package pyLikelihood
    @author J. Chiang <jchiang@slac.stanford.edu>
-   $Id: release.notes,v 1.106 2010/07/10 02:12:46 jchiang Exp $
+   $Id: release.notes,v 1.107 2010/07/10 05:05:53 jchiang Exp $
 
    @verbatim
    * EOH *
 
+ pyLikelihood-01-25-00 10-Jul-2010 jchiang Composite2 and class added for 'stacking' analysis with arbitrary tied parameters
  pyLikelihood-01-24-03 09-Jul-2010 jchiang comment out intermediate development for Composite2 in .in file
  pyLikelihood-01-24-02 09-Jul-2010 jchiang comment out Composite2, TiedParameter classes
  pyLikelihood-01-24-01 09-Jul-2010 jchiang explicitly skip reading in model maps in binned analysis
