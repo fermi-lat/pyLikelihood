@@ -1,5 +1,5 @@
 // -*- mode: c++ -*-
-// $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/src/pyLikelihood.in,v 1.41 2010/07/09 07:03:12 jchiang Exp $
+// $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/src/pyLikelihood.in,v 1.42 2010/07/10 02:11:43 jchiang Exp $
 %module pyLikelihood
 %{
 #ifdef TRAP_FPE
@@ -31,7 +31,7 @@
 #include "Likelihood/BinnedExposure.h"
 #include "Likelihood/BrokenPowerLaw2.h"
 #include "Likelihood/CompositeLikelihood.h"
-//#include "Likelihood/Composite2.h"
+#include "Likelihood/Composite2.h"
 #include "Likelihood/Convolve.h"
 #include "Likelihood/CountsSpectra.h"
 #include "Likelihood/Source.h"
@@ -67,7 +67,7 @@
 #include "Likelihood/SpatialMap.h"
 #include "Likelihood/SrcArg.h"
 #include "Likelihood/SummedLikelihood.h"
-//#include "Likelihood/TiedParameter.h"
+#include "Likelihood/TiedParameter.h"
 #include "Likelihood/TrapQuad.h"
 #include "Likelihood/Exception.h"
 #include "Likelihood/LogLike.h"
@@ -176,6 +176,7 @@ using optimizers::Exception;
 %include $(LIKELIHOODROOT)/Likelihood/CountsMap.h
 %include $(LIKELIHOODROOT)/Likelihood/SourceModel.h
 %include $(LIKELIHOODROOT)/Likelihood/LogLike.h
+%template (ParPair_t) std::pair<Likelihood::LogLike *, size_t>;
 %template (ParVector_t) std::vector< std::pair<Likelihood::LogLike *, size_t> >;
 %include $(LIKELIHOODROOT)/Likelihood/CountsSpectra.h
 %include $(LIKELIHOODROOT)/Likelihood/MeanPsf.h
@@ -192,8 +193,8 @@ using optimizers::Exception;
 %include $(LIKELIHOODROOT)/Likelihood/SrcArg.h
 %include $(LIKELIHOODROOT)/Likelihood/TrapQuad.h
 %include $(LIKELIHOODROOT)/Likelihood/MapCubeFunction.h
-// %include $(LIKELIHOODROOT)/Likelihood/TiedParameter.h
-// %include $(LIKELIHOODROOT)/Likelihood/Composite2.h
+%include $(LIKELIHOODROOT)/Likelihood/TiedParameter.h
+%include $(LIKELIHOODROOT)/Likelihood/Composite2.h
 %include $(LIKELIHOODROOT)/Likelihood/CompositeLikelihood.h
 %include $(LIKELIHOODROOT)/Likelihood/SummedLikelihood.h
 %include $(PYLIKELIHOODROOT)/pyLikelihood/Aeff.h
