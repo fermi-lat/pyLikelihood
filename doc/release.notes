@@ -2,11 +2,12 @@
    @file release.notes
    @brief package pyLikelihood
    @author J. Chiang <jchiang@slac.stanford.edu>
-   $Id: release.notes,v 1.104 2010/07/05 16:57:50 jchiang Exp $
+   $Id: release.notes,v 1.105 2010/07/09 15:36:27 jchiang Exp $
 
    @verbatim
    * EOH *
 
+ pyLikelihood-01-24-02 09-Jul-2010 jchiang comment out Composite2, TiedParameter classes
  pyLikelihood-01-24-01 09-Jul-2010 jchiang explicitly skip reading in model maps in binned analysis
  pyLikelihood-01-24-00 05-Jul-2010 jchiang Steve Fegan's improved IntegralUpperLimits implementation
  pyLikelihood-01-23-02 14-Jun-2010 jchiang call syncSrcParams in UpperLimits.py after setFree is called
