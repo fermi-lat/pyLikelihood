@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Fri Jul  9 23:13:10 PDT 2010
+ScienceTools-scons/pyLikelihood/python
+
+Modified Files:
+	Composite2.py 
+Log Message:
+use Composite2::setErrors to set internal errors; rebuild SourceModel from scratch for AnalysisBase objects
+    *
+------------------------------------------------------------
 TAG
 Tag name: pyLikelihood-01-24-03, operation: add
 Package: pyLikelihood
