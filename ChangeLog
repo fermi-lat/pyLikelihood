@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Sat Jul 10 10:01:49 PDT 2010
+ScienceTools-scons/pyLikelihood/python
+
+Modified Files:
+	Composite2.py 
+Log Message:
+minosError implementation
+    *
+------------------------------------------------------------
 User: jchiang  Fri Jul  9 23:13:10 PDT 2010
 ScienceTools-scons/pyLikelihood/src
 
