@@ -1,5 +1,5 @@
 // -*- mode: c++ -*-
-// $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/src/pyLikelihood.in,v 1.43 2010/07/10 04:52:38 jchiang Exp $
+// $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/src/pyLikelihood.in,v 1.44 2010/07/10 05:03:56 jchiang Exp $
 %module pyLikelihood
 %{
 #ifdef TRAP_FPE
@@ -31,7 +31,7 @@
 #include "Likelihood/BinnedExposure.h"
 #include "Likelihood/BrokenPowerLaw2.h"
 #include "Likelihood/CompositeLikelihood.h"
-//#include "Likelihood/Composite2.h"
+#include "Likelihood/Composite2.h"
 #include "Likelihood/Convolve.h"
 #include "Likelihood/CountsSpectra.h"
 #include "Likelihood/Source.h"
@@ -68,7 +68,7 @@
 #include "Likelihood/SpatialMap.h"
 #include "Likelihood/SrcArg.h"
 #include "Likelihood/SummedLikelihood.h"
-//#include "Likelihood/TiedParameter.h"
+#include "Likelihood/TiedParameter.h"
 #include "Likelihood/TrapQuad.h"
 #include "Likelihood/Exception.h"
 #include "Likelihood/LogLike.h"
@@ -195,8 +195,8 @@ using optimizers::Exception;
 %include $(LIKELIHOODROOT)/Likelihood/SrcArg.h
 %include $(LIKELIHOODROOT)/Likelihood/TrapQuad.h
 %include $(LIKELIHOODROOT)/Likelihood/MapCubeFunction.h
-// %include $(LIKELIHOODROOT)/Likelihood/TiedParameter.h
-// %include $(LIKELIHOODROOT)/Likelihood/Composite2.h
+%include $(LIKELIHOODROOT)/Likelihood/TiedParameter.h
+%include $(LIKELIHOODROOT)/Likelihood/Composite2.h
 %include $(LIKELIHOODROOT)/Likelihood/CompositeLikelihood.h
 %include $(LIKELIHOODROOT)/Likelihood/SummedLikelihood.h
 %include $(PYLIKELIHOODROOT)/pyLikelihood/Aeff.h
