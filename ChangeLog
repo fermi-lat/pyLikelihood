@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Wed Jul 14 07:40:10 PDT 2010
+ScienceTools-scons/pyLikelihood/python
+
+Modified Files:
+	Composite2.py 
+Log Message:
+fix __repr__
+    *
+------------------------------------------------------------
 TAG
 Tag name: pyLikelihood-01-25-00, operation: add
 Package: pyLikelihood
