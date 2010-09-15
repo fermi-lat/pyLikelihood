@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Wed Sep 15 14:04:58 PDT 2010
+ScienceTools-scons/pyLikelihood/python
+
+Modified Files:
+	BinnedAnalysis.py 
+Log Message:
+use getSourceMap(...) from BinnedAnalysis._srcCnts(...) so that fixed sources can have their source maps rebuilt for plotting.
+    *
+------------------------------------------------------------
 TAG
 Tag name: ScienceTools-09-18-03, operation: add
 Package: pyLikelihood
