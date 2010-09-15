@@ -4,7 +4,7 @@ Python interface for binned likelihood.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/BinnedAnalysis.py,v 1.24 2010/06/07 20:12:20 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/BinnedAnalysis.py,v 1.25 2010/07/09 15:34:47 jchiang Exp $
 #
 
 import sys
@@ -114,7 +114,7 @@ class BinnedAnalysis(AnalysisBase):
                           'Source model file: ' + str(self.srcModel),
                           'Optimizer: ' + str(self.optimizer)))
     def _srcCnts(self, srcName):
-        srcMap = self.logLike.sourceMap(srcName)
+        srcMap = self.logLike.getSourceMap(srcName, False)
         npreds = srcMap.npreds()
         src = self.logLike.getSource(srcName)
         cnts = []
