@@ -6,7 +6,7 @@ classes.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/SummedLikelihood.py,v 1.14 2010/03/09 16:45:47 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/SummedLikelihood.py,v 1.15 2010/03/24 17:54:23 jchiang Exp $
 #
 
 import pyLikelihood as pyLike
@@ -58,6 +58,9 @@ class Parameter(object):
 class SummedLikelihood(AnalysisBase):
     def __init__(self, optimizer='Minuit'):
         self.composite = pyLike.SummedLikelihood()
+        #the C++ SummedLikelihood has many if not all the properties
+        #of a logLike object
+        self.logLike = self.composite
         self.components = []
         self.covariance = None
         self.covar_is_current = False
@@ -284,8 +287,7 @@ class SummedLikelihood(AnalysisBase):
             comp.addSource(src)
         self.model = self.components[0].model
         self.saved_state = None
-    def minosError(self, *args):
-        raise NotImplementedError("minosError not implemented for SummedLikelihood")
+
     def plot(self, *args):
         raise NotImplementedError("plot not implemented for SummedLikelihood")
     def setPlotter(self, *args):
