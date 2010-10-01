@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: cohen  Fri Oct  1 08:21:46 PDT 2010
+pyLikelihood/python
+
+Modified Files:
+	SummedLikelihood.py 
+Log Message:
+enable minosError for SummedLikelihood object
+    *
+------------------------------------------------------------
 TAG
 Tag name: ScienceTools-09-18-04, operation: add
 Package: pyLikelihood
