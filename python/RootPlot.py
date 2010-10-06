@@ -89,7 +89,7 @@ class RootPlot(object):
         graph.SetMarkerColor(_colors[color])
         graph.Draw('%s' % symbol)
     def getRange(self, axis):
-        return self._getRange(self.graph[0], axis)
+        return self._getRange(self.graphs[0], axis)
     def _getRange(self, graph, axis):
         if axis == 'x':
             my_axis = graph.GetXaxis()
