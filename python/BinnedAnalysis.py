@@ -4,10 +4,11 @@ Python interface for binned likelihood.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/BinnedAnalysis.py,v 1.25 2010/07/09 15:34:47 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/BinnedAnalysis.py,v 1.26 2010/09/15 21:04:58 jchiang Exp $
 #
 
 import sys
+import bisect
 import pyLikelihood as pyLike
 from SrcModel import SourceModel
 from AnalysisBase import AnalysisBase, _quotefn, _null_file, num
@@ -138,6 +139,26 @@ class BinnedAnalysis(AnalysisBase):
     def __setitem__(self, name, value):
         self.model[name] = value
         self.logLike.syncParams()
+    def setEnergyRange(self, emin, emax):
+        kmin = bisect.bisect(self.energies, emin) - 1
+        kmax = min(bisect.bisect(self.energies, emax), 
+                   len(self.energies)-1)
+        self.emin, self.emax = self.energies[kmin], self.energies[kmax]
+        print "setting energy bounds to "
+        print "%.2f  %.2f" % (self.emin, self.emax)
+        self.logLike.set_klims(kmin, kmax)
+    def plot(self, oplot=0, color=None, omit=(), symbol='line'):
+        AnalysisBase.plot(self, oplot, color, omit, symbol)
+        yrange = self.spectralPlot.getRange('y')
+        self.spectralPlot.overlay([self.emin, self.emin], yrange,
+                                  symbol='dotted')
+        self.spectralPlot.overlay([self.emax, self.emax], yrange,
+                                  symbol='dotted')
+        yrange = self.residualPlot.getRange('y')
+        self.residualPlot.overlay([self.emin, self.emin], yrange,
+                                  symbol='dotted')
+        self.residualPlot.overlay([self.emax, self.emax], yrange,
+                                  symbol='dotted')
 
 def binnedAnalysis(mode='ql', ftol=None, **pars):
     """Return a BinnedAnalysis object using the data in gtlike.par."""
