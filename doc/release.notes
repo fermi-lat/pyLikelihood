@@ -2,11 +2,12 @@
    @file release.notes
    @brief package pyLikelihood
    @author J. Chiang <jchiang@slac.stanford.edu>
-   $Id: release.notes,v 1.110 2010/09/16 00:01:21 jchiang Exp $
+   $Id: release.notes,v 1.111 2010/10/06 22:30:58 jchiang Exp $
 
    @verbatim
    * EOH *
 
+ pyLikelihood-01-25-04 23-Oct-2010 jchiang bug-fix for BinnedAnalysis.plot
  pyLikelihood-01-25-03 06-Oct-2010 jchiang allow users to select subrange for fitting in binned analysis
  pyLikelihood-01-25-02 15-Sep-2010 jchiang bug-fix for plotting in binned case with fixed sources
  pyLikelihood-01-25-01 25-Aug-2010 jchiang __repr__ bug-fix for Composite2
