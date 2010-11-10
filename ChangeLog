@@ -1,4 +1,14 @@
 ------------------------------------------------------------
+User: jchiang  Wed Nov 10 09:01:32 PST 2010
+ScienceTools-scons/pyLikelihood/python
+
+Modified Files:
+	RootPlot.py 
+Log Message:
+Decrease plot title size so that it does not obscure scale factor for the y-axis of plots. Submitted by D. Landriu.
+
+    *
+------------------------------------------------------------
 TAG
 Tag name: ScienceTools-09-19-00, operation: add
 Package: pyLikelihood
