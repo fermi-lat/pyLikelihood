@@ -36,6 +36,7 @@ gStyle.SetFillColor(0)
 gStyle.SetPadLeftMargin(.20)
 gStyle.SetPadBottomMargin(.20)
 gStyle.SetCanvasColor(10)
+gStyle.SetTitleH(0.04)
         
 class RootPlot(object):
     def __init__(self, x, y, dx=None, dy=None, xlog=0, ylog=0,
@@ -132,9 +133,10 @@ if __name__ == '__main__':
     y = x**2
 
     plot0 = RootPlot(x, y, xlog=0, ylog=0, xtitle='x values',
-                      ytitle='y values')
+                      ytitle='y values', MainTitle='Example')
     plot1 = RootPlot(x, y, dy=num.sqrt(y), xlog=0, ylog=1, color='blue')
     plot2 = RootPlot(x, y, xlog=1, ylog=1, yrange=(10, 1000), color='magenta')
 
     plot0.overlay(x, y/2., symbol='point')
     plot2.overlay(x, 2*y, symbol='line', color='red')
+    
