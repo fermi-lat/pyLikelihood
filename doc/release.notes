@@ -2,11 +2,12 @@
    @file release.notes
    @brief package pyLikelihood
    @author J. Chiang <jchiang@slac.stanford.edu>
-   $Id: release.notes,v 1.112 2010/10/23 22:03:04 jchiang Exp $
+   $Id: release.notes,v 1.113 2010/11/10 17:03:27 jchiang Exp $
 
    @verbatim
    * EOH *
 
+ pyLikelihood-01-25-06 30-Nov-2010 jchiang add method to set energy bands via bin indexes in BinnedLikelihood
  pyLikelihood-01-25-05 10-Nov-2010 jchiang adjust title size in RootPlot.py so that it does not obscure the y-axis scaling
  pyLikelihood-01-25-04 23-Oct-2010 jchiang bug-fix for BinnedAnalysis.plot
  pyLikelihood-01-25-03 06-Oct-2010 jchiang allow users to select subrange for fitting in binned analysis
