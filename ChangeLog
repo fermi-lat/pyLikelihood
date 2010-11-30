@@ -1,4 +1,14 @@
 ------------------------------------------------------------
+User: jchiang  Tue Nov 30 07:34:54 PST 2010
+ScienceTools-scons/pyLikelihood/python
+
+Modified Files:
+	BinnedAnalysis.py 
+Log Message:
+add method to BinnedAnalysis interface to allow users to select energy band range via bin indexes
+
+    *
+------------------------------------------------------------
 TAG
 Tag name: pyLikelihood-01-25-05, operation: add
 Package: pyLikelihood
