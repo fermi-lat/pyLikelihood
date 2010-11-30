@@ -6,7 +6,7 @@ classes.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/SummedLikelihood.py,v 1.15 2010/03/24 17:54:23 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/SummedLikelihood.py,v 1.16 2010/10/01 15:21:45 cohen Exp $
 #
 
 import pyLikelihood as pyLike
@@ -291,7 +291,7 @@ class SummedLikelihood(AnalysisBase):
     def plot(self, *args):
         raise NotImplementedError("plot not implemented for SummedLikelihood")
     def setPlotter(self, *args):
-        raise NotImplementedError("setPlott not implemented for SummedLikelihood")
+        raise NotImplementedError("setPlotter not implemented for SummedLikelihood")
     def oplot(self, *args):
         raise NotImplementedError("oplot not implemented for SummedLikelihood")
     def plotSource(self, *args):
