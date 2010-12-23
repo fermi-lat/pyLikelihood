@@ -4,7 +4,7 @@ Python interface for binned likelihood.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/BinnedAnalysis.py,v 1.28 2010/10/23 22:02:04 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/BinnedAnalysis.py,v 1.29 2010/11/30 15:34:54 jchiang Exp $
 #
 
 import sys
@@ -141,13 +141,14 @@ class BinnedAnalysis(AnalysisBase):
         self.logLike.syncParams()
     def setEnergyRange(self, emin, emax):
         kmin = bisect.bisect(self.energies, emin) - 1
-        kmax = min(bisect.bisect(self.energies, emax), 
+        kmax = min(bisect.bisect(self.energies, emax),
                    len(self.energies)-1)
-        self.emin, self.emax = self.energies[kmin], self.energies[kmax]
+        self.selectEbounds(kmin, kmax)
         print "setting energy bounds to "
         print "%.2f  %.2f" % (self.emin, self.emax)
-        self.logLike.set_klims(kmin, kmax)
-    def selectEbands(self, kmin, kmax):
+    def selectEbounds(self, kmin, kmax):
+        self.emin = self.energies[kmin]
+        self.emax = self.energies[kmax]
         self.logLike.set_klims(kmin, kmax)
     def plot(self, oplot=0, color=None, omit=(), symbol='line'):
         AnalysisBase.plot(self, oplot, color, omit, symbol)
