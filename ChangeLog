@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: kadrlica  Tue Jan 11 10:40:08 PST 2011
+ScienceTools-scons/pyLikelihood/python
+
+Modified Files:
+	UpperLimits.py 
+Log Message:
+Added profile likelihood scan method
+    *
+------------------------------------------------------------
 TAG
 Tag name: pyLikelihood-01-26-00, operation: add
 Package: pyLikelihood
