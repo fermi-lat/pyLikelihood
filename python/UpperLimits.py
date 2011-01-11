@@ -6,7 +6,7 @@
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/UpperLimits.py,v 1.27 2009/10/31 21:23:06 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/UpperLimits.py,v 1.28 2010/06/14 21:50:00 jchiang Exp $
 #
 import copy
 import bisect
@@ -88,13 +88,12 @@ class UpperLimit(object):
         if fix_src_pars:
             freePars = self.like.freePars(source)
             self.like.setFreeFlag(source, freePars, 0)
-            self.like.syncSrcParams(self.source)
+            self.like.syncSrcParams(source)
 
         logLike0 = self.like()
         x0 = par.getValue()
         dx, dlogLike_est = self._find_dx(par, nsigmax, renorm, 
                                          logLike0, mindelta=mindelta)
-
         xvals, dlogLike, fluxes = [], [], []
         if verbosity > 1:
             print self.like.model
@@ -164,6 +163,39 @@ class UpperLimit(object):
         # Restore value of covariance flag
         self.like.covar_is_current = covar_is_current
         return ul, xx
+    def scan(self, xmin=0, xmax=10, npts=50,
+             fix_src_pars=False, verbosity=1, renorm=False):
+        saved_state = LikelihoodState(self.like)
+        source = self.source
+
+        # Fix the normalization parameter for the scan.
+        par = self.normPar
+        par.setFree(0)
+        logLike0 = self.like()
+
+        if fix_src_pars:
+            freePars = self.like.freePars(source)
+            self.like.setFreeFlag(source, freePars, 0)
+            self.like.syncSrcParams(source)
+
+        # Scan over the range of interest
+        xvals, dlogLike = [], []
+        for i, x in enumerate(num.linspace(xmin, xmax, npts)):
+            xvals.append(x)
+            par.setValue(x)
+            self.like.syncSrcParams(source)
+            self.fit(0, renorm=renorm)
+            dlogLike.append(self.like() - logLike0)
+            if verbosity > 0:
+                print i, x, dlogLike[-1]
+
+        # Restore model parameters to original values
+        saved_state.restore()
+
+        # Save values of the scan
+        self.scanPars = xvals
+        self.scanLike = dlogLike
+        return xvals, dlogLike
     def _logLike(self, xpar, renorm):
         self.normPar.setValue(xpar)
         self.like.syncSrcParams(self.source)
