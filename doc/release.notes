@@ -2,11 +2,12 @@
    @file release.notes
    @brief package pyLikelihood
    @author J. Chiang <jchiang@slac.stanford.edu>
-   $Id: release.notes,v 1.114 2010/11/30 15:37:35 jchiang Exp $
+   $Id: release.notes,v 1.115 2010/12/23 06:25:29 jchiang Exp $
 
    @verbatim
    * EOH *
 
+ pyLikelihood-01-26-01 12-Jan-2011 jchiang UpperLimits.scan method added by Alex
  pyLikelihood-01-26-00 22-Dec-2010 jchiang rename BinnedAnalysis.selectEbands to selectEbounds
  pyLikelihood-01-25-06 30-Nov-2010 jchiang add method to set energy bands via bin indexes in BinnedLikelihood
  pyLikelihood-01-25-05 10-Nov-2010 jchiang adjust title size in RootPlot.py so that it does not obscure the y-axis scaling
