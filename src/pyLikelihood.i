@@ -1,5 +1,5 @@
 // -*- mode: c++ -*-
-// $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/src/pyLikelihood.i,v 1.7 2010/07/10 02:11:43 jchiang Exp $
+// $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/src/pyLikelihood.i,v 1.8 2010/07/10 06:13:10 jchiang Exp $
 %module pyLikelihood
 %{
 #ifdef TRAP_FPE
@@ -46,6 +46,8 @@
 #include "Likelihood/ExposureCube.h"
 #include "Likelihood/ExposureMap.h"
 #include "Likelihood/FileFunction.h"
+#include "Likelihood/LogGaussian.h"
+#include "Likelihood/LogGaussianDeriv.h"
 #include "Likelihood/LogParabola.h"
 #include "Likelihood/MapBase.h"
 #include "Likelihood/MapCubeFunction.h"
@@ -153,6 +155,8 @@ using optimizers::Exception;
 %include Likelihood/Exception.h
 %include Likelihood/ExpCutoff.h
 %include Likelihood/BrokenPowerLawExpCutoff.h
+%include Likelihood/LogGaussian.h
+%include Likelihood/LogGaussianDeriv.h
 %include Likelihood/ResponseFunctions.h
 %include Likelihood/Event.h
 %include Likelihood/Source.h
