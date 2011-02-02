@@ -1,4 +1,14 @@
 ------------------------------------------------------------
+User: jchiang  Wed Feb  2 08:40:00 PST 2011
+ScienceTools-scons/pyLikelihood/python
+
+Modified Files:
+	AnalysisBase.py BinnedAnalysis.py SimpleDialog.py 
+	SrcAnalysis.py UnbinnedAnalysis.py 
+Log Message:
+rename local map(...) class to avoid conflict with built-in function
+    *
+------------------------------------------------------------
 TAG
 Tag name: pyLikelihood-01-27-00, operation: add
 Package: pyLikelihood
