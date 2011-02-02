@@ -4,7 +4,7 @@ SourceModel interface to allow for manipulation of fit parameters.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/SrcModel.py,v 1.8 2009/06/17 16:10:27 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/SrcModel.py,v 1.9 2011/01/30 05:04:58 jchiang Exp $
 #
 import sys
 from xml.dom import minidom
@@ -157,10 +157,11 @@ class Parameter(object):
             self.parameter.setError(0)
     def value(self):
         return self.parameter.getValue()
-    def addPrior(self, func):
+    def addPrior(self, funcname):
         if self.parameter.log_prior() is not None:
             raise RuntimeError("Prior for parameter %s already applied"
                                % self.parameter.getName())
+        func = _app_helper.funcFactory().create(funcname)
         self.parameter.setPrior(func)
     def setPriorParams(self, **kwds):
         prior = self.parameter.log_prior()
@@ -170,7 +171,7 @@ class Parameter(object):
         for key, value in kwds.items():
             prior.setParam(key, value)
     def addGaussianPrior(self, mean, sigma):
-        self.addPrior(_app_helper.funcFactory().create('LogGaussian'))
+        self.addPrior('LogGaussian')
         self.setPriorParams(Mean=mean, Sigma=sigma)
     def getPriorParams(self):
         prior = self.parameter.log_prior()

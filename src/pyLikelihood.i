@@ -1,5 +1,5 @@
 // -*- mode: c++ -*-
-// $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/src/pyLikelihood.i,v 1.9 2011/01/29 19:28:12 jchiang Exp $
+// $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/src/pyLikelihood.i,v 1.10 2011/01/30 00:33:34 jchiang Exp $
 %module pyLikelihood
 %{
 #ifdef TRAP_FPE
@@ -211,6 +211,20 @@ using optimizers::Exception;
       std::vector<std::string> outfiles;
       st_facilities::Util::resolve_fits_files(infile, outfiles);
       return outfiles;
+   }
+   static std::pair<double, double> 
+      skyDir2pixel(const astro::SkyProj & proj,
+                   const astro::SkyDir & dir) {
+      double i, j;
+      st_facilities::Util::skyDir2pixel(proj, dir, i, j);
+      return std::make_pair(i, j);
+   }
+   static astro::SkyDir
+      pixel2SkyDir(const astro::SkyProj & proj,
+                   double i, double j) {
+      astro::SkyDir dir;
+      st_facilities::Util::pixel2SkyDir(proj, i, j, dir);
+      return dir;
    }
 }
 %extend Likelihood::AppHelpers {
