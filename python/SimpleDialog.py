@@ -5,7 +5,7 @@
 @author J. Chiang
 """
 # @file SimpleDialog.py
-# $Header: /nfs/slac/g/glast/ground/cvs/users/jchiang/pythonModules/pyLikelihood/python/SimpleDialog.py,v 1.1.1.1 2005/07/13 17:59:43 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/SimpleDialog.py,v 1.1.1.1 2005/08/22 16:19:27 jchiang Exp $
 #
 
 import os
@@ -103,7 +103,7 @@ class Null(object):
     def __call__(self):
         return None
 
-class map(dict):
+class MyOrderedDict(dict):
     def __init__(self):
         dict.__init__(self)
         self.ordered_keys = []
@@ -117,7 +117,7 @@ class Param(object):
         self.value = value
     
 def answers():
-    paramDict = map()
+    paramDict = MyOrderedDict()
     paramDict['infile'] = Param('file', '*.py')
     paramDict['outfile'] = Param('file', 'bar')
     paramDict['value'] = Param('double', 10.)
