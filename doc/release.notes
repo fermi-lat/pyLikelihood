@@ -2,11 +2,12 @@
    @file release.notes
    @brief package pyLikelihood
    @author J. Chiang <jchiang@slac.stanford.edu>
-   $Id: release.notes,v 1.115 2010/12/23 06:25:29 jchiang Exp $
+   $Id: release.notes,v 1.116 2011/01/12 16:07:23 jchiang Exp $
 
    @verbatim
    * EOH *
 
+ pyLikelihood-01-27-00 01-Feb-2011 jchiang enable priors on individual parameters
  pyLikelihood-01-26-01 12-Jan-2011 jchiang UpperLimits.scan method added by Alex
  pyLikelihood-01-26-00 22-Dec-2010 jchiang rename BinnedAnalysis.selectEbands to selectEbounds
  pyLikelihood-01-25-06 30-Nov-2010 jchiang add method to set energy bands via bin indexes in BinnedLikelihood
