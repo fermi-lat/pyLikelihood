@@ -4,7 +4,7 @@ Interface to SWIG-wrapped C++ classes.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/SrcAnalysis.py,v 1.3 2008/09/26 18:14:52 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/SrcAnalysis.py,v 1.4 2009/03/31 18:20:53 jchiang Exp $
 #
 import os
 import glob
@@ -59,7 +59,7 @@ class Observation(object):
             if expCube is not None and expCube != '':
                 checkTimeCuts(eventFiles[0], 'EVENTS', expCube, 'Exposure')
     def _obsDialog(self):
-        paramDict = map()
+        paramDict = MyOrderedDict()
         paramDict['eventFile'] = Param('file', '*.fits')
         paramDict['scFile'] = Param('file', '*scData*.fits')
         paramDict['expMap'] = Param('file', '')
@@ -123,7 +123,7 @@ class SrcAnalysis(object):
         self.resids = None
         self.tolType = pyLike.ABSOLUTE
     def _srcDialog(self):
-        paramDict = map()
+        paramDict = MyOrderedDict()
         paramDict['Source Model File'] = Param('file', '*.xml')
         paramDict['optimizer'] = Param('string', 'Minuit')
         root = SimpleDialog(paramDict, title="Define SrcAnalysis Object:")

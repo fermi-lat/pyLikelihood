@@ -4,7 +4,7 @@ Python interface for unbinned likelihood
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/UnbinnedAnalysis.py,v 1.35 2010/05/19 03:35:09 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/UnbinnedAnalysis.py,v 1.36 2010/06/07 20:08:03 jchiang Exp $
 #
 
 import sys
@@ -75,7 +75,7 @@ class UnbinnedObs(object):
             if expCube is not None and expCube != '':
                 checkTimeCuts(eventFiles, 'EVENTS', expCube, 'Exposure')
     def _obsDialog(self):
-        paramDict = map()
+        paramDict = MyOrderedDict()
         paramDict['eventFile'] = Param('file', '*.fits')
         paramDict['scFile'] = Param('file', '*.fits')
         paramDict['expMap'] = Param('file', '')

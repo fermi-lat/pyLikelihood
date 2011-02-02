@@ -4,7 +4,7 @@ Base class for Likelihood analysis Python modules.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/AnalysisBase.py,v 1.67 2010/05/19 00:15:23 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/AnalysisBase.py,v 1.68 2010/07/09 15:34:47 jchiang Exp $
 #
 
 import sys
@@ -28,7 +28,7 @@ class AnalysisBase(object):
         self.tolType = pyLike.ABSOLUTE
         self.optObject = None
     def _srcDialog(self):
-        paramDict = map()
+        paramDict = MyOrderedDict()
         paramDict['Source Model File'] = Param('file', '*.xml')
         paramDict['optimizer'] = Param('string', 'Drmngb')
         root = SimpleDialog(paramDict, title="Define Analysis Object:")

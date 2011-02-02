@@ -4,7 +4,7 @@ Python interface for binned likelihood.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/BinnedAnalysis.py,v 1.29 2010/11/30 15:34:54 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/BinnedAnalysis.py,v 1.30 2010/12/23 05:15:34 jchiang Exp $
 #
 
 import sys
@@ -59,7 +59,7 @@ class BinnedObs(object):
     def __repr__(self):
         return self._inputs
     def _obsDialog(self, srcMaps, expCube):
-        paramDict = map()
+        paramDict = MyOrderedDict()
         if srcMaps is None:
             paramDict['srcMaps'] = Param('file', '*.fits')
         else:
