@@ -6,7 +6,7 @@
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/UpperLimits.py,v 1.28 2010/06/14 21:50:00 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/UpperLimits.py,v 1.29 2011/01/11 18:40:08 kadrlica Exp $
 #
 import copy
 import bisect
@@ -57,6 +57,7 @@ class UpperLimit(object):
         self.like = like
         self.source = source
         self.normPar = self.like.normPar(source)
+        self.indx = self.like.par_index(source, self.normPar.getName())
         self.results = []
     def compute(self, emin=100, emax=3e5, delta=2.71/2., 
                 tmpfile='temp_model.xml', fix_src_pars=False,
@@ -69,9 +70,7 @@ class UpperLimit(object):
         source = self.source
 
         # Fix the normalization parameter for the scan.
-        par = self.normPar
-        par.setFree(0)
-        self.like.syncSrcParams(self.source)
+        self.like.freeze(self.indx)
 
         # Update the best-fit-so-far vector after having fixed the 
         # normalization parameter.
@@ -91,8 +90,8 @@ class UpperLimit(object):
             self.like.syncSrcParams(source)
 
         logLike0 = self.like()
-        x0 = par.getValue()
-        dx, dlogLike_est = self._find_dx(par, nsigmax, renorm, 
+        x0 = self.like[self.indx].getValue()
+        dx, dlogLike_est = self._find_dx(self.normPar, nsigmax, renorm, 
                                          logLike0, mindelta=mindelta)
         xvals, dlogLike, fluxes = [], [], []
         if verbosity > 1:
@@ -104,8 +103,7 @@ class UpperLimit(object):
             npts = max(npts, 2.*nsigmax*dx/delta)
         for i, x in enumerate(num.arange(x0, x0+nsigmax*dx, nsigmax*dx/npts)):
             xvals.append(x)
-            par.setValue(x)
-            self.like.syncSrcParams(source)
+            self.like[self.indx] = x
             self.fit(0, renorm=renorm)
             dlogLike.append(self.like() - logLike0)
             fluxes.append(self.like[source].flux(emin, emax))
@@ -124,12 +122,11 @@ class UpperLimit(object):
             x = yfit.xval(1.1*delta)
             xvals.append(x)
             try:
-                par.setValue(x)
+                self.like[self.indx] = x
             except RuntimeError, message:
-                print par
+                print par.getName()
                 print x
                 raise RuntimeError(message)
-            self.like.syncSrcParams(source)
             self.fit(0, renorm=renorm)
             dlogLike.append(self.like() - logLike0)
             fluxes.append(self.like[source].flux(emin, emax))
@@ -169,8 +166,7 @@ class UpperLimit(object):
         source = self.source
 
         # Fix the normalization parameter for the scan.
-        par = self.normPar
-        par.setFree(0)
+        self.like.freeze(self.indx)
         logLike0 = self.like()
 
         if fix_src_pars:
@@ -182,8 +178,7 @@ class UpperLimit(object):
         xvals, dlogLike = [], []
         for i, x in enumerate(num.linspace(xmin, xmax, npts)):
             xvals.append(x)
-            par.setValue(x)
-            self.like.syncSrcParams(source)
+            self.like[self.indx] = x
             self.fit(0, renorm=renorm)
             dlogLike.append(self.like() - logLike0)
             if verbosity > 0:
@@ -197,8 +192,7 @@ class UpperLimit(object):
         self.scanLike = dlogLike
         return xvals, dlogLike
     def _logLike(self, xpar, renorm):
-        self.normPar.setValue(xpar)
-        self.like.syncSrcParams(self.source)
+        self.like[self.indx] = xpar
         self.fit(0, renorm=renorm)
         return self.like()
     def _errorEst(self, renorm, verbosity=0):
@@ -213,15 +207,14 @@ class UpperLimit(object):
         xsig = par.error()   # initial error estimate
 
         # Fix the normalization parameter for the scan.
-        par.setFree(0)
-        self.like.syncSrcParams(self.source)
+        self.like.freeze(self.indx)
 
         # Set the lower bound to zero
         current_bounds = par.getBounds()
         if current_bounds[0] != 0 and verbosity > 0:
             print ("Setting lower bound on normalization parameter " +
                    "to zero temporarily for upper limit calculation.")
-        par.setBounds(0, current_bounds[1])
+        self.like[self.indx].setBounds(0, current_bounds[1])
 
         xvals = num.arange(x0, x0 + xsig*3, (xsig*3)/10.)
         yvals = num.array([self._logLike(x, renorm) for x in xvals])
@@ -249,16 +242,14 @@ class UpperLimit(object):
         source = self.source
 
         # Fix the normalization parameter for the scan.
-        par = self.normPar
-        par.setFree(0)
-        self.like.syncSrcParams(self.source)
+        self.like.freeze(self.indx)
 
         # Set the lower bound to zero
-        current_bounds = par.getBounds()
+        current_bounds = self.normPar.getBounds()
         if current_bounds[0] != 0 and verbosity > 0:
             print ("Setting lower bound on normalization parameter " +
                    "to zero temporarily for upper limit calculation.")
-        par.setBounds(0, current_bounds[1])
+        self.like[self.indx].setBounds(0, current_bounds[1])
 
         dlogLike_plus = (self._logLike(x0 + normPar_nsig, renorm)
                          - saved_state.negLogLike)
@@ -293,8 +284,7 @@ class UpperLimit(object):
         factor = ((cl - integral_dist[ii-1])/
                   (integral_dist[ii] - integral_dist[ii-1]))
         xval = factor*(x[ii] - x[ii-1]) + x[ii-1]
-        par.setValue(xval)
-        self.like.syncSrcParams(self.source)
+        self.like[self.indx] = xval
         flux = self.like[self.source].flux(emin, emax)
         
         # Restore model parameters to original values
@@ -317,10 +307,6 @@ class UpperLimit(object):
         if dx == 0:
             dx = abs(par.getValue())
         for i in range(niter):
-#            par.setValue(x0 + dx*nsigmax)
-#            self.like.syncSrcParams(self.source)
-#            self.fit(0, renorm=renorm)
-#            dlogLike = self.like() - logLike0
             dlogLike = self._logLike(x0 + dx*nsigmax, renorm) - logLike0
             #print "_find_dx:", dx, par.getValue(), dlogLike
             if dlogLike > mindelta:
