@@ -1,4 +1,14 @@
 ------------------------------------------------------------
+User: jchiang  Mon Feb 21 22:44:16 PST 2011
+ScienceTools-scons/pyLikelihood/python
+
+Modified Files:
+	UpperLimits.py 
+Log Message:
+use self.like[self.indx] instead of par (=self.normPar)
+
+    *
+------------------------------------------------------------
 TAG
 Tag name: pyLikelihood-01-27-01, operation: add
 Package: pyLikelihood
