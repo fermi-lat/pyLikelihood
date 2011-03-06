@@ -6,7 +6,7 @@
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/UpperLimits.py,v 1.29 2011/01/11 18:40:08 kadrlica Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/UpperLimits.py,v 1.30 2011/02/22 06:44:16 jchiang Exp $
 #
 import copy
 import bisect
@@ -124,7 +124,6 @@ class UpperLimit(object):
             try:
                 self.like[self.indx] = x
             except RuntimeError, message:
-                print par.getName()
                 print x
                 raise RuntimeError(message)
             self.fit(0, renorm=renorm)
