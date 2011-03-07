@@ -4,7 +4,7 @@ Python interface for binned likelihood.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/BinnedAnalysis.py,v 1.30 2010/12/23 05:15:34 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/BinnedAnalysis.py,v 1.31 2011/02/02 16:40:00 jchiang Exp $
 #
 
 import sys
@@ -31,8 +31,9 @@ class BinnedObs(object):
                                   'IRFs: ' + str(irfs)))
         self.srcMaps = srcMaps
         self.expCube = expCube
-        self.binnedExpMap =binnedExpMap
+        self.binnedExpMap = binnedExpMap
         self.irfs = irfs
+        pyLike.AppHelpers_checkExposureMap(srcMaps, binnedExpMap)
         self._createObservation(srcMaps, expCube, irfs)
         if binnedExpMap is not None and binnedExpMap != "":
             pyLike.SourceMap_setBinnedExposure(binnedExpMap)
