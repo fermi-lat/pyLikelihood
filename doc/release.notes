@@ -2,11 +2,12 @@
    @file release.notes
    @brief package pyLikelihood
    @author J. Chiang <jchiang@slac.stanford.edu>
-   $Id: release.notes,v 1.118 2011/02/02 19:27:49 jchiang Exp $
+   $Id: release.notes,v 1.119 2011/02/22 06:46:48 jchiang Exp $
 
    @verbatim
    * EOH *
 
+ pyLikelihood-01-27-03 06-Mar-2011 jchiang check binned exposure map vs counts map
  pyLikelihood-01-27-02 21-Feb-2011 jchiang workaround for strange behavior in pipeline for references to like.normPar
  pyLikelihood-01-27-01 02-Feb-2011 jchiang improve interface to Parameter.addPrior(...)
  pyLikelihood-01-27-00 01-Feb-2011 jchiang enable priors on individual parameters
