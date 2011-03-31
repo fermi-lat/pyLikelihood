@@ -2,11 +2,12 @@
    @file release.notes
    @brief package pyLikelihood
    @author J. Chiang <jchiang@slac.stanford.edu>
-   $Id: release.notes,v 1.121 2011/03/17 00:31:26 jchiang Exp $
+   $Id: release.notes,v 1.122 2011/03/29 22:24:43 jchiang Exp $
 
    @verbatim
    * EOH *
 
+ pyLikelihood-01-28-00 31-Mar-2011 jchiang add BinnedAnalysis.plotSourceFit(...)
  pyLikelihood-01-27-05 29-Mar-2011 jchiang bug-fix for UpperLimit.[compute,_find_dx]
  pyLikelihood-01-27-04 16-Mar-2011 jchiang include refs to WcsMap2, MapCubeFunction2
  pyLikelihood-01-27-03 06-Mar-2011 jchiang check binned exposure map vs counts map
