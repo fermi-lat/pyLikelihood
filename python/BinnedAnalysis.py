@@ -4,7 +4,7 @@ Python interface for binned likelihood.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/BinnedAnalysis.py,v 1.31 2011/02/02 16:40:00 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/BinnedAnalysis.py,v 1.32 2011/03/07 06:19:33 jchiang Exp $
 #
 
 import sys
@@ -111,6 +111,8 @@ class BinnedAnalysis(AnalysisBase):
         self.energies = num.array(self.logLike.energies())
         self.e_vals = num.sqrt(self.energies[:-1]*self.energies[1:])
         self.nobs = self.logLike.countsSpectrum()
+        self.sourceFitPlots = []
+        self.sourceFitResids  = []
     def _inputs(self):
         return '\n'.join((str(self.binnedData),
                           'Source model file: ' + str(self.srcModel),
@@ -120,7 +122,8 @@ class BinnedAnalysis(AnalysisBase):
         npreds = srcMap.npreds()
         src = self.logLike.getSource(srcName)
         cnts = []
-        for k in range(len(self.energies)-1):
+        kmin, kmax = self.logLike.klims()
+        for k in range(kmin, kmax):
             emin, emax = self.energies[k:k+2]
             cnts.append(src.pixelCounts(emin, emax, npreds[k], npreds[k+1]))
         return num.array(cnts)
@@ -166,6 +169,34 @@ class BinnedAnalysis(AnalysisBase):
                                       symbol='dotted')
         except AttributeError:
             pass
+    def plotSourceFit(self, srcName, color='black'):
+        self._importPlotter()
+        nobs = num.array(self.logLike.countsSpectrum(srcName))
+        errors = []
+        for ntilde, nsq in zip(nobs, num.sqrt(self.nobs)):
+            if nsq == 0:
+                errors.append(0)
+            else:
+                errors.append(ntilde/nsq)
+        errors = num.array(errors)
+        model = self._srcCnts(srcName)
+
+        self.sourceFitPlots.append(self._plotData(nobs))
+        self._plotSource(srcName, color=color, display=self.sourceFitPlots[-1])
+        self.sourceFitPlots[-1].setTitle(srcName)
+
+        resid = (nobs - model)/model
+        resid_err = errors/model
+        self.sourceFitResids.append(self.plotter(self.e_vals, resid,
+                                                 dy=resid_err,
+                                                 xtitle='Energy (MeV)',
+                                                 ytitle='(counts-model)/model',
+                                                 xlog=1, color=color,
+                                                 symbol='plus',
+                                                 xrange=self._xrange()))
+        zeros = num.zeros(len(self.e_vals))
+        self.sourceFitResids[-1].overlay(self.e_vals, zeros, symbol='dotted')
+        self.sourceFitResids[-1].setTitle(srcName)
 
 def binnedAnalysis(mode='ql', ftol=None, **pars):
     """Return a BinnedAnalysis object using the data in gtlike.par."""
