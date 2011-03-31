@@ -1,5 +1,14 @@
 ------------------------------------------------------------
 User: jchiang  Thu Mar 31 16:44:49 PDT 2011
+ScienceTools-scons/pyLikelihood/src
+
+Modified Files:
+	pyLikelihood.i 
+Log Message:
+add BinnedAnalysis.plotSourceFit(...)
+    *
+------------------------------------------------------------
+User: jchiang  Thu Mar 31 16:44:49 PDT 2011
 ScienceTools-scons/pyLikelihood/python
 
 Modified Files:
