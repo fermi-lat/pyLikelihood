@@ -4,13 +4,15 @@ Base class for Likelihood analysis Python modules.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/AnalysisBase.py,v 1.69 2011/02/02 16:40:00 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/AnalysisBase.py,v 1.70 2011/04/01 21:17:24 jchiang Exp $
 #
 
 import sys
 import numpy as num
 import pyLikelihood as pyLike
 from SrcModel import SourceModel
+from LikelihoodState import LikelihoodState
+
 try:
     from SimpleDialog import SimpleDialog, map, Param
 except ImportError, message:
@@ -70,7 +72,9 @@ class AnalysisBase(object):
             myOpt = optFactory.create(optimizer, self.logLike)
         else:
             myOpt = optObject
-        self.optObject = myOpt
+        # Preserve existing self.optObject unless optObject is not None
+        if self.optObject is None or optObject is not None:
+            self.optObject = myOpt
         myOpt.find_min_only(verbosity, tol, self.tolType)
     def _errors(self, optimizer=None, verbosity=0, tol=None,
                 useBase=False, covar=False, optObject=None):
@@ -503,7 +507,42 @@ class AnalysisBase(object):
             xmlFile = self.srcModel
         self.logLike.writeXml(xmlFile)
         self.srcModel = xmlFile
+    def scan(self, srcName, parName, xmin=0, xmax=10, npts=50,
+             tol=None, optimizer=None, optObject=None,
+             fix_src_pars=False, verbosity=0, renorm=False):
+        saved_state = LikelihoodState(self)
+        indx = self.par_index(srcName,parName)
+        # Fix the normalization parameter for the scan.
+        bounds = self.model[indx].getBounds()
+        self.model[indx].setBounds(xmin,xmax)
+        self.freeze(indx)
+        logLike0 = self.__call__()
 
+        if fix_src_pars:
+            freePars = self.like.freePars(srcName)
+            self.setFreeFlag(srcName, freePars, 0)
+            self.syncSrcParams(srcName)
+
+        if tol is None:
+            tol = self.tol
+        # Scan over the range of interest
+        xvals, dlogLike = [], []
+        for i, x in enumerate(num.linspace(xmin, xmax, npts)):
+            xvals.append(x)
+            self.model[indx] = x
+            self.optimize(verbosity, tol, optimizer, optObject)
+            dlogLike.append(self.__call__() - logLike0)
+            if verbosity < 1:
+                print i, x, dlogLike[-1]
+
+        # Restore model parameters to original values
+        saved_state.restore()
+        self.model[indx].setBounds(bounds)
+
+        # Save values of the scan
+        #self.scanPars = xvals
+        #self.scanLike = dlogLike
+        return xvals, dlogLike
 def _quotefn(filename):
     if filename is None:
         return None
@@ -515,3 +554,4 @@ def _null_file(filename):
         return None
     else:
         return filename
+
