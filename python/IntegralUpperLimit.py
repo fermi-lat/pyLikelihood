@@ -7,10 +7,16 @@
 
 @author Stephen Fegan <sfegan@llr.in2p3.fr>
 
-$Id: IntegralUpperLimit.py,v 1.3 2010/06/21 08:23:23 sfegan Exp $
+$Id: IntegralUpperLimit.py,v 1.4 2011/09/27 03:41:18 jchiang Exp $
 
 See help for IntegralUpperLimits.calc for full details.
 """
+
+# 2011-09-27: Whenever possible call the Python Likelihood classes
+# rather than the underlying C++ class - therefore, all references to
+# "like.logLike" removed. This allows the code to work with
+# SummedLikelihood. Fixes from Joshua Lande for transposed letters in
+# a variable name which causes crashes occasionally - thanks!
 
 # 2010-06-11: New algorithm to find integration limits. See below.
 # Renamed some of the arguments for consistence with Jim's code, in
@@ -21,7 +27,7 @@ See help for IntegralUpperLimits.calc for full details.
 # values. Allow skipping of global minimization if user has already
 # done it. Some small optimizations.
 
-# 2009-04-01: Added nuicence cach to make better initial guesses for
+# 2009-04-01: Added nuisance cache to make better initial guesses for
 # nuisance parameters by extrapolating them from previous iterations.
 # This makes Minuit quicker (at least when using strategy 0)
 
@@ -52,7 +58,7 @@ def _guess_nuisance(x, like, cache):
     icache = 0
     for iparam in range(len(like.model.params)):
         if sync_name != like[iparam].srcName:
-            like.logLike.syncSrcParams(sync_name)
+            like.syncSrcParams(sync_name)
             sync_name = ""
         if(like.model[iparam].isFree()):
             Y = []
@@ -65,7 +71,7 @@ def _guess_nuisance(x, like, cache):
             sync_name = like[iparam].srcName
             icache += 1
     if sync_name != "":
-        like.logLike.syncSrcParams(sync_name)
+        like.syncSrcParams(sync_name)
 
 def _reset_nuisance(x, like, cache):
     """Internal function which sets the values of the nuisance
@@ -77,14 +83,14 @@ def _reset_nuisance(x, like, cache):
         params = cache[x]
         for iparam in range(len(like.model.params)):
             if sync_name != like[iparam].srcName:
-                like.logLike.syncSrcParams(sync_name)
+                like.syncSrcParams(sync_name)
                 sync_name = ""
             if(like.model[iparam].isFree()):
                 like.model[iparam].setValue(params[icache])
                 sync_name = like[iparam].srcName
                 icache += 1
         if sync_name != "":
-            like.logLike.syncSrcParams(sync_name)
+            like.syncSrcParams(sync_name)
         return True
     return False
 
@@ -109,13 +115,13 @@ def _loglike(x, like, par, srcName, offset, verbosity, no_optimizer,
 
     par.setFree(0)
     par.setValue(x)
-    like.logLike.syncSrcParams(srcName)
+    like.syncSrcParams(srcName)
 
     # This flag skips calling the optimizer - and is used when calculating the
     # approximate function or in the case when all parameters are frozen or
     # since some optimizers might have problems being called with nothing to do
     if no_optimizer:
-        return like.logLike.value() - offset
+        return -like() - offset
 
     # Call the optimizer of the optimum value is not in the cache OR if
     # we fail to reset the nuisance parameters to those previously found
@@ -133,7 +139,7 @@ def _loglike(x, like, par, srcName, offset, verbosity, no_optimizer,
             like.optimize(optverbosity)
             if(nuisance_cache != None):
                 _cache_nuisance(x, like, nuisance_cache)
-        optvalue = like.logLike.value()
+        optvalue = -like()
         if(optvalue_cache != None):
             optvalue_cache[x] = optvalue
     else:
@@ -191,7 +197,7 @@ def _splevroot(x, yseek, spl_rep):
 
 def _int1droot(x, yseek, int_rep):
     """Internal function used by the SciPy root finder to find the
-    point where the (linear interpolarion of the) log-likelihood
+    point where the (linear interpolation of the) log-likelihood
     passes desired threshold.  Not intended for use outside of this
     package."""
     return int_rep(x).item()-yseek
@@ -202,9 +208,9 @@ def _find_interval(like, par, srcName, no_optimizer,
                    no_lo_bound_search = False, nloopmax = 5,
                    optvalue_cache = dict(), nuisance_cache = dict()):
     """Internal function to search for interval of the normalization
-    parameter in which the log Liklihood is larger than predefined
+    parameter in which the log Likelihood is larger than predefined
     value. Used to find the upper limit in the profile method and to
-    find sensable limits of integration in the Bayesian method. Use
+    find sensible limits of integration in the Bayesian method. Use
     the SciPy Brent method root finder to do the search. Use new fast
     method for up to nloopmax iterations then fall back to old method."""
 
@@ -214,13 +220,13 @@ def _find_interval(like, par, srcName, no_optimizer,
 
     # 2010-06-11: NEW and FASTER algorithm to find integration
     # limits. Instead of evaluating the real function while searching
-    # for the root (which requires calling the optimizer) instead
-    # evaluate an approximate function, in which we keep all the
-    # background parameters constant. When we find the root (flux) of
+    # for the root (which requires calling the optimizer) we now
+    # evaluate an approximate function, in which all the background
+    # parameters are kept constant. When we find the root (flux) of
     # the approximate function then optimize at that flux to evaluate
     # how close the real function is there. Then repeat this up to
     # "nloopmax" times, after which revert to old method if we haven't
-    # converged. Each time the real function is evaulated at the root
+    # converged. Each time the real function is evaluated at the root
     # of the approximate it forces the approximate function in the
     # next iteration to equal the real function at that point (since
     # the background parameters values are changed to those optimized
@@ -232,7 +238,7 @@ def _find_interval(like, par, srcName, no_optimizer,
     # is called alternatively at extreme ends of the flux range,
     # because the "nuisance" parameters are very far from their
     # optimal values from call to call. THIS COMMENT IS OBSOLETED
-    # BY PREVIOUS EXCEPT IF/WHEN NEW METHOD FAILS.
+    # BY PREVIOUS COMMENT EXCEPT IF/WHEN NEW METHOD FAILS.
 
     exact_root_evals = -len(optvalue_cache)
     approx_root_evals = 0
@@ -298,7 +304,6 @@ def _find_interval(like, par, srcName, no_optimizer,
         pass
 
     temp_saved_state.restore()
-    like.logLike.syncSrcParams(srcName)
 
     # LO BOUND
 
@@ -365,7 +370,6 @@ def _find_interval(like, par, srcName, no_optimizer,
         pass
 
     temp_saved_state.restore()
-    like.logLike.syncSrcParams(srcName)
 
     exact_root_evals += len(optvalue_cache)
     return [xlo, xhi, ylo, yhi, exact_root_evals, approx_root_evals]
@@ -469,7 +473,7 @@ def calc_int(like, srcName, cl=0.95, verbosity=0,
 
     results -- a dictionary of additional results from the
         calculation, such as the value of the peak, the profile of the
-        liklihood and two profile-likelihood upper-limits.
+        likelihood and two profile-likelihood upper-limits.
   """  
     saved_state = LikelihoodState(like)
 
@@ -496,19 +500,22 @@ def calc_int(like, srcName, cl=0.95, verbosity=0,
     #
     ###########################################################################
 
-    src_spectrum = like[srcName].funcs['Spectrum']
-    par = src_spectrum.normPar()
+    par = like.normPar(srcName)
 
+    fitstat = None
     if not skip_global_opt:
         # Make sure desired parameter is free during global optimization
         par.setFree(1)
-        like.logLike.syncSrcParams(srcName)
+        like.syncSrcParams(srcName)
 
         # Perform global optimization
         if verbosity:
             print "Finding global maximum"
         try:
             like.fit(optverbosity)
+            fitstat = like.optObject.getRetCode()
+            if verbosity and fitstat != 0:
+                print "Minimizer returned with non-zero code: ",fitstat
         except RuntimeError:
             print "Failed to find global maximum, results may be wrong"
             pass
@@ -519,7 +526,7 @@ def calc_int(like, srcName, cl=0.95, verbosity=0,
         like.optimizer = profile_optimizer
 
     # Store values of global fit
-    maxval = like.logLike.value()
+    maxval = -like()
     fitval = par.getValue()
     fiterr = par.error()
     limlo, limhi = par.getBounds()
@@ -531,11 +538,11 @@ def calc_int(like, srcName, cl=0.95, verbosity=0,
     if(freeze_all):
         for i in range(len(like.model.params)):
             like.model[i].setFree(0)
-            like.logLike.syncSrcParams(like[i].srcName)
+            like.syncSrcParams(like[i].srcName)
 
     # Freeze the parameter of interest
     par.setFree(0)
-    like.logLike.syncSrcParams(srcName)
+    like.syncSrcParams(srcName)
 
     # Set up the caches for the optimum values and nuisance parameters
     optvalue_cache = dict()
@@ -768,7 +775,6 @@ def calc_int(like, srcName, cl=0.95, verbosity=0,
     ul_flux = like[srcName].flux(emin, emax)
 
     saved_state.restore()
-    like.logLike.syncSrcParams(srcName)
 
     # Pack up all the results
     results = dict(all_frozen       = all_frozen,
@@ -780,6 +786,7 @@ def calc_int(like, srcName, cl=0.95, verbosity=0,
                    int_limits       = [xlo, xhi],
                    profile_x        = x,
                    profile_y        = y,
+                   peak_fitstatus   = fitstat,
                    peak_value       = fitval,
                    peak_dvalue      = fiterr,
                    peak_loglike     = maxval,
@@ -806,7 +813,7 @@ def calc_chi2(like, srcName, cl=0.95, verbosity=0,
   Description:
 
     Calculate an upper limit using the likelihood ratio test, i.e. by
-    supposing the Liklihood is distributed as chi-squared of one degree of
+    supposing the Likelihood is distributed as chi-squared of one degree of
     freedom and finding the point at which the it decreases by the
     required amount to get an upper limit at a certain confidence limit.
 
@@ -884,19 +891,22 @@ def calc_chi2(like, srcName, cl=0.95, verbosity=0,
     #
     ###########################################################################
 
-    src_spectrum = like[srcName].funcs['Spectrum']
-    par = src_spectrum.normPar()
+    par = like.normPar(srcName)
 
+    fitstat = None
     if not skip_global_opt:
         # Make sure desired parameter is free during global optimization
         par.setFree(1)
-        like.logLike.syncSrcParams(srcName)
+        like.syncSrcParams(srcName)
 
         # Perform global optimization
         if verbosity:
             print "Finding global maximum"
         try:
             like.fit(optverbosity)
+            fitstat = like.optObject.getRetCode()
+            if verbosity and fitstat != 0:
+                print "Minimizer returned with non-zero code: ",fitstat
         except RuntimeError:
             print "Failed to find global maximum, results may be wrong"
             pass
@@ -907,7 +917,7 @@ def calc_chi2(like, srcName, cl=0.95, verbosity=0,
         like.optimizer = profile_optimizer
 
     # Store values of global fit
-    maxval = like.logLike.value()
+    maxval = -like()
     fitval = par.getValue()
     fiterr = par.error()
     limlo, limhi = par.getBounds()
@@ -919,11 +929,11 @@ def calc_chi2(like, srcName, cl=0.95, verbosity=0,
     if(freeze_all):
         for i in range(len(like.model.params)):
             like.model[i].setFree(0)
-            like.logLike.syncSrcParams(like[i].srcName)
+            like.syncSrcParams(like[i].srcName)
 
     # Freeze the parameter of interest
     par.setFree(0)
-    like.logLike.syncSrcParams(srcName)
+    like.syncSrcParams(srcName)
 
     # Set up the caches for the optimum values and nuisance parameters
     optvalue_cache = dict()
@@ -1005,7 +1015,6 @@ def calc_chi2(like, srcName, cl=0.95, verbosity=0,
     ul_flux = like[srcName].flux(emin, emax)
 
     saved_state.restore()
-    like.logLike.syncSrcParams(srcName)
 
     # Pack up all the results
     results = dict(all_frozen     = all_frozen,
@@ -1014,6 +1023,7 @@ def calc_chi2(like, srcName, cl=0.95, verbosity=0,
                    ul_value       = xlim,
                    ul_loglike     = maxval+ylim-delta_log_like,
                    ul_dloglike    = ylim-delta_log_like,
+                   peak_fitstatus = fitstat,
                    peak_value     = fitval,
                    peak_dvalue    = fiterr,
                    peak_loglike   = maxval,
@@ -1048,7 +1058,7 @@ if __name__ == "__main__":
     if par:
         par.setFree(0)
         par.setValue(-2.0)
-        like.logLike.syncSrcParams(srcName)
+        like.syncSrcParams(srcName)
 
     ul, results = calc_int(like, srcName, verbosity=1)
 
