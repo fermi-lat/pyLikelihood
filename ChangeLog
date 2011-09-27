@@ -1,4 +1,19 @@
 ------------------------------------------------------------
+User: sfegan  Tue Sep 27 12:23:03 PDT 2011
+ScienceTools-scons/pyLikelihood/python
+
+Modified Files:
+	IntegralUpperLimit.py 
+Log Message:
+Whenever possible call the Python Likelihood classes rather than the 
+underlying C++ class - therefore, all references to "like.logLike" 
+removed. This allows the code to work with SummedLikelihood.
+
+Return status from global fit if it was done.
+
+
+    *
+------------------------------------------------------------
 TAG
 Tag name: pyLikelihood-01-28-04, operation: add
 Package: pyLikelihood
