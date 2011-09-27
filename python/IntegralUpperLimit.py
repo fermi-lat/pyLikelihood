@@ -7,7 +7,7 @@
 
 @author Stephen Fegan <sfegan@llr.in2p3.fr>
 
-$Id: IntegralUpperLimit.py,v 1.1 2009/09/21 18:28:03 jchiang Exp $
+$Id: IntegralUpperLimit.py,v 1.3 2010/06/21 08:23:23 sfegan Exp $
 
 See help for IntegralUpperLimits.calc for full details.
 """
@@ -287,14 +287,14 @@ def _find_interval(like, par, srcName, no_optimizer,
         if xrgt>limhi: xrgt=limhi
         if xrgt<limhi or \
                _root(xrgt, like, par, srcName, subval, verbosity,
-                     no_optimzier, optvalue_cache, nuisance_cache)<0:
+                     no_optimizer, optvalue_cache, nuisance_cache)<0:
             xhi = scipy.optimize.brentq(_root, xlft, xrgt, xtol=search_xtol,
                                         args = (like,par,srcName,\
                                                 subval,verbosity,no_optimizer,
                                                 optvalue_cache,nuisance_cache))
             pass
         yhi = _root(xhi, like, par, srcName, subval, verbosity,
-                    no_optimzier, optvalue_cache, nuisance_cache)
+                    no_optimizer, optvalue_cache, nuisance_cache)
         pass
 
     temp_saved_state.restore()
@@ -354,14 +354,14 @@ def _find_interval(like, par, srcName, no_optimizer,
         if xlft<limlo: xlft=limlo
         if xlft>limlo or \
                _root(xlft, like, par, srcName, subval, verbosity,
-                     no_optimzier, optvalue_cache, nuisance_cache)<0:
+                     no_optimizer, optvalue_cache, nuisance_cache)<0:
             xlo = scipy.optimize.brentq(_root, xlft, xrgt, xtol=search_xtol,
                                         args = (like,par,srcName,\
                                                 subval,verbosity,no_optimizer,
                                                 optvalue_cache,nuisance_cache))
             pass
         ylo = _root(xlo, like, par, srcName, subval, verbosity,
-                    no_optimzier, optvalue_cache, nuisance_cache)
+                    no_optimizer, optvalue_cache, nuisance_cache)
         pass
 
     temp_saved_state.restore()
@@ -701,7 +701,7 @@ def calc_int(like, srcName, cl=0.95, verbosity=0,
     profile_dlogL2 = -0.5*scipy.stats.chi2.isf(1-2*(cl-0.5), 1)
 
     # The spline algorithm is prone to noise in the fitted logL,
-    # especially in "be_very_careful" mode, so fall back ro a linear
+    # especially in "be_very_careful" mode, so fall back to a linear
     # interpolation if necessary
 
     spl_drep = scipy.interpolate.splrep(x,logy,xb=xlo,xe=xhi)
