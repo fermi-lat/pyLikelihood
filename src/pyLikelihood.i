@@ -1,5 +1,5 @@
 // -*- mode: c++ -*-
-// $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/src/pyLikelihood.i,v 1.13 2011/03/31 23:44:49 jchiang Exp $
+// $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/src/pyLikelihood.i,v 1.14 2011/04/01 17:01:07 jchiang Exp $
 %module pyLikelihood
 %{
 #ifdef TRAP_FPE
@@ -49,7 +49,6 @@
 #include "Likelihood/LogGaussian.h"
 #include "Likelihood/LogParabola.h"
 #include "Likelihood/MapBase.h"
-//#include "Likelihood/MapCubeFunction.h"
 #include "Likelihood/MapCubeFunction2.h"
 #include "Likelihood/MeanPsf.h"
 #include "Likelihood/Npred.h"
@@ -74,10 +73,10 @@
 #include "Likelihood/Exception.h"
 #include "Likelihood/LogLike.h"
 #include "Likelihood/BinnedLikelihood.h"
+#include "Likelihood/BinnedLikelihood2.h"
 #include "Likelihood/Pixel.h"
 #include "Likelihood/CountsMap.h"
 #include "Likelihood/Observation.h"
-//#include "Likelihood/WcsMap.h"
 #include "Likelihood/WcsMap2.h"
 #include "pyLikelihood/Aeff.h"
 #include "pyLikelihood/enableFPE.h"
@@ -107,14 +106,14 @@ using optimizers::Function;
 using optimizers::Exception;
 %}
 %include stl.i
-%exception {
-   try {
-      $action
-   } catch (std::exception & eObj) {
-      PyErr_SetString(PyExc_RuntimeError, const_cast<char*>(eObj.what()));
-      return NULL;
-   }
-}
+// %exception {
+//    try {
+//       $action
+//    } catch (std::exception & eObj) {
+//       PyErr_SetString(PyExc_RuntimeError, const_cast<char*>(eObj.what()));
+//       return NULL;
+//    }
+// }
 %template(DoublePair) std::pair<double, double>;
 %template(IntPair) std::pair<int, int>;
 %template(EventVector) std::vector<Likelihood::Event>;
@@ -170,7 +169,6 @@ using optimizers::Exception;
 %include Likelihood/Observation.h
 %include Likelihood/BinnedExposure.h
 %include Likelihood/AppHelpers.h
- //%include Likelihood/WcsMap.h
 %include Likelihood/WcsMap2.h
 %include Likelihood/MapBase.h
 %include Likelihood/DiffuseSource.h
@@ -186,6 +184,7 @@ using optimizers::Exception;
 %include Likelihood/CountsSpectra.h
 %include Likelihood/MeanPsf.h
 %include Likelihood/BinnedLikelihood.h
+%include Likelihood/BinnedLikelihood2.h
 %include Likelihood/Npred.h
 %include Likelihood/OneSourceFunc.h
 %include Likelihood/OptEM.h
@@ -197,7 +196,6 @@ using optimizers::Exception;
 %include Likelihood/SourceFactory.h
 %include Likelihood/SrcArg.h
 %include Likelihood/TrapQuad.h
- //%include Likelihood/MapCubeFunction.h
 %include Likelihood/MapCubeFunction2.h
 %include Likelihood/TiedParameter.h
 %include Likelihood/Composite2.h
@@ -404,16 +402,31 @@ using optimizers::Exception;
       return model_counts;
    }
 }
-// %extend Likelihood::BinnedLikelihood {
-//    static Likelihood::
-//       BinnedLikelihood * create(const std::string & countsMapFile) {
-//       Likelihood::CountsMap * dataMap = 
-//          new Likelihood::CountsMap(countsMapFile);
-//       Likelihood::BinnedLikelihood * logLike = 
-//          new Likelihood::BinnedLikelihood(*dataMap, countsMapFile);
-//       return logLike;
-//    }
-// }
+%extend Likelihood::BinnedLikelihood2 {
+   std::vector<double> modelCounts(const std::string & srcName) {
+      const Likelihood::Source * src(self->getSource(srcName));
+      const Likelihood::SourceMap & srcMap(self->sourceMap(srcName));
+      const std::vector<float> & model(srcMap.model());
+      const std::vector<float> & counts(self->countsMap().data());
+      const std::vector<double> & energies(self->energies());
+
+      size_t numpix(self->countsMap().pixels().size());
+      std::vector<double> model_counts(numpix*(energies.size() - 1), 0);
+      for (size_t k(0); k < energies.size() - 1; k++) {
+         for (size_t j(0); j < numpix; j++) {
+            size_t imin(k*numpix + j);
+            if (counts.at(imin) > 0) {
+               size_t imax(imin + numpix);
+               model_counts.at(imin) += src->pixelCounts(energies.at(k),
+                                                         energies.at(k+1),
+                                                         model.at(imin),
+                                                         model.at(imax));
+            }
+         }
+      }
+      return model_counts;
+   }
+ }
 %extend Likelihood::Event {
    std::pair<double, double> ra_dec() const {
       return std::make_pair(self->getDir().ra(), self->getDir().dec());

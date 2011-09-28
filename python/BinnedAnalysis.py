@@ -4,9 +4,10 @@ Python interface for binned likelihood.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/BinnedAnalysis.py,v 1.33 2011/03/31 23:44:49 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/BinnedAnalysis.py,v 1.34 2011/04/01 21:17:24 jchiang Exp $
 #
 
+import os
 import sys
 import bisect
 import pyLikelihood as pyLike
@@ -94,17 +95,24 @@ class BinnedObs(object):
             output.close()
         
 class BinnedAnalysis(AnalysisBase):
-    def __init__(self, binnedData, srcModel=None, optimizer='Drmngb'):
+    def __init__(self, binnedData, srcModel=None, optimizer='Drmngb',
+                 use_bl2=False):
         AnalysisBase.__init__(self)
         if srcModel is None:
             srcModel, optimizer = self._srcDialog()
         self.binnedData = binnedData
         self.srcModel = srcModel
         self.optimizer = optimizer
-        self.logLike = pyLike.BinnedLikelihood(binnedData.countsMap,
-                                               binnedData.observation,
-                                               binnedData.srcMaps,
-                                               True)
+        if use_bl2:
+            self.logLike = pyLike.BinnedLikelihood2(binnedData.countsMap,
+                                                    binnedData.observation,
+                                                    binnedData.srcMaps,
+                                                    True)
+        else:
+            self.logLike = pyLike.BinnedLikelihood(binnedData.countsMap,
+                                                   binnedData.observation,
+                                                   binnedData.srcMaps,
+                                                   True)
         self.logLike.initOutputStreams()
         self.logLike.readXml(srcModel, _funcFactory, False, True, False)
         self.model = SourceModel(self.logLike, srcModel)
