@@ -1,5 +1,14 @@
 ------------------------------------------------------------
 User: jchiang  Wed Sep 28 14:34:35 PDT 2011
+ScienceTools-scons/pyLikelihood/src
+
+Modified Files:
+	pyLikelihood.i 
+Log Message:
+scaffolding for BinnedLikelihood2
+    *
+------------------------------------------------------------
+User: jchiang  Wed Sep 28 14:34:35 PDT 2011
 ScienceTools-scons/pyLikelihood/python
 
 Modified Files:
