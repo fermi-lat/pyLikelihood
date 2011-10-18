@@ -1,5 +1,5 @@
 // -*- mode: c++ -*-
-// $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/src/pyLikelihood.i,v 1.14 2011/04/01 17:01:07 jchiang Exp $
+// $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/src/pyLikelihood.i,v 1.15 2011/09/28 21:34:35 jchiang Exp $
 %module pyLikelihood
 %{
 #ifdef TRAP_FPE
@@ -38,6 +38,7 @@
 #include "Likelihood/DiffRespIntegrand.h"
 #include "Likelihood/DiffuseSource.h"
 #include "Likelihood/DMFitFunction.h"
+#include "Likelihood/Drm.h"
 #include "Likelihood/EquinoxRotation.h"
 #include "Likelihood/Event.h"
 #include "Likelihood/EventContainer.h"
@@ -167,6 +168,7 @@ using optimizers::Exception;
 %include Likelihood/ScData.h
 %include Likelihood/EventContainer.h
 %include Likelihood/Observation.h
+%include Likelihood/Drm.h
 %include Likelihood/BinnedExposure.h
 %include Likelihood/AppHelpers.h
 %include Likelihood/WcsMap2.h
