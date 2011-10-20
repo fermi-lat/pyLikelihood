@@ -4,7 +4,7 @@ Python interface for unbinned likelihood
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/UnbinnedAnalysis.py,v 1.36 2010/06/07 20:08:03 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/UnbinnedAnalysis.py,v 1.37 2011/02/02 16:40:00 jchiang Exp $
 #
 
 import sys
@@ -153,6 +153,7 @@ class UnbinnedAnalysis(AnalysisBase):
         nee = 21
         estep = num.log(eMax/eMin)/(nee-1)
         self.energies = eMin*num.exp(estep*num.arange(nee, dtype=num.float))
+        self.energies[-1] = eMax
         self.e_vals = num.sqrt(self.energies[:-1]*self.energies[1:])
         self.nobs = self._Nobs()
         self.disp = None
