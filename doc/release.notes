@@ -2,11 +2,12 @@
    @file release.notes
    @brief package pyLikelihood
    @author J. Chiang <jchiang@slac.stanford.edu>
-   $Id: release.notes,v 1.127 2011/09/27 03:42:59 jchiang Exp $
+   $Id: release.notes,v 1.128 2011/09/27 23:29:52 jchiang Exp $
 
    @verbatim
    * EOH *
 
+ pyLikelihood-01-28-06 20-Oct-2011 jchiang bug-fix for UnbinnedAnalysis::__init__ when building self.energies
  pyLikelihood-01-28-05 27-Sep-2011 jchiang Steve's updates to IntegralUpperLimit.py for SummedLikelihood compatibility
  pyLikelihood-01-28-04 26-Sep-2011 jchiang typo fixes for IntegralUpperLimit.py from J. Lande
  pyLikelihood-01-28-03 13-Apr-2011 jchiang re-enable enabling of FPE trapping in pyLikelihood, i.e., set TRAP_FPE compile symbol, for posix platforms
