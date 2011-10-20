@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Thu Oct 20 11:25:42 PDT 2011
+ScienceTools-scons/pyLikelihood/python
+
+Modified Files:
+	UnbinnedAnalysis.py 
+Log Message:
+ensure self.energies[-1] == eMax to avoid problems binned the counts in CountsSpectra
+    *
+------------------------------------------------------------
 User: jchiang  Mon Oct 17 21:58:49 PDT 2011
 ScienceTools-scons/pyLikelihood/src
 
