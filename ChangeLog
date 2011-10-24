@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: cohen  Mon Oct 24 00:49:19 PDT 2011
+pyLikelihood/src
+
+Modified Files:
+	pyLikelihood.i 
+Log Message:
+commit LogNormalLog for prior parameters
+    *
+------------------------------------------------------------
 TAG
 Tag name: pyLikelihood-01-28-06, operation: add
 Package: pyLikelihood
