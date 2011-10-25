@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: cohen  Tue Oct 25 07:57:03 PDT 2011
+pyLikelihood/python
+
+Modified Files:
+	AnalysisBase.py 
+Log Message:
+bug fix : syncSrcParams was missing in the scan method, and improves the scan call so that it does not crash when there is no free param anymore
+    *
+------------------------------------------------------------
 User: cohen  Mon Oct 24 00:49:19 PDT 2011
 pyLikelihood/src
 
