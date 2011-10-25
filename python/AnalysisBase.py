@@ -4,7 +4,7 @@ Base class for Likelihood analysis Python modules.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/AnalysisBase.py,v 1.70 2011/04/01 21:17:24 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.71 2011/04/20 19:34:25 jchiang Exp $
 #
 
 import sys
@@ -517,6 +517,14 @@ class AnalysisBase(object):
         self.model[indx].setBounds(xmin,xmax)
         self.freeze(indx)
         logLike0 = self.__call__()
+        #need to check that all parameters are not frozen, else the call
+        #to optimize will segfault, and a simple function evaluation is
+        #enough
+        allFrozen=True
+        for name in self.sourceNames():
+            if self.freePars(name).size() !=0:
+                allFrozen=False
+                break
 
         if fix_src_pars:
             freePars = self.like.freePars(srcName)
@@ -530,7 +538,9 @@ class AnalysisBase(object):
         for i, x in enumerate(num.linspace(xmin, xmax, npts)):
             xvals.append(x)
             self.model[indx] = x
-            self.optimize(verbosity, tol, optimizer, optObject)
+            self.syncSrcParams(srcName)
+            if not allFrozen :
+                self.optimize(verbosity, tol, optimizer, optObject)
             dlogLike.append(self.__call__() - logLike0)
             if verbosity < 1:
                 print i, x, dlogLike[-1]
@@ -539,10 +549,8 @@ class AnalysisBase(object):
         saved_state.restore()
         self.model[indx].setBounds(bounds)
 
-        # Save values of the scan
-        #self.scanPars = xvals
-        #self.scanLike = dlogLike
-        return xvals, dlogLike
+        return num.array(xvals), num.array(dlogLike)
+
 def _quotefn(filename):
     if filename is None:
         return None
