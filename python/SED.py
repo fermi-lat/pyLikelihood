@@ -11,16 +11,41 @@ the flux of the source.
 
 Usage:
 
-name='Vela'
+
+# SEDs can only be computed for binned analysis.
+# First, created the BinnedAnalysis object...
 like=BinnedAnalysis(...)
+
+...
+
+# Now created the SED object
+
+# This object is in pyLikelihood
+from SED import SED 
+
+name='Vela'
 sed = SED(like,name)
 
-sed = SED(like,name)
+# There are many helpful flags to modify how the SED is created
+sed = SED(like,name, 
+          # minimum TS in which to compute an upper limit
+          min_ts=4, 
+
+          # Upper limit algoirthm: bayesian or frequentist
+          ul_algorithm='bayesian', 
+
+          # confidence level of upper limtis
+          ul_confidence=.95, 
+
+          # By default, the energy binning is consistent with
+          # the binning in the ft1 file. This can be modified, but the
+          # new bins must line up with the ft1 file's bin edges
+          bin_edges = [1e2, 1e3, 1e4, 1e4])
 
 # save data points to a file
 sed.save('sed_Vela.dat') 
 
-# The SED can be plotted assuming that matplotlib is installed
+# The SED can be plotted
 sed.plot('sed_Vela.png') 
 
 # And finally, the results of the SED fit can be packaged 
@@ -28,9 +53,7 @@ sed.plot('sed_Vela.png')
 
 results=sed.todict()
 
-# To load the data points into a new python script
-# which have previously been saved to a file:
-
+# To load the data points into a new python script:
 results_dictionary=eval(open('sed_vela.dat').read())
 
 @author J. Lande <lande@slac.stanford.edu>
@@ -38,7 +61,7 @@ results_dictionary=eval(open('sed_vela.dat').read())
 Todo:
 * Merge upper limits at either edge in energy.
 
-$Header$
+$Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/SED.py,v 1.1 2011/11/08 22:30:21 lande Exp $
 """
 from os.path import join
 import csv
