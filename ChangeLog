@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: lande  Tue Nov  8 14:30:21 PST 2011
+ScienceTools-scons/pyLikelihood/python
+
+Added Files:
+	SED.py 
+Log Message:
+Adding new object to compute SEDs using pyLikelihood.
+    *
+------------------------------------------------------------
 User: sfegan  Mon Oct 31 00:55:00 PDT 2011
 ScienceTools-scons/pyLikelihood/python
 
