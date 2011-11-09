@@ -4,7 +4,7 @@ Python interface for binned likelihood.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/BinnedAnalysis.py,v 1.34 2011/04/01 21:17:24 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/BinnedAnalysis.py,v 1.35 2011/09/28 21:34:35 jchiang Exp $
 #
 
 import os
@@ -96,7 +96,7 @@ class BinnedObs(object):
         
 class BinnedAnalysis(AnalysisBase):
     def __init__(self, binnedData, srcModel=None, optimizer='Drmngb',
-                 use_bl2=False):
+                 use_bl2=False, verbosity=0):
         AnalysisBase.__init__(self)
         if srcModel is None:
             srcModel, optimizer = self._srcDialog()
@@ -113,6 +113,7 @@ class BinnedAnalysis(AnalysisBase):
                                                    binnedData.observation,
                                                    binnedData.srcMaps,
                                                    True)
+        self.verbosity = verbosity
         self.logLike.initOutputStreams()
         self.logLike.readXml(srcModel, _funcFactory, False, True, False)
         self.model = SourceModel(self.logLike, srcModel)
@@ -156,8 +157,9 @@ class BinnedAnalysis(AnalysisBase):
         kmax = min(bisect.bisect(self.energies, emax),
                    len(self.energies)-1)
         self.selectEbounds(kmin, kmax)
-        print "setting energy bounds to "
-        print "%.2f  %.2f" % (self.emin, self.emax)
+        if self.verbosity > 0:
+            print "setting energy bounds to "
+            print "%.2f  %.2f" % (self.emin, self.emax)
     def selectEbounds(self, kmin, kmax):
         self.emin = self.energies[kmin]
         self.emax = self.energies[kmax]
