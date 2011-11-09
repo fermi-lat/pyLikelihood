@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Tue Nov  8 21:37:56 PST 2011
+ScienceTools-scons/pyLikelihood/python
+
+Modified Files:
+	BinnedAnalysis.py SED.py 
+Log Message:
+fix typo in SED.py; allow verbosity to be set in BinnedAnalysis constructor
+    *
+------------------------------------------------------------
 User: lande  Tue Nov  8 14:46:37 PST 2011
 ScienceTools-scons/pyLikelihood/python
 
