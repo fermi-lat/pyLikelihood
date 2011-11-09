@@ -61,7 +61,7 @@ results_dictionary=eval(open('sed_vela.dat').read())
 Todo:
 * Merge upper limits at either edge in energy.
 
-$Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/SED.py,v 1.1 2011/11/08 22:30:21 lande Exp $
+$Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/SED.py,v 1.2 2011/11/08 22:46:37 lande Exp $
 """
 from os.path import join
 import csv
@@ -353,7 +353,7 @@ class SED(object):
             (a) the x-axis is in MeV and (b) that
             the y-axis is E^2 dN/dE (MeV/cm^2/s) """
         low_lim, hi_lim = axes.get_xlim()
-        eneriges = np.logspace(np.log10(low_lim), np.log10(hi_lim), npts)
+        energies = np.logspace(np.log10(low_lim), np.log10(hi_lim), npts)
         axes.plot(energies , energies**2*SED.get_dnde(spectrum,energies), **kwargs)
 
     @staticmethod
