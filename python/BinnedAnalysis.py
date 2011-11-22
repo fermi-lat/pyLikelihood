@@ -4,7 +4,7 @@ Python interface for binned likelihood.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/BinnedAnalysis.py,v 1.35 2011/09/28 21:34:35 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/BinnedAnalysis.py,v 1.36 2011/11/09 05:37:55 jchiang Exp $
 #
 
 import os
@@ -223,6 +223,12 @@ class BinnedAnalysis(AnalysisBase):
         zeros = num.zeros(len(self.e_vals))
         self.sourceFitResids[-1].overlay(self.e_vals, zeros, symbol='dotted')
         self.sourceFitResids[-1].setTitle(srcName)
+    def thaw(self, i):
+        AnalysisBase.thaw(self, i)
+        self.logLike.buildFixedModelWts()
+    def freeze(self, i):
+        AnalysisBase.freeze(self, i)
+        self.logLike.buildFixedModelWts()
 
 def binnedAnalysis(mode='ql', ftol=None, **pars):
     """Return a BinnedAnalysis object using the data in gtlike.par."""
