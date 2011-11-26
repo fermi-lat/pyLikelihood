@@ -2,11 +2,12 @@
    @file release.notes
    @brief package pyLikelihood
    @author J. Chiang <jchiang@slac.stanford.edu>
-   $Id: release.notes,v 1.130 2011/11/09 05:39:02 jchiang Exp $
+   $Id: release.notes,v 1.131 2011/11/22 21:46:01 jchiang Exp $
 
    @verbatim
    * EOH *
 
+ pyLikelihood-01-29-02 26-Nov-2011 jchiang mods for plotting requests from Jean
  pyLikelihood-01-29-01 22-Nov-2011 jchiang bug-fix for LK-72@JIRA
  pyLikelihood-01-29-00 08-Nov-2011 jchiang Josh's SED.py
  pyLikelihood-01-28-06 20-Oct-2011 jchiang bug-fix for UnbinnedAnalysis::__init__ when building self.energies
