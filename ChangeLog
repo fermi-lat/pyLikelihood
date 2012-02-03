@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: lande  Thu Feb  2 18:58:09 PST 2012
+ScienceTools-scons/pyLikelihood/python
+
+Modified Files:
+	SED.py 
+Log Message:
+Abstract the test to see if energy binning is allowed. Remove unneeded imports. Add a new parameter to the plot function to improve upper limits formatting
+    *
+------------------------------------------------------------
 TAG
 Tag name: ScienceTools-09-27-00, operation: add
 Package: pyLikelihood
