@@ -61,12 +61,9 @@ results_dictionary=eval(open('sed_vela.dat').read())
 Todo:
 * Merge upper limits at either edge in energy.
 
-$Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/SED.py,v 1.2 2011/11/08 22:46:37 lande Exp $
+$Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/SED.py,v 1.3 2011/11/09 05:37:55 jchiang Exp $
 """
-from os.path import join
-import csv
 from pprint import pformat
-from StringIO import StringIO
 
 import numpy as np
 from scipy.stats import chi2
@@ -117,9 +114,8 @@ class SED(object):
 
         if bin_edges is not None:
 
-            for e in bin_edges:
-                if np.alltrue(np.abs(e - like.energies) > 0.5):
-                    raise Exception("energy %.1f in bin_edges is not commensurate with the energy binning of pyLikelihood." % e)
+            if not SED.good_binning(like, bin_edges):
+                raise Exception("bin_edges is not commensurate with the underlying energy binning of pyLikelihood.")
             
             bin_edges = np.asarray(bin_edges)
             self.energy = np.sqrt(bin_edges[1:]*bin_edges[:-1])
@@ -151,6 +147,13 @@ class SED(object):
         self.ts=np.empty_like(self.energy)
 
         self._calculate(like)
+
+    @staticmethod
+    def good_binning(like, bin_edges):
+        for e in bin_edges:
+            if not np.any(np.abs(e - like.energies) < 0.5):
+                return False
+        return True
 
     @staticmethod
     def frequentist_upper_limit(like,name,emin,emax,confidence,verbosity):
@@ -358,9 +361,11 @@ class SED(object):
 
     @staticmethod
     def _plot_points(x, xlo, xhi, 
-              y, y_err, y_ul, significant,
-              energy_units,flux_units,
-              axes, **kwargs):
+                     y, y_err, y_ul, significant,
+                     energy_units,flux_units,
+                     axes, 
+                     ul_fraction=0.4,
+                     **kwargs):
 
         plot_kwargs = dict(linestyle='none', color='black')
         plot_kwargs.update(kwargs)
@@ -382,7 +387,7 @@ class SED(object):
 
             # plot veritical lines (with arrow)
             axes.errorbar(x[~s], y_ul[~s],
-                          yerr=[0.4*y_ul[~s],np.zeros(sum(~s))],
+                          yerr=[ul_fraction*y_ul[~s],np.zeros(sum(~s))],
                           lolims=True, **plot_kwargs)
 
             # plot horizontal line (no caps)
