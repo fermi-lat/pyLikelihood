@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Mon Feb  6 22:20:54 PST 2012
+ScienceTools-scons/pyLikelihood/python
+
+Modified Files:
+	BinnedAnalysis.py 
+Log Message:
+move fixed model update to plot(...)
+    *
+------------------------------------------------------------
 User: lande  Thu Feb  2 18:58:09 PST 2012
 ScienceTools-scons/pyLikelihood/python
 
