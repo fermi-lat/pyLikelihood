@@ -1,10 +1,11 @@
 // -*- mode: c++ -*-
-// $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/src/pyLikelihood.i,v 1.17 2011/10/20 18:25:42 jchiang Exp $
+// $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/src/pyLikelihood.i,v 1.18 2011/10/24 07:49:19 cohen Exp $
 %module pyLikelihood
 %{
 #ifdef TRAP_FPE
 #include <fenv.h>
 #endif
+#include <cstddef>
 #include "astro/SolarSystem.h"
 #include "st_app/AppParGroup.h"
 #include "st_app/StApp.h"
