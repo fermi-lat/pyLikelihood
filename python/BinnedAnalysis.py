@@ -4,7 +4,7 @@ Python interface for binned likelihood.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/BinnedAnalysis.py,v 1.37 2011/11/22 21:45:32 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/BinnedAnalysis.py,v 1.38 2011/11/26 22:10:45 jchiang Exp $
 #
 
 import os
@@ -147,7 +147,7 @@ class BinnedAnalysis(AnalysisBase):
         self.logLike.syncParams()
     def setEnergyRange(self, emin, emax):
         kmin = bisect.bisect(self.energies, emin) - 1
-        kmax = min(bisect.bisect(self.energies, emax),
+        kmax = min(bisect.bisect_left(self.energies, emax),
                    len(self.energies)-1)
         self.selectEbounds(kmin, kmax)
         if self.verbosity > 0:
@@ -158,6 +158,8 @@ class BinnedAnalysis(AnalysisBase):
         self.emax = self.energies[kmax]
         self.logLike.set_klims(kmin, kmax)
     def plot(self, oplot=0, color=None, omit=(), symbol='line'):
+        if self.logLike.fixedModelUpdated():
+            self.logLike.buildFixedModelWts()
         AnalysisBase.plot(self, oplot, color, omit, symbol)
         try:
             yrange = self.spectralPlot.getRange('y')
@@ -173,6 +175,8 @@ class BinnedAnalysis(AnalysisBase):
         except AttributeError:
             pass
     def plotFixed(self, color='black', symbol='line', show=True, display=None):
+        if self.logLike.fixedModelUpdated():
+            self.logLike.buildFixedModelWts()
         energies = self.e_vals
         model_counts = self.logLike.fixedModelSpectrum()
         if display is None:
@@ -216,12 +220,6 @@ class BinnedAnalysis(AnalysisBase):
         zeros = num.zeros(len(self.e_vals))
         self.sourceFitResids[-1].overlay(self.e_vals, zeros, symbol='dotted')
         self.sourceFitResids[-1].setTitle(srcName)
-    def thaw(self, i):
-        AnalysisBase.thaw(self, i)
-        self.logLike.buildFixedModelWts()
-    def freeze(self, i):
-        AnalysisBase.freeze(self, i)
-        self.logLike.buildFixedModelWts()
 
 def binnedAnalysis(mode='ql', ftol=None, **pars):
     """Return a BinnedAnalysis object using the data in gtlike.par."""
