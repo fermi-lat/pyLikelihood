@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: cohen  Tue Feb  7 13:17:33 PST 2012
+ScienceTools-scons/pyLikelihood/src
+
+Modified Files:
+	pyLikelihood.i 
+Log Message:
+fix cstd import for swig
+    *
+------------------------------------------------------------
 User: jchiang  Mon Feb  6 22:20:54 PST 2012
 ScienceTools-scons/pyLikelihood/python
 
