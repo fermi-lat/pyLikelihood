@@ -4,7 +4,7 @@ Python interface for binned likelihood.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/BinnedAnalysis.py,v 1.38 2011/11/26 22:10:45 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/BinnedAnalysis.py,v 1.39 2012/02/07 06:20:54 jchiang Exp $
 #
 
 import os
@@ -158,8 +158,6 @@ class BinnedAnalysis(AnalysisBase):
         self.emax = self.energies[kmax]
         self.logLike.set_klims(kmin, kmax)
     def plot(self, oplot=0, color=None, omit=(), symbol='line'):
-        if self.logLike.fixedModelUpdated():
-            self.logLike.buildFixedModelWts()
         AnalysisBase.plot(self, oplot, color, omit, symbol)
         try:
             yrange = self.spectralPlot.getRange('y')
