@@ -4,7 +4,7 @@ Base class for Likelihood analysis Python modules.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.71 2011/04/20 19:34:25 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/AnalysisBase.py,v 1.72 2011/10/25 14:57:02 cohen Exp $
 #
 
 import sys
@@ -165,6 +165,7 @@ class AnalysisBase(object):
         return source_attributes
     def Ts(self, srcName, reoptimize=False, approx=True,
            tol=None, MaxIterations=10, verbosity=0):
+        saved_state = LikelihoodState(self)
         if verbosity > 0:
             print "*** Start Ts_dl ***"
         source_attributes = self.getExtraSourceAttributes()
@@ -206,6 +207,8 @@ class AnalysisBase(object):
         self.model = SourceModel(self.logLike)
         for src in source_attributes:
             self.model[src].__dict__.update(source_attributes[src])
+        saved_state.restore()
+        self.logLike.value()
         return Ts_value
     def Ts_old(self, srcName, reoptimize=False, approx=True, tol=None):
         source_attributes = self.getExtraSourceAttributes()
