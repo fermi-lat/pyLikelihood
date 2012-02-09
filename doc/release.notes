@@ -2,11 +2,12 @@
    @file release.notes
    @brief package pyLikelihood
    @author J. Chiang <jchiang@slac.stanford.edu>
-   $Id: release.notes,v 1.131 2011/11/22 21:46:01 jchiang Exp $
+   $Id: release.notes,v 1.132 2011/11/26 22:31:11 jchiang Exp $
 
    @verbatim
    * EOH *
 
+ pyLikelihood-01-29-03 09-Feb-2012 jchiang move fixed model update to plotFixed command; ensure LikelihoodState is restored after computing Ts
  pyLikelihood-01-29-02 26-Nov-2011 jchiang mods for plotting requests from Jean
  pyLikelihood-01-29-01 22-Nov-2011 jchiang bug-fix for LK-72@JIRA
  pyLikelihood-01-29-00 08-Nov-2011 jchiang Josh's SED.py
