@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Thu Feb  9 13:20:07 PST 2012
+ScienceTools-scons/pyLikelihood/python
+
+Modified Files:
+	BinnedAnalysis.py 
+Log Message:
+remove unneeded update of fixed model
+    *
+------------------------------------------------------------
 User: jchiang  Thu Feb  9 10:18:33 PST 2012
 ScienceTools-scons/pyLikelihood/python
 
