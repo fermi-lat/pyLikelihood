@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Thu Feb  9 10:18:33 PST 2012
+ScienceTools-scons/pyLikelihood/python
+
+Modified Files:
+	AnalysisBase.py 
+Log Message:
+restore LikelihoodState after computing TS (need to ensure plotting is correct)
+    *
+------------------------------------------------------------
 User: cohen  Tue Feb  7 13:17:33 PST 2012
 ScienceTools-scons/pyLikelihood/src
 
