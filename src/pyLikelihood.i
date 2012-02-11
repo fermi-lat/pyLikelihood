@@ -14,9 +14,7 @@
 #include "irfInterface/IEfficiencyFactor.h"
 #include "irfInterface/IrfsFactory.h"
 #include "healpix/CosineBinner.h"
-#include "healpix/CosineBinner2D.h"
 #include "map_tools/Exposure.h"
-#include "map_tools/ExposureSun.h"
 #include "map_tools/SkyImage.h"
 #include "optimizers/Optimizer.h"
 #include "optimizers/OptimizerFactory.h"
@@ -50,7 +48,6 @@
 #include "Likelihood/ExpCutoff.h"
 #include "Likelihood/BrokenPowerLawExpCutoff.h"
 #include "Likelihood/ExposureCube.h"
-#include "Likelihood/ExposureCubeSun.h"
 #include "Likelihood/ExposureMap.h"
 #include "Likelihood/FileFunction.h"
 #include "Likelihood/LogGaussian.h"
@@ -171,7 +168,6 @@ using optimizers::Exception;
 %include Likelihood/Event.h
 %include Likelihood/Source.h
 %include Likelihood/ExposureCube.h
-%include Likelihood/ExposureCubeSun.h
 %include Likelihood/ExposureMap.h
 %include Likelihood/FileFunction.h
 %include Likelihood/RoiCuts.h
