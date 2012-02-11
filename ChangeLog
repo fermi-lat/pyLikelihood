@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: gudlaugu  Fri Feb 10 17:14:30 PST 2012
+ScienceTools-scons/pyLikelihood/src
+
+Modified Files:
+	pyLikelihood.i 
+Log Message:
+Removing SolarSystemTools as the initial import failed miserably
+    *
+------------------------------------------------------------
 TAG
 Tag name: pyLikelihood-01-29-03, operation: add
 Package: pyLikelihood
