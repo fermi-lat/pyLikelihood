@@ -4,7 +4,7 @@ Base class for Likelihood analysis Python modules.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/AnalysisBase.py,v 1.72 2011/10/25 14:57:02 cohen Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/AnalysisBase.py,v 1.73 2012/02/09 18:18:32 jchiang Exp $
 #
 
 import sys
@@ -545,7 +545,7 @@ class AnalysisBase(object):
             if not allFrozen :
                 self.optimize(verbosity, tol, optimizer, optObject)
             dlogLike.append(self.__call__() - logLike0)
-            if verbosity < 1:
+            if verbosity > 1:
                 print i, x, dlogLike[-1]
 
         # Restore model parameters to original values
