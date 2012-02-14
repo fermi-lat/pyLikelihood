@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: zimmer  Tue Feb 14 15:03:34 PST 2012
+ScienceTools-scons/pyLikelihood/python
+
+Modified Files:
+	AnalysisBase.py 
+Log Message:
+silent should be verbosity=0 not verbosity=2, so instead of < 1 should be >1 in scan
+    *
+------------------------------------------------------------
 User: gudlaugu  Fri Feb 10 17:22:34 PST 2012
 ScienceTools-scons/pyLikelihood/src
 
