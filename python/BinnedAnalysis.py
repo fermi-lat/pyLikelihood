@@ -4,7 +4,7 @@ Python interface for binned likelihood.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/BinnedAnalysis.py,v 1.40 2012/02/09 21:20:07 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/BinnedAnalysis.py,v 1.41 2012/04/14 20:59:38 jchiang Exp $
 #
 
 import os
@@ -22,21 +22,24 @@ _funcFactory = pyLike.SourceFactory_funcFactory()
 
 class BinnedObs(object):
     def __init__(self, srcMaps=None, expCube=None, binnedExpMap=None,
-                 irfs='DC1A'):
+                 phased_expmap=None, irfs='DC1A'):
         if srcMaps is None or expCube is None:
             srcMaps, expCube, binnedExpMap, irfs = self._obsDialog(srcMaps,
                                                                    expCube)
-        self._inputs = '\n'.join(('Source maps: ' + str(srcMaps),
+        self._inputs ='\n'.join(('Source maps: ' + str(srcMaps),
                                   'Exposure cube: ' + str(expCube),
                                   'Exposure map: ' + str(binnedExpMap),
                                   'IRFs: ' + str(irfs)))
+        if phased_expmap is not None:
+            self._inputs += '\n %s' % phased_expmap
         self.srcMaps = srcMaps
         self.expCube = expCube
         self.binnedExpMap = binnedExpMap
+        self.phased_expmap = phased_expmap
         self.irfs = irfs
         pyLike.AppHelpers_checkExposureMap(srcMaps, binnedExpMap)
-        self._createObservation(srcMaps, expCube, irfs)
         self.countsMap = pyLike.CountsMap(srcMaps)
+        self._createObservation(srcMaps, expCube, irfs)
     def _createObservation(self, srcMaps, expCube, irfs):
         self._respFuncs = pyLike.ResponseFunctions()
         evt_types = pyLike.AppHelpers_getSelectedEvtTypes(self.srcMaps,"BINNED")
@@ -52,10 +55,28 @@ class BinnedObs(object):
                                                 self._roiCuts,
                                                 self._scData)
         self._bexpmap = pyLike.BinnedExposure(self.binnedExpMap)
-        self.observation = pyLike.Observation(self._respFuncs, self._scData,
-                                              self._roiCuts, self._expCube,
-                                              self._expMap, self._eventCont,
-                                              self._bexpmap)
+        if self.phased_expmap is not None:
+            self._phased_expmap = pyLike.WcsMap2(self.phased_expmap)
+            self.observation = pyLike.Observation(self._respFuncs,
+                                                  self._scData,
+                                                  self._roiCuts,
+                                                  self._expCube,
+                                                  self._expMap,
+                                                  self._eventCont,
+                                                  self._bexpmap,
+                                                  self._phased_expmap)
+        else:
+            self.observation = pyLike.Observation(self._respFuncs,
+                                                  self._scData,
+                                                  self._roiCuts,
+                                                  self._expCube,
+                                                  self._expMap,
+                                                  self._eventCont,
+                                                  self._bexpmap)
+        self._meanPsf = pyLike.MeanPsf(self.countsMap.refDir(),
+                                       self.countsMap.energies(),
+                                       self.observation)
+        self.observation.setMeanPsf(self._meanPsf)
     def __getattr__(self, attrname):
         return getattr(self.observation, attrname)
     def __repr__(self):
@@ -236,7 +257,8 @@ def binnedAnalysis(mode='ql', ftol=None, **pars):
     expcube = _null_file(pars['expcube'])
     expmap = _null_file(pars['bexpmap'])
     irfs = pars['irfs']
-    obs = BinnedObs(srcmaps, expcube, expmap, irfs)
+    obs = BinnedObs(srcMaps=srcmaps, expCube=expcube, binnedExpMap=expmap,
+                    irfs=irfs)
     like = BinnedAnalysis(obs, pars['srcmdl'], pars['optimizer'])
     if ftol is not None:
         like.tol = ftol
