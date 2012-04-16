@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Mon Apr 16 16:39:06 PDT 2012
+ScienceTools-scons/pyLikelihood/python
+
+Modified Files:
+	BinnedAnalysis.py 
+Log Message:
+handle phased_expmap (and meanpsf) in binned analysis
+    *
+------------------------------------------------------------
 User: jchiang  Sat Apr 14 13:59:38 PDT 2012
 ScienceTools-scons/pyLikelihood/python
 
