@@ -2,11 +2,12 @@
    @file release.notes
    @brief package pyLikelihood
    @author J. Chiang <jchiang@slac.stanford.edu>
-   $Id: release.notes,v 1.134 2012/03/10 17:13:31 jchiang Exp $
+   $Id: release.notes,v 1.135 2012/04/17 06:00:31 jchiang Exp $
 
    @verbatim
    * EOH *
 
+ pyLikelihood-01-29-06 17-Apr-2012 jchiang forestall reading of FITS maps until they are needed
  pyLikelihood-01-29-05 16-Apr-2012 jchiang phased_expmap option added for binned analysis
  pyLikelihood-01-29-04 10-Mar-2012 jchiang add complement functionality to ScaleFactor class
  pyLikelihood-01-29-03 09-Feb-2012 jchiang move fixed model update to plotFixed command; ensure LikelihoodState is restored after computing Ts
