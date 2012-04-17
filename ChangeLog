@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Tue Apr 17 13:28:33 PDT 2012
+ScienceTools-scons/pyLikelihood/python
+
+Modified Files:
+	BinnedAnalysis.py UnbinnedAnalysis.py 
+Log Message:
+forestall reading in of FITS maps until they are needed
+    *
+------------------------------------------------------------
 TAG
 Tag name: pyLikelihood-01-29-05, operation: add
 Package: pyLikelihood
