@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: lande  Tue May  1 19:41:12 PDT 2012
+ScienceTools-scons/pyLikelihood/python
+
+Modified Files:
+	SED.py 
+Log Message:
+bugfix for the frequentist upper limit algorithm
+    *
+------------------------------------------------------------
 TAG
 Tag name: pyLikelihood-01-29-06, operation: add
 Package: pyLikelihood
