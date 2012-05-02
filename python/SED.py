@@ -61,7 +61,7 @@ results_dictionary=eval(open('sed_vela.dat').read())
 Todo:
 * Merge upper limits at either edge in energy.
 
-$Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/SED.py,v 1.3 2011/11/09 05:37:55 jchiang Exp $
+$Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/SED.py,v 1.4 2012/02/03 02:58:09 lande Exp $
 """
 from pprint import pformat
 
@@ -159,7 +159,7 @@ class SED(object):
     def frequentist_upper_limit(like,name,emin,emax,confidence,verbosity):
         """ Calculate a frequentist upper limit on the prefactor. 
             Returns the unscaled prefactor upper limit. """
-        delta_logl = lambda confidence: chi2.ppf(2*confidence-1,1)/2.
+        delta_logl = chi2.ppf(2*confidence-1,1)/2.
         ul = UpperLimits(like)
         flux_ul, pref_ul = ul[name].compute(emin=emin, emax=emax, 
                                             delta=delta_logl,
