@@ -61,7 +61,7 @@ results_dictionary=eval(open('sed_vela.dat').read())
 Todo:
 * Merge upper limits at either edge in energy.
 
-$Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/SED.py,v 1.4 2012/02/03 02:58:09 lande Exp $
+$Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/SED.py,v 1.5 2012/05/02 02:41:12 lande Exp $
 """
 from pprint import pformat
 
@@ -100,7 +100,8 @@ class SED(object):
             * powerlaw_index - fixed spectral index to assume when
                                computing SED.
             * min_ts - minimum ts in which to quote a SED points instead of an upper limit. 
-            * ul_confidence - confidence level for upper limit. """
+            * ul_confidence - confidence level for upper limit. 
+        """
         self.name               = name
         self.verbosity          = verbosity
         self.freeze_background  = freeze_background
@@ -134,6 +135,9 @@ class SED(object):
         # always in units of ph/cm^2/s/MeV
         self.dnde=np.empty_like(self.energy)
         self.dnde_err=np.empty_like(self.energy)
+        self.dnde_lower_err=np.empty_like(self.energy)
+        self.dnde_upper_err=np.empty_like(self.energy)
+
         self.dnde_ul=-1*np.ones_like(self.energy) # -1 is no UL
 
         self.flux=np.empty_like(self.energy)
@@ -268,6 +272,12 @@ class SED(object):
             self.dnde[i] = prefactor.getTrueValue()
             self.dnde_err[i] = prefactor.error()*prefactor.getScale()
 
+            if verbosity: print 'Calculating minos errors from %.0dMeV to %.0dMeV' % (lower,upper)
+            self.dnde_lower_err[i], self.dnde_upper_err[i] = like.minosError(name, 'Prefactor')
+            self.dnde_lower_err[i]*=(-1)*prefactor.getScale() # make lower errors positive
+            self.dnde_upper_err[i]*=prefactor.getScale()
+
+
             self.flux[i] = like.flux(name, lower, upper)
             self.flux_err[i] = like.fluxError(name, lower, upper)
 
@@ -302,17 +312,19 @@ class SED(object):
                 Units='MeV'),
             dNdE=dict(
                 Value=self.dnde.tolist(),
-                Error=self.dnde_err.tolist(),
+                Average_Error=self.dnde_err.tolist(),
+                Lower_Error=self.dnde_lower_err.tolist(),
+                Upper_Error=self.dnde_upper_err.tolist(),
                 Upper_Limit=self.dnde_ul.tolist(),
                 Units='ph/cm^2/s/MeV'),
             Ph_Flux=dict(
                 Value=self.flux.tolist(),
-                Error=self.flux_err.tolist(),
+                Average_Error=self.flux_err.tolist(),
                 Upper_Limit=self.flux_ul.tolist(),
                 Units='ph/cm^2/s'),
             En_Flux=dict(
                 Value=self.eflux.tolist(),
-                Error=self.eflux_err.tolist(),
+                Average_Error=self.eflux_err.tolist(),
                 Upper_Limit=self.eflux_ul.tolist(),
                 Units='MeV/cm^2/s'),
             Test_Statistic=self.ts.tolist(),
@@ -361,7 +373,7 @@ class SED(object):
 
     @staticmethod
     def _plot_points(x, xlo, xhi, 
-                     y, y_err, y_ul, significant,
+                     y, y_lower_err, y_upper_err, y_ul, significant,
                      energy_units,flux_units,
                      axes, 
                      ul_fraction=0.4,
@@ -378,7 +390,7 @@ class SED(object):
         # plot data points
         if sum(s)>0:
             axes.errorbar(x[s], y[s],
-                          xerr=[dx_lo[s], dx_hi[s]], yerr=y_err[s],
+                          xerr=[dx_lo[s], dx_hi[s]], yerr=[y_lower_err[s], y_upper_err[s]],
                           capsize=0, **plot_kwargs)
         
         # and upper limits
@@ -417,7 +429,7 @@ class SED(object):
              fignum=None, figsize=(4,4),
              plot_spectral_fit=True,
              data_kwargs=dict(),
-             spectral_kwargs=dict(color='red')):
+             spectral_kwargs=dict(color='red',zorder=1.9)):
         """ Plot the SED using matpotlib. """
 
         if axes is None:
@@ -425,19 +437,19 @@ class SED(object):
             axes = fig.add_axes((0.22,0.15,0.75,0.8))
             self.set_xlim(axes,self.lower_energy[0],self.upper_energy[-1])
 
+        if plot_spectral_fit:
+            SED.plot_spectrum(axes,self.spectrum, **spectral_kwargs)
+
         SED._plot_points(
             x=self.energy, 
             xlo=self.lower_energy, 
             xhi=self.upper_energy, 
             y=self.energy**2*self.dnde, 
-            y_err=self.energy**2*self.dnde_err, 
+            y_lower_err=self.energy**2*self.dnde_lower_err, 
+            y_upper_err=self.energy**2*self.dnde_upper_err, 
             y_ul=self.energy**2*self.dnde_ul,
             significant=self.significant,
             energy_units='MeV', flux_units='MeV',
             axes=axes, **data_kwargs)
-
-        if plot_spectral_fit:
-            print 'this is bad right now'
-            SED.plot_spectrum(axes,self.spectrum, **spectral_kwargs)
 
         if filename is not None: P.savefig(filename)
