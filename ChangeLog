@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: lande  Wed May  2 18:29:17 PDT 2012
+ScienceTools-scons/pyLikelihood/python
+
+Modified Files:
+	SED.py 
+Log Message:
+Implement MINOS errors for SED points + improve format of plot so that points are in front of the line.
+    *
+------------------------------------------------------------
 User: lande  Tue May  1 19:41:12 PDT 2012
 ScienceTools-scons/pyLikelihood/python
 
