@@ -61,7 +61,7 @@ results_dictionary=eval(open('sed_vela.dat').read())
 Todo:
 * Merge upper limits at either edge in energy.
 
-$Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/SED.py,v 1.5 2012/05/02 02:41:12 lande Exp $
+$Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/SED.py,v 1.6 2012/05/03 01:29:17 lande Exp $
 """
 from pprint import pformat
 
@@ -83,17 +83,23 @@ class SED(object):
                  bin_edges=None,
                  verbosity=0, 
                  freeze_background=True,
+                 reoptimize_ts=False,
                  always_upper_limit=False,
                  ul_algorithm='bayesian',
                  powerlaw_index=-2,
                  min_ts=4,
-                 ul_confidence=.95):
+                 ul_confidence=.95,
+                ):
         """ Parameters:
             * like - pyLikelihood object
             * name - source to make an SED for
             * bin_edges - if specified, calculate the SED in these bins.
             * verbosity - how much output
             * freeze_background - don't refit background sources.
+            * reoptimize_ts - reoptimize the background model in the null hypothesis
+                              when calculating the TS. By default, don't do the 
+                              reoptimization. Note that this flag
+                              only makes sense when freeze_background=False,
             * always_upper_limit - Always compute an upper limit. Default 
                                    is only when source is not significant. 
             * ul_algorithm - choices = 'frequentist', 'bayesian' 
@@ -105,6 +111,7 @@ class SED(object):
         self.name               = name
         self.verbosity          = verbosity
         self.freeze_background  = freeze_background
+        self.reoptimize_ts  = reoptimize_ts
         self.always_upper_limit = always_upper_limit
         self.ul_algorithm       = ul_algorithm
         self.powerlaw_index     = powerlaw_index
@@ -130,6 +137,9 @@ class SED(object):
 
         if ul_algorithm not in self.ul_choices:
             raise Exception("Upper Limit Algorithm %s not in %s" % (ul_algorithm,str(self.ul_choices)))
+
+        if self.reoptimize_ts and self.freeze_background:
+            raise Exception("The reoptimize_ts=True flag should only be set when freeze_background=False")
 
         # dN/dE, dN/dE_err and upper limits (ul)
         # always in units of ph/cm^2/s/MeV
@@ -266,7 +276,7 @@ class SED(object):
             except Exception, ex:
                 if verbosity: print 'ERROR gtlike fit: ', ex
 
-            self.ts[i]=like.Ts(name,reoptimize=False)
+            self.ts[i]=like.Ts(name,reoptimize=self.reoptimize_ts)
 
             prefactor=like[like.par_index(name, 'Prefactor')]
             self.dnde[i] = prefactor.getTrueValue()
