@@ -4,7 +4,7 @@ Base class for Likelihood analysis Python modules.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/AnalysisBase.py,v 1.73 2012/02/09 18:18:32 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/AnalysisBase.py,v 1.74 2012/02/14 23:03:33 zimmer Exp $
 #
 
 import sys
@@ -486,7 +486,7 @@ class AnalysisBase(object):
     def freePars(self, srcName):
         pars = pyLike.ParameterVector()
         self[srcName].funcs['Spectrum'].getFreeParams(pars)
-        return pars
+        return tuple([x for x in pars])
     def setFreeFlag(self, srcName, pars, value):
         src_spectrum = self[srcName].funcs['Spectrum']
         for item in pars:

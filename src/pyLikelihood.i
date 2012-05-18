@@ -1,11 +1,13 @@
 // -*- mode: c++ -*-
-// $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/src/pyLikelihood.i,v 1.21 2012/02/11 01:22:33 gudlaugu Exp $
+// $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/src/pyLikelihood.i,v 1.22 2012/03/10 03:17:02 jchiang Exp $
 %module pyLikelihood
 %{
 #ifdef TRAP_FPE
 #include <fenv.h>
 #endif
 #include <cstddef>
+#include "CLHEP/Random/RandFlat.h"
+#include "CLHEP/Random/Random.h"
 #include "astro/SolarSystem.h"
 #include "st_app/AppParGroup.h"
 #include "st_app/StApp.h"
@@ -248,6 +250,12 @@ using optimizers::Exception;
       astro::SkyDir dir;
       st_facilities::Util::pixel2SkyDir(proj, i, j, dir);
       return dir;
+   }
+   static void setRandomSeed(long seed) {
+      CLHEP::HepRandom hepRandom(seed);
+   }
+   static double shoot() {
+      return CLHEP::RandFlat::shoot();
    }
 }
 %extend Likelihood::AppHelpers {
