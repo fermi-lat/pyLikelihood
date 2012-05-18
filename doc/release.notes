@@ -2,11 +2,12 @@
    @file release.notes
    @brief package pyLikelihood
    @author J. Chiang <jchiang@slac.stanford.edu>
-   $Id: release.notes,v 1.135 2012/04/17 06:00:31 jchiang Exp $
+   $Id: release.notes,v 1.136 2012/04/17 21:34:51 jchiang Exp $
 
    @verbatim
    * EOH *
 
+ pyLikelihood-01-29-07 18-May-2012 jchiang more stable access to free parameters in AnalysisBase, SED.py updates from Josh
  pyLikelihood-01-29-06 17-Apr-2012 jchiang forestall reading of FITS maps until they are needed
  pyLikelihood-01-29-05 16-Apr-2012 jchiang phased_expmap option added for binned analysis
  pyLikelihood-01-29-04 10-Mar-2012 jchiang add complement functionality to ScaleFactor class
