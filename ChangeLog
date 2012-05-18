@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Fri May 18 10:46:24 PDT 2012
+ScienceTools-scons/pyLikelihood/python
+
+Modified Files:
+	AnalysisBase.py 
+Log Message:
+return tuple of Parameters instead of vector<Parameter> for AnalysisBase.freePars(...); add python access to RandFlat::shoot and seed
+    *
+------------------------------------------------------------
 User: lande  Tue May 15 07:51:51 PDT 2012
 ScienceTools-scons/pyLikelihood/python
 
