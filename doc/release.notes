@@ -2,11 +2,12 @@
    @file release.notes
    @brief package pyLikelihood
    @author J. Chiang <jchiang@slac.stanford.edu>
-   $Id: release.notes,v 1.136 2012/04/17 21:34:51 jchiang Exp $
+   $Id: release.notes,v 1.137 2012/05/18 17:50:45 jchiang Exp $
 
    @verbatim
    * EOH *
 
+ pyLikelihood-01-30-00 13-Jun-2012 jchiang enable setting of energy range for unbinned analyis
  pyLikelihood-01-29-07 18-May-2012 jchiang more stable access to free parameters in AnalysisBase, SED.py updates from Josh
  pyLikelihood-01-29-06 17-Apr-2012 jchiang forestall reading of FITS maps until they are needed
  pyLikelihood-01-29-05 16-Apr-2012 jchiang phased_expmap option added for binned analysis
