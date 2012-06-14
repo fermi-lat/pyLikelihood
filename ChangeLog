@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Wed Jun 13 22:29:06 PDT 2012
+ScienceTools-scons/pyLikelihood/python
+
+Modified Files:
+	UnbinnedAnalysis.py 
+Log Message:
+ensure selected energy range is within the range applied to the extracted data by gtselect
+    *
+------------------------------------------------------------
 TAG
 Tag name: pyLikelihood-01-30-00, operation: add
 Package: pyLikelihood
