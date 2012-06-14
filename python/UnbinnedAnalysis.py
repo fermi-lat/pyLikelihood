@@ -4,7 +4,7 @@ Python interface for unbinned likelihood
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/UnbinnedAnalysis.py,v 1.38 2011/10/20 18:25:42 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/UnbinnedAnalysis.py,v 1.39 2012/04/17 20:28:33 jchiang Exp $
 #
 
 import sys
@@ -216,15 +216,21 @@ class UnbinnedAnalysis(AnalysisBase):
     def reset_ebounds(self, new_energies):
         eMin, eMax = self.observation.roiCuts().getEnergyCuts()
         if eMin != min(new_energies) or eMax != max(new_energies):
-            raise RuntimeError("Range of selected energies must match "
-                               + "the data selection: "
-                               + ("(%f, %f)" % (eMin, eMax)))
+            self.logLike.set_ebounds(min(new_energies), max(new_energies))
         elist = [x for x in new_energies]
         elist.sort()
         self.energies = num.array(elist)
         self.e_vals = num.sqrt(self.energies[:-1]*self.energies[1:])
         self.nobs = self._Nobs()
-
+    def setEnergyRange(self, emin, emax):
+        self.logLike.set_ebounds(emin, emax)
+        npts = int(len(self.energies)*(num.log(emax) - num.log(emin))
+                   /(num.log(self.energies[-1]) - num.log(self.energies[0])))
+        if npts < 2:
+            npts = 5
+        energies = num.logspace(num.log10(emin), num.log10(emax), npts)
+        self.reset_ebounds(energies)
+        
 def unbinnedAnalysis(mode="ql", ftol=None, **pars):
     """Return an UnbinnedAnalysis object using the data in gtlike.par"""
     parnames = ('irfs', 'scfile', 'evfile', 'expmap', 'expcube', 
