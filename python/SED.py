@@ -61,7 +61,7 @@ results_dictionary=eval(open('sed_vela.dat').read())
 Todo:
 * Merge upper limits at either edge in energy.
 
-$Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/SED.py,v 1.6 2012/05/03 01:29:17 lande Exp $
+$Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/SED.py,v 1.7 2012/05/15 14:51:51 lande Exp $
 """
 from pprint import pformat
 
@@ -280,13 +280,12 @@ class SED(object):
 
             prefactor=like[like.par_index(name, 'Prefactor')]
             self.dnde[i] = prefactor.getTrueValue()
-            self.dnde_err[i] = prefactor.error()*prefactor.getScale()
 
             if verbosity: print 'Calculating minos errors from %.0dMeV to %.0dMeV' % (lower,upper)
             self.dnde_lower_err[i], self.dnde_upper_err[i] = like.minosError(name, 'Prefactor')
             self.dnde_lower_err[i]*=(-1)*prefactor.getScale() # make lower errors positive
             self.dnde_upper_err[i]*=prefactor.getScale()
-
+            self.dnde_err[i] = (self.dnde_upper_err[i] + self.dnde_lower_err[i])/2
 
             self.flux[i] = like.flux(name, lower, upper)
             self.flux_err[i] = like.fluxError(name, lower, upper)
@@ -373,7 +372,7 @@ class SED(object):
         return np.asarray([spectrum(dArg(i)) for i in energies])
     @staticmethod 
     def plot_spectrum(axes,spectrum, npts=100, **kwargs):
-        """ This function overlays a pyLikleihood spectrum
+        """ This function overlays a pyLikelihood spectrum
             object onto a Matplotlib axes assumign that
             (a) the x-axis is in MeV and (b) that
             the y-axis is E^2 dN/dE (MeV/cm^2/s) """
