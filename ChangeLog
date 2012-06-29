@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: lande  Fri Jun 29 12:20:09 PDT 2012
+ScienceTools-scons/pyLikelihood/python
+
+Modified Files:
+	SED.py 
+Log Message:
+compute average errors better
+    *
+------------------------------------------------------------
 TAG
 Tag name: ScienceTools-09-29-00, operation: add
 Package: pyLikelihood
