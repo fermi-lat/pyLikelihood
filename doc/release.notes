@@ -2,11 +2,12 @@
    @file release.notes
    @brief package pyLikelihood
    @author J. Chiang <jchiang@slac.stanford.edu>
-   $Id: release.notes,v 1.138 2012/06/14 04:34:38 jchiang Exp $
+   $Id: release.notes,v 1.139 2012/06/14 05:29:27 jchiang Exp $
 
    @verbatim
    * EOH *
 
+ pyLikelihood-01-30-02 17-Jul-2012 jchiang enable FluxDensity calculation for diffuse sources
  pyLikelihood-01-30-01 13-Jun-2012 jchiang ensure selected energy range is within the range applied to the extracted data by gtselect
  pyLikelihood-01-30-00 13-Jun-2012 jchiang enable setting of energy range for unbinned analyis
  pyLikelihood-01-29-07 18-May-2012 jchiang more stable access to free parameters in AnalysisBase, SED.py updates from Josh
