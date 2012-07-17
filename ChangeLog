@@ -1,4 +1,50 @@
 ------------------------------------------------------------
+TAG
+Tag name: pyLikelihood-01-30-02, operation: add
+Package: pyLikelihood
+User: jchiang  Tue Jul 17 07:46:52 2012
+Files:
+  pyLikelihood/.cvsignore  1.2
+  pyLikelihood/ChangeLog  1.1.1.949
+  pyLikelihood/pyLikelihoodLib.py  1.3
+  pyLikelihood/SConscript  1.107
+  pyLikelihood/cmt/requirements  1.146
+  pyLikelihood/doc/release.notes  1.140
+  pyLikelihood/doc/Makefile  1.1.1.1
+  pyLikelihood/doc/Doxyfile  1.1.1.1
+  pyLikelihood/doc/images/hippo_plot.png  1.1.1.1
+  pyLikelihood/doc/images/hippo_plot_2.png  1.1
+  pyLikelihood/doc/images/Obs_dialog0.png  1.1.1.1
+  pyLikelihood/doc/images/Obs_dialog1.png  1.1.1.1
+  pyLikelihood/doc/images/Analysis_dialog.png  1.1.1.1
+  pyLikelihood/doc/images/pyROOT_plot.png  1.1.1.1
+  pyLikelihood/pyLikelihood/enableFPE.h  1.1
+  pyLikelihood/pyLikelihood/Aeff.h  1.2
+  pyLikelihood/python/SED.py  1.8
+  pyLikelihood/python/UnbinnedAnalysis.py  1.41
+  pyLikelihood/python/AnalysisBase.py  1.75
+  pyLikelihood/python/IntegralUpperLimit.py  1.6
+  pyLikelihood/python/BinnedAnalysis.py  1.45
+  pyLikelihood/python/Composite2.py  1.6
+  pyLikelihood/python/CompositeLikelihood.py  1.7
+  pyLikelihood/python/RootPlot.py  1.12
+  pyLikelihood/python/FluxDensity.py  1.2
+  pyLikelihood/python/SummedLikelihood.py  1.17
+  pyLikelihood/python/SrcAnalysis.py  1.5
+  pyLikelihood/python/UpperLimits.py  1.32
+  pyLikelihood/python/SimpleDialog.py  1.2
+  pyLikelihood/python/SrcModel.py  1.10
+  pyLikelihood/python/LikelihoodState.py  1.4
+  pyLikelihood/python/package_paths.py  1.5
+  pyLikelihood/python/HippoPlot.py  1.6
+  pyLikelihood/python/test_model.py  1.1
+  pyLikelihood/src/pyLikelihood.in  1.45
+  pyLikelihood/src/mainpage.h  1.1.1.1
+  pyLikelihood/src/pyLikelihood.i  1.23
+  pyLikelihood/src/pyLikelihood.h  1.1.1.1
+
+    *
+------------------------------------------------------------
 User: jchiang  Tue Jul 17 07:46:46 PDT 2012
 pyLikelihood/cmt
 
