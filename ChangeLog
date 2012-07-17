@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Tue Jul 17 07:46:19 PDT 2012
+ScienceTools-scons/pyLikelihood/python
+
+Modified Files:
+	FluxDensity.py 
+Log Message:
+enable FluxDensity for diffuse sources
+    *
+------------------------------------------------------------
 User: lande  Fri Jun 29 12:20:09 PDT 2012
 ScienceTools-scons/pyLikelihood/python
 
