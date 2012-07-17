@@ -6,7 +6,7 @@ estimate the 1 sigma error.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header$
+# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/FluxDensity.py,v 1.1 2009/08/10 21:31:02 jchiang Exp $
 #
 
 import numpy as num
@@ -16,7 +16,7 @@ class FluxDensity(object):
     def __init__(self, like, srcName):
         self.like = like
         self.srcName = srcName
-        self.ptsrc = pyLike.PointSource_cast(like[srcName].src)
+        self.src = like[srcName].src
         par_index_map = {}
         indx = 0
         for src in like.sourceNames():
@@ -45,10 +45,10 @@ class FluxDensity(object):
         self.srcpars = srcpars
     def value(self, energy):
         arg = pyLike.dArg(energy)
-        return self.ptsrc.spectrum()(arg)
+        return self.src.spectrum()(arg)
     def error(self, energy):
         arg = pyLike.dArg(energy)
-        partials = num.array([self.ptsrc.spectrum().derivByParam(arg, x) 
+        partials = num.array([self.src.spectrum().derivByParam(arg, x) 
                               for x in self.srcpars])
         return num.sqrt(num.dot(partials, num.dot(self.covar, partials)))
     def write_nuFnu(self, outfile, emin=100, emax=3e5, npts=500):
