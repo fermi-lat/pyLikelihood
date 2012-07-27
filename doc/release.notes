@@ -2,11 +2,12 @@
    @file release.notes
    @brief package pyLikelihood
    @author J. Chiang <jchiang@slac.stanford.edu>
-   $Id: release.notes,v 1.139 2012/06/14 05:29:27 jchiang Exp $
+   $Id: release.notes,v 1.140 2012/07/17 14:46:46 jchiang Exp $
 
    @verbatim
    * EOH *
 
+ pyLikelihood-01-30-03 27-Jul-2012 jchiang reorder keywords in BinnedObs constructor to restore backwards compatibility
  pyLikelihood-01-30-02 17-Jul-2012 jchiang enable FluxDensity calculation for diffuse sources
  pyLikelihood-01-30-01 13-Jun-2012 jchiang ensure selected energy range is within the range applied to the extracted data by gtselect
  pyLikelihood-01-30-00 13-Jun-2012 jchiang enable setting of energy range for unbinned analyis
