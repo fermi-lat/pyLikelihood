@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Fri Jul 27 16:11:54 PDT 2012
+ScienceTools-scons/pyLikelihood/python
+
+Modified Files:
+	BinnedAnalysis.py 
+Log Message:
+reorder keywords to restore backwards compatibility
+    *
+------------------------------------------------------------
 TAG
 Tag name: pyLikelihood-01-30-02, operation: add
 Package: pyLikelihood
