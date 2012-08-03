@@ -61,7 +61,7 @@ results_dictionary=eval(open('sed_vela.dat').read())
 Todo:
 * Merge upper limits at either edge in energy.
 
-$Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/SED.py,v 1.7 2012/05/15 14:51:51 lande Exp $
+$Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/SED.py,v 1.8 2012/06/29 19:20:09 lande Exp $
 """
 from pprint import pformat
 
@@ -387,14 +387,21 @@ class SED(object):
                      axes, 
                      ul_fraction=0.4,
                      **kwargs):
-
+        """ Plot data points with errors using matplotlib.
+            
+                if no x errors, set xlo=xhi=None. 
+        """
         plot_kwargs = dict(linestyle='none', color='black')
         plot_kwargs.update(kwargs)
 
         s = significant
 
-        dx_hi=xhi-x
-        dx_lo=x-xlo
+        if xlo is not None and xhi is not None:
+            dx_hi=xhi-x
+            dx_lo=x-xlo
+        else:
+            dx_hi=np.zeros_like(x)
+            dx_lo=np.zeros_like(x)
 
         # plot data points
         if sum(s)>0:
