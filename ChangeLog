@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: lande  Fri Aug  3 11:06:13 PDT 2012
+ScienceTools-scons/pyLikelihood/python
+
+Modified Files:
+	SED.py 
+Log Message:
+allow plotting function to plot points with no x error if not specified
+    *
+------------------------------------------------------------
 TAG
 Tag name: pyLikelihood-01-30-03, operation: add
 Package: pyLikelihood
