@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: lande  Mon Sep 10 14:57:54 PDT 2012
+ScienceTools-scons/pyLikelihood/python
+
+Modified Files:
+	SED.py 
+Log Message:
+Add method="gtlike" to spectrum dict. Remove unnecessary ability to save errors to spectrum dict. Slight bugfix for set_xlim function
+    *
+------------------------------------------------------------
 TAG
 Tag name: ScienceTools-09-30-00, operation: add
 Package: pyLikelihood
