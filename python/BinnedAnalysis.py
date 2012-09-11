@@ -4,7 +4,7 @@ Python interface for binned likelihood.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/BinnedAnalysis.py,v 1.45 2012/04/17 20:45:26 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/BinnedAnalysis.py,v 1.46 2012/07/27 23:11:54 jchiang Exp $
 #
 
 import os
@@ -213,7 +213,7 @@ class BinnedAnalysis(AnalysisBase):
         return model_counts
     def plotSourceFit(self, srcName, color='black'):
         self._importPlotter()
-        nobs = num.array(self.logLike.countsSpectrum(srcName))
+        nobs = num.array(self.logLike.countsSpectrum(srcName, False))
         errors = []
         for ntilde, nsq in zip(nobs, num.sqrt(self.nobs)):
             if nsq == 0:

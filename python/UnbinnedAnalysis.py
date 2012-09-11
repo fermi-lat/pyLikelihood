@@ -4,7 +4,7 @@ Python interface for unbinned likelihood
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/UnbinnedAnalysis.py,v 1.40 2012/06/14 04:20:40 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/UnbinnedAnalysis.py,v 1.41 2012/06/14 05:29:06 jchiang Exp $
 #
 
 import sys
@@ -224,10 +224,14 @@ class UnbinnedAnalysis(AnalysisBase):
         self.nobs = self._Nobs()
     def setEnergyRange(self, emin, emax):
         roi_ebounds = self.observation.roiCuts().getEnergyCuts()
-        if emin < roi_ebounds[0] or emax > roi_ebounds[1]:
-            raise RuntimeError("UnbinnedAnalysis.setEnergyRange: " +
-                               "attempt to set energy bound outside of " +
-                               "data range of %.2f %.2f" % roi_ebounds)
+#        if emin < roi_ebounds[0] or emax > roi_ebounds[1]:
+# At J. Ballet request, this case will now be handled by the C++ member
+# function Likelihood::LogLike::value(...) which will return zero if
+# the selected energy bounds exclude the data originally selected by
+# the ROI bounds.
+#            raise RuntimeError("UnbinnedAnalysis.setEnergyRange: " +
+#                               "attempt to set energy bound outside of " +
+#                               "data range of %.2f %.2f" % roi_ebounds)
         self.logLike.set_ebounds(emin, emax)
         npts = int(len(self.energies)*(num.log(emax) - num.log(emin))
                    /(num.log(self.energies[-1]) - num.log(self.energies[0])))
