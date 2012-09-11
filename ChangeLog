@@ -1,5 +1,14 @@
 ------------------------------------------------------------
 User: jchiang  Tue Sep 11 15:58:54 PDT 2012
+ScienceTools-scons/pyLikelihood/src
+
+Modified Files:
+	pyLikelihood.i 
+Log Message:
+enable python access to BrokenPowerLaw3; allow users to execute UnbinnedAnalysis.setEnergyRange(...) such that it excludes all of the events from the ROI energy range selection (J. Ballet request)
+    *
+------------------------------------------------------------
+User: jchiang  Tue Sep 11 15:58:54 PDT 2012
 ScienceTools-scons/pyLikelihood/python
 
 Modified Files:
