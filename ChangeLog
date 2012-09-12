@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Wed Sep 12 09:48:33 PDT 2012
+ScienceTools-scons/pyLikelihood/python
+
+Modified Files:
+	UnbinnedAnalysis.py 
+Log Message:
+scale the spacing of energy bands used for plotting to that for the initial ROI energy bounds
+    *
+------------------------------------------------------------
 User: jchiang  Tue Sep 11 15:58:54 PDT 2012
 ScienceTools-scons/pyLikelihood/src
 
