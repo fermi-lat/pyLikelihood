@@ -4,7 +4,7 @@ Python interface for unbinned likelihood
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/UnbinnedAnalysis.py,v 1.41 2012/06/14 05:29:06 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/UnbinnedAnalysis.py,v 1.42 2012/09/11 22:58:54 jchiang Exp $
 #
 
 import sys
@@ -233,8 +233,12 @@ class UnbinnedAnalysis(AnalysisBase):
 #                               "attempt to set energy bound outside of " +
 #                               "data range of %.2f %.2f" % roi_ebounds)
         self.logLike.set_ebounds(emin, emax)
-        npts = int(len(self.energies)*(num.log(emax) - num.log(emin))
-                   /(num.log(self.energies[-1]) - num.log(self.energies[0])))
+#        npts = int(len(self.energies)*(num.log(emax) - num.log(emin))
+#                   /(num.log(self.energies[-1]) - num.log(self.energies[0])))
+        nee = 21
+        eMin_roi, eMax_roi = self.observation.roiCuts().getEnergyCuts()
+        npts = int(nee*(num.log(emax) - num.log(emin))
+                   /(num.log(eMax_roi) - num.log(eMin_roi)))
         if npts < 2:
             npts = 5
         energies = num.logspace(num.log10(emin), num.log10(emax), npts)
