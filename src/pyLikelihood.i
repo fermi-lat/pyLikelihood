@@ -1,5 +1,5 @@
 // -*- mode: c++ -*-
-// $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/src/pyLikelihood.i,v 1.23 2012/05/18 17:46:24 jchiang Exp $
+// $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/src/pyLikelihood.i,v 1.24 2012/09/11 22:58:54 jchiang Exp $
 %module pyLikelihood
 %{
 #ifdef TRAP_FPE
@@ -59,6 +59,7 @@
 #include "Likelihood/MapBase.h"
 #include "Likelihood/MapCubeFunction2.h"
 #include "Likelihood/MeanPsf.h"
+#include "Likelihood/ModelMap.h"
 #include "Likelihood/Npred.h"
 #include "Likelihood/OneSourceFunc.h"
 #include "Likelihood/OptEM.h"
@@ -198,6 +199,7 @@ using optimizers::Exception;
 %include Likelihood/MeanPsf.h
 %include Likelihood/BinnedLikelihood.h
 %include Likelihood/BinnedLikelihood2.h
+%include Likelihood/ModelMap.h
 %include Likelihood/Npred.h
 %include Likelihood/OneSourceFunc.h
 %include Likelihood/OptEM.h
