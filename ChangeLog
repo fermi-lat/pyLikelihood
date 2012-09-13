@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Thu Sep 13 13:12:37 PDT 2012
+ScienceTools-scons/pyLikelihood/src
+
+Modified Files:
+	pyLikelihood.i 
+Log Message:
+ use ModelMap class to provide model map output function to BinnedAnalysis
+    *
+------------------------------------------------------------
 User: jchiang  Thu Sep 13 13:12:36 PDT 2012
 ScienceTools-scons/pyLikelihood/python
 
