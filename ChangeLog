@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Tue Nov 20 08:49:52 PST 2012
+ScienceTools-scons/pyLikelihood/python
+
+Modified Files:
+	LikelihoodState.py 
+Log Message:
+improve Parameter handling, i.e., use underlying C++ copy assignment operator
+    *
+------------------------------------------------------------
 TAG
 Tag name: pyLikelihood-01-30-05, operation: add
 Package: pyLikelihood
