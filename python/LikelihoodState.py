@@ -4,29 +4,37 @@
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/LikelihoodState.py,v 1.3 2010/03/22 03:35:57 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/LikelihoodState.py,v 1.4 2010/03/24 17:54:23 jchiang Exp $
 #
 import pyLikelihood
 
+#class _Parameter(object):
+#    "Shadow class of the optimizers::Parameter class."
+#    def __init__(self, par):
+#        self.par = par
+#        self.value = par.getValue()
+#        self.minValue, self.maxValue = par.getBounds()
+#        self.free = par.isFree()
+#        self.scale = par.getScale()
+#        self.error = par.error()
+#        self.alwaysFixed = par.alwaysFixed()
+#    def setDataMembers(self, par=None):
+#        if par is None:
+#            par = self.par
+#        par.setValue(self.value)
+#        par.setBounds(self.minValue, self.maxValue)
+#        par.setFree(self.free)
+#        par.setScale(self.scale)
+#        par.setError(self.error)
+#        par.setAlwaysFixed(self.alwaysFixed)
+
 class _Parameter(object):
-    "Shadow class of the optimizers::Parameter class."
+    """Thin wrapper around pyLikelihood.Parameter, temporarily, for
+    refactoring purposes."""
     def __init__(self, par):
-        self.par = par
-        self.value = par.getValue()
-        self.minValue, self.maxValue = par.getBounds()
-        self.free = par.isFree()
-        self.scale = par.getScale()
-        self.error = par.error()
-        self.alwaysFixed = par.alwaysFixed()
-    def setDataMembers(self, par=None):
-        if par is None:
-            par = self.par
-        par.setValue(self.value)
-        par.setBounds(self.minValue, self.maxValue)
-        par.setFree(self.free)
-        par.setScale(self.scale)
-        par.setError(self.error)
-        par.setAlwaysFixed(self.alwaysFixed)
+        self.par = pyLikelihood.Parameter(par)
+    def setDataMembers(self, par):
+        par.setEquals(self.par)
 
 class LikelihoodState(object):
     """Save the parameter state of a pyLikelihood object and provide a
