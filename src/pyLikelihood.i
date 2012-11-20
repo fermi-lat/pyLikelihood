@@ -1,5 +1,5 @@
 // -*- mode: c++ -*-
-// $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/src/pyLikelihood.i,v 1.24 2012/09/11 22:58:54 jchiang Exp $
+// $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/src/pyLikelihood.i,v 1.25 2012/09/13 20:12:36 jchiang Exp $
 %module pyLikelihood
 %{
 #ifdef TRAP_FPE
@@ -525,5 +525,10 @@ using optimizers::Exception;
          throw std::runtime_error("IndexError");
       }
       return *(self->begin() + i);
+   }
+}
+%extend optimizers::Parameter {
+   void setEquals(const optimizers::Parameter & rhs) {
+      self->operator=(rhs);
    }
 }
