@@ -1,5 +1,14 @@
 ------------------------------------------------------------
 User: jchiang  Tue Nov 20 08:49:52 PST 2012
+ScienceTools-scons/pyLikelihood/src
+
+Modified Files:
+	pyLikelihood.i 
+Log Message:
+improve Parameter handling, i.e., use underlying C++ copy assignment operator
+    *
+------------------------------------------------------------
+User: jchiang  Tue Nov 20 08:49:52 PST 2012
 ScienceTools-scons/pyLikelihood/python
 
 Modified Files:
