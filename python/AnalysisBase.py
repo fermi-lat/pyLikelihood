@@ -4,7 +4,7 @@ Base class for Likelihood analysis Python modules.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/AnalysisBase.py,v 1.74 2012/02/14 23:03:33 zimmer Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.75 2012/05/18 17:46:24 jchiang Exp $
 #
 
 import sys
@@ -525,7 +525,7 @@ class AnalysisBase(object):
         #enough
         allFrozen=True
         for name in self.sourceNames():
-            if self.freePars(name).size() !=0:
+            if len(self.freePars(name)) != 0:
                 allFrozen=False
                 break
 
