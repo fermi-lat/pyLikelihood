@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: kadrlica  Tue Dec 11 14:21:57 PST 2012
+pyLikelihood/python
+
+Modified Files:
+	AnalysisBase.py 
+Log Message:
+Change scan to check freePars tuple rather than vector
+    *
+------------------------------------------------------------
 User: jchiang  Tue Nov 20 08:49:52 PST 2012
 ScienceTools-scons/pyLikelihood/src
 
