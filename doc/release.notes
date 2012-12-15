@@ -2,11 +2,12 @@
    @file release.notes
    @brief package pyLikelihood
    @author J. Chiang <jchiang@slac.stanford.edu>
-   $Id: release.notes,v 1.142 2012/09/12 20:30:21 jchiang Exp $
+   $Id: release.notes,v 1.143 2012/09/13 23:51:32 jchiang Exp $
 
    @verbatim
    * EOH *
 
+ pyLikelihood-01-31-00 14-Dec-2012 jchiang LK-83, LK-73 fixes
  pyLikelihood-01-30-05 13-Sep-2012 jchiang all users to specify energy band for unbinned analysis that excludes all data (J. Ballet request)
  pyLikelihood-01-30-04 12-Sep-2012 jchiang all users to specify energy band for unbinned analysis that excludes all data (J. Ballet request)
  pyLikelihood-01-30-03 27-Jul-2012 jchiang reorder keywords in BinnedObs constructor to restore backwards compatibility
