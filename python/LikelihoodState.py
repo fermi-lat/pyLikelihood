@@ -4,7 +4,7 @@
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/LikelihoodState.py,v 1.4 2010/03/24 17:54:23 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/LikelihoodState.py,v 1.5 2012/11/20 16:49:52 jchiang Exp $
 #
 import pyLikelihood
 
@@ -30,9 +30,10 @@ import pyLikelihood
 
 class _Parameter(object):
     """Thin wrapper around pyLikelihood.Parameter, temporarily, for
-    refactoring purposes."""
+    refactoring purposes.  Eventually, should replace with 
+    pyLikelihood.Parameter."""
     def __init__(self, par):
-        self.par = pyLikelihood.Parameter(par)
+        self.par = pyLikelihood.Parameter(par.parameter)
     def setDataMembers(self, par):
         par.setEquals(self.par)
 
