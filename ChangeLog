@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Mon Dec 17 09:42:56 PST 2012
+ScienceTools-scons/pyLikelihood/python
+
+Modified Files:
+	LikelihoodState.py 
+Log Message:
+Should have passed underlying optimizers::Parameter object to copy constructor
+    *
+------------------------------------------------------------
 TAG
 Tag name: pyLikelihood-01-31-00, operation: add
 Package: pyLikelihood
