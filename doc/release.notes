@@ -2,11 +2,12 @@
    @file release.notes
    @brief package pyLikelihood
    @author J. Chiang <jchiang@slac.stanford.edu>
-   $Id: release.notes,v 1.144 2012/12/15 00:15:46 jchiang Exp $
+   $Id: release.notes,v 1.145 2012/12/17 17:43:40 jchiang Exp $
 
    @verbatim
    * EOH *
 
+ pyLikelihood-01-31-02 27-Dec-2012 jchiang implement setEquals for composite Parameter class so that LikelihoodState.restore works on SummedLikelihood objects
  pyLikelihood-01-31-01 17-Dec-2012 jchiang bug-fix for new _Parameter implementation
  pyLikelihood-01-31-00 14-Dec-2012 jchiang LK-83, LK-73 fixes
  pyLikelihood-01-30-05 13-Sep-2012 jchiang all users to specify energy band for unbinned analysis that excludes all data (J. Ballet request)
