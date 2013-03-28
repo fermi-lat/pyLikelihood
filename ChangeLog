@@ -1,4 +1,14 @@
 ------------------------------------------------------------
+User: jchiang  Thu Mar 28 09:15:55 PDT 2013
+ScienceTools-scons/pyLikelihood/python
+
+Modified Files:
+	RootPlot.py 
+Log Message:
+In ROOT v5.34, TGraphErrors cannot handle arrays with zero elements, causing an exception in RootPlot.plotFixed(...), so bypass this case since there is nothing to plot anyways.
+
+    *
+------------------------------------------------------------
 TAG
 Tag name: ScienceTools-09-31-02, operation: add
 Package: pyLikelihood
