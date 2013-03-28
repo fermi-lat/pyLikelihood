@@ -119,6 +119,8 @@ class RootPlot(object):
         return my_npts, my_x, my_y, my_dx, my_dy
     def overlay(self, x, y, dx=None, dy=None, symbol='plus', color='black'):
         npts, xx, yy, dxx, dyy = self._fillArrays(x, y, dx, dy)
+        if npts == 0:
+            return
         self.graphs.append(TGraphErrors(npts, xx, yy, dxx, dyy))
         self.canvas.cd()
         self._drawData(self.graphs[-1], symbol, color)
