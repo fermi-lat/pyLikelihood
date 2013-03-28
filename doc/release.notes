@@ -2,11 +2,12 @@
    @file release.notes
    @brief package pyLikelihood
    @author J. Chiang <jchiang@slac.stanford.edu>
-   $Id: release.notes,v 1.145 2012/12/17 17:43:40 jchiang Exp $
+   $Id: release.notes,v 1.146 2012/12/28 05:59:21 jchiang Exp $
 
    @verbatim
    * EOH *
 
+ pyLikelihood-01-31-03 28-Mar-2013 jchiang workaround for RootPlot.plotFixed(...) induced by move to ROOT v5.34
  pyLikelihood-01-31-02 27-Dec-2012 jchiang implement setEquals for composite Parameter class so that LikelihoodState.restore works on SummedLikelihood objects
  pyLikelihood-01-31-01 17-Dec-2012 jchiang bug-fix for new _Parameter implementation
  pyLikelihood-01-31-00 14-Dec-2012 jchiang LK-83, LK-73 fixes
