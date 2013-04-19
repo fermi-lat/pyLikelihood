@@ -1,4 +1,14 @@
 ------------------------------------------------------------
+User: jperkins  Fri Apr 19 08:52:50 PDT 2013
+ScienceTools-scons/pyLikelihood/python
+
+Modified Files:
+	AnalysisBase.py 
+Log Message:
+Added docStrings to all public functions in AnalysisBase.py
+
+    *
+------------------------------------------------------------
 TAG
 Tag name: pyLikelihood-01-31-03, operation: add
 Package: pyLikelihood
