@@ -4,7 +4,7 @@ Base class for Likelihood analysis Python modules.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/AnalysisBase.py,v 1.76 2012/12/11 22:21:57 kadrlica Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/AnalysisBase.py,v 1.77 2013/04/19 15:52:49 jperkins Exp $
 #
 
 import sys
@@ -45,6 +45,7 @@ class AnalysisBase(object):
             import hippoplotter as plot
             return plot
     def __call__(self):
+        self.model.syncParams()
         return -self.logLike.value()
     def setFitTolType(self, tolType):
 
