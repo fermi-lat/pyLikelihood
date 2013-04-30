@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Tue Apr 30 11:22:58 PDT 2013
+ScienceTools-scons/pyLikelihood/python
+
+Modified Files:
+	AnalysisBase.py SrcModel.py 
+Log Message:
+handle parameter updates via Parameter::setScale(...) or Parameter::setFree(...) so that likelihood calculation uses the updated parameter attributes
+    *
+------------------------------------------------------------
 User: jperkins  Fri Apr 19 08:52:50 PDT 2013
 ScienceTools-scons/pyLikelihood/python
 
