@@ -4,7 +4,7 @@ SourceModel interface to allow for manipulation of fit parameters.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/SrcModel.py,v 1.9 2011/01/30 05:04:58 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/SrcModel.py,v 1.10 2011/02/02 19:26:37 jchiang Exp $
 #
 import sys
 from xml.dom import minidom
@@ -35,6 +35,12 @@ class SourceModel(object):
             self._loadSources()
         except:
             pass
+    def syncParams(self):
+        "Loop through sources and synchronize the parameters if necessary."
+        for source_name, source in self.srcs.items():
+            if source.is_modified:
+                self.logLike.syncSrcParams(source_name)
+                source.is_modified = False
     def _loadSources(self):
         srcNames = pyLike.StringVector()
         self.logLike.getSrcNames(srcNames)
@@ -96,7 +102,8 @@ class Source(object):
         funcs = src.getSrcFuncs()
         self.funcs = {}
         for item in funcs.keys():
-            self.funcs[item] = Function(funcs[item], src.getName())
+            self.funcs[item] = Function(funcs[item], src.getName(), self)
+        self.is_modified = False
     def __getitem__(self, name):
         return self.funcs[name]
     def __repr__(self, prefix='   ', free_only=False):
@@ -110,7 +117,7 @@ class Source(object):
         return getattr(self.src, attrname)
 
 class Function(object):
-    def __init__(self, func, srcName=None):
+    def __init__(self, func, srcName=None, source_obj=None):
         self.func = func
         self.srcName = srcName
         names = pyLike.StringVector()
@@ -118,7 +125,8 @@ class Function(object):
         self.paramNames = list(names)
         self.params = {}
         for name in self.paramNames:
-            self.params[name] = Parameter(self.func.getParam(name), srcName)
+            self.params[name] = Parameter(self.func.getParam(name), srcName,
+                                          source_obj)
         self._parIds = []
     def __getitem__(self, name):
         return self.func.getParamValue(name)
@@ -139,9 +147,10 @@ class Function(object):
         return getattr(self.func, attrname)
 
 class Parameter(object):
-    def __init__(self, parameter, srcName=None):
+    def __init__(self, parameter, srcName=None, source_obj=None):
         self.parameter = parameter
         self.srcName = srcName
+        self.source_obj = source_obj
     def __repr__(self):
         par = self.parameter
         desc = ("%10s: %10.3e " % (par.getName(), par.getValue()) +
@@ -155,6 +164,10 @@ class Parameter(object):
         self.parameter.setFree(value)
         if not value:
             self.parameter.setError(0)
+        self.source_obj.is_modified = True
+    def setScale(self, scale):
+        self.parameter.setScale(scale)
+        self.source_obj.is_modified = True
     def value(self):
         return self.parameter.getValue()
     def addPrior(self, funcname):
