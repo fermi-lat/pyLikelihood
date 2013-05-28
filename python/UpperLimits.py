@@ -6,13 +6,41 @@
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/UpperLimits.py,v 1.31 2011/03/06 05:21:13 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/UpperLimits.py,v 1.32 2011/03/29 22:23:41 jchiang Exp $
 #
 import copy
 import bisect
 import pyLikelihood as pyLike
 import numpy as num
 from LikelihoodState import LikelihoodState
+
+class QuadraticFit_np(object):
+    """numpy.poly1d/polyfit based implemetation"""
+    def __init__(self, xx, yy, xmin=None):
+        self.xx = [x for x in xx]
+        self.yy = [y for y in yy]
+        self.pars = num.polyfit(self.xx, self.yy, 2)
+    def add_pair(self, x, y):
+        self.xx.append(x)
+        self.yy.append(y)
+        self.pars = num.polyfit(self.xx, self.yy, 2)
+    def errorEst(self):
+        return 0.5/num.sqrt(self.pars[0])
+    def xval(self, yval):
+        a, b, c = self.pars
+        if a > 0:
+            c -= yval
+            qq = -0.5*(b + num.sign(b)*num.sqrt(b*b - 4.*a*c))
+            x1, x2 = qq/a, c/qq
+            return max(x1, x2)
+        else:  # extrapolate a linear fit
+            a, b = num.polyfit(self.xx, self.yy, 1)
+            x = (yval - b)/a
+            return x
+    def yval(self, xval):
+        f = num.poly1d(self.pars)
+        y = f(xval)
+        return y
 
 class QuadraticFit(object):
     def __init__(self, xx, yy, xmin=None):
@@ -30,6 +58,9 @@ class QuadraticFit(object):
         self.Sxy += xx*y
         self.Sxx += xx*xx
         self.npts += 1
+    def errorEst(self):
+        intercept, slope = self.fitPars()
+        return np.sqrt(1./slope/2.)
     def fitPars(self):
         denominator = self.npts*self.Sxx - self.Sx*self.Sx
         slope = (self.npts*self.Sxy - self.Sy*self.Sx)/denominator
@@ -37,17 +68,25 @@ class QuadraticFit(object):
         return intercept, slope
     def xval(self, yval):
         y0, dydx = self.fitPars()
-        return num.sqrt((yval - y0)/dydx) + self.xmin
+        result = num.sqrt((yval - y0)/dydx) + self.xmin
+        if result != result:
+            raise RuntimeError("NaN encountered in QuadraticFit.xval")
+        return result
     def yval(self, xval):
         y0, dydx = self.fitPars()
-        return y0 + dydx*xval*xval
+        result = y0 + dydx*xval*xval
+        if result != result:
+            raise RuntimeError("NaN encountered in QuadraticFit.yval")
+        return result
+
+QuadFit = QuadraticFit_np
     
 class ULResult(object):
     def __init__(self, value, emin, emax, delta, fluxes, dlogLike, parvalues):
         self.value = value
         self.emin, self.emax = emin, emax
         self.delta = delta
-        self.fluxes, self.dlogLike, self.parvalues = fluxes, dlogLike, parvalues
+        self.fluxes, self.dlogLike, self.parvalues = fluxes,dlogLike,parvalues
     def __repr__(self):
         return ("%.2e ph/cm^2/s for emin=%.1f, emax=%.1f, delta(logLike)=%.2f"
                 % (self.value, self.emin, self.emax, self.delta))
@@ -62,7 +101,7 @@ class UpperLimit(object):
     def compute(self, emin=100, emax=3e5, delta=2.71/2., 
                 tmpfile='temp_model.xml', fix_src_pars=False,
                 verbosity=1, nsigmax=2, npts=5, renorm=False,
-                mindelta=1e-2):
+                mindelta=1e-2, resample=False):
         saved_state = LikelihoodState(self.like)
         
         # Store the value of the covariance flag
@@ -98,28 +137,17 @@ class UpperLimit(object):
         dx, dlogLike_est = self._find_dx(self.normPar, normPar_error,
                                          nsigmax, renorm, 
                                          logLike0, mindelta=mindelta)
-        xvals, dlogLike, fluxes = [], [], []
-        if verbosity > 1:
-            print self.like.model
-        #
-        # Fit a quadratic to a handful of points
-        #
-        if delta < dlogLike_est:
-            npts = max(npts, 2.*nsigmax*dx/delta)
-        for i, x in enumerate(num.arange(x0, x0+nsigmax*dx, nsigmax*dx/npts)):
-            xvals.append(x)
-            self.like[self.indx] = x
-            self.fit(0, renorm=renorm)
-            dlogLike.append(self.like() - logLike0)
-            fluxes.append(self.like[source].flux(emin, emax))
-            if verbosity > 0:
-                print i, x, dlogLike[-1], fluxes[-1]
-            if dlogLike[-1] > delta and i > 2:
-                # We have already surpassed the desired delta and 
-                # have sufficient points for a quadratic fit, 
-                # so exit this loop.
+        while True:
+            i, xvals, dlogLike, fluxes = \
+                   self._sample_likelihood_profile(delta, dx, dlogLike_est,
+                                                   nsigmax, npts, verbosity,
+                                                   renorm, source, emin, emax,
+                                                   logLike0, x0)
+            if max(dlogLike) > 1e-2:
                 break
-        yfit = QuadraticFit(xvals, dlogLike)
+            dx *= 10
+
+        yfit = QuadFit(xvals, dlogLike)
         #
         # Extend the fit until it surpasses the desired delta
         #
@@ -138,6 +166,24 @@ class UpperLimit(object):
             i += 1
             if verbosity > 0:
                 print i, x, dlogLike[-1], fluxes[-1]
+        if resample:
+            new_xvals = num.linspace(min(xvals), max(xvals), len(xvals))
+            new_dlogLike = []
+            new_fluxes = []
+            for i, x in enumerate(new_xvals):
+                try:
+                    self.like[self.indx] = x
+                except RuntimeError, message:
+                    print x
+                    raise RuntimeError(message)
+                self.fit(0, renorm=renorm)
+                new_dlogLike.append(self.like() - logLike0)
+                new_fluxes.append(self.like[source].flux(emin, emax))
+                if verbosity > 0:
+                    print i, x, new_dlogLike[-1], new_fluxes[-1]
+            xvals = new_xvals
+            dlogLike = new_dlogLike
+            fluxes = new_fluxes
         if fix_src_pars:
             self.like.setFreeFlag(source, freePars, 1)
             self.like.syncSrcParams(self.source)
@@ -222,9 +268,8 @@ class UpperLimit(object):
 
         xvals = num.arange(x0, x0 + xsig*3, (xsig*3)/10.)
         yvals = num.array([self._logLike(x, renorm) for x in xvals])
-        quadfit = QuadraticFit(xvals, yvals, xmin=x0)
-        intercept, slope = quadfit.fitPars()
-        sigest = num.sqrt(1./slope/2.)
+        quadfit = QuadFit(xvals, yvals, xmin=x0)
+        sigest = quadfit.errorEst()
 
         saved_state.restore()
         self.like.covar_is_current = covar_is_current
@@ -298,6 +343,31 @@ class UpperLimit(object):
         self.bayesianUL_integral = x, integral_dist, y, yy
         
         return flux, xval
+    def _sample_likelihood_profile(self, delta, dx, dlogLike_est,
+                                   nsigmax, npts, verbosity, renorm, source,
+                                   emin, emax, logLike0, x0):
+        xvals, dlogLike, fluxes = [], [], []
+        if verbosity > 1:
+            print self.like.model
+        #
+        # Fit a quadratic to a handful of points
+        #
+        if delta < dlogLike_est:
+            npts = max(npts, 2.*nsigmax*dx/delta)
+        for i, x in enumerate(num.arange(x0, x0+nsigmax*dx, nsigmax*dx/npts)):
+            xvals.append(x)
+            self.like[self.indx] = x
+            self.fit(0, renorm=renorm)
+            dlogLike.append(self.like() - logLike0)
+            fluxes.append(self.like[source].flux(emin, emax))
+            if verbosity > 0:
+                print i, x, dlogLike[-1], fluxes[-1]
+            if dlogLike[-1] > delta and i > 2:
+                # We have already surpassed the desired delta and 
+                # have sufficient points for a quadratic fit, 
+                # so exit this loop.
+                break
+        return i, xvals, dlogLike, fluxes
     def _find_dx(self, par, par_error, nsigmax, renorm, logLike0, 
                  niter=3, factor=2, mindelta=1e-2):
         """Find an initial dx such that the change in -log-likelihood 
