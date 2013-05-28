@@ -2,11 +2,12 @@
    @file release.notes
    @brief package pyLikelihood
    @author J. Chiang <jchiang@slac.stanford.edu>
-   $Id: release.notes,v 1.147 2013/03/28 16:17:24 jchiang Exp $
+   $Id: release.notes,v 1.148 2013/04/30 18:23:44 jchiang Exp $
 
    @verbatim
    * EOH *
 
+ pyLikelihood-01-31-05 28-May-2013 jchiang dynamically increase profile sampling step in UpperLimit.compute(...) based on delta-log-likelihood values
  pyLikelihood-01-31-04 30-Apr-2013 jchiang docstrings for AnalysisBase.py from Jeremy; improved parameter handling
  pyLikelihood-01-31-03 28-Mar-2013 jchiang workaround for RootPlot.plotFixed(...) induced by move to ROOT v5.34
  pyLikelihood-01-31-02 27-Dec-2012 jchiang implement setEquals for composite Parameter class so that LikelihoodState.restore works on SummedLikelihood objects
