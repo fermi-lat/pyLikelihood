@@ -6,7 +6,7 @@
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/UpperLimits.py,v 1.32 2011/03/29 22:23:41 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/UpperLimits.py,v 1.33 2013/05/28 21:27:32 jchiang Exp $
 #
 import copy
 import bisect
@@ -25,7 +25,12 @@ class QuadraticFit_np(object):
         self.yy.append(y)
         self.pars = num.polyfit(self.xx, self.yy, 2)
     def errorEst(self):
-        return 0.5/num.sqrt(self.pars[0])
+        # Estimate the 1-sigma error by computing x-value from the
+        # quadratic fit that gives dy = 0.5, appropriate for a
+        # log-likelihood.
+        yval = 0.5 + min(self.yy)
+        dx = self.xval(yval) - min(self.xx)
+        return dx
     def xval(self, yval):
         a, b, c = self.pars
         if a > 0:
@@ -60,7 +65,7 @@ class QuadraticFit(object):
         self.npts += 1
     def errorEst(self):
         intercept, slope = self.fitPars()
-        return np.sqrt(1./slope/2.)
+        return num.sqrt(1./slope/2.)
     def fitPars(self):
         denominator = self.npts*self.Sxx - self.Sx*self.Sx
         slope = (self.npts*self.Sxy - self.Sy*self.Sx)/denominator
@@ -242,6 +247,9 @@ class UpperLimit(object):
         self.scanLike = dlogLike
         return xvals, dlogLike
     def _logLike(self, xpar, renorm):
+        xmin, xmax = self.like[self.indx].getBounds()
+        if xpar < xmin or xpar > xmax:
+            raise RuntimeError("Attempt to set parameter value outside bounds.")
         self.like[self.indx] = xpar
         self.fit(0, renorm=renorm)
         return self.like()
@@ -299,6 +307,9 @@ class UpperLimit(object):
             print ("Setting lower bound on normalization parameter " +
                    "to zero temporarily for upper limit calculation.")
         self.like[self.indx].setBounds(0, current_bounds[1])
+
+        if x0 + normPar_nsig > current_bounds[1]:
+            normPar_nsig = current_bounds[1] - x0
 
         dlogLike_plus = (self._logLike(x0 + normPar_nsig, renorm)
                          - saved_state.negLogLike)
