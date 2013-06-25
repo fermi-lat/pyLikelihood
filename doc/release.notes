@@ -2,11 +2,12 @@
    @file release.notes
    @brief package pyLikelihood
    @author J. Chiang <jchiang@slac.stanford.edu>
-   $Id: release.notes,v 1.148 2013/04/30 18:23:44 jchiang Exp $
+   $Id: release.notes,v 1.149 2013/05/28 21:28:19 jchiang Exp $
 
    @verbatim
    * EOH *
 
+ pyLikelihood-01-31-06 24-Jun-2013 jchiang use delta-log-likelihood = 0.5 for calculation in UpperLimit.errorEst()
  pyLikelihood-01-31-05 28-May-2013 jchiang dynamically increase profile sampling step in UpperLimit.compute(...) based on delta-log-likelihood values
  pyLikelihood-01-31-04 30-Apr-2013 jchiang docstrings for AnalysisBase.py from Jeremy; improved parameter handling
  pyLikelihood-01-31-03 28-Mar-2013 jchiang workaround for RootPlot.plotFixed(...) induced by move to ROOT v5.34
