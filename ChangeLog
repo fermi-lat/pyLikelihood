@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Sat Aug 10 21:26:16 PDT 2013
+ScienceTools-scons/pyLikelihood/python
+
+Modified Files:
+	BinnedAnalysis.py UnbinnedAnalysis.py 
+Log Message:
+new irf handling code
+    *
+------------------------------------------------------------
 TAG
 Tag name: ScienceTools-09-32-05, operation: add
 Package: pyLikelihood
