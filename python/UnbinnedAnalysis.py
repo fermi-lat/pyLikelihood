@@ -4,7 +4,7 @@ Python interface for unbinned likelihood
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/UnbinnedAnalysis.py,v 1.42 2012/09/11 22:58:54 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/UnbinnedAnalysis.py,v 1.44 2012/09/12 16:50:20 jchiang Exp $
 #
 
 import sys
@@ -28,7 +28,7 @@ def _resolveFileList(files):
 
 class UnbinnedObs(object):
     def __init__(self, eventFile=None, scFile=None, expMap=None,
-                 expCube=None, irfs='DC1A', checkCuts=True, sctable='SC_DATA'):
+                 expCube=None, irfs=None, checkCuts=True, sctable='SC_DATA'):
         self.sctable = sctable
         self.checkCuts = checkCuts
         if eventFile is None and scFile is None:
@@ -37,7 +37,12 @@ class UnbinnedObs(object):
             self._checkCuts(eventFile, expMap, expCube)
         self.expMap = expMap
         self.expCube = expCube
-        self.irfs = irfs
+        if irfs is None or irfs == 'INDEF':
+            evfiles = self._fileList(eventFile)
+            my_cuts = pyLike.Cuts(evfiles[0], "EVENTS", False, True, True)
+            self.irfs = my_cuts.irfName()
+        else:
+            self.irfs = irfs
         self._inputs = '\n'.join(('Event file(s): ' + str(eventFile),
                                   'Spacecraft file(s): ' + str(scFile),
                                   'Exposure map: ' + str(expMap),
@@ -46,7 +51,7 @@ class UnbinnedObs(object):
         self._respFuncs = pyLike.ResponseFunctions()
         evfiles = self._fileList(eventFile)
         evt_types = pyLike.AppHelpers_getSelectedEvtTypes(evfiles[0],"UNBINNED")
-        self._respFuncs.load(irfs, "", evt_types)
+        self._respFuncs.load(self.irfs, "", evt_types)
         self._expMap = pyLike.ExposureMap()
         if expMap is not None and expMap != "":
             self._expMap.readExposureFile(expMap)
