@@ -1,5 +1,5 @@
 // -*- mode: c++ -*-
-// $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/src/pyLikelihood.i,v 1.25 2012/09/13 20:12:36 jchiang Exp $
+// $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/src/pyLikelihood.i,v 1.26 2012/11/20 16:49:52 jchiang Exp $
 %module pyLikelihood
 %{
 #ifdef TRAP_FPE
@@ -15,6 +15,7 @@
 #include "irfLoader/Loader.h"
 #include "irfInterface/IEfficiencyFactor.h"
 #include "irfInterface/IrfsFactory.h"
+#include "dataSubselector/Cuts.h"
 #include "healpix/CosineBinner.h"
 #include "map_tools/Exposure.h"
 #include "map_tools/SkyImage.h"
@@ -142,6 +143,7 @@ using optimizers::Exception;
 %template(SkyDirVector) std::vector<astro::SkyDir>;
 %template(SkyDirPair) std::pair<astro::SkyDir, astro::SkyDir>;
 %feature("autodoc", "1");
+%include dataSubselector/Cuts.h
 %include healpix/CosineBinner.h
 %include map_tools/Exposure.h
 %include map_tools/SkyImage.h

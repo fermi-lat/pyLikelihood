@@ -4,7 +4,7 @@ Python interface for binned likelihood.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/BinnedAnalysis.py,v 1.47 2012/09/11 22:58:54 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/BinnedAnalysis.py,v 1.48 2012/09/13 20:12:36 jchiang Exp $
 #
 
 import os
@@ -22,7 +22,7 @@ _funcFactory = pyLike.SourceFactory_funcFactory()
 
 class BinnedObs(object):
     def __init__(self, srcMaps=None, expCube=None, binnedExpMap=None,
-                 irfs='DC1A', phased_expmap=None):
+                 irfs=None, phased_expmap=None):
         if srcMaps is None or expCube is None:
             srcMaps, expCube, binnedExpMap, irfs = self._obsDialog(srcMaps,
                                                                    expCube)
@@ -36,10 +36,14 @@ class BinnedObs(object):
         self.expCube = expCube
         self.binnedExpMap = binnedExpMap
         self.phased_expmap = phased_expmap
-        self.irfs = irfs
+        if irfs is None or irfs == 'INDEF':
+            my_cuts = pyLike.Cuts(srcMaps, "", False, True, True)
+            self.irfs = my_cuts.irfName()
+        else:
+            self.irfs = irfs
         pyLike.AppHelpers_checkExposureMap(srcMaps, binnedExpMap)
         self.countsMap = pyLike.CountsMap(srcMaps)
-        self._createObservation(srcMaps, expCube, irfs)
+        self._createObservation(srcMaps, expCube, self.irfs)
     def _createObservation(self, srcMaps, expCube, irfs):
         self._respFuncs = pyLike.ResponseFunctions()
         evt_types = pyLike.AppHelpers_getSelectedEvtTypes(self.srcMaps,"BINNED")
