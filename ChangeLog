@@ -1,5 +1,14 @@
 ------------------------------------------------------------
 User: jchiang  Sat Aug 10 21:26:16 PDT 2013
+ScienceTools-scons/pyLikelihood/src
+
+Modified Files:
+	pyLikelihood.i 
+Log Message:
+new irf handling code
+    *
+------------------------------------------------------------
+User: jchiang  Sat Aug 10 21:26:16 PDT 2013
 ScienceTools-scons/pyLikelihood/python
 
 Modified Files:
