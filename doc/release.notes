@@ -2,11 +2,12 @@
    @file release.notes
    @brief package pyLikelihood
    @author J. Chiang <jchiang@slac.stanford.edu>
-   $Id: release.notes,v 1.149 2013/05/28 21:28:19 jchiang Exp $
+   $Id: release.notes,v 1.150 2013/06/25 05:24:11 jchiang Exp $
 
    @verbatim
    * EOH *
 
+ pyLikelihood-01-32-00 10-Aug-2013 jchiang add irf handling code
  pyLikelihood-01-31-06 24-Jun-2013 jchiang use delta-log-likelihood = 0.5 for calculation in UpperLimit.errorEst()
  pyLikelihood-01-31-05 28-May-2013 jchiang dynamically increase profile sampling step in UpperLimit.compute(...) based on delta-log-likelihood values
  pyLikelihood-01-31-04 30-Apr-2013 jchiang docstrings for AnalysisBase.py from Jeremy; improved parameter handling
