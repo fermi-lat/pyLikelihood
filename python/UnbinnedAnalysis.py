@@ -4,7 +4,7 @@ Python interface for unbinned likelihood
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/UnbinnedAnalysis.py,v 1.44 2012/09/12 16:50:20 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/UnbinnedAnalysis.py,v 1.45 2013/08/11 04:26:15 jchiang Exp $
 #
 
 import sys
@@ -37,10 +37,10 @@ class UnbinnedObs(object):
             self._checkCuts(eventFile, expMap, expCube)
         self.expMap = expMap
         self.expCube = expCube
-        if irfs is None or irfs == 'INDEF':
+        if irfs is None or irfs == 'CALDB':
             evfiles = self._fileList(eventFile)
             my_cuts = pyLike.Cuts(evfiles[0], "EVENTS", False, True, True)
-            self.irfs = my_cuts.irfName()
+            self.irfs = my_cuts.CALDB_implied_irfs()
         else:
             self.irfs = irfs
         self._inputs = '\n'.join(('Event file(s): ' + str(eventFile),
@@ -50,7 +50,7 @@ class UnbinnedObs(object):
                                   'IRFs: ' + str(irfs)))
         self._respFuncs = pyLike.ResponseFunctions()
         evfiles = self._fileList(eventFile)
-        evt_types = pyLike.AppHelpers_getSelectedEvtTypes(evfiles[0],"UNBINNED")
+        evt_types = pyLike.AppHelpers_getSelectedEvtTypes(evfiles[0], "EVENTS")
         self._respFuncs.load(self.irfs, "", evt_types)
         self._expMap = pyLike.ExposureMap()
         if expMap is not None and expMap != "":
