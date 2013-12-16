@@ -2,11 +2,12 @@
    @file release.notes
    @brief package pyLikelihood
    @author J. Chiang <jchiang@slac.stanford.edu>
-   $Id: release.notes,v 1.152 2013/08/27 16:08:33 jchiang Exp $
+   $Id: release.notes,v 1.153 2013/09/04 05:32:31 jchiang Exp $
 
    @verbatim
    * EOH *
 
+ pyLikelihood-01-33-02 16-Dec-2013 jchiang define additional plotting symbols (from David Landriu) to RootPlot.py
  pyLikelihood-01-33-01 03-Sep-2013 jchiang call ScData::clear_arrays(...) in UnbinnedAnalysis after event data are read in
  pyLikelihood-01-33-00 27-Aug-2013 jchiang changes for FSSC-requested irfs handling
  pyLikelihood-01-32-00 10-Aug-2013 jchiang add irf handling code
