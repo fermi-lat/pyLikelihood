@@ -21,7 +21,17 @@ _symbols = {'line' : ('C', 0, 1),
             'point' : ('P', 0, 1),
             'nopoint' : ('P', 1, 1),
             'plus' : ('P', 2, 1),
-            'times' : ('P', 3, 1)}
+            'times' : ('P', 3, 1),
+            'linenohats' : ('Cz', 0, 1),
+            'dashednohats' : ('Cz', 0, 2),
+            'dottednohats' : ('Cz', 0, 3),
+            'dash-dotnohats' : ('Cz', 0, 4),
+            'Ldash-dotnohats' : ('Cz', 0, 5),
+            'poly-linenohats' : ('Lz', 0, 1),
+            'pointnohats' : ('Pz', 0, 1),
+            'nopointnohats' : ('Pz', 1, 1),
+            'plusnohats' : ('Pz', 2, 1),
+            'timesnohats' : ('Pz', 3, 1)}
 
 _colors = {'white' : 0,
            'black' : 1,
