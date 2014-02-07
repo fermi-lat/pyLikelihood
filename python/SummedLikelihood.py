@@ -6,7 +6,7 @@ classes.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/SummedLikelihood.py,v 1.17 2010/11/30 15:36:21 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/SummedLikelihood.py,v 1.18 2012/12/28 05:58:43 jchiang Exp $
 #
 
 import pyLikelihood as pyLike
@@ -188,13 +188,13 @@ class SummedLikelihood(AnalysisBase):
             self.covar_is_current = True
         else:
             self.covar_is_current = False
-        for component in self.components:
-            j = 0
-            for i in range(len(component.model.params)):
-                if component.model[i].isFree():
-                    component.model[i].setError(errors[j])
-                    j += 1
+        self._set_errors(errors)
         return errors
+    def _set_errors(self, errors):
+        my_errors = list(errors)
+        self.composite.setErrors(my_errors)
+        for component in self.components:
+            component.model = SourceModel(component.logLike)
     def Ts(self, srcName, reoptimize=False, approx=True,
            tol=None, MaxIterations=10, verbosity=0):
         if verbosity > 0:
