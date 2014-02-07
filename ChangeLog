@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Thu Feb  6 22:38:44 PST 2014
+ScienceTools-scons/pyLikelihood/python
+
+Modified Files:
+	SummedLikelihood.py 
+Log Message:
+enable parameter tying for SummedLikelihood
+    *
+------------------------------------------------------------
 TAG
 Tag name: pyLikelihood-01-33-02, operation: add
 Package: pyLikelihood
