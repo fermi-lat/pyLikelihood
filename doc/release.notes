@@ -2,11 +2,12 @@
    @file release.notes
    @brief package pyLikelihood
    @author J. Chiang <jchiang@slac.stanford.edu>
-   $Id: release.notes,v 1.154 2013/12/16 17:22:45 jchiang Exp $
+   $Id: release.notes,v 1.155 2014/02/07 22:46:23 jchiang Exp $
 
    @verbatim
    * EOH *
 
+ pyLikelihood-01-34-01 19-Mar-2014 jchiang bug-fix: ensure extra attributes from xml file are propagated to SourceModel objects after synching up errors in SummedLikelihood
  pyLikelihood-01-34-00 07-Feb-2014 jchiang enable tying of parameters in SummedLikelihood
  pyLikelihood-01-33-02 16-Dec-2013 jchiang define additional plotting symbols (from David Landriu) to RootPlot.py
  pyLikelihood-01-33-01 03-Sep-2013 jchiang call ScData::clear_arrays(...) in UnbinnedAnalysis after event data are read in
