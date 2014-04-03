@@ -1,6 +1,6 @@
 # -*- python -*-
 #
-# $Id: SConscript,v 1.115 2013/04/30 18:23:44 jchiang Exp $
+# $Id: SConscript,v 1.123 2014/03/19 20:19:49 jchiang Exp $
 # Authors: James Chiang <jchiang@slac.stanford.edu>
 # Version: pyLikelihood-01-31-05
 
