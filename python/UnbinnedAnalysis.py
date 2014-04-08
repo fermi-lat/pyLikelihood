@@ -4,7 +4,7 @@ Python interface for unbinned likelihood
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/UnbinnedAnalysis.py,v 1.46 2013/08/27 04:44:14 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/UnbinnedAnalysis.py,v 1.47 2013/09/04 05:29:36 jchiang Exp $
 #
 
 import sys
@@ -142,7 +142,7 @@ class UnbinnedObs(object):
             output.close()
 
 class UnbinnedAnalysis(AnalysisBase):
-    def __init__(self, observation, srcModel=None, optimizer='Drmngb'):
+    def __init__(self, observation, srcModel=None, optimizer='Drmngb', nee=21):
         AnalysisBase.__init__(self)
         if srcModel is None:
             srcModel, optimizer = self._srcDialog()
@@ -155,7 +155,6 @@ class UnbinnedAnalysis(AnalysisBase):
         self.logLike.computeEventResponses()
         self.model = SourceModel(self.logLike, srcModel)
         eMin, eMax = self.observation.roiCuts().getEnergyCuts()
-        nee = 21
         estep = num.log(eMax/eMin)/(nee-1)
         self.energies = eMin*num.exp(estep*num.arange(nee, dtype=num.float))
         self.energies[-1] = eMax
@@ -251,7 +250,7 @@ class UnbinnedAnalysis(AnalysisBase):
         energies = num.logspace(num.log10(emin), num.log10(emax), npts)
         self.reset_ebounds(energies)
         
-def unbinnedAnalysis(mode="ql", ftol=None, **pars):
+def unbinnedAnalysis(mode="ql", ftol=None, nee=21, **pars):
     """Return an UnbinnedAnalysis object using the data in gtlike.par"""
     parnames = ('irfs', 'scfile', 'evfile', 'expmap', 'expcube', 
                 'srcmdl', 'optimizer')
@@ -275,7 +274,7 @@ def unbinnedAnalysis(mode="ql", ftol=None, **pars):
                       expMap=_null_file(pars['expmap']),
                       expCube=_null_file(pars['expcube']),
                       irfs=irfs)
-    like = UnbinnedAnalysis(obs, pars['srcmdl'], pars['optimizer'])
+    like = UnbinnedAnalysis(obs, pars['srcmdl'], pars['optimizer'], nee=nee)
     if ftol is not None:
         like.tol = ftol
     else:

@@ -1,5 +1,5 @@
 // -*- mode: c++ -*-
-// $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/src/pyLikelihood.i,v 1.26 2012/11/20 16:49:52 jchiang Exp $
+// $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/src/pyLikelihood.i,v 1.27 2013/08/11 04:26:16 jchiang Exp $
 %module pyLikelihood
 %{
 #ifdef TRAP_FPE
@@ -121,7 +121,7 @@ using optimizers::Exception;
    try {
       $action
    } catch (std::exception & eObj) {
-      PyErr_SetString(PyExc_RuntimeError, const_cast<char*>(eObj.what()));
+      PyErr_SetString(PyExc_RuntimeError, const_cast<char *>(eObj.what()));
       return NULL;
    }
 }
@@ -480,7 +480,7 @@ using optimizers::Exception;
 }
 %extend st_app::StApp {
    static st_app::AppParGroup parGroup(const std::string & appName) {
-      char * argv[] = {"dummy_app"};
+      char * argv[] = {const_cast<char *>("dummy_app")};
       int argc(1);
       st_app::StApp::processCommandLine(argc, argv);
       StAppInterface foo(appName);
