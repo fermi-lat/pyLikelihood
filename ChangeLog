@@ -1,5 +1,14 @@
 ------------------------------------------------------------
 User: jchiang  Tue Apr  8 09:36:28 PDT 2014
+ScienceTools-scons/pyLikelihood/src
+
+Modified Files:
+	pyLikelihood.i 
+Log Message:
+enable users to set the number of energy bins in counts spectra plots for UnbinnedAnalysis; fix const issue with char * constants
+    *
+------------------------------------------------------------
+User: jchiang  Tue Apr  8 09:36:28 PDT 2014
 ScienceTools-scons/pyLikelihood/python
 
 Modified Files:
