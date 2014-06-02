@@ -1,4 +1,14 @@
 ------------------------------------------------------------
+User: jchiang  Mon Jun  2 16:14:02 PDT 2014
+ScienceTools-scons/pyLikelihood/python
+
+Modified Files:
+	AnalysisBase.py 
+Log Message:
+If source has no free parameters return zero for fluxError(...)
+
+    *
+------------------------------------------------------------
 TAG
 Tag name: ScienceTools-09-33-03, operation: add
 Package: pyLikelihood
