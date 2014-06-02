@@ -4,7 +4,7 @@ Base class for Likelihood analysis Python modules.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/AnalysisBase.py,v 1.78 2013/04/30 18:22:58 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/AnalysisBase.py,v 1.79 2014/04/08 16:36:28 jchiang Exp $
 #
 
 import sys
@@ -368,6 +368,9 @@ class AnalysisBase(object):
         srcpars = pyLike.StringVector()
         self[srcName].src.spectrum().getFreeParamNames(srcpars)
         pars = ["::".join((srcName, x)) for x in srcpars]
+        if len(pars) == 0:
+            # All parameters are fixed so return zero
+            return 0
         for xpar in pars:
             ix = par_index_map[xpar]
             my_covar.append([covar[ix][par_index_map[ypar]] for ypar in pars])
