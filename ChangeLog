@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: mdwood  Mon Jun 23 23:31:16 PDT 2014
+ScienceTools-scons/pyLikelihood/src
+
+Modified Files:
+	pyLikelihood.i 
+Log Message:
+Adding SWIG template for FloatVectorVector to allow proper translation of WcsMap return values.
+    *
+------------------------------------------------------------
 User: jchiang  Mon Jun  2 16:14:02 PDT 2014
 ScienceTools-scons/pyLikelihood/python
 
