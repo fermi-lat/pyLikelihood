@@ -2,11 +2,12 @@
    @file release.notes
    @brief package pyLikelihood
    @author J. Chiang <jchiang@slac.stanford.edu>
-   $Id: release.notes,v 1.157 2014/04/08 16:48:41 jchiang Exp $
+   $Id: release.notes,v 1.158 2014/06/25 07:14:59 mdwood Exp $
 
    @verbatim
    * EOH *
 
+ pyLikelihood-01-34-04 14-Jul-2014 jchiang enable psfcorr option for [bB]innedAnalysis
  pyLikelihood-01-34-03 25-Jun-2014 mdwood Adding a SWIG template for vector< vector<float> > to allow proper translation of WcsMap return value to numpy array.
  pyLikelihood-01-34-02 08-Apr-2014 jchiang const fixes
  pyLikelihood-01-34-01 19-Mar-2014 jchiang bug-fix: ensure extra attributes from xml file are propagated to SourceModel objects after synching up errors in SummedLikelihood
