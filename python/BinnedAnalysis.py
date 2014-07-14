@@ -4,7 +4,7 @@ Python interface for binned likelihood.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/BinnedAnalysis.py,v 1.49 2013/08/11 04:26:15 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/BinnedAnalysis.py,v 1.50 2013/08/27 04:44:14 jchiang Exp $
 #
 
 import os
@@ -121,7 +121,7 @@ class BinnedObs(object):
         
 class BinnedAnalysis(AnalysisBase):
     def __init__(self, binnedData, srcModel=None, optimizer='Drmngb',
-                 use_bl2=False, verbosity=0):
+                 use_bl2=False, verbosity=0, psfcorr=True):
         AnalysisBase.__init__(self)
         if srcModel is None:
             srcModel, optimizer = self._srcDialog()
@@ -132,12 +132,12 @@ class BinnedAnalysis(AnalysisBase):
             self.logLike = pyLike.BinnedLikelihood2(binnedData.countsMap,
                                                     binnedData.observation,
                                                     binnedData.srcMaps,
-                                                    True)
+                                                    True, psfcorr)
         else:
             self.logLike = pyLike.BinnedLikelihood(binnedData.countsMap,
                                                    binnedData.observation,
                                                    binnedData.srcMaps,
-                                                   True)
+                                                   True, psfcorr)
         self.verbosity = verbosity
         self.logLike.initOutputStreams()
         self.logLike.readXml(srcModel, _funcFactory, False, True, False)
@@ -249,7 +249,8 @@ class BinnedAnalysis(AnalysisBase):
 
 def binnedAnalysis(mode='ql', ftol=None, **pars):
     """Return a BinnedAnalysis object using the data in gtlike.par."""
-    parnames = ('irfs', 'cmap', 'bexpmap', 'expcube', 'srcmdl', 'optimizer')
+    parnames = ('irfs', 'cmap', 'bexpmap', 'expcube', 'srcmdl', 'optimizer',
+                'psfcorr', 'chatter')
     pargroup = pyLike.StApp_parGroup('gtlike')
     for item in parnames:
         if not pars.has_key(item):
@@ -259,6 +260,10 @@ def binnedAnalysis(mode='ql', ftol=None, **pars):
                 pars[item] = float(pargroup[item])
             except ValueError:
                 pars[item] = pargroup[item]
+            if pars[item] == 'true':
+                pars[item] = True
+            if pars[item] == 'false':
+                pars[item] = False
     pargroup.Save()
     srcmaps = pars['cmap']
     expcube = _null_file(pars['expcube'])
@@ -270,7 +275,12 @@ def binnedAnalysis(mode='ql', ftol=None, **pars):
         phased_expmap = None
     obs = BinnedObs(srcMaps=srcmaps, expCube=expcube, binnedExpMap=expmap,
                     irfs=irfs, phased_expmap=phased_expmap)
-    like = BinnedAnalysis(obs, pars['srcmdl'], pars['optimizer'])
+    verbosity = 0
+    if pars['chatter'] > 2:
+        verbosity = 1
+    like = BinnedAnalysis(obs, pars['srcmdl'], pars['optimizer'], 
+                          use_bl2=False, verbosity=verbosity,
+                          psfcorr=pars['psfcorr'])
     if ftol is not None:
         like.tol = ftol
     else:
