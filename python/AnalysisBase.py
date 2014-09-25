@@ -4,7 +4,7 @@ Base class for Likelihood analysis Python modules.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/AnalysisBase.py,v 1.79 2014/04/08 16:36:28 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.80 2014/06/02 23:14:02 jchiang Exp $
 #
 
 import sys
@@ -539,10 +539,18 @@ class AnalysisBase(object):
         try:
             if _plotter_package == 'root':
                 from RootPlot import RootPlot
-                self.plotter = RootPlot
+                self.plotter = RootPlot    
             elif _plotter_package == 'hippo':
-                from HippoPlot import HippoPlot
-                self.plotter = HippoPlot
+                try:
+                    from HippoPlot import HippoPlot
+                    self.plotter = HippoPlot
+                except ImportError:
+                    print "Failed importing Hippoplot.  Defaulting to MatPlotLib."
+                    from MPLPlot import MPLPlot
+                    self.plotter = MPLPlot        
+            elif _plotter_package == 'mpl':
+                    from MPLPlot import MPLPlot
+                    self.plotter = MPLPlot
         except ImportError:
             raise RuntimeError, ("Sorry plotting is not available using %s.\n"
                                  % _plotter_package +
