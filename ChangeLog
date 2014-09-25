@@ -1,4 +1,15 @@
 ------------------------------------------------------------
+User: asercion  Thu Sep 25 12:11:34 PDT 2014
+pyLikelihood/python
+
+Modified Files:
+	AnalysisBase.py 
+Added Files:
+	MPLPlot.py 
+Log Message:
+Added Tom Stephen's changes to enable root-free builds using matplotlib
+    *
+------------------------------------------------------------
 TAG
 Tag name: ScienceTools-09-34-02, operation: add
 Package: pyLikelihood
