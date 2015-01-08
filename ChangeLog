@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Thu Jan  8 13:11:00 PST 2015
+ScienceTools-scons/pyLikelihood/src
+
+Modified Files:
+	pyLikelihood.i 
+Log Message:
+comment out use of vector<unsigned int> template that apparently confuses swig on rhel5-32
+    *
+------------------------------------------------------------
 TAG
 Tag name: pyLikelihood-02-00-00, operation: add
 Package: pyLikelihood
