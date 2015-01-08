@@ -2,11 +2,12 @@
    @file release.notes
    @brief package pyLikelihood
    @author J. Chiang <jchiang@slac.stanford.edu>
-   $Id: release.notes,v 1.160 2014/09/25 19:21:40 asercion Exp $
+   $Id: release.notes,v 1.161 2015/01/08 17:28:14 jchiang Exp $
 
    @verbatim
    * EOH *
 
+ pyLikelihood-02-00-01 08-Jan-2015 jchiang comment out use of vector<unsigned int> template that confuses swig on rhel5-32
  pyLikelihood-02-00-00 08-Jan-2015 jchiang Pass 8 development
  pyLikelihood-01-34-05 25-Sep-2014 asercion Added code to pylikelihood to enable root-free builds which use matplotlib. 
  pyLikelihood-01-34-04 14-Jul-2014 jchiang enable psfcorr option for [bB]innedAnalysis
