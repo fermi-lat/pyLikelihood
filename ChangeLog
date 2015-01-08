@@ -1,4 +1,14 @@
 ------------------------------------------------------------
+User: jchiang  Thu Jan  8 13:40:32 PST 2015
+ScienceTools-scons/pyLikelihood/src
+
+Modified Files:
+	pyLikelihood.i 
+Log Message:
+swig stl.i apparently already defines the template for std::vector<unsigned int>
+
+    *
+------------------------------------------------------------
 TAG
 Tag name: pyLikelihood-02-00-01, operation: add
 Package: pyLikelihood
