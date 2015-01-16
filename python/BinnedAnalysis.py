@@ -4,7 +4,7 @@ Python interface for binned likelihood.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/BinnedAnalysis.py,v 1.50 2013/08/27 04:44:14 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/BinnedAnalysis.py,v 1.51 2014/07/14 22:47:02 jchiang Exp $
 #
 
 import os
@@ -46,8 +46,7 @@ class BinnedObs(object):
         self._createObservation(srcMaps, expCube, self.irfs)
     def _createObservation(self, srcMaps, expCube, irfs):
         self._respFuncs = pyLike.ResponseFunctions()
-        evt_types = pyLike.AppHelpers_getSelectedEvtTypes(self.srcMaps, "")
-        self._respFuncs.load(irfs, "", evt_types)
+        self._respFuncs.load_with_event_types(irfs, "", self.srcMaps, "")
         self._expMap = pyLike.ExposureMap()
         self._scData = pyLike.ScData()
         self._roiCuts = pyLike.RoiCuts()
