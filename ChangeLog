@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Fri Jan 16 15:05:48 PST 2015
+ScienceTools-scons/pyLikelihood/python
+
+Modified Files:
+	BinnedAnalysis.py UnbinnedAnalysis.py 
+Log Message:
+avoid exposing AppHelpers::getSelectedEvtTypes to handle unsigned int vs size_t re-definition in rh5-32 builds
+    *
+------------------------------------------------------------
 TAG
 Tag name: pyLikelihood-02-00-02, operation: add
 Package: pyLikelihood
