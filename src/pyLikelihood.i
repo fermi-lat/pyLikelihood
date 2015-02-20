@@ -1,5 +1,5 @@
 // -*- mode: c++ -*-
-// $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/src/pyLikelihood.i,v 1.33 2015/01/16 23:05:48 jchiang Exp $
+// $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/src/pyLikelihood.i,v 1.34 2015/01/16 23:06:59 jchiang Exp $
 %module pyLikelihood
 %{
 #ifdef TRAP_FPE
@@ -275,9 +275,12 @@ using optimizers::Exception;
                               const std::string & respBase,
                               const std::string & filename,
                               const std::string & extname) {
+      std::string irfs_name(respFuncs);
+      dataSubselector::Cuts my_cuts(filename, extname, false, true, true);
+      my_cuts.append_event_type_partition(irfs_name);
       std::vector<unsigned int> evtTypes;
       Likelihood::AppHelpers::getSelectedEvtTypes(filename, extname, evtTypes);
-      self->load(respFuncs, respBase, evtTypes);
+      self->load(irfs_name, respBase, evtTypes);
    }
 }
 %extend Likelihood::EquinoxRotation {
