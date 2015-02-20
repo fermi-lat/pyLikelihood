@@ -2,11 +2,12 @@
    @file release.notes
    @brief package pyLikelihood
    @author J. Chiang <jchiang@slac.stanford.edu>
-   $Id: release.notes,v 1.163 2015/01/08 22:01:04 jchiang Exp $
+   $Id: release.notes,v 1.164 2015/01/16 23:18:29 jchiang Exp $
 
    @verbatim
    * EOH *
 
+ pyLikelihood-02-00-04 19-Feb-2015 jchiang add code to append event_type partition name to irfs parameter
  pyLikelihood-02-00-03 16-Jan-2015 jchiang address swig-related build issue on rh5-32 platform
  pyLikelihood-02-00-02 08-Jan-2015 jchiang forgot that UnbinnedAnalysis needs the getSelectedEvtTypes function; use existing swig template for vector<unsigned int>
  pyLikelihood-02-00-01 08-Jan-2015 jchiang comment out use of vector<unsigned int> template that confuses swig on rhel5-32
