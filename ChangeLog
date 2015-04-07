@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Tue Apr  7 09:09:26 PDT 2015
+ScienceTools-scons/pyLikelihood/src
+
+Modified Files:
+	pyLikelihood.i 
+Log Message:
+bug-fix associated with new irfUtil::EventTypeMapper usage; expose MultipleBPL and PiecewisePowerLaw to python
+    *
+------------------------------------------------------------
 TAG
 Tag name: ScienceTools-10-00-03, operation: add
 Package: pyLikelihood
