@@ -1,5 +1,5 @@
 // -*- mode: c++ -*-
-// $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/src/pyLikelihood.i,v 1.34 2015/01/16 23:06:59 jchiang Exp $
+// $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/src/pyLikelihood.i,v 1.35 2015/02/20 00:06:10 jchiang Exp $
 %module pyLikelihood
 %{
 #ifdef TRAP_FPE
@@ -63,6 +63,8 @@
 #include "Likelihood/MapCubeFunction2.h"
 #include "Likelihood/MeanPsf.h"
 #include "Likelihood/ModelMap.h"
+#include "Likelihood/MultipleBrokenPowerLaw.h"
+#include "Likelihood/PiecewisePowerLaw.h"
 #include "Likelihood/Npred.h"
 #include "Likelihood/OneSourceFunc.h"
 #include "Likelihood/OptEM.h"
@@ -177,6 +179,8 @@ using optimizers::Exception;
 %include Likelihood/ExpCutoff.h
 %include Likelihood/BrokenPowerLawExpCutoff.h
 %include Likelihood/BrokenPowerLaw3.h
+%include Likelihood/MultipleBrokenPowerLaw.h
+%include Likelihood/PiecewisePowerLaw.h
 %include Likelihood/LogGaussian.h
 %include Likelihood/ResponseFunctions.h
 %include Likelihood/Event.h
@@ -275,7 +279,7 @@ using optimizers::Exception;
                               const std::string & respBase,
                               const std::string & filename,
                               const std::string & extname) {
-      std::string irfs_name(respFuncs);
+      std::string irfs_name(respFuncs.substr(0, respFuncs.find(" (")));
       dataSubselector::Cuts my_cuts(filename, extname, false, true, true);
       my_cuts.append_event_type_partition(irfs_name);
       std::vector<unsigned int> evtTypes;
