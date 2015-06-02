@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Tue Jun  2 12:51:40 PDT 2015
+ScienceTools-scons/pyLikelihood/python
+
+Modified Files:
+	SummedLikelihood.py 
+Log Message:
+use C++ implementation for NpredValue rather than summing in python over components
+    *
+------------------------------------------------------------
 TAG
 Tag name: ScienceTools-10-00-05, operation: add
 Package: pyLikelihood
