@@ -6,7 +6,7 @@ classes.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/SummedLikelihood.py,v 1.20 2014/02/07 22:39:43 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/SummedLikelihood.py,v 1.21 2014/03/19 20:17:59 jchiang Exp $
 #
 
 import pyLikelihood as pyLike
@@ -138,7 +138,7 @@ class SummedLikelihood(AnalysisBase):
         else:
             self.saveCurrentFit()
     def NpredValue(self, src):
-        return sum([x.logLike.NpredValue(src) for x in self.components])
+        return self.composite.NpredValue(src)
     def total_nobs(self):
         return sum([sum(x.nobs) for x in self.components])
     def __repr__(self):
