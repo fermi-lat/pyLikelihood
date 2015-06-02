@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Tue Jun  2 12:52:34 PDT 2015
+ScienceTools-scons/pyLikelihood/src
+
+Modified Files:
+	pyLikelihood.i 
+Log Message:
+reenable exception handling by python in pyLikelihood.i
+    *
+------------------------------------------------------------
 User: jchiang  Tue Jun  2 12:51:41 PDT 2015
 ScienceTools-scons/pyLikelihood/src
 
