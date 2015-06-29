@@ -1,0 +1,101 @@
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <xsd:element name="source_library" type="source_library_type"/>
+
+  <xsd:complexType name="source_library_type">
+    <xsd:attribute name="title" type="xsd:string" use="required"/>
+    <xsd:element name="source" type="source_type" maxOccurs="unbounded"/>
+  </xsd:complexType>
+
+  <xsd:complexType name="source_type">
+    <xsd:attribute name="name" type="xsd:string" use="required"/>
+    <xsd:attribute name="flux" type="xsd:float"/>
+    <xsd:choice>
+      <xsd:element name="spectrum" type="spectrum_type"/>
+      <xsd:element name="nestedSource" type="nestedSource_type"
+                   maxOccurs="unbounded"/>
+    </xsd:choice>
+  </xsd:complexType>
+
+  <xsd:complexType name="nestedSource_type">
+    <xsd:attribute name="sourceRef" type="xsd:string" use="required"/>
+  </xsd:complexType>
+
+  <xsd:complexType name="spectrum_type">
+    <xsd:attribute name="escale" type="xsd:string" use="required"/>
+    <xsd:choice>
+      <xsd:sequence>
+        <xsd:element name="particle" type="particle_type"/>
+        <xsd:choice>
+          <xsd:element name="celestial_dir" type="celestial_dir_type"/>
+          <xsd:element name="galactic_dir" type="galactic_dir_type"/>
+          <xsd:element name="direction" type="direction_type"/>
+          <xsd:element name="solid_angle" type="solid_angle_type"/>
+        </xsd:choice>
+      </xsd:sequence>
+      <xsd:sequence>
+        <xsd:element name="SpectrumClass" type="SpectrumClass_type"/>
+        <xsd:choice>
+          <xsd:sequence>
+            <xsd:element name="use_spectrum" type="use_spectrum_type"
+                         use="required"/>
+            <xsd:element name="launch_point" type="launch_point_type"/>
+          </xsd:sequence>
+          <xsd:element name="celestial_dir" type="celestial_dir_type"/>
+        </xsd:choice>
+      </xsd:sequence>
+    </xsd:choice>
+  </xsd:complexType>
+
+  <xsd:complexType name="particle_type">
+    <xsd:attribute name="name" type="xsd:string" use="required"/>
+    <xsd:choice>
+      <xsd:element name="power_law" type="power_law_type"/>
+      <xsd:element name="energy" type="energy_type"/>
+    </xsd:choice>
+  </xsd:complexType>
+
+  <xsd:complexType name="power_law_type">
+    <xsd:attribute name="emin" type="xsd:float" use="required"/>
+    <xsd:attribute name="emax" type="xsd:float"/>
+    <xsd:attribute name="gamma" type="xsd:float" use="required"/>
+    <xsd:attribute name="ebreak" type="xsd:float"/>
+    <xsd:attribute name="gamma2" type="xsd:float"/>
+  </xsd:complexType>
+
+  <xsd:complexType name="energy_type">
+    <xsd:attribute name="e" type="xsd:float" use="required"/>
+  </xsd:complexType>
+
+  <xsd:complexType name="celestial_dir_type">
+    <xsd:attribute name="ra" type="xsd:float" use="required"/>
+    <xsd:attribute name="dec" type="xsd:float" use="required"/>
+  </xsd:complexType>
+
+  <xsd:complexType name="galactic_dir_type">
+    <xsd:attribute name="l" type="xsd:float" use="required"/>
+    <xsd:attribute name="b" type="xsd:float" use="required"/>
+  </xsd:complexType>
+
+  <xsd:complexType name="direction_type">
+  </xsd:complexType>
+
+  <xsd:complexType name="launch_point_type">
+  </xsd:complexType>
+
+  <xsd:complexType name="solid_angle_type">
+    <xsd:attribute name="mincos"  type="xsd:float" use="required"/>
+    <xsd:attribute name="maxcos" type="xsd:float" use="required"/>
+    <xsd:attribute name="theta" type="xsd:float"/>
+  </xsd:complexType>
+
+  <xsd:complexType name="SpectrumClass_type">
+    <xsd:attribute name="name"  type="xsd:string" use="required"/>
+    <xsd:attribute name="params" type="xsd:string" use="required"/>
+  </xsd:complexType>
+
+  <xsd:complexType name="use_spectrum_type">
+    <xsd:attribute name="frame"  type="xsd:string" use="required"/>
+  </xsd:complexType>
+
+</xsd:schema>

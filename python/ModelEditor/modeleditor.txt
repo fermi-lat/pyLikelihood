@@ -1,0 +1,455 @@
+The Fermi Likelihood Model Editor (modeleditor)
+
+
+Name
+  modeleditor
+
+Introduction
+
+This program allows the user to create model files for use as input to
+the Fermi likelihood estimation program. The model files are XML
+files, and thus plain text, but the format is moderately complex, and
+must be followed precisely. This program eases that process by
+allowing the user to concentrate on correct data input, leaving the
+task of proper data formatting to the program. This program also
+provides limited capability to convert likelihood model files to the
+format required by the Fermi observation simulator, which uses a
+different XML format for model files.
+
+Outline of Use
+
+The user will typically use modeleditor to prepare a file of source
+models for input the the Fermi likelihood estimator. This is a
+critical step in the analysis of Fermi data, and is an iterative
+process. Once the user has prepared a model file, the likelihood
+program computes the likelihood that this particular set of models can
+give rise to the observed data. The model parameters are then adjusted
+until a high-likelihood scenario is found.
+
+Example of Usage
+
+The user has a set of Fermi data which she suspects contains several
+point sources against the diffuse gamma-ray background. She wants to
+develop a model that has a high likelihood of representing the data.
+
+She begins by launching the model editor from the command line:
+
+...
+modeleditor
+...
+
+When the main window appears, a single default point source has
+already been added to the source list for this model. She edits the RA
+and DEC fields in the Spatial Model parameter grid to coincide with
+the suspected location of one of the point sources in the field of
+data. For example, she suspects a point source at (RA,DEC)=(2,73)
+(which is an actual EGRET source 3EG J0010+7309, at
+(RA,DEC)=(2.56,73.17). She therefore enters '2' in the RA value field
+(row with 'name' of 'RA', column with heading of 'value'), and '73' in
+the DEC value field. She suspects that this source is somewhat softer
+than the default source, so she changes the Index value field in the
+Spectrum parameter editor from the default value of -2.1 to the value
+-1.9. Since this is intended as a starting guess, she leaves the
+'free' checkbox for Index checked, so that the likelihood program can
+adjust the index parameter to achieve the best fit to the data. She
+does the same for the Prefactor parameter, so that the best flux
+estimate can be obtained. She then changes the name of this source to
+"Gamma suspect 1".
+
+She now wants to add another source. She selects Add Source from the
+Source menu, and a new default point source is created and added to
+the list box on the left of the window. She selects that source in the
+list box, and the default parameters populate the editor. She again
+adjust the value of the Index parameter, this time to a steeper value
+(-2.2). She also updates the values of the RA and DEC fields to
+correspond to the suspected source location. She changes the name of
+this source to "Gamma suspect 2". She repeats this process for each
+suspected point source in the field, giving each a unique name.
+
+She then wants to account for the diffuse background emission, so she
+selects Add EGRET Diffuse Source from the Source menu.
+
+She then changes the name in the Title field to "Suspected Gamma
+Sources". Finally, she selects Save from the File menu. She navigates
+to her data directory, and saves the file with the name
+"suspect1.xml".
+
+She then decides to tweak her model a bit by using a different diffuse
+background. She selects EGRET Diffuse Source from the source list,
+then selects Remove Source from the Source menu. She then selects Add
+GALPROP Diffuse Source from the Source menu. She then saves the edited
+model file under a new name, by selecting Save As... from the File
+menu, and entering "suspect2.xml". She then selects Exit from the File
+menu to exit from the Model Editor.
+
+At this point, the files suspect1.xml and suspect2.xml are ready for
+submission to the likelihood estimator.
+
+Reference
+
+Launching the program
+
+The program is launched from the command line by invoking Python:
+
+...
+modeleditor.py [path]model.xcm==ml
+...
+
+where [path] is the (optional) path to an existing model file to be
+edited, here denoted by model.xml. If no existing file is specified, a
+default model is created, and may be edited.
+
+Screen controls
+
+N.B.: Context-sensitive help is available for all on-screen
+controls. Moving the mouse over any screen element will invoke a popup
+balloon containing a capsule summary of the function of that screen
+element.
+
+Source selection box
+
+This box on the left side of the window contains a scrolling list of
+sources in the current model file. Each source is identified by a
+unique name. When a source is selected by clicking on its name in the
+list box, the parameters for that source are used to populate the
+editor on the right side of the window. Most of those parameters may
+then be edited. When a source is selected in the list box, the
+Source/Remove Source menu item may be selected to remove that source
+from the list of sources.
+
+Title entry
+
+This entry field displays the title of the collection of sources in
+the current file. Note that this is not the same as the name of the
+file. The user may edit this title by editing the contents of the
+title entry field.
+
+Source Name entry
+
+This entry field displays the name of the currently selected source in
+the source selection box. The user may edit this name by editing the
+contents of the Source Name entry field.
+
+Source Type label
+
+This (fixed) label displays the current source type: PointSource or
+DiffuseSource. It is not editable by the user.
+
+Spectrum Type menu button
+
+This popup button displays the type of spectrum used for this
+source. A new spectrum type may be selected by pressing the popup
+button, and selecting one of the displayed spectrum types. When a new
+spectrum type is selected, the parameters displayed in the spectrum
+parameter grid immediately below the spectrum type button are updated
+to reflect the new spectrum type, using all default values. The
+different spectrum types are described in the documentation for the
+likelihood tool (gtlike), so please refer to that document for more
+information.
+
+(Spectrum) File entry
+
+This field displays the path to a data file used by the spectrum. This
+field is only used by the FileFunction spectrum type. For other
+spectrum types, this field is deactivated. When active, the user may
+edit the path by editing the contents of this entry field.
+
+(Spectrum) Browse button
+
+This button summons a standard file dialog allowing the user to browse
+to a file to use for the current FileFunction spectrum. This file
+dialog functions in the standard "file/open" fashion for whichever
+platform the modeleditor is running on. This provides a convenient
+alternative to editing the text in the adjacent file entry field.
+
+(Spectrum) Parameter Editor grid
+
+This grid contains 7 rows and six columns. Each row corresponds to one
+parameter which characterizes the current spectrum, and each column
+corresponds to one of the 6 attributes of the parameter (name, value,
+scale, min, max, free). The name column contains the name of the
+current parameter, and this field may be freely edited (but the
+likelihood code will probably not behave correctly if you change the
+parameter names). The value column contains the unscaled value of the
+parameter, and the scale column contains the scale factor for the
+parameter. The product value*scale is the actual quantity used by the
+likelihood software. The min and max columns display the allowed
+minimum and maximum values for the value column (the unscaled
+values). These fields are "live"; changing the value field
+automatically invokes a range check using the min and max fields, and
+the user is prevented from entering bad or out-of-range values. If the
+user wishes to enter a value outside of the current range, the min
+and/or max fields should be edited prior to editing the value
+field. The final column (free) contains checkboxes. When a checkbox is
+checked, that parameter is marked as adjustable by the likelihood
+code, and will be modified to provide the best likelihood
+estimate. The value specified in the value field is used as the
+starting value for that parameter for the computation.
+
+SpatialModel Type menu button
+
+This popup button displays the type of spatial model used for this
+source. A new spatial model type may be selected by pressing the popup
+button, and selecting one of the displayed spatial model types. When a
+new spatial model type is selected, the parameters displayed in the
+spectrum parameter grid immediately below the spatial model type
+button are updated to reflect the new spatial model type, using all
+default values.
+
+(Spatial Model) File entry
+
+This field displays the path to a data file used by the spatial
+model. This field is only used by the SpatialMap and MapCubeFunction
+spatial model types. For other spatial model types, this field is
+deactivated. When active, the user may edit the path by editing the
+contents of this entry field.
+
+(Spatial Model) Browse button
+
+This button summons a standard file dialog allowing the user to browse
+to a file to use for the current SpatialMap or MapCubeFunction spatial
+model. This file dialog functions in the standard "file/open" fashion
+for whichever platform the modeleditor is running on. This provides a
+convenient alternative to editing the text in the adjacent file entry
+field.
+
+(Spatial Model) Parameter Editor grid
+
+This grid contains 7 rows and six columns. Each row corresponds to one
+parameter which characterizes the current spatial model, and each
+column corresponds to one of the 6 attributes of the parameter (name,
+value, scale, min, max, free). The name column contains the name of
+the current parameter, and this field may be freely edited (but the
+likelihood code will probably not behave correctly if you change the
+parameter names). The value column contains the unscaled value of the
+parameter, and the scale column contains the scale factor for the
+parameter. The product value*scale is the actual quantity used by the
+likelihood software. The min and max columns display the allowed
+minimum and maximum values for the value column (the unscaled
+values). These fields are "live"; changing the value field
+automatically invokes a range check using the min and max fields, and
+the user is prevented from entering bad or out-of-range values. If the
+user wishes to enter a value outside of the current range, the min
+and/or max fields should be edited prior to editing the value
+field. The final column (free) contains checkboxes. When a checkbox is
+checked, that parameter is marked as adjustable by the likelihood
+code, and will be modified to provide the best likelihood
+estimate. The value specified in the value field is used as the
+starting value for that parameter for the computation.
+
+Menu commands
+
+File menu
+
+New
+
+Create a new default model document and use it to populate the
+editor. If the current document has been changed, the user is prompted
+to save the changes before the new document is created.
+
+Open...
+
+Summon a standard file open dialog to allow the user to select a file
+to load into the editor. If the user presses the Cancel button in the
+dialog, the new file is not loaded, and the current document is
+retained.
+
+Close
+
+Close the current document and create a new default document. If the
+current document has been changed, the user is prompted to save the
+changes before closing the document. This is functionally equivalent
+to the New command (for now).
+
+Save
+
+Save the current document under its existing name. If the current
+document has no name, the user is prompted for a name using a standard
+file/save dialog.
+
+Save As...
+
+Save the current document under a new name. A standard file/save
+dialog is summoned to allow the user to specify the path to the saved
+file.
+
+Export to ObsSim...
+
+Convert the current model file to a format usable by the Fermi
+observation simulator. Note that this capability is experimental -
+only PowerLaw, PowerLaw2, BrokenPowerLaw, and BrokenPowerLaw2 spectrum
+types are supported for the conversion, and only SkyDirFunction
+spatial models are supported. If a model file cannot be converted
+(usually by having an unsupported spectrum or spatial model type), the
+program will likely crash. But this will be fixed RSN.
+
+Exit
+
+Exit from the modeleditor. If the current document has been edited,
+the user is prompted to save changes prior to exit.
+
+Edit menu
+
+Cut
+
+This item is a stub, and currently performs no function.
+
+Copy
+
+This item is a stub, and currently performs no function.
+
+Paste
+
+This item is a stub, and currently performs no function.
+
+Undo
+
+
+This item is a stub, and currently performs no function.
+
+Source menu
+
+Add Source
+
+Add a new default source to the list of sources for this document. A
+default source has a unique name based on the current number of
+sources created. The default source is a PointSource with a PowerLaw
+spectrum (with typical values for the parameters) and a SkyDirFunction
+spatial model (pointing at the origin of the (RA,DEC) coordinate
+system). The user may then edit any of these parameters as needed.
+
+Remove Source
+
+Remove the currently selected source from the list of sources in the
+current document.
+
+Add Point Source
+
+Add a default point source to the list of sources in the current
+document. The content of a default source is described in the 'Add
+Source' item above.
+
+Add Diffuse Source
+
+Add a default diffuse source to the list of sources in the current
+document. Currently, this fills in a default source just like the 'Add
+Point Source' command, but the source name indicates a diffuse
+source. This capability will be improved in a future version of the
+modeleditor.
+
+Add Fermi Catalog Sources
+
+Add all sources from the Fermi Catalog within 5 degrees of a selected
+region on interest (ROI) as defined by a user supplied Fermi event file.
+Upon selecting this option a dialog box is presented that allows the
+user to input the Fermi Catalog and event files, select diffuse model
+files and model names and enter other parameters related to the source
+selection.  Once the parameters are entered, all sources from the catalog
+file that are within the ROI are loaded into the current model with their
+parameters being free or fixed based on the selected input parameters and
+their distance from the ROI center.
+
+Add EGRET Diffuse Source
+
+Add a diffuse source derived from EGRET data. The path to the file of
+data for this model must be manually specified. A future version of
+the modeleditor will automatically populate the file entry field based
+on the user's environment.
+
+Add GALPROP Diffuse Source
+
+Add a diffuse source derived from GALPROP data. The path to the file
+of data for this model must be manually specified. A future version of
+the modeleditor will automatically populate the file entry field based
+on the user's environment.
+
+Add Extragalactic Diffuse Source
+
+Add a diffuse source derived from extragalactic data. The path to the
+file of data for this model must be manually specified. A future
+version of the modeleditor will automatically populate the file entry
+field based on the user's environment.
+
+Sort Menu
+
+Sort Ascending
+
+Set sorts to be ascending.  This is the default action.  This selection
+will be highlighted red when selected.  Selecting this will automatically 
+reverse the order of the sorted list if it was previously in descending
+mode.
+
+Sort Descending
+
+Set sorts to be descending.  This selection will be hightlighted red
+when selected.  Selecting this will automatically reverse the order
+of the sorted list if it was previously in ascending mode.
+
+Clear Sorting
+
+Removes any of the following selected sorted modes from internal memory
+so that changing the sort direction (ascending or descending) does not
+immediately change the list of sources.  It does not unsort the list
+as no state is maintained of the previous condition of the list.
+
+Sort by Name
+
+Sorts all sources based on the Source Name field.  Case is ignored
+for this sort (i.e. 'Source 1' and 'source 1' are considered to be the
+same.
+
+Sort by Position
+
+Sorts all sources based on the RA and DEC parameters in the spatial
+model.  The sources are sorted on RA first and then Declination.  If
+the sources does not have a spatial model with the RA and DEC parameters
+the source is sorted to the bottom of the list (in ascending mode.
+They would be first in descending mode).
+
+Sort by Distance from ROI center
+
+Sorts all sources based on their distance from the center of the ROI
+imported by reading the event file supplied when catalog sources were
+imported.  This sort really on applies when sources from the catalog
+are read in but if used on a model that didn't have a source catalog
+input, the RA and DEC of the ROI center is considered to be 0,0.  If
+the sources does not have a spatial model with the RA and DEC parameters
+the source is sorted to the bottom of the list.
+
+Sort by Source Type
+
+Sorts sources based on their Source Type (either PointSource or
+DiffuseSource).  Diffuse Sources are first in the list in ascending
+mode and Point sources are first in descending mode
+
+Sort by Spectral Type
+
+Sorts all sources based on the Spectrum Type field of the spectral
+model.
+
+Sort by Primary Index
+
+Sorts all sources based on their primary spectral index.  The name of
+this index varies based on the Spectral Type model and is one of either
+Index, Index1, or alpha.  If a model does not contain one of these
+parameters, it is sorted to the end of the list.
+
+Sort by Integral Flux
+
+Sorts sorces based on the 'Integral' parameters in their spectral model.
+This only applies to the PowerLaw2 and BrokenPowerLaw2 models.  Sources
+with all other models are sorted to the end of the list.
+
+Help menu
+
+Help
+
+Display this help document from the modeleditor interface.
+
+About
+
+Display a dialog which provides summary information on the modeleditor.
+
+Notes
+
+Models must contain at least 1 source.
