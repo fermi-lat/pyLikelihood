@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# $Id: modeleditor,v 1.6.6.1 2014/02/25 20:43:11 jasercio Exp $
+#uname -a | grep '^Darwin' >& /dev/null
+#if [[ $? != 0 ]]; then
+    # This is not a Mac.
+#    $FERMI_INST_DIR/bin/python $FERMI_INST_DIR/lib/python/ModelEditor.py $*
+#else
+    # This is a Mac. Use system Python on Macs to avoid Tk menu problems.
+#    export PYTHONPATH=$FERMI_INST_DIR/lib/python2.6/site-packages:$FERMI_INST_DIR/lib/python:$PYTHONPATH
+#    /usr/bin/python $FERMI_INST_DIR/lib/python/ModelEditor.py $*
+#fi
+
+#Commented out Eric's changes, as they seemed to be unnecessary with the latest Tcl/Tk updates, and were in fact causing problems.
+#Set the python used to the ScienceTool's Embedded Python
+$FERMI_INST_DIR/bin/python $FERMI_INST_DIR/lib/python/ModelEditor.py $*

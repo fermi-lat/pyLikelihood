@@ -1,0 +1,79 @@
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <xsd:element name="source_library" type="source_library_type"/>
+
+  <xsd:complexType name="source_library_type">
+    <xsd:attribute name="title" type="xsd:string" use="required"/>
+    <xsd:sequence>
+      <xsd:element name="source" type="source_type" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="source_type">
+    <xsd:attribute name="name" type="xsd:string" use="required"/>
+    <xsd:attribute name="type" type="source_type_type" use="required"/>
+    <xsd:sequence>
+      <xsd:element name="spectrum" type="spectrum_type"/>
+      <xsd:element name="spatialModel" type="spatialModel_type"/>
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="spectrum_type">
+    <xsd:attribute name="type" type="spectrum_type_type" use="required"/>
+    <xsd:attribute name="file" type="xsd:string"/>
+    <xsd:sequence>
+      <xsd:element name="parameter" type="parameter_type"
+		   maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="spatialModel_type">
+    <xsd:attribute name="type" type="spatialModel_type_type" use="required"/>
+    <xsd:attribute name="file" type="xsd:string"/>
+    <xsd:sequence>
+      <xsd:element name="parameter" type="parameter_type"
+		   maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="parameter_type">
+    <xsd:attribute name="name"  type="xsd:string"  use="required"/>
+    <xsd:attribute name="value" type="xsd:float"   use="required"/>
+    <xsd:attribute name="scale" type="xsd:float"   use="required"/>
+    <xsd:attribute name="min"   type="xsd:float"/>
+    <xsd:attribute name="max"   type="xsd:float"/>
+    <xsd:attribute name="free"  type="xsd:boolean" use="required"/>
+  </xsd:complexType>
+
+  <xsd:simpleType name="source_type_type">
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="PointSource"/>
+      <xsd:enumeration value="DiffuseSource"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="spectrum_type_type">
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="BPLExpCutoff"/>
+      <xsd:enumeration value="BrokenPowerLaw"/>
+      <xsd:enumeration value="BrokenPowerLaw2"/>
+      <xsd:enumeration value="ConstantValue"/>
+      <xsd:enumeration value="ExpCutoff"/>
+      <xsd:enumeration value="FileFunction"/>
+      <xsd:enumeration value="Gaussian"/>
+      <xsd:enumeration value="LogParabola"/>
+      <xsd:enumeration value="PowerLaw"/>
+      <xsd:enumeration value="PowerLaw2"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="spatialModel_type_type">
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="ConstantValue"/>
+      <xsd:enumeration value="MapCubeFunction"/>
+      <xsd:enumeration value="SkyDirFunction"/>
+      <xsd:enumeration value="SpatialMap"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+
+</xsd:schema>
