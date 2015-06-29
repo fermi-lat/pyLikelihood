@@ -1,4 +1,21 @@
 ------------------------------------------------------------
+User: asercion  Mon Jun 29 08:13:10 PDT 2015
+pyLikelihood/python/ModelEditor
+
+Added Files:
+	Element.py modeleditor Spectrum.py ParameterSet.py 
+	SourceEditor.py modeleditor.txt README.txt 
+	SpatialModelEditor.py FitsFile.py source_library.xsd 
+	SourceLibraryDocumentEditor.py SourceLibrary.py 
+	SourceLibraryEditor.py source_library_obssim.xsd 
+	ParameterEditor.py SourceLibraryDocument.py Source.py 
+	SpectrumEditor.py HelpWindow.py Parameter.py help.txt 
+	CatalogSourceExtractor.py ModelEditor.py DS9Connector.py 
+	ElementEditor.py AddCatalogSourcesDialog.py SpatialModel.py 
+Log Message:
+Added FSSC ModelEditor files to the python subdirectory of pyLikelihood.
+    *
+------------------------------------------------------------
 User: asercion  Mon Jun 29 08:11:23 PDT 2015
 pyLikelihood/python/ModelEditor
 
