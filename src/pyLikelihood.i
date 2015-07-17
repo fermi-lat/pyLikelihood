@@ -1,5 +1,5 @@
 // -*- mode: c++ -*-
-// $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/src/pyLikelihood.i,v 1.37 2015/06/02 19:51:41 jchiang Exp $
+// $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/src/pyLikelihood.i,v 1.38 2015/06/02 19:52:34 jchiang Exp $
 %module pyLikelihood
 %{
 #ifdef TRAP_FPE
@@ -93,6 +93,11 @@
 #include "Likelihood/CountsMap.h"
 #include "Likelihood/Observation.h"
 #include "Likelihood/WcsMap2.h"
+  // EAC
+#include "Likelihood/FitUtils.h"
+#include "Likelihood/ScanUtils.h"
+#include "Likelihood/FitScanner.h"
+
 #include "pyLikelihood/Aeff.h"
 #include "pyLikelihood/enableFPE.h"
 #include <vector>
@@ -228,6 +233,10 @@ using optimizers::Exception;
 %include Likelihood/Composite2.h
 %include Likelihood/CompositeLikelihood.h
 %include Likelihood/SummedLikelihood.h
+ // EAC
+%include Likelihood/FitUtils.h
+%include Likelihood/ScanUtils.h
+%include Likelihood/FitScanner.h
 %include pyLikelihood/Aeff.h
 %include pyLikelihood/enableFPE.h
 %extend Likelihood::LogLike {
