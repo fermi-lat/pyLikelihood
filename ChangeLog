@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: echarles  Fri Jul 17 11:45:56 PDT 2015
+pyLikelihood/src
+
+Modified Files:
+	pyLikelihood.i 
+Log Message:
+Added python bindings for TsCube utility code
+    *
+------------------------------------------------------------
 User: asercion  Mon Jun 29 08:13:10 PDT 2015
 pyLikelihood/python/ModelEditor
 
