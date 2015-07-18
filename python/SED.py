@@ -61,7 +61,7 @@ results_dictionary=eval(open('sed_vela.dat').read())
 Todo:
 * Merge upper limits at either edge in energy.
 
-$Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/SED.py,v 1.11 2015/07/18 17:54:24 cohen Exp $
+$Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/SED.py,v 1.12 2015/07/18 21:56:59 cohen Exp $
 """
 from pprint import pformat
 
@@ -123,6 +123,7 @@ class SED(object):
         self.do_minos           = do_minos
 
         self.spectrum = like.logLike.getSource(self.name).spectrum()
+        self.nobs = like.nobs
 
         if bin_edges is not None:
 
@@ -163,6 +164,8 @@ class SED(object):
         self.eflux_ul=-1*np.ones_like(self.energy)
 
         self.ts=np.empty_like(self.energy)
+
+        self.npred = np.empty_like(self.energy)
 
         self._calculate(like)
 
@@ -306,6 +309,9 @@ class SED(object):
 
             if verbosity:
                 print lower,upper,self.dnde[i],self.dnde_err[i],self.ts[i],self.dnde_ul[i]
+            
+            self.npred[i] = like.NpredValue(name)
+
 
         self.significant=self.ts>=self.min_ts
 
@@ -341,6 +347,10 @@ class SED(object):
                 Average_Error=self.eflux_err.tolist(),
                 Upper_Limit=self.eflux_ul.tolist(),
                 Units='MeV/cm^2/s'),
+            Counts=dict(
+                Nobs=self.nobs,
+                Npred=self.npred,
+                Units='ph'),
             Test_Statistic=self.ts.tolist(),
             Significant=self.significant.tolist(),
             Spectrum=SED.spectrum_to_dict(self.spectrum))
