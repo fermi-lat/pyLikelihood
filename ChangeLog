@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: cohen  Sat Jul 18 10:54:24 PDT 2015
+pyLikelihood/python
+
+Modified Files:
+	SED.py 
+Log Message:
+remove unnecessary computation of central energy in each bin in the for loop
+    *
+------------------------------------------------------------
 TAG
 Tag name: pyLikelihood-02-01-00, operation: add
 Package: pyLikelihood
