@@ -61,7 +61,7 @@ results_dictionary=eval(open('sed_vela.dat').read())
 Todo:
 * Merge upper limits at either edge in energy.
 
-$Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/SED.py,v 1.10 2012/09/10 21:57:54 lande Exp $
+$Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/SED.py,v 1.11 2015/07/18 17:54:24 cohen Exp $
 """
 from pprint import pformat
 
@@ -89,6 +89,7 @@ class SED(object):
                  powerlaw_index=-2,
                  min_ts=4,
                  ul_confidence=.95,
+                 do_minos=True,
                 ):
         """ Parameters:
             * like - pyLikelihood object
@@ -106,7 +107,9 @@ class SED(object):
             * powerlaw_index - fixed spectral index to assume when
                                computing SED.
             * min_ts - minimum ts in which to quote a SED points instead of an upper limit. 
-            * ul_confidence - confidence level for upper limit. 
+            * ul_confidence - confidence level for upper limit.
+            * do_minos - set to True to compute asymetric errors with Minos; 
+                         set to False for symetric MIGRAD error
         """
         self.name               = name
         self.verbosity          = verbosity
@@ -117,6 +120,7 @@ class SED(object):
         self.powerlaw_index     = powerlaw_index
         self.min_ts             = min_ts
         self.ul_confidence      = ul_confidence
+        self.do_minos           = do_minos
 
         self.spectrum = like.logLike.getSource(self.name).spectrum()
 
@@ -218,7 +222,7 @@ class SED(object):
 
         name    = self.name
         verbosity = self.verbosity
-        init_energes = like.energies[[0,-1]]
+        init_energies = like.energies[[0,-1]]
 
         # Freeze all sources except one to make sed of.
         all_sources = like.sourceNames()
@@ -231,7 +235,7 @@ class SED(object):
         saved_state = LikelihoodState(like)
 
         if self.freeze_background:
-            if verbosity: print 'Freezeing all parameters'
+            if verbosity: print 'Freezing all parameters'
             # freeze all other sources
             for i in range(len(like.model.params)):
                 like.freeze(i)
@@ -248,7 +252,7 @@ class SED(object):
         like.syncSrcParams(name)
 
         # assume a canonical dnde=1e-11 at 1GeV index 2 starting value
-        dnde = lambda e: 1e-11*(e/1e3)**-2
+        dnde_start = 1e-11*(self.energy/1e3)**(-2)
 
         optverbosity = max(verbosity-1, 0) # see IntegralUpperLimit.py
 
@@ -258,7 +262,7 @@ class SED(object):
 
             # goot starting guess for source
             prefactor=like[like.par_index(name, 'Prefactor')]
-            prefactor.setScale(dnde(e))
+            prefactor.setScale(dnde_start[i])
             prefactor.setValue(1)
             prefactor.setBounds(1e-10,1e10)
 
@@ -279,11 +283,14 @@ class SED(object):
             prefactor=like[like.par_index(name, 'Prefactor')]
             self.dnde[i] = prefactor.getTrueValue()
 
-            if verbosity: print 'Calculating minos errors from %.0dMeV to %.0dMeV' % (lower,upper)
-            self.dnde_lower_err[i], self.dnde_upper_err[i] = like.minosError(name, 'Prefactor')
-            self.dnde_lower_err[i]*=(-1)*prefactor.getScale() # make lower errors positive
-            self.dnde_upper_err[i]*=prefactor.getScale()
-            self.dnde_err[i] = (self.dnde_upper_err[i] + self.dnde_lower_err[i])/2
+            if self.do_minos:
+                if verbosity: print 'Calculating minos errors from %.0dMeV to %.0dMeV' % (lower,upper)
+                self.dnde_lower_err[i], self.dnde_upper_err[i] = like.minosError(name, 'Prefactor')
+                self.dnde_lower_err[i]*=(-1)*prefactor.getScale() # make lower errors positive
+                self.dnde_upper_err[i]*=prefactor.getScale()
+                self.dnde_err[i] = (self.dnde_upper_err[i] + self.dnde_lower_err[i])/2
+            else:
+                self.dnde_err[i] = prefactor.parameter.error() * prefactor.parameter.getScale()
 
             self.flux[i] = like.flux(name, lower, upper)
             self.flux_err[i] = like.fluxError(name, lower, upper)
@@ -303,7 +310,7 @@ class SED(object):
         self.significant=self.ts>=self.min_ts
 
         # revert to old model
-        like.setEnergyRange(*init_energes)
+        like.setEnergyRange(*init_energies)
         like.setSpectrum(name,old_spectrum)
         saved_state.restore()
 
