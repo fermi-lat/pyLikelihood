@@ -61,7 +61,7 @@ results_dictionary=eval(open('sed_vela.dat').read())
 Todo:
 * Merge upper limits at either edge in energy.
 
-$Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/SED.py,v 1.9 2012/08/03 18:06:12 lande Exp $
+$Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/SED.py,v 1.10 2012/09/10 21:57:54 lande Exp $
 """
 from pprint import pformat
 
@@ -252,9 +252,7 @@ class SED(object):
 
         optverbosity = max(verbosity-1, 0) # see IntegralUpperLimit.py
 
-        for i,(lower,upper) in enumerate(zip(self.lower_energy,self.upper_energy)):
-
-            e = np.sqrt(lower*upper)
+        for i,(e,lower,upper) in enumerate(zip(self.energy,self.lower_energy,self.upper_energy)):
 
             if verbosity: print 'Calculating spectrum from %.0dMeV to %.0dMeV' % (lower,upper)
 
