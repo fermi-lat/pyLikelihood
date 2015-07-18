@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: cohen  Sat Jul 18 16:17:34 PDT 2015
+pyLikelihood/python
+
+Modified Files:
+	SED.py 
+Log Message:
+add nobs/npred in the output data
+    *
+------------------------------------------------------------
 User: cohen  Sat Jul 18 14:56:59 PDT 2015
 pyLikelihood/python
 
