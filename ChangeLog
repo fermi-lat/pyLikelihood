@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: cohen  Sat Jul 18 14:56:59 PDT 2015
+pyLikelihood/python
+
+Modified Files:
+	SED.py 
+Log Message:
+fix typos, add a do_minos flag to speed up computation when false, and more vectorized computation before the for loop
+    *
+------------------------------------------------------------
 User: cohen  Sat Jul 18 10:54:24 PDT 2015
 pyLikelihood/python
 
