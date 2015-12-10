@@ -1,5 +1,5 @@
 // -*- mode: c++ -*-
-// $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/src/pyLikelihood.i,v 1.39 2015/07/17 18:45:55 echarles Exp $
+// $Header: /nfs/slac/g/glast/ground/cvs/users/echarles/healpix_changes/pyLikelihood/src/pyLikelihood.i,v 1.5 2015/11/25 18:52:46 echarles Exp $
 %module pyLikelihood
 %{
 #ifdef TRAP_FPE
@@ -9,6 +9,10 @@
 #include "CLHEP/Random/RandFlat.h"
 #include "CLHEP/Random/Random.h"
 #include "astro/SolarSystem.h"
+// EAC, add astro/ProjBase, astro/SkyProj and astro/HealpixProj
+#include "astro/ProjBase.h"
+#include "astro/SkyProj.h"
+#include "astro/HealpixProj.h"
 #include "st_app/AppParGroup.h"
 #include "st_app/StApp.h"
 #include "st_stream/st_stream.h"
@@ -35,11 +39,16 @@
 #include "st_facilities/FitsImage.h"
 #include "st_facilities/Util.h"
 #include "Likelihood/AppHelpers.h"
+// EAC, add BinnedExposure sub-classes
+#include "Likelihood/BinnedExposureBase.h"
 #include "Likelihood/BinnedExposure.h"
+#include "Likelihood/BinnedHealpixExposure.h"
 #include "Likelihood/BrokenPowerLaw2.h"
 #include "Likelihood/CompositeLikelihood.h"
 #include "Likelihood/Composite2.h"
+// EAC, add ConvoleHealpix
 #include "Likelihood/Convolve.h"
+#include "Likelihood/ConvolveHealpix.h"
 #include "Likelihood/CountsSpectra.h"
 #include "Likelihood/Source.h"
 #include "Likelihood/DiffRespIntegrand.h"
@@ -63,8 +72,6 @@
 #include "Likelihood/MapCubeFunction2.h"
 #include "Likelihood/MeanPsf.h"
 #include "Likelihood/ModelMap.h"
-#include "Likelihood/MultipleBrokenPowerLaw.h"
-#include "Likelihood/PiecewisePowerLaw.h"
 #include "Likelihood/Npred.h"
 #include "Likelihood/OneSourceFunc.h"
 #include "Likelihood/OptEM.h"
@@ -93,14 +100,19 @@
 #include "Likelihood/BinnedLikelihood.h"
 #include "Likelihood/BinnedLikelihood2.h"
 #include "Likelihood/Pixel.h"
+// EAC, add CountsMap sub-classes
+#include "Likelihood/CountsMapBase.h"
 #include "Likelihood/CountsMap.h"
+#include "Likelihood/CountsMapHealpix.h"
 #include "Likelihood/Observation.h"
+// EAC, add ProjMap sub-classes
+#include "Likelihood/ProjMap.h"
 #include "Likelihood/WcsMap2.h"
-  // EAC
+#include "Likelihood/HealpixProjMap.h"
+// EAC
 #include "Likelihood/FitUtils.h"
 #include "Likelihood/ScanUtils.h"
 #include "Likelihood/FitScanner.h"
-
 #include "pyLikelihood/Aeff.h"
 #include "pyLikelihood/enableFPE.h"
 #include <vector>
@@ -149,7 +161,10 @@ using optimizers::Exception;
 %template(StringVector) std::vector<std::string>;
 %include st_app/AppParGroup.h
 %include st_app/StApp.h
+// EAC add ProjBase sub-classes
+%include astro/ProjBase.h
 %include astro/SkyProj.h
+%include astro/HealpixProj.h
 %include astro/SkyDir.h
 %include astro/JulianDate.h
 %include astro/SolarSystem.h
@@ -187,8 +202,6 @@ using optimizers::Exception;
 %include Likelihood/ExpCutoff.h
 %include Likelihood/BrokenPowerLawExpCutoff.h
 %include Likelihood/BrokenPowerLaw3.h
-%include Likelihood/MultipleBrokenPowerLaw.h
-%include Likelihood/PiecewisePowerLaw.h
 %include Likelihood/LogGaussian.h
 %include Likelihood/ResponseFunctions.h
 %include Likelihood/Event.h
@@ -201,22 +214,33 @@ using optimizers::Exception;
 %include Likelihood/EventContainer.h
 %include Likelihood/Observation.h
 %include Likelihood/Drm.h
+// EAC, add BinnedExposure sub-classes
+%include Likelihood/BinnedExposureBase.h
 %include Likelihood/BinnedExposure.h
+%include Likelihood/BinnedHealpixExposure.h
 %include Likelihood/AppHelpers.h
+// EAC, add ProjMap sub-classes
+%include Likelihood/ProjMap.h
 %include Likelihood/WcsMap2.h
+%include Likelihood/HealpixProjMap.h
 %include Likelihood/MapBase.h
 %include Likelihood/DiffuseSource.h
 %include Likelihood/DiffRespIntegrand.h
 %include Likelihood/DMFitFunction.h
 %include Likelihood/Pixel.h
 %template (PixelVector) std::vector<Likelihood::Pixel>;
+// EAC, add CountMap sub-classes
+%include Likelihood/CountsMapBase.h
 %include Likelihood/CountsMap.h
+%include Likelihood/CountsMapHealpix.h
 %include Likelihood/SourceModel.h
 %include Likelihood/LogLike.h
 %template (ParamPair_t) std::pair<Likelihood::LogLike *, size_t>;
 %template (ParVector_t) std::vector< std::pair<Likelihood::LogLike *, size_t> >;
 %include Likelihood/CountsSpectra.h
 %include Likelihood/MeanPsf.h
+// EAC, add ConvolveHealpix
+%include Likelihood/ConvolveHealpix.h
 %include Likelihood/BinnedLikelihood.h
 %include Likelihood/BinnedLikelihood2.h
 %include Likelihood/ModelMap.h
