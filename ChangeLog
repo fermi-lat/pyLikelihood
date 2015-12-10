@@ -1,5 +1,14 @@
 ------------------------------------------------------------
 User: echarles  Wed Dec  9 16:51:54 PST 2015
+pyLikelihood/src
+
+Modified Files:
+	pyLikelihood.i 
+Log Message:
+Switch from using SkyProj to ProjBase
+    *
+------------------------------------------------------------
+User: echarles  Wed Dec  9 16:51:54 PST 2015
 pyLikelihood/python
 
 Modified Files:
