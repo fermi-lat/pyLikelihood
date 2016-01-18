@@ -1,4 +1,31 @@
 ------------------------------------------------------------
+User: jchiang  Mon Jan 18 15:08:41 PST 2016
+pyLikelihood/cmt
+
+Modified Files:
+	requirements 
+Log Message:
+stag/GoGui_auto-tag
+    *
+------------------------------------------------------------
+User: jchiang  Mon Jan 18 15:08:41 PST 2016
+pyLikelihood/doc
+
+Modified Files:
+	release.notes 
+Log Message:
+stag/GoGui_auto-tag
+    *
+------------------------------------------------------------
+User: jchiang  Mon Jan 18 15:08:41 PST 2016
+pyLikelihood
+
+Modified Files:
+	SConscript 
+Log Message:
+stag/GoGui_auto-tag
+    *
+------------------------------------------------------------
 User: jchiang  Mon Jan 18 14:24:53 PST 2016
 ScienceTools-scons/pyLikelihood/src
 
