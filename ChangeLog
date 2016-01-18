@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Mon Jan 18 14:24:53 PST 2016
+ScienceTools-scons/pyLikelihood/src
+
+Modified Files:
+	pyLikelihood.i 
+Log Message:
+add back ing MultipleBrokenPowerLaw and PiecewisPowerLaw
+    *
+------------------------------------------------------------
 TAG
 Tag name: pyLikelihood-02-02-00, operation: add
 Package: pyLikelihood
