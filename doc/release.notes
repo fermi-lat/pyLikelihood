@@ -2,11 +2,12 @@
    @file release.notes
    @brief package pyLikelihood
    @author J. Chiang <jchiang@slac.stanford.edu>
-   $Id: release.notes,v 1.168 2015/07/17 20:25:30 jchiang Exp $
+   $Id: release.notes,v 1.169 2015/12/10 06:49:13 echarles Exp $
 
    @verbatim
    * EOH *
 
+ pyLikelihood-02-02-01 18-Jan-2016 jchiang restore changes clobbered by healpix changes
  pyLikelihood-02-02-00 09-Dec-2015 echarles Replace SkyProj with ProjBase
  pyLikelihood-02-01-00 17-Jul-2015 jchiang Classes from Eric's gttscube application added
  pyLikelihood-02-00-06 02-Jun-2015 jchiang LK-102: request to implement SummedLikelihood::NpredValue
