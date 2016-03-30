@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: echarles  Tue Mar 29 17:09:30 PDT 2016
+ScienceTools-scons/pyLikelihood/python
+
+Modified Files:
+	BinnedAnalysis.py 
+Log Message:
+Added option to include user-defined likelihood weights to BinnedAnalysis
+    *
+------------------------------------------------------------
 TAG
 Tag name: ScienceTools-11-00-00, operation: add
 Package: pyLikelihood
