@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: echarles  Wed Mar 30 15:06:08 PDT 2016
+ScienceTools-scons/pyLikelihood/python
+
+Modified Files:
+	BinnedAnalysis.py 
+Log Message:
+Turn off interpolation and extrapolation when building the likelihood weights map
+    *
+------------------------------------------------------------
 User: echarles  Tue Mar 29 17:09:30 PDT 2016
 ScienceTools-scons/pyLikelihood/python
 
