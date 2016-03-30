@@ -4,7 +4,7 @@ Python interface for binned likelihood.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/users/echarles/healpix_changes/pyLikelihood/python/BinnedAnalysis.py,v 1.5 2015/12/02 00:53:07 echarles Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/BinnedAnalysis.py,v 1.53 2015/12/10 00:51:53 echarles Exp $
 #
 
 import os
@@ -123,23 +123,36 @@ class BinnedObs(object):
         
 class BinnedAnalysis(AnalysisBase):
     def __init__(self, binnedData, srcModel=None, optimizer='Drmngb',
-                 use_bl2=False, verbosity=0, psfcorr=True):
+                 use_bl2=False, verbosity=0, psfcorr=True, weightMapFile=None):
         AnalysisBase.__init__(self)
         if srcModel is None:
             srcModel, optimizer = self._srcDialog()
         self.binnedData = binnedData
         self.srcModel = srcModel
         self.optimizer = optimizer
+        if weightMapFile:
+            self.weightMap = pyLike.WcsMapLibrary.instance().wcsmap(weightMapFile,"");
+        else:
+            self.weightMap = None
+
         if use_bl2:
             self.logLike = pyLike.BinnedLikelihood2(binnedData.countsMap,
                                                     binnedData.observation,
                                                     binnedData.srcMaps,
                                                     True, psfcorr)
         else:
-            self.logLike = pyLike.BinnedLikelihood(binnedData.countsMap,
-                                                   binnedData.observation,
-                                                   binnedData.srcMaps,
-                                                   True, psfcorr)
+            if self.weightMap:
+                self.logLike = pyLike.BinnedLikelihood(binnedData.countsMap,
+                                                       self.weightMap,
+                                                       binnedData.observation,
+                                                       binnedData.srcMaps,
+                                                       True, psfcorr)
+            else:
+                self.logLike = pyLike.BinnedLikelihood(binnedData.countsMap,
+                                                       binnedData.observation,
+                                                       binnedData.srcMaps,
+                                                       True, psfcorr)
+
         self.verbosity = verbosity
         self.logLike.initOutputStreams()
         self.logLike.readXml(srcModel, _funcFactory, False, True, False)
