@@ -4,7 +4,7 @@ Python interface for binned likelihood.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/BinnedAnalysis.py,v 1.54 2016/03/30 00:09:30 echarles Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/BinnedAnalysis.py,v 1.55 2016/03/30 22:06:08 echarles Exp $
 #
 
 import os
@@ -123,19 +123,19 @@ class BinnedObs(object):
         
 class BinnedAnalysis(AnalysisBase):
     def __init__(self, binnedData, srcModel=None, optimizer='Drmngb',
-                 use_bl2=False, verbosity=0, psfcorr=True, weightMapFile=None):
+                 use_bl2=False, verbosity=0, psfcorr=True, wmap=None):
         AnalysisBase.__init__(self)
         if srcModel is None:
             srcModel, optimizer = self._srcDialog()
         self.binnedData = binnedData
         self.srcModel = srcModel
         self.optimizer = optimizer
-        if weightMapFile:
-            self.weightMap = pyLike.WcsMapLibrary.instance().wcsmap(weightMapFile,"")
-            self.weightMap.setInterpolation(False)
-            self.weightMap.setExtrapolation(True)
+        if wmap and wmap != "none":
+            self.wmap = pyLike.WcsMap2(wmap,"")
+            self.wmap.setInterpolation(False)
+            self.wmap.setExtrapolation(True)
         else:
-            self.weightMap = None
+            self.wmap = None
 
         if use_bl2:
             self.logLike = pyLike.BinnedLikelihood2(binnedData.countsMap,
@@ -143,9 +143,9 @@ class BinnedAnalysis(AnalysisBase):
                                                     binnedData.srcMaps,
                                                     True, psfcorr)
         else:
-            if self.weightMap:
+            if self.wmap:
                 self.logLike = pyLike.BinnedLikelihood(binnedData.countsMap,
-                                                       self.weightMap,
+                                                       self.wmap,
                                                        binnedData.observation,
                                                        binnedData.srcMaps,
                                                        True, psfcorr)
@@ -297,7 +297,7 @@ def binnedAnalysis(mode='ql', ftol=None, **pars):
         verbosity = 1
     like = BinnedAnalysis(obs, pars['srcmdl'], pars['optimizer'], 
                           use_bl2=False, verbosity=verbosity,
-                          psfcorr=pars['psfcorr'])
+                          psfcorr=pars['psfcorr'],wmap=pars['wmap'])
     if ftol is not None:
         like.tol = ftol
     else:
