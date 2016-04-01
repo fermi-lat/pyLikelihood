@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: echarles  Thu Mar 31 18:36:01 PDT 2016
+ScienceTools-scons/pyLikelihood/python
+
+Modified Files:
+	BinnedAnalysis.py 
+Log Message:
+Change wieght map parameter name to 'wmap' to match pfiles
+    *
+------------------------------------------------------------
 User: echarles  Wed Mar 30 15:06:08 PDT 2016
 ScienceTools-scons/pyLikelihood/python
 
