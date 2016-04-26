@@ -4,7 +4,7 @@ Base class for Likelihood analysis Python modules.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.80 2014/06/02 23:14:02 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/AnalysisBase.py,v 1.81 2014/09/25 19:11:34 asercion Exp $
 #
 
 import sys
@@ -236,9 +236,13 @@ class AnalysisBase(object):
         logLike1 = self.logLike.value()
         self._ts_src = self.logLike.deleteSource(srcName)
         logLike0 = self.logLike.value()
+        
+        # Number of free parameters in the baseline mode
+        n_free_base = self.nFreeParams()
+
         if tol is None:
             tol = self.tol
-        if reoptimize:
+        if reoptimize and n_free_base > 0:
             if verbosity > 0:
                 print "** Do reoptimize"
             optFactory = pyLike.OptimizerFactory_instance()
@@ -254,7 +258,7 @@ class AnalysisBase(object):
                     print "** Iteration :",Niter
                 Niter += 1
         else:
-            if approx:
+            if approx and n_free_base > 0:
                 try:
                     self._renorm()
                 except ZeroDivisionError:
@@ -675,6 +679,17 @@ class AnalysisBase(object):
         model.'''
         
         return self.model.params
+
+    def nFreeParams(self):
+        
+        '''Count the number of free parameters in the active model.'''
+        nF = 0
+        for par in self.model.params:
+            if par.isFree():
+                nF += 1
+        return nF
+
+
     def thaw(self, i):
 
         '''Thaws a parameter with the given parameter index.  Use the
