@@ -4,7 +4,7 @@ Python interface for binned likelihood.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/BinnedAnalysis.py,v 1.55 2016/03/30 22:06:08 echarles Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/BinnedAnalysis.py,v 1.56 2016/04/01 01:36:01 echarles Exp $
 #
 
 import os
@@ -267,7 +267,7 @@ class BinnedAnalysis(AnalysisBase):
 def binnedAnalysis(mode='ql', ftol=None, **pars):
     """Return a BinnedAnalysis object using the data in gtlike.par."""
     parnames = ('irfs', 'cmap', 'bexpmap', 'expcube', 'srcmdl', 'optimizer',
-                'psfcorr', 'chatter')
+                'psfcorr','wmap', 'chatter')
     pargroup = pyLike.StApp_parGroup('gtlike')
     for item in parnames:
         if not pars.has_key(item):
