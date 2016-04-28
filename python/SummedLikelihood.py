@@ -6,7 +6,7 @@ classes.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/SummedLikelihood.py,v 1.22 2015/06/02 19:51:39 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/SummedLikelihood.py,v 1.23 2016/04/26 20:46:50 echarles Exp $
 #
 
 import pyLikelihood as pyLike
@@ -233,6 +233,11 @@ class SummedLikelihood(AnalysisBase):
         self.syncSrcParams()
         freeParams = pyLike.DoubleVector()
         self.components[0].logLike.getFreeParamValues(freeParams)
+        # Get the number of free parameters in the baseline mode
+        n_free_test = len(freeParams)
+        n_free_src = len(self.freePars(srcName))
+        n_free_base = n_free_test - n_free_src
+
         logLike1 = -self()
         self._ts_src = []
         for comp in self.components:
@@ -241,8 +246,6 @@ class SummedLikelihood(AnalysisBase):
         logLike0 = -self()
         if tol is None:
             tol = self.tol
-        # Number of free parameters in the baseline mode
-        n_free_base = self.nFreeParams()
    
         if reoptimize and n_free_base > 0:
             if verbosity > 0:

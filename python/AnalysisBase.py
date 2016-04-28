@@ -233,12 +233,14 @@ class AnalysisBase(object):
         src = self.logLike.getSource(srcName)
         freeParams = pyLike.DoubleVector()
         self.logLike.getFreeParamValues(freeParams)
+        # Get the number of free parameters in the baseline mode
+        n_free_test = len(freeParams)
+        n_free_src = len(self.freePars(srcName))
+        n_free_base = n_free_test - n_free_src
+
         logLike1 = self.logLike.value()
         self._ts_src = self.logLike.deleteSource(srcName)
         logLike0 = self.logLike.value()
-        
-        # Number of free parameters in the baseline mode
-        n_free_base = self.nFreeParams()
 
         if tol is None:
             tol = self.tol
