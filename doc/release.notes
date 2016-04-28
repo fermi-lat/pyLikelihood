@@ -2,11 +2,12 @@
    @file release.notes
    @brief package pyLikelihood
    @author J. Chiang <jchiang@slac.stanford.edu>
-   $Id: release.notes,v 1.169 2015/12/10 06:49:13 echarles Exp $
+   $Id: release.notes,v 1.170 2016/01/18 23:08:41 jchiang Exp $
 
    @verbatim
    * EOH *
 
+ pyLikelihood-02-02-02 28-Apr-2016 echarles Fit LK-111, calling Ts(srcName) on models with no free parameters in baseline model causes crash
  pyLikelihood-02-02-01 18-Jan-2016 jchiang restore changes clobbered by healpix changes
  pyLikelihood-02-02-00 09-Dec-2015 echarles Replace SkyProj with ProjBase
  pyLikelihood-02-01-00 17-Jul-2015 jchiang Classes from Eric's gttscube application added
