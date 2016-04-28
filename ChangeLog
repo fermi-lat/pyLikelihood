@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: echarles  Thu Apr 28 15:29:46 PDT 2016
+ScienceTools-scons/pyLikelihood/python
+
+Modified Files:
+	AnalysisBase.py SummedLikelihood.py 
+Log Message:
+Modify check on number of free parameters in AnalysisBase.Ts() and SummedLikelihood.Ts()
+    *
+------------------------------------------------------------
 User: echarles  Tue Apr 26 13:46:50 PDT 2016
 ScienceTools-scons/pyLikelihood/python
 
