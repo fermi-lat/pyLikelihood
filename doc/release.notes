@@ -2,11 +2,12 @@
    @file release.notes
    @brief package pyLikelihood
    @author J. Chiang <jchiang@slac.stanford.edu>
-   $Id: release.notes,v 1.171 2016/04/28 22:42:32 echarles Exp $
+   $Id: release.notes,v 1.172 2016/04/30 00:46:44 mdwood Exp $
 
    @verbatim
    * EOH *
 
+ pyLikelihood-02-02-04 29-Apr-2016 mdwood Fix ordering of include statements.
  pyLikelihood-02-02-03 29-Apr-2016 mdwood Rename spatial model classes to RadialDisk/RadialGaussian.
  pyLikelihood-02-02-02 28-Apr-2016 echarles Fit LK-111, calling Ts(srcName) on models with no free parameters in baseline model causes crash
  pyLikelihood-02-02-01 18-Jan-2016 jchiang restore changes clobbered by healpix changes
