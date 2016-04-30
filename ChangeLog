@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: mdwood  Fri Apr 29 19:21:41 PDT 2016
+ScienceTools-scons/pyLikelihood/src
+
+Modified Files:
+	pyLikelihood.i 
+Log Message:
+Fix ordering of include statements.
+    *
+------------------------------------------------------------
 TAG
 Tag name: pyLikelihood-02-02-03, operation: add
 Package: pyLikelihood
