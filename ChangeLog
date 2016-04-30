@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: mdwood  Fri Apr 29 17:46:32 PDT 2016
+ScienceTools-scons/pyLikelihood/src
+
+Modified Files:
+	pyLikelihood.i 
+Log Message:
+Renaming SpatialDisk/SpatialGaussian to RadialDisk/RadialGaussian.
+    *
+------------------------------------------------------------
 TAG
 Tag name: pyLikelihood-02-02-02, operation: add
 Package: pyLikelihood
