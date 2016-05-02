@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: echarles  Mon May  2 12:00:02 PDT 2016
+ScienceTools-scons/pyLikelihood/python
+
+Modified Files:
+	SummedLikelihood.py 
+Log Message:
+Add missing semicolon in python/SummedLikelihood.py nFreeParam function
+    *
+------------------------------------------------------------
 TAG
 Tag name: ScienceTools-11-01-00, operation: add
 Package: pyLikelihood
