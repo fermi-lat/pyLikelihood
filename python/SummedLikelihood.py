@@ -6,7 +6,7 @@ classes.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/SummedLikelihood.py,v 1.23 2016/04/26 20:46:50 echarles Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/SummedLikelihood.py,v 1.24 2016/04/28 22:29:46 echarles Exp $
 #
 
 import pyLikelihood as pyLike
@@ -128,7 +128,7 @@ class SummedLikelihood(AnalysisBase):
         '''Count the number of free parameters in the active model.'''
         nF = 0
         pars = self.params()
-        for par in pars
+        for par in pars:
             if par.isFree():
                 nF += 1
         return nF
