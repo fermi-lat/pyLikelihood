@@ -1,5 +1,5 @@
 // -*- mode: c++ -*-
-// $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/src/pyLikelihood.i,v 1.43 2016/04/30 00:46:32 mdwood Exp $
+// $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/src/pyLikelihood.i,v 1.44 2016/04/30 02:21:41 mdwood Exp $
 %module pyLikelihood
 %{
 #ifdef TRAP_FPE
@@ -148,6 +148,7 @@ using optimizers::Exception;
 %template(DoublePair) std::pair<double, double>;
 %template(IntPair) std::pair<int, int>;
 %template(EventVector) std::vector<Likelihood::Event>;
+%template(BoolVector) std::vector<bool>;
 %template(DoubleVector) std::vector<double>;
 %template(FloatVector) std::vector<float>;
 %template(DoubleVectorVector) std::vector< std::vector<double> >;
