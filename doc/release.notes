@@ -2,11 +2,12 @@
    @file release.notes
    @brief package pyLikelihood
    @author J. Chiang <jchiang@slac.stanford.edu>
-   $Id: release.notes,v 1.173 2016/04/30 02:22:00 mdwood Exp $
+   $Id: release.notes,v 1.174 2016/05/02 19:25:13 echarles Exp $
 
    @verbatim
    * EOH *
 
+ pyLikelihood-02-02-06 21-Jun-2016 mdwood Add template for bool vector.
  pyLikelihood-02-02-05 02-May-2016 echarles Fix missing colon in SummedLikelihood.py
  pyLikelihood-02-02-04 29-Apr-2016 mdwood Fix ordering of include statements.
  pyLikelihood-02-02-03 29-Apr-2016 mdwood Rename spatial model classes to RadialDisk/RadialGaussian.
