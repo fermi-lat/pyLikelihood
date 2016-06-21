@@ -1,4 +1,78 @@
 ------------------------------------------------------------
+TAG
+Tag name: pyLikelihood-02-02-06, operation: add
+Package: pyLikelihood
+User: mdwood  Tue Jun 21 15:49:05 2016
+Files:
+  pyLikelihood/.cvsignore  1.2
+  pyLikelihood/ChangeLog  1.1.1.1187
+  pyLikelihood/pyLikelihoodLib.py  1.3
+  pyLikelihood/SConscript  1.143
+  pyLikelihood/cmt/requirements  1.181
+  pyLikelihood/doc/release.notes  1.175
+  pyLikelihood/doc/Makefile  1.1.1.1
+  pyLikelihood/doc/Doxyfile  1.1.1.1
+  pyLikelihood/doc/images/hippo_plot.png  1.1.1.1
+  pyLikelihood/doc/images/hippo_plot_2.png  1.1
+  pyLikelihood/doc/images/Obs_dialog0.png  1.1.1.1
+  pyLikelihood/doc/images/Obs_dialog1.png  1.1.1.1
+  pyLikelihood/doc/images/Analysis_dialog.png  1.1.1.1
+  pyLikelihood/doc/images/pyROOT_plot.png  1.1.1.1
+  pyLikelihood/pyLikelihood/enableFPE.h  1.1
+  pyLikelihood/pyLikelihood/Aeff.h  1.2
+  pyLikelihood/python/SED.py  1.13
+  pyLikelihood/python/UnbinnedAnalysis.py  1.49
+  pyLikelihood/python/AnalysisBase.py  1.83
+  pyLikelihood/python/IntegralUpperLimit.py  1.6
+  pyLikelihood/python/BinnedAnalysis.py  1.57
+  pyLikelihood/python/Composite2.py  1.6
+  pyLikelihood/python/CompositeLikelihood.py  1.7
+  pyLikelihood/python/RootPlot.py  1.14
+  pyLikelihood/python/FluxDensity.py  1.2
+  pyLikelihood/python/SummedLikelihood.py  1.25
+  pyLikelihood/python/SrcAnalysis.py  1.5
+  pyLikelihood/python/UpperLimits.py  1.34
+  pyLikelihood/python/SimpleDialog.py  1.2
+  pyLikelihood/python/SrcModel.py  1.11
+  pyLikelihood/python/LikelihoodState.py  1.6
+  pyLikelihood/python/MPLPlot.py  1.1
+  pyLikelihood/python/package_paths.py  1.5
+  pyLikelihood/python/HippoPlot.py  1.6
+  pyLikelihood/python/test_model.py  1.1
+  pyLikelihood/python/ModelEditor/SpectrumEditor.py  1.1
+  pyLikelihood/python/ModelEditor/FitsFile.py  1.1
+  pyLikelihood/python/ModelEditor/ModelEditor.py  1.1
+  pyLikelihood/python/ModelEditor/SourceLibrary.py  1.1
+  pyLikelihood/python/ModelEditor/AddCatalogSourcesDialog.py  1.1
+  pyLikelihood/python/ModelEditor/SourceEditor.py  1.1
+  pyLikelihood/python/ModelEditor/Spectrum.py  1.1
+  pyLikelihood/python/ModelEditor/ParameterEditor.py  1.1
+  pyLikelihood/python/ModelEditor/modeleditor  1.1
+  pyLikelihood/python/ModelEditor/ParameterSet.py  1.1
+  pyLikelihood/python/ModelEditor/Element.py  1.1
+  pyLikelihood/python/ModelEditor/source_library_obssim.xsd  1.1
+  pyLikelihood/python/ModelEditor/SourceLibraryEditor.py  1.1
+  pyLikelihood/python/ModelEditor/source_library.xsd  1.1
+  pyLikelihood/python/ModelEditor/help.txt  1.1
+  pyLikelihood/python/ModelEditor/SpatialModel.py  1.1
+  pyLikelihood/python/ModelEditor/ElementEditor.py  1.1
+  pyLikelihood/python/ModelEditor/Parameter.py  1.1
+  pyLikelihood/python/ModelEditor/README.txt  1.1
+  pyLikelihood/python/ModelEditor/SpatialModelEditor.py  1.1
+  pyLikelihood/python/ModelEditor/HelpWindow.py  1.1
+  pyLikelihood/python/ModelEditor/CatalogSourceExtractor.py  1.1
+  pyLikelihood/python/ModelEditor/Source.py  1.1
+  pyLikelihood/python/ModelEditor/SourceLibraryDocument.py  1.1
+  pyLikelihood/python/ModelEditor/SourceLibraryDocumentEditor.py  1.1
+  pyLikelihood/python/ModelEditor/modeleditor.txt  1.1
+  pyLikelihood/python/ModelEditor/DS9Connector.py  1.1
+  pyLikelihood/src/pyLikelihood.in  1.45
+  pyLikelihood/src/mainpage.h  1.1.1.1
+  pyLikelihood/src/pyLikelihood.i  1.45
+  pyLikelihood/src/pyLikelihood.h  1.1.1.1
+
+    *
+------------------------------------------------------------
 User: mdwood  Tue Jun 21 15:48:54 PDT 2016
 pyLikelihood/cmt
 
