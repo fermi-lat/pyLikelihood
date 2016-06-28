@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: echarles  Tue Jun 28 11:10:52 PDT 2016
+pyLikelihood/python
+
+Modified Files:
+	AnalysisBase.py 
+Log Message:
+Move call to saved_state.restore() in AnalysisBase.Ts() to avoid issue with EblAtten spectral model
+    *
+------------------------------------------------------------
 TAG
 Tag name: pyLikelihood-02-02-06, operation: add
 Package: pyLikelihood
