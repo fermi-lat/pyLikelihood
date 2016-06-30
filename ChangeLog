@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: echarles  Wed Jun 29 17:27:59 PDT 2016
+pyLikelihood/src
+
+Modified Files:
+	pyLikelihood.i 
+Log Message:
+Added Likelihood/Snapshot class, for storing SourceModel status
+    *
+------------------------------------------------------------
 TAG
 Tag name: pyLikelihood-02-02-07, operation: add
 Package: pyLikelihood
