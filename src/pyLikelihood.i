@@ -1,5 +1,5 @@
 // -*- mode: c++ -*-
-// $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/src/pyLikelihood.i,v 1.44 2016/04/30 02:21:41 mdwood Exp $
+// $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/src/pyLikelihood.i,v 1.45 2016/06/21 22:47:36 mdwood Exp $
 %module pyLikelihood
 %{
 #ifdef TRAP_FPE
@@ -85,6 +85,7 @@
 #include "Likelihood/ScData.h"
 #include "Likelihood/SkyDirArg.h"
 #include "Likelihood/SkyDirFunction.h"
+#include "Likelihood/Snapshot.h"
 #include "Likelihood/SourceFactory.h"
 #include "Likelihood/SourceModel.h"
 #include "Likelihood/SourceMap.h"
@@ -244,6 +245,7 @@ using optimizers::Exception;
 %include Likelihood/OptEM.h
 %include Likelihood/PointSource.h
 %include Likelihood/SourceMap.h
+%include Likelihood/Snapshot.h
 %include Likelihood/SpatialFunction.h
 %include Likelihood/RadialDisk.h
 %include Likelihood/RadialGaussian.h
