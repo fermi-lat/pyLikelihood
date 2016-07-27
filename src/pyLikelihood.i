@@ -1,5 +1,5 @@
 // -*- mode: c++ -*-
-// $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/src/pyLikelihood.i,v 1.45 2016/06/21 22:47:36 mdwood Exp $
+// $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/src/pyLikelihood.i,v 1.46 2016/06/30 00:27:58 echarles Exp $
 %module pyLikelihood
 %{
 #ifdef TRAP_FPE
@@ -106,6 +106,7 @@
 #include "Likelihood/Observation.h"
 #include "Likelihood/ProjMap.h"
 #include "Likelihood/WcsMap2.h"
+#include "Likelihood/WcsMapLibrary.h"
 #include "Likelihood/HealpixProjMap.h"
 #include "Likelihood/FitUtils.h"
 #include "Likelihood/ScanUtils.h"
@@ -221,6 +222,7 @@ using optimizers::Exception;
 %include Likelihood/ProjMap.h
 %include Likelihood/WcsMap2.h
 %include Likelihood/HealpixProjMap.h
+%include Likelihood/WcsMapLibrary.h
 %include Likelihood/MapBase.h
 %include Likelihood/DiffuseSource.h
 %include Likelihood/DiffRespIntegrand.h
