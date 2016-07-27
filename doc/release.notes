@@ -2,11 +2,12 @@
    @file release.notes
    @brief package pyLikelihood
    @author J. Chiang <jchiang@slac.stanford.edu>
-   $Id: release.notes,v 1.175 2016/06/21 22:48:53 mdwood Exp $
+   $Id: release.notes,v 1.176 2016/06/28 18:15:43 echarles Exp $
 
    @verbatim
    * EOH *
 
+ pyLikelihood-02-03-00 27-Jul-2016 echarles Added WcsMapLibrary and Snapshot to interface
  pyLikelihood-02-02-07 28-Jun-2016 echarles Move call to saved_state.restore ( ) in AnalysisBase.Ts ( ) to avoid issue with EblAtten spect al model
  pyLikelihood-02-02-06 21-Jun-2016 mdwood Add template for bool vector.
  pyLikelihood-02-02-05 02-May-2016 echarles Fix missing colon in SummedLikelihood.py
