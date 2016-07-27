@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: echarles  Wed Jul 27 12:28:17 PDT 2016
+pyLikelihood/src
+
+Modified Files:
+	pyLikelihood.i 
+Log Message:
+added WcsMapLibrary to pyLikelihood interface
+    *
+------------------------------------------------------------
 TAG
 Tag name: ScienceTools-11-02-00, operation: add
 Package: pyLikelihood
