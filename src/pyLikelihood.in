@@ -1,5 +1,5 @@
 // -*- mode: c++ -*-
-// $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/src/pyLikelihood.in,v 1.44 2010/07/10 05:03:56 jchiang Exp $
+// $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/src/pyLikelihood.in,v 1.45 2010/07/10 17:03:29 jchiang Exp $
 %module pyLikelihood
 %{
 #ifdef TRAP_FPE
@@ -28,6 +28,7 @@
 #include "st_facilities/FitsImage.h"
 #include "st_facilities/Util.h"
 #include "Likelihood/AppHelpers.h"
+#include "Likelihood/BinnedConfig.h"
 #include "Likelihood/BinnedExposure.h"
 #include "Likelihood/BrokenPowerLaw2.h"
 #include "Likelihood/CompositeLikelihood.h"
@@ -56,6 +57,7 @@
 #include "Likelihood/PointSource.h"
 #include "Likelihood/PowerLawSuperExpCutoff.h"
 #include "Likelihood/PowerLaw2.h"
+#include "Likelihood/PSFUtils.h"
 #include "Likelihood/RadialProfile.h"
 #include "Likelihood/ResponseFunctions.h"
 #include "Likelihood/RoiCuts.h"
@@ -166,6 +168,7 @@ using optimizers::Exception;
 %include $(LIKELIHOODROOT)/Likelihood/EventContainer.h
 %include $(LIKELIHOODROOT)/Likelihood/Observation.h
 %include $(LIKELIHOODROOT)/Likelihood/BinnedExposure.h
+%include $(LIKELIHOODROOT)/Likelihood/BinnedConfig.h
 %include $(LIKELIHOODROOT)/Likelihood/AppHelpers.h
 //%include $(LIKELIHOODROOT)/Likelihood/SourceModel.h
 %include $(LIKELIHOODROOT)/Likelihood/WcsMap.h
@@ -187,6 +190,7 @@ using optimizers::Exception;
 %include $(LIKELIHOODROOT)/Likelihood/OneSourceFunc.h
 %include $(LIKELIHOODROOT)/Likelihood/OptEM.h
 %include $(LIKELIHOODROOT)/Likelihood/PointSource.h
+%include $(LIKELIHOODROOT)/Likelihood/PSFUtils.h
 %include $(LIKELIHOODROOT)/Likelihood/SourceMap.h
 %include $(LIKELIHOODROOT)/Likelihood/SpatialMap.h
 %include $(LIKELIHOODROOT)/Likelihood/SkyDirArg.h
