@@ -1,5 +1,5 @@
 // -*- mode: c++ -*-
-// $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/src/pyLikelihood.i,v 1.46 2016/06/30 00:27:58 echarles Exp $
+// $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/src/pyLikelihood.i,v 1.47 2016/07/27 19:28:17 echarles Exp $
 %module pyLikelihood
 %{
 #ifdef TRAP_FPE
@@ -38,6 +38,7 @@
 #include "st_facilities/FitsImage.h"
 #include "st_facilities/Util.h"
 #include "Likelihood/AppHelpers.h"
+#include "Likelihood/BinnedConfig.h"
 #include "Likelihood/BinnedExposureBase.h"
 #include "Likelihood/BinnedExposure.h"
 #include "Likelihood/BinnedHealpixExposure.h"
@@ -77,6 +78,7 @@
 #include "Likelihood/PointSource.h"
 #include "Likelihood/PowerLawSuperExpCutoff.h"
 #include "Likelihood/PowerLaw2.h"
+#include "Likelihood/PSFUtils.h"
 #include "Likelihood/RadialDisk.h"
 #include "Likelihood/RadialGaussian.h"
 #include "Likelihood/ResponseFunctions.h"
@@ -215,6 +217,7 @@ using optimizers::Exception;
 %include Likelihood/EventContainer.h
 %include Likelihood/Observation.h
 %include Likelihood/Drm.h
+%include Likelihood/BinnedConfig.h
 %include Likelihood/BinnedExposureBase.h
 %include Likelihood/BinnedExposure.h
 %include Likelihood/BinnedHealpixExposure.h
@@ -246,6 +249,7 @@ using optimizers::Exception;
 %include Likelihood/OneSourceFunc.h
 %include Likelihood/OptEM.h
 %include Likelihood/PointSource.h
+%include Likelihood/PSFUtils.h
 %include Likelihood/SourceMap.h
 %include Likelihood/Snapshot.h
 %include Likelihood/SpatialFunction.h
