@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: echarles  Fri Sep  9 16:42:12 PDT 2016
+pyLikelihood
+
+Modified Files:
+	SConscript 
+Log Message:
+Added Matt and I as authors to SConscript
+    *
+------------------------------------------------------------
 TAG
 Tag name: pyLikelihood-02-03-02, operation: add
 Package: pyLikelihood
