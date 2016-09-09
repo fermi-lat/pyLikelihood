@@ -2,11 +2,12 @@
    @file release.notes
    @brief package pyLikelihood
    @author J. Chiang <jchiang@slac.stanford.edu>
-   $Id: release.notes,v 1.177 2016/07/27 19:42:35 echarles Exp $
+   $Id: release.notes,v 1.178 2016/09/09 21:26:02 echarles Exp $
 
    @verbatim
    * EOH *
 
+ pyLikelihood-02-03-02 09-Sep-2016 echarles Added ST_Version.py file for versioning for unit tests
  pyLikelihood-02-03-01 09-Sep-2016 echarles Added BinnedConfig and PSFUtils to pyLikelihood interface
  pyLikelihood-02-03-00 27-Jul-2016 echarles Added WcsMapLibrary and Snapshot to interface
  pyLikelihood-02-02-07 28-Jun-2016 echarles Move call to saved_state.restore ( ) in AnalysisBase.Ts ( ) to avoid issue with EblAtten spect al model
