@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: echarles  Fri Sep  9 16:36:03 PDT 2016
+pyLikelihood/python
+
+Added Files:
+	ST_Version.py 
+Log Message:
+Added ST_Version.py file for versioning for unit tests
+    *
+------------------------------------------------------------
 TAG
 Tag name: pyLikelihood-02-03-01, operation: add
 Package: pyLikelihood
