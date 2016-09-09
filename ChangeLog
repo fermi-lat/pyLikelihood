@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: echarles  Fri Sep  9 14:23:52 PDT 2016
+pyLikelihood/src
+
+Modified Files:
+	pyLikelihood.i pyLikelihood.in 
+Log Message:
+added PSFUtils and BinnedConfig to pyLikelihood interface
+    *
+------------------------------------------------------------
 TAG
 Tag name: ScienceTools-11-03-00, operation: add
 Package: pyLikelihood
