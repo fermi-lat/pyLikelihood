@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: echarles  Tue Sep 13 12:35:42 PDT 2016
+pyLikelihood/python
+
+Modified Files:
+	ST_Version.py 
+Log Message:
+Fixed ST_Version
+    *
+------------------------------------------------------------
 TAG
 Tag name: pyLikelihood-02-03-03, operation: add
 Package: pyLikelihood
