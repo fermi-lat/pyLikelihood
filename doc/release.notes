@@ -2,11 +2,12 @@
    @file release.notes
    @brief package pyLikelihood
    @author J. Chiang <jchiang@slac.stanford.edu>
-   $Id: release.notes,v 1.179 2016/09/09 23:36:32 echarles Exp $
+   $Id: release.notes,v 1.180 2016/09/09 23:42:20 echarles Exp $
 
    @verbatim
    * EOH *
 
+ pyLikelihood-02-03-04 14-Sep-2016 echarles Added Likelihood/FileUtils and Likelihood/WeightMap to pyLikelihood interface
  pyLikelihood-02-03-03 09-Sep-2016 echarles Added Matt and I as authors to SConscript
  pyLikelihood-02-03-02 09-Sep-2016 echarles Added ST_Version.py file for versioning for unit tests
  pyLikelihood-02-03-01 09-Sep-2016 echarles Added BinnedConfig and PSFUtils to pyLikelihood interface
