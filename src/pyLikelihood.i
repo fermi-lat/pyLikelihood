@@ -1,5 +1,5 @@
 // -*- mode: c++ -*-
-// $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/src/pyLikelihood.i,v 1.47 2016/07/27 19:28:17 echarles Exp $
+// $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/src/pyLikelihood.i,v 1.48 2016/09/09 21:23:52 echarles Exp $
 %module pyLikelihood
 %{
 #ifdef TRAP_FPE
@@ -63,6 +63,7 @@
 #include "Likelihood/ExposureCube.h"
 #include "Likelihood/ExposureMap.h"
 #include "Likelihood/FileFunction.h"
+#include "Likelihood/FileUtils.h"
 #include "Likelihood/LogGaussian.h"
 #include "Likelihood/LogNormalLog.h"
 #include "Likelihood/LogParabola.h"
@@ -109,6 +110,7 @@
 #include "Likelihood/ProjMap.h"
 #include "Likelihood/WcsMap2.h"
 #include "Likelihood/WcsMapLibrary.h"
+#include "Likelihood/WeightMap.h"
 #include "Likelihood/HealpixProjMap.h"
 #include "Likelihood/FitUtils.h"
 #include "Likelihood/ScanUtils.h"
@@ -244,6 +246,7 @@ using optimizers::Exception;
 %include Likelihood/ConvolveHealpix.h
 %include Likelihood/BinnedLikelihood.h
 %include Likelihood/BinnedLikelihood2.h
+%include Likelihood/FileUtils.h
 %include Likelihood/ModelMap.h
 %include Likelihood/Npred.h
 %include Likelihood/OneSourceFunc.h
@@ -268,6 +271,7 @@ using optimizers::Exception;
 %include Likelihood/SummedLikelihood.h
 %include Likelihood/FitUtils.h
 %include Likelihood/ScanUtils.h
+%include Likelihood/WeightMap.h
 %include Likelihood/FitScanner.h
 %include pyLikelihood/Aeff.h
 %include pyLikelihood/enableFPE.h
