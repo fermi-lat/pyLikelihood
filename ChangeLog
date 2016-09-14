@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: echarles  Wed Sep 14 13:14:39 PDT 2016
+pyLikelihood/src
+
+Modified Files:
+	pyLikelihood.i 
+Log Message:
+Added Likelihood/FileUtils and Likelihood/WeightMap to pyLikelihood interface
+    *
+------------------------------------------------------------
 User: echarles  Tue Sep 13 12:35:42 PDT 2016
 pyLikelihood/python
 
