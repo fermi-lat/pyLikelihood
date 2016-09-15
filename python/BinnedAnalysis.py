@@ -4,7 +4,7 @@ Python interface for binned likelihood.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/ScienceTools-scons/pyLikelihood/python/BinnedAnalysis.py,v 1.56 2016/04/01 01:36:01 echarles Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/BinnedAnalysis.py,v 1.57 2016/04/26 20:43:59 echarles Exp $
 #
 
 import os
@@ -162,6 +162,7 @@ class BinnedAnalysis(AnalysisBase):
         self.energies = num.array(self.logLike.energies())
         self.e_vals = num.sqrt(self.energies[:-1]*self.energies[1:])
         self.nobs = self.logLike.countsSpectrum()
+        self.nobs_wt = self.logLike.countsSpectrum(True)
         self.sourceFitPlots = []
         self.sourceFitResids  = []
     def _inputs(self):
