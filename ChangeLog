@@ -1,4 +1,14 @@
 ------------------------------------------------------------
+User: echarles  Thu Sep 15 14:27:41 PDT 2016
+pyLikelihood/python
+
+Modified Files:
+	AnalysisBase.py BinnedAnalysis.py SummedLikelihood.py 
+	UnbinnedAnalysis.py 
+Log Message:
+Allow Npred and total_obs to return either weighted to unweighted versions
+    *
+------------------------------------------------------------
 TAG
 Tag name: pyLikelihood-02-03-04, operation: add
 Package: pyLikelihood
