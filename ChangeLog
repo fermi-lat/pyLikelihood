@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: echarles  Tue Sep 27 18:40:19 PDT 2016
+pyLikelihood/src
+
+Modified Files:
+	pyLikelihood.i 
+Log Message:
+Added SparseVector to pyLikelihood interface
+    *
+------------------------------------------------------------
 TAG
 Tag name: pyLikelihood-02-03-05, operation: add
 Package: pyLikelihood
