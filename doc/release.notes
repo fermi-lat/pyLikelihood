@@ -2,11 +2,12 @@
    @file release.notes
    @brief package pyLikelihood
    @author J. Chiang <jchiang@slac.stanford.edu>
-   $Id: release.notes,v 1.181 2016/09/14 20:16:33 echarles Exp $
+   $Id: release.notes,v 1.182 2016/09/15 21:28:09 echarles Exp $
 
    @verbatim
    * EOH *
 
+ pyLikelihood-02-03-06 27-Sep-2016 echarles Added SparseVector to pyLikelihood interface
  pyLikelihood-02-03-05 15-Sep-2016 echarles Allow Npred and total_obs to return either weighted to unweighted versions
  pyLikelihood-02-03-04 14-Sep-2016 echarles Added Likelihood/FileUtils and Likelihood/WeightMap to pyLikelihood interface
  pyLikelihood-02-03-03 09-Sep-2016 echarles Added Matt and I as authors to SConscript
