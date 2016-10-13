@@ -1,11 +1,12 @@
 // -*- mode: c++ -*-
-// $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/src/pyLikelihood.i,v 1.49 2016/09/14 20:14:39 echarles Exp $
+// $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/src/pyLikelihood.i,v 1.50 2016/09/28 01:40:19 echarles Exp $
 %module pyLikelihood
 %{
 #ifdef TRAP_FPE
 #include <fenv.h>
 #endif
 #include <cstddef>
+  // Stuff from other packages 
 #include "CLHEP/Random/RandFlat.h"
 #include "CLHEP/Random/Random.h"
 #include "astro/SolarSystem.h"
@@ -37,87 +38,99 @@
 #include "optimizers/Statistic.h"
 #include "st_facilities/FitsImage.h"
 #include "st_facilities/Util.h"
+  // Stuff that doesn't bring in other Likelihood headers
 #include "Likelihood/AppHelpers.h"
 #include "Likelihood/BinnedConfig.h"
-#include "Likelihood/BinnedExposureBase.h"
-#include "Likelihood/BinnedExposure.h"
-#include "Likelihood/BinnedHealpixExposure.h"
 #include "Likelihood/BrokenPowerLaw2.h"
-#include "Likelihood/CompositeLikelihood.h"
-#include "Likelihood/Composite2.h"
+#include "Likelihood/BrokenPowerLaw3.h"
+#include "Likelihood/BrokenPowerLawExpCutoff.h"
 #include "Likelihood/Convolve.h"
-#include "Likelihood/ConvolveHealpix.h"
-#include "Likelihood/CountsSpectra.h"
-#include "Likelihood/Source.h"
 #include "Likelihood/DiffRespIntegrand.h"
-#include "Likelihood/DiffuseSource.h"
 #include "Likelihood/Drm.h"
 #include "Likelihood/DMFitFunction.h"
-#include "Likelihood/Drm.h"
+#include "Likelihood/Exception.h"
 #include "Likelihood/EquinoxRotation.h"
-#include "Likelihood/Event.h"
-#include "Likelihood/EventContainer.h"
 #include "Likelihood/ExpCutoff.h"
-#include "Likelihood/BrokenPowerLawExpCutoff.h"
-#include "Likelihood/BrokenPowerLaw3.h"
 #include "Likelihood/ExposureCube.h"
 #include "Likelihood/ExposureMap.h"
 #include "Likelihood/FileFunction.h"
-#include "Likelihood/FileUtils.h"
+#include "Likelihood/FitScanner.h"
+#include "Likelihood/FitUtils.h"
 #include "Likelihood/LogGaussian.h"
 #include "Likelihood/LogNormalLog.h"
 #include "Likelihood/LogParabola.h"
-#include "Likelihood/MapBase.h"
-#include "Likelihood/MapCubeFunction2.h"
-#include "Likelihood/MeanPsf.h"
 #include "Likelihood/ModelMap.h"
 #include "Likelihood/MultipleBrokenPowerLaw.h"
+#include "Likelihood/ProjMap.h"
 #include "Likelihood/PiecewisePowerLaw.h"
-#include "Likelihood/Npred.h"
-#include "Likelihood/OneSourceFunc.h"
-#include "Likelihood/OptEM.h"
-#include "Likelihood/PointSource.h"
 #include "Likelihood/PowerLawSuperExpCutoff.h"
 #include "Likelihood/PowerLaw2.h"
-#include "Likelihood/PSFUtils.h"
-#include "Likelihood/RadialDisk.h"
-#include "Likelihood/RadialGaussian.h"
 #include "Likelihood/ResponseFunctions.h"
 #include "Likelihood/RoiCuts.h"
 #include "Likelihood/ScaleFactor.h"
+#include "Likelihood/ScanUtils.h"
 #include "Likelihood/ScData.h"
 #include "Likelihood/SkyDirArg.h"
 #include "Likelihood/SkyDirFunction.h"
 #include "Likelihood/Snapshot.h"
-#include "Likelihood/SourceFactory.h"
-#include "Likelihood/SourceModel.h"
-#include "Likelihood/SourceMap.h"
 #include "Likelihood/SparseVector.h"
-#include "Likelihood/SpatialFunction.h"
-#include "Likelihood/SpatialMap.h"
-#include "Likelihood/SrcArg.h"
-#include "Likelihood/SummedLikelihood.h"
 #include "Likelihood/TrapQuad.h"
 #include "Likelihood/TiedParameter.h"
-#include "Likelihood/Exception.h"
-#include "Likelihood/LogLike.h"
-#include "Likelihood/BinnedLikelihood.h"
-#include "Likelihood/BinnedLikelihood2.h"
-#include "Likelihood/Pixel.h"
-#include "Likelihood/CountsMapBase.h"
-#include "Likelihood/CountsMap.h"
-#include "Likelihood/CountsMapHealpix.h"
-#include "Likelihood/Observation.h"
-#include "Likelihood/ProjMap.h"
-#include "Likelihood/WcsMap2.h"
 #include "Likelihood/WcsMapLibrary.h"
 #include "Likelihood/WeightMap.h"
+  // Stuff that only depends on the above headers.
+#include "Likelihood/BinnedExposureBase.h"
+#include "Likelihood/Event.h"
+#include "Likelihood/FileUtils.h"
 #include "Likelihood/HealpixProjMap.h"
-#include "Likelihood/FitUtils.h"
-#include "Likelihood/ScanUtils.h"
-#include "Likelihood/FitScanner.h"
+#include "Likelihood/MapBase.h"
+#include "Likelihood/Pixel.h"
+#include "Likelihood/SourceMap.h"
+#include "Likelihood/WcsMap2.h"
+  // Stuff that only depends on the above headers.
+#include "Likelihood/BinnedExposure.h"
+#include "Likelihood/BinnedHealpixExposure.h"
+#include "Likelihood/EventContainer.h"
+#include "Likelihood/MapCubeFunction2.h"
+#include "Likelihood/PSFUtils.h"
+#include "Likelihood/SpatialMap.h"
+  // CountsMapBase, Source, SrcArg, Observation
+#include "Likelihood/CountsMapBase.h"
+#include "Likelihood/Source.h"
+#include "Likelihood/SrcArg.h"
+#include "Likelihood/Observation.h"
+  // Stuff that depend on CountsMapBase, Source, Observation
+#include "Likelihood/BinnedCountsCache.h"
+#include "Likelihood/CountsMap.h"
+#include "Likelihood/CountsMapHealpix.h"
+#include "Likelihood/DiffuseSource.h"
+#include "Likelihood/MeanPsf.h"
+#include "Likelihood/Npred.h"
+#include "Likelihood/OneSourceFunc.h"
+#include "Likelihood/PointSource.h"
+#include "Likelihood/SpatialFunction.h"
+#include "Likelihood/SourceFactory.h"
+#include "Likelihood/SourceMapCache.h"
+#include "Likelihood/SourceModel.h"
+  // Stuff that depends on SpatialFunction, MeanPsf, SourceModel
+#include "Likelihood/CompositeSource.h"
+#include "Likelihood/ConvolveHealpix.h"
+#include "Likelihood/RadialDisk.h"
+#include "Likelihood/RadialGaussian.h"
+  // LogLike
+#include "Likelihood/LogLike.h"
+  // Subclasses of LogLike
+#include "Likelihood/BinnedLikelihood.h"
+#include "Likelihood/CompositeLikelihood.h"
+#include "Likelihood/Composite2.h"
+#include "Likelihood/OptEM.h"
+#include "Likelihood/SummedLikelihood.h"
+  // This depends on both BinnedLikelihood and LogLike
+#include "Likelihood/CountsSpectra.h"
+  // Stuff in pyLikelihood
 #include "pyLikelihood/Aeff.h"
 #include "pyLikelihood/enableFPE.h"
+  // stl headers
 #include <vector>
 #include <string>
 #include <exception>
@@ -187,6 +200,8 @@ using optimizers::Exception;
 %include optimizers/Parameter.h
 %template(ParameterVector) std::vector<optimizers::Parameter>;
 %include optimizers/Function.h
+%template (FuncPair) std::pair<std::string, optimizers::Function *>;
+%template (FuncMap) std::map<std::string, optimizers::Function *>;
 %include optimizers/Statistic.h
 %include optimizers/FunctionTest.h
 %include optimizers/FunctionFactory.h
@@ -198,86 +213,102 @@ using optimizers::Exception;
 %include st_facilities/FitsImage.h
 %include st_facilities/Util.h
 %include irfInterface/IEfficiencyFactor.h
+  // Stuff that doesn't bring in other Likelihood headers
+%include Likelihood/AppHelpers.h
+%include Likelihood/BinnedConfig.h
+%include Likelihood/BrokenPowerLaw2.h
+%include Likelihood/BrokenPowerLaw3.h
+%include Likelihood/BrokenPowerLawExpCutoff.h
+%include Likelihood/Convolve.h
+%include Likelihood/DiffRespIntegrand.h
+%include Likelihood/Drm.h
+%include Likelihood/DMFitFunction.h
+%include Likelihood/Exception.h
 %include Likelihood/EquinoxRotation.h
-%template (FuncPair) std::pair<std::string, optimizers::Function *>;
-%template (FuncMap) std::map<std::string, optimizers::Function *>;
+%include Likelihood/ExpCutoff.h
+%include Likelihood/ExposureCube.h
+%include Likelihood/ExposureMap.h
+%include Likelihood/FileFunction.h
+%include Likelihood/FitScanner.h
+%include Likelihood/FitUtils.h
+%include Likelihood/LogGaussian.h
+%include Likelihood/LogNormalLog.h
+%include Likelihood/LogParabola.h
+%include Likelihood/ModelMap.h
+%include Likelihood/MultipleBrokenPowerLaw.h
+%include Likelihood/ProjMap.h
+%include Likelihood/PiecewisePowerLaw.h
+%include Likelihood/PowerLawSuperExpCutoff.h
+%include Likelihood/PowerLaw2.h
+%include Likelihood/ResponseFunctions.h
+%include Likelihood/RoiCuts.h
+%include Likelihood/ScaleFactor.h
+%include Likelihood/ScanUtils.h
+%include Likelihood/ScData.h
+%include Likelihood/SkyDirArg.h
+%include Likelihood/SkyDirFunction.h
+%include Likelihood/Snapshot.h
 %include Likelihood/SparseVector.h
 %template (SparseIntVector) Likelihood::SparseVector<int>;
 %template (SparseFloatVector) Likelihood::SparseVector<float>;
 %template (SparseDoubleVector) Likelihood::SparseVector<double>;
-%include Likelihood/Convolve.h
-%include Likelihood/Exception.h
-%include Likelihood/ExpCutoff.h
-%include Likelihood/BrokenPowerLawExpCutoff.h
-%include Likelihood/BrokenPowerLaw3.h
-%include Likelihood/MultipleBrokenPowerLaw.h
-%include Likelihood/PiecewisePowerLaw.h
-%include Likelihood/LogGaussian.h
-%include Likelihood/ResponseFunctions.h
-%include Likelihood/Event.h
-%include Likelihood/Source.h
-%include Likelihood/ExposureCube.h
-%include Likelihood/ExposureMap.h
-%include Likelihood/FileFunction.h
-%include Likelihood/RoiCuts.h
-%include Likelihood/ScData.h
-%include Likelihood/EventContainer.h
-%include Likelihood/Observation.h
-%include Likelihood/Drm.h
-%include Likelihood/BinnedConfig.h
-%include Likelihood/BinnedExposureBase.h
-%include Likelihood/BinnedExposure.h
-%include Likelihood/BinnedHealpixExposure.h
-%include Likelihood/AppHelpers.h
-%include Likelihood/ProjMap.h
-%include Likelihood/WcsMap2.h
-%include Likelihood/HealpixProjMap.h
+%include Likelihood/TrapQuad.h
+%include Likelihood/TiedParameter.h
 %include Likelihood/WcsMapLibrary.h
+%include Likelihood/WeightMap.h
+  // Stuff that only depends on the above headers.
+%include Likelihood/BinnedExposureBase.h
+%include Likelihood/Event.h
+%include Likelihood/FileUtils.h
+%include Likelihood/HealpixProjMap.h
 %include Likelihood/MapBase.h
-%include Likelihood/DiffuseSource.h
-%include Likelihood/DiffRespIntegrand.h
-%include Likelihood/DMFitFunction.h
 %include Likelihood/Pixel.h
 %template (PixelVector) std::vector<Likelihood::Pixel>;
+%include Likelihood/SourceMap.h
+%include Likelihood/WcsMap2.h
+  // Stuff that only depends on the above headers.
+%include Likelihood/BinnedExposure.h
+%include Likelihood/BinnedHealpixExposure.h
+%include Likelihood/EventContainer.h
+%include Likelihood/MapCubeFunction2.h
+%include Likelihood/PSFUtils.h
+%include Likelihood/SpatialMap.h
+  // CountsMapBase, Source, SrcArg, Observation
 %include Likelihood/CountsMapBase.h
+%include Likelihood/Source.h
+%include Likelihood/SrcArg.h
+%include Likelihood/Observation.h
+  // Stuff that depend on CountsMapBase, Source, Observation
+%include Likelihood/BinnedCountsCache.h
 %include Likelihood/CountsMap.h
 %include Likelihood/CountsMapHealpix.h
+%include Likelihood/DiffuseSource.h
+%include Likelihood/MeanPsf.h
+%include Likelihood/Npred.h
+%include Likelihood/OneSourceFunc.h
+%include Likelihood/PointSource.h
+%include Likelihood/SpatialFunction.h
+%include Likelihood/SourceFactory.h
+%include Likelihood/SourceMapCache.h
 %include Likelihood/SourceModel.h
+  // Stuff that depends on SpatialFunction, MeanPsf, SourceModel
+%include Likelihood/CompositeSource.h
+%include Likelihood/ConvolveHealpix.h
+%include Likelihood/RadialDisk.h
+%include Likelihood/RadialGaussian.h
+  // LogLike
 %include Likelihood/LogLike.h
 %template (ParamPair_t) std::pair<Likelihood::LogLike *, size_t>;
 %template (ParVector_t) std::vector< std::pair<Likelihood::LogLike *, size_t> >;
-%include Likelihood/CountsSpectra.h
-%include Likelihood/MeanPsf.h
-%include Likelihood/ConvolveHealpix.h
+  // Subclasses of LogLike
 %include Likelihood/BinnedLikelihood.h
-%include Likelihood/BinnedLikelihood2.h
-%include Likelihood/FileUtils.h
-%include Likelihood/ModelMap.h
-%include Likelihood/Npred.h
-%include Likelihood/OneSourceFunc.h
-%include Likelihood/OptEM.h
-%include Likelihood/PointSource.h
-%include Likelihood/PSFUtils.h
-%include Likelihood/SourceMap.h
-%include Likelihood/Snapshot.h
-%include Likelihood/SpatialFunction.h
-%include Likelihood/RadialDisk.h
-%include Likelihood/RadialGaussian.h
-%include Likelihood/SpatialMap.h
-%include Likelihood/SkyDirArg.h
-%include Likelihood/SkyDirFunction.h
-%include Likelihood/SourceFactory.h
-%include Likelihood/SrcArg.h
-%include Likelihood/TrapQuad.h
-%include Likelihood/MapCubeFunction2.h
-%include Likelihood/TiedParameter.h
 %include Likelihood/Composite2.h
 %include Likelihood/CompositeLikelihood.h
+%include Likelihood/OptEM.h
 %include Likelihood/SummedLikelihood.h
-%include Likelihood/FitUtils.h
-%include Likelihood/ScanUtils.h
-%include Likelihood/WeightMap.h
-%include Likelihood/FitScanner.h
+  // This depends on both BinnedLikelihood and LogLike
+%include Likelihood/CountsSpectra.h
+  // Stuff in pyLikelihood
 %include pyLikelihood/Aeff.h
 %include pyLikelihood/enableFPE.h
 %extend Likelihood::LogLike {
@@ -410,14 +441,23 @@ using optimizers::Exception;
    }
 }
 %extend Likelihood::DiffuseSource {
-   static Likelihood::DiffuseSource * 
-      downcastAsDiffuse(Likelihood::Source * src) {
-      Likelihood::DiffuseSource * diffuse =
+   static Likelihood::DiffuseSource * cast(Likelihood::Source * src) {
+      Likelihood::DiffuseSource * diffsrc =
          dynamic_cast<Likelihood::DiffuseSource *>(src);
-      if (diffuse == 0) {
-         throw std::runtime_error("Cannot downcast as DiffuseSource.");
+      if (diffsrc == 0) {
+         throw std::runtime_error("Cannot cast to a DiffuseSource.");
       }
-      return diffuse;
+      return diffsrc;
+   }
+}
+%extend Likelihood::CompositeSource {
+   static Likelihood::CompositeSource * cast(Likelihood::Source * src) {
+      Likelihood::CompositeSource * compsrc =
+         dynamic_cast<Likelihood::CompositeSource *>(src);
+      if (compsrc == 0) {
+         throw std::runtime_error("Cannot cast to a  CompositeSource.");
+      }
+      return compsrc;
    }
 }
 %extend Likelihood::LogLike {
@@ -499,31 +539,7 @@ using optimizers::Exception;
       return model_counts;
    }
 }
-%extend Likelihood::BinnedLikelihood2 {
-   std::vector<double> modelCounts(const std::string & srcName) {
-      const Likelihood::Source * src(self->getSource(srcName));
-      const Likelihood::SourceMap & srcMap(self->sourceMap(srcName));
-      const std::vector<float> & model(srcMap.model());
-      const std::vector<float> & counts(self->countsMap().data());
-      const std::vector<double> & energies(self->energies());
 
-      size_t numpix(self->countsMap().pixels().size());
-      std::vector<double> model_counts(numpix*(energies.size() - 1), 0);
-      for (size_t k(0); k < energies.size() - 1; k++) {
-         for (size_t j(0); j < numpix; j++) {
-            size_t imin(k*numpix + j);
-            if (counts.at(imin) > 0) {
-               size_t imax(imin + numpix);
-               model_counts.at(imin) += src->pixelCounts(energies.at(k),
-                                                         energies.at(k+1),
-                                                         model.at(imin),
-                                                         model.at(imax));
-            }
-         }
-      }
-      return model_counts;
-   }
- }
 %extend Likelihood::Event {
    std::pair<double, double> ra_dec() const {
       return std::make_pair(self->getDir().ra(), self->getDir().dec());
