@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: echarles  Wed Oct 12 19:12:19 PDT 2016
+pyLikelihood/src
+
+Modified Files:
+	pyLikelihood.i 
+Log Message:
+Moved include statements to better track dependencies, removed BinnedLikelihood2, added CompositeSource and related classes
+    *
+------------------------------------------------------------
 User: echarles  Wed Oct 12 19:10:40 PDT 2016
 pyLikelihood/python
 
