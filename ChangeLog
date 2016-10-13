@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: echarles  Wed Oct 12 19:10:40 PDT 2016
+pyLikelihood/python
+
+Modified Files:
+	SrcModel.py 
+Log Message:
+added access to nested sources inside composite source in pyLikelihood interface
+    *
+------------------------------------------------------------
 User: echarles  Wed Oct 12 19:08:14 PDT 2016
 pyLikelihood/python
 
