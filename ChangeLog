@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: echarles  Wed Oct 12 19:08:14 PDT 2016
+pyLikelihood/python
+
+Modified Files:
+	AnalysisBase.py 
+Log Message:
+Added support for splitting and mergine composite sources to python/AnalysisBase.py
+    *
+------------------------------------------------------------
 TAG
 Tag name: ScienceTools-11-04-00, operation: add
 Package: pyLikelihood
