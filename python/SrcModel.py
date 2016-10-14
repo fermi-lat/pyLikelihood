@@ -60,9 +60,6 @@ class SourceModel(object):
                     eval('self.srcs[name].src.%s' % key)
                 except AttributeError:
                     self.srcs[name].__dict__[key] = self._convertType(value)
-                except KeyError:
-                    # FIXME, do we want to do a recursive find here?
-                    print ("Did not set xml attribute for nested source: %s : %s"%(key,value))
     def _convertType(self, value):
         try:
             return int(value)
@@ -115,20 +112,9 @@ class Source(object):
             if item == "Spectrum":
                 lines.append(prefix + item + ": " + self[item].genericName())
                 lines.append(self[item].__repr__(prefix, free_only))
-        if self.src.getType() == "Composite":
-            for n in self.nested():
-                lines.append(prefix + " Nested: " + n)
         return "\n".join(lines) + "\n"
     def __getattr__(self, attrname):
         return getattr(self.src, attrname)
-    def nested(self):
-        if self.src.getType() != "Composite":
-            return None
-        comp = pyLike.CompositeSource.cast(self.src)
-        sv = pyLike.StringVector()
-        comp.getSrcNames(sv)
-        n = [sv[i] for i in range(sv.size())]
-        return n
 
 class Function(object):
     def __init__(self, func, srcName=None, source_obj=None):
