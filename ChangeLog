@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: echarles  Fri Oct 14 13:22:17 PDT 2016
+pyLikelihood
+
+Modified Files:
+	SConscript 
+Log Message:
+stag/GoGui_auto-tag
+    *
+------------------------------------------------------------
 TAG
 Tag name: pyLikelihood-02-03-07, operation: add
 Package: pyLikelihood
