@@ -7,7 +7,7 @@ file IntegralUpperLimits.py
 
 @author Stephen Fegan <sfegan@llr.in2p3.fr>
 
-$Id: IntegralUpperLimit.py,v 1.5 2011/09/27 19:23:03 sfegan Exp $
+$Id: IntegralUpperLimit.py,v 1.6 2011/10/31 07:55:00 sfegan Exp $
 
 See help for IntegralUpperLimits.calc for full details.
 """
@@ -517,6 +517,8 @@ def calc_int(like, srcName, cl=0.95, verbosity=0,
     fitval = par.getValue()
     fiterr = par.error()
     limlo, limhi = par.getBounds()
+    # limlo should not be allowed to go down to 0
+    limlo = max(limlo,0.01*fiterr,1e-4)
     if verbosity:
         print "Maximum of %g with %s = %g +/- %g"\
               %(-maxval,srcName,fitval,fiterr)
@@ -569,6 +571,14 @@ def calc_int(like, srcName, cl=0.95, verbosity=0,
     if verbosity:
         print "Integration bounds: %g to %g (%d full fcn evals and %d approx)"\
               %(xlo,xhi,exact_root_evals,approx_root_evals)
+
+    profile_dlogL1 = -0.5*scipy.stats.chi2.isf(1-cl, 1)
+    profile_dlogL2 = -0.5*scipy.stats.chi2.isf(1-2*(cl-0.5), 1)
+
+    if yhi - ylo > profile_dlogL1:
+      print "calc_int error: parameter max", xhi, "is not large enough"
+      print "delta logLike =", ylo - yhi
+      return -1, {}
 
     ###########################################################################
     #
@@ -690,9 +700,6 @@ def calc_int(like, srcName, cl=0.95, verbosity=0,
     # spline and linear representation of logL.
     #
     ###########################################################################
-
-    profile_dlogL1 = -0.5*scipy.stats.chi2.isf(1-cl, 1)
-    profile_dlogL2 = -0.5*scipy.stats.chi2.isf(1-2*(cl-0.5), 1)
 
     # The spline algorithm is prone to noise in the fitted logL,
     # especially in "be_very_careful" mode, so fall back to a linear
