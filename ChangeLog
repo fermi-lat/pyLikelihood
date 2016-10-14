@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: echarles  Fri Oct 14 13:33:39 PDT 2016
+pyLikelihood/python
+
+Modified Files:
+	AnalysisBase.py ST_Version.py SrcModel.py 
+Log Message:
+Move aside new code to make a tag of this package for ST-11-04-00
+    *
+------------------------------------------------------------
 TAG
 Tag name: pyLikelihood-02-03-09, operation: add
 Package: pyLikelihood
