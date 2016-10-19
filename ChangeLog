@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: echarles  Wed Oct 19 11:53:32 PDT 2016
+pyLikelihood/python
+
+Modified Files:
+	AnalysisBase.py SrcModel.py 
+Log Message:
+Put back HEAD of pyLikelihood
+    *
+------------------------------------------------------------
 TAG
 Tag name: pyLikelihood-02-03-10, operation: add
 Package: pyLikelihood
