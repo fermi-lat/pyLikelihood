@@ -4,7 +4,7 @@ Base class for Likelihood analysis Python modules.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.85 2016/09/15 21:27:41 echarles Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.86 2016/10/13 02:08:14 echarles Exp $
 #
 
 import sys
@@ -446,6 +446,22 @@ class AnalysisBase(object):
         source_attributes = self.getExtraSourceAttributes()
         self.logLike.addSource(src)
         self._setSourceAttributes(source_attributes)
+    def mergeSources(self,compName,sourceNames,specFuncName):
+        '''Merge a set of sources into a single composite source'''
+        sv = pyLike.StringVector()
+        for sn in sourceNames:
+            sv.push_back(sn)
+        source_attributes = self.getExtraSourceAttributes()
+        comp = self.logLike.mergeSources(compName,sv,specFuncName)                
+        self._setSourceAttributes(source_attributes)
+        return comp
+    def splitCompositeSource(self,compName):
+        '''break apart a composite source and return a tuple with 
+        the names of new sources and the spectral function'''
+        sv = pyLike.StringVector()
+        specFunc = self.logLike.splitCompositeSource(compName,sv)
+        l = [sv[i] for i in range(sv.size())]
+        return (l,specFunc)
     def _setSourceAttributes(self, source_attributes):
         self.model = SourceModel(self.logLike)
         for item in source_attributes:
