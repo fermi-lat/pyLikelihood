@@ -2,11 +2,12 @@
    @file release.notes
    @brief package pyLikelihood
    @author J. Chiang <jchiang@slac.stanford.edu>
-   $Id: release.notes,v 1.186 2016/10/14 20:24:37 echarles Exp $
+   $Id: release.notes,v 1.187 2016/10/14 20:41:25 echarles Exp $
 
    @verbatim
    * EOH *
 
+ pyLikelihood-02-04-00 25-Oct-2016 echarles Removed BinnedLikelihood2 and construct Likelihood from BinnedConfig object
  pyLikelihood-02-03-10 14-Oct-2016 echarles Figure out how stag works
  pyLikelihood-02-03-09 14-Oct-2016 echarles fix tag to include proper version of src/pyLikelihood.i and python/IntegralUpperLimit.py
  pyLikelihood-02-03-08 14-Oct-2016 echarles fix tag to include proper version of src/pyLikelihood.i
