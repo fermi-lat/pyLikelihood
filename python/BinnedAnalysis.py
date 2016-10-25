@@ -4,7 +4,7 @@ Python interface for binned likelihood.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/BinnedAnalysis.py,v 1.57 2016/04/26 20:43:59 echarles Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/BinnedAnalysis.py,v 1.58 2016/09/15 21:27:41 echarles Exp $
 #
 
 import os
@@ -19,6 +19,22 @@ except ImportError:
     pass
 
 _funcFactory = pyLike.SourceFactory_funcFactory()
+
+
+def BinnedConfig(**kwargs):
+    """
+    """
+    return pyLike.BinnedLikeConfig(kwargs.get('computePointSources',True),
+                                   kwargs.get('applyPsfCorrections',True),
+                                   kwargs.get('performConvolution',True),
+                                   kwargs.get('resample',True),
+                                   kwargs.get('resamp_factor',2),
+                                   kwargs.get('minbinsz',0.1),
+                                   kwargs.get('integ_type',0),
+                                   kwargs.get('psfEstimatorFtol',1e-3),
+                                   kwargs.get('psfEstimatorPeakTh',1e-6),
+                                   kwargs.get('verbose',True),
+                                   kwargs.get('use_single_psf',False))
 
 class BinnedObs(object):
     def __init__(self, srcMaps=None, expCube=None, binnedExpMap=None,
@@ -123,7 +139,7 @@ class BinnedObs(object):
         
 class BinnedAnalysis(AnalysisBase):
     def __init__(self, binnedData, srcModel=None, optimizer='Drmngb',
-                 use_bl2=False, verbosity=0, psfcorr=True, wmap=None):
+                 use_bl2=False, verbosity=0, psfcorr=True, wmap=None, config=None):
         AnalysisBase.__init__(self)
         if srcModel is None:
             srcModel, optimizer = self._srcDialog()
@@ -138,22 +154,16 @@ class BinnedAnalysis(AnalysisBase):
             self.wmap = None
 
         if use_bl2:
-            self.logLike = pyLike.BinnedLikelihood2(binnedData.countsMap,
-                                                    binnedData.observation,
-                                                    binnedData.srcMaps,
-                                                    True, psfcorr)
-        else:
-            if self.wmap:
-                self.logLike = pyLike.BinnedLikelihood(binnedData.countsMap,
-                                                       self.wmap,
-                                                       binnedData.observation,
-                                                       binnedData.srcMaps,
-                                                       True, psfcorr)
-            else:
-                self.logLike = pyLike.BinnedLikelihood(binnedData.countsMap,
-                                                       binnedData.observation,
-                                                       binnedData.srcMaps,
-                                                       True, psfcorr)
+            raise ValueError("BinnedLikelihood2 is no longer supported")
+
+        if config is None:
+            config = BinnedConfig(psfcorr=psfcorr)
+
+        self.logLike = pyLike.BinnedLikelihood(binnedData.countsMap,
+                                               binnedData.observation,
+                                               config,
+                                               binnedData.srcMaps,
+                                               self.wmap)
 
         self.verbosity = verbosity
         self.logLike.initOutputStreams()
@@ -188,6 +198,10 @@ class BinnedAnalysis(AnalysisBase):
     def __setitem__(self, name, value):
         self.model[name] = value
         self.logLike.syncParams()
+    def addSource(self, src, binnedConfig=None):
+        source_attributes = self.getExtraSourceAttributes()
+        self.logLike.addSource(src,binnedConfig)
+        self._setSourceAttributes(source_attributes)
     def setEnergyRange(self, emin, emax):
         kmin = bisect.bisect(self.energies, emin) - 1
         kmax = min(bisect.bisect_left(self.energies, emax),
