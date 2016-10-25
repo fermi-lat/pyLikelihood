@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: echarles  Tue Oct 25 14:17:14 PDT 2016
+pyLikelihood/python
+
+Modified Files:
+	BinnedAnalysis.py 
+Log Message:
+Removed BinnedLikelihood2 and construct Likelihood from BinnedConfig object
+    *
+------------------------------------------------------------
 User: echarles  Wed Oct 19 11:53:32 PDT 2016
 pyLikelihood/src
 
