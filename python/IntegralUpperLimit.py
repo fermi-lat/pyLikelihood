@@ -7,7 +7,7 @@ file IntegralUpperLimits.py
 
 @author Stephen Fegan <sfegan@llr.in2p3.fr>
 
-$Id: IntegralUpperLimit.py,v 1.6 2011/10/31 07:55:00 sfegan Exp $
+$Id: IntegralUpperLimit.py,v 1.7 2016/10/14 17:41:40 echarles Exp $
 
 See help for IntegralUpperLimits.calc for full details.
 """
@@ -575,9 +575,9 @@ def calc_int(like, srcName, cl=0.95, verbosity=0,
     profile_dlogL1 = -0.5*scipy.stats.chi2.isf(1-cl, 1)
     profile_dlogL2 = -0.5*scipy.stats.chi2.isf(1-2*(cl-0.5), 1)
 
-    if yhi - ylo > profile_dlogL1:
+    if yhi - delta_log_like_limits > profile_dlogL1:
       print "calc_int error: parameter max", xhi, "is not large enough"
-      print "delta logLike =", ylo - yhi
+      print "delta logLike =", yhi - delta_log_like_limits
       return -1, {}
 
     ###########################################################################
