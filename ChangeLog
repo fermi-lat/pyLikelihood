@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: echarles  Tue Nov  1 16:39:14 PDT 2016
+pyLikelihood/python
+
+Modified Files:
+	IntegralUpperLimit.py 
+Log Message:
+Have integral upper limits check integration range against MLE, rather than again lower limit
+    *
+------------------------------------------------------------
 TAG
 Tag name: pyLikelihood-02-04-00, operation: add
 Package: pyLikelihood
