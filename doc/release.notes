@@ -1,8 +1,8 @@
 /**
    @file release.notes
    @brief package pyLikelihood
-   @author J. Chiang <jchiang@slac.stanford.edu>
-   $Id: release.notes,v 1.188 2016/10/25 21:40:52 echarles Exp $
+   @author J. Chiang <jchiang@slac.stanford.edu>, M. Wood <mdwood@slac.stanford.edu>, E. Charles <echarles@slac.stanford.edu>
+   $Id: release.notes,v 1.189 2016/11/01 23:41:45 echarles Exp $
 
    @verbatim
    * EOH *
