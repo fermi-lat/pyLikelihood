@@ -4,7 +4,7 @@ Python interface for binned likelihood.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/BinnedAnalysis.py,v 1.58 2016/09/15 21:27:41 echarles Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/BinnedAnalysis.py,v 1.59 2016/10/25 21:17:14 echarles Exp $
 #
 
 import os
@@ -147,7 +147,7 @@ class BinnedAnalysis(AnalysisBase):
         self.srcModel = srcModel
         self.optimizer = optimizer
         if wmap and wmap != "none":
-            self.wmap = pyLike.WcsMap2(wmap,"")
+            self.wmap = pyLike.WcsMapLibrary.instance().wcsmap(wmap,"")
             self.wmap.setInterpolation(False)
             self.wmap.setExtrapolation(True)
         else:
