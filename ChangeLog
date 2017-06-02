@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: echarles  Thu Jun  1 18:42:34 PDT 2017
+pyLikelihood/python
+
+Modified Files:
+	BinnedAnalysis.py 
+Log Message:
+Fix binned Likelihood to allow for HEALPix based weights map
+    *
+------------------------------------------------------------
 TAG
 Tag name: ScienceTools-11-05-03, operation: add
 Package: pyLikelihood
