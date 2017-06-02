@@ -2,11 +2,12 @@
    @file release.notes
    @brief package pyLikelihood
    @author J. Chiang <jchiang@slac.stanford.edu>, M. Wood <mdwood@slac.stanford.edu>, E. Charles <echarles@slac.stanford.edu>
-   $Id: release.notes,v 1.189 2016/11/01 23:41:45 echarles Exp $
+   $Id: release.notes,v 1.190 2017/03/29 19:07:09 heather Exp $
 
    @verbatim
    * EOH *
 
+ pyLikelihood-02-04-02 01-Jun-2017 echarles Fix binned Likelihood to allow for HEALPix-based weights map
  pyLikelihood-02-04-01 01-Nov-2016 echarles Have integral upper limits check integration range against MLE, rather than again lower limit
  pyLikelihood-02-04-00 25-Oct-2016 echarles Removed BinnedLikelihood2 and construct Likelihood from BinnedConfig object
  pyLikelihood-02-03-10 14-Oct-2016 echarles Figure out how stag works
