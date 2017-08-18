@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: echarles  Fri Aug 18 15:47:45 PDT 2017
+pyLikelihood/python
+
+Modified Files:
+	UnbinnedAnalysis.py BinnedAnalysis.py AnalysisBase.py 
+Log Message:
+Added weighted version of plot and plotResidual
+    *
+------------------------------------------------------------
 User: echarles  Thu Aug 17 17:20:49 PDT 2017
 pyLikelihood/python
 
