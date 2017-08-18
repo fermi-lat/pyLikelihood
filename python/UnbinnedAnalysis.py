@@ -4,7 +4,7 @@ Python interface for unbinned likelihood
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/UnbinnedAnalysis.py,v 1.49 2015/01/16 23:05:48 jchiang Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/UnbinnedAnalysis.py,v 1.50 2016/09/15 21:27:41 echarles Exp $
 #
 
 import sys
@@ -199,7 +199,7 @@ class UnbinnedAnalysis(AnalysisBase):
         zeros = num.zeros(len(self.e_vals))
         self.sourceFitResids[-1].overlay(self.e_vals, zeros, symbol='dotted')
         self.sourceFitResids[-1].setTitle(srcName)
-    def _srcCnts(self, srcName):
+    def _srcCnts(self, srcName, weighted=False):
         source = self.logLike.getSource(srcName)
         cnts = []
         for emin, emax in zip(self.energies[:-1], self.energies[1:]):
