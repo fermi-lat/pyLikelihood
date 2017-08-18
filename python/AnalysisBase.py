@@ -4,7 +4,7 @@ Base class for Likelihood analysis Python modules.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.88 2016/10/19 18:53:32 echarles Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/AnalysisBase.py,v 1.89 2017/08/18 00:20:22 echarles Exp $
 #
 
 import sys
@@ -586,10 +586,10 @@ class AnalysisBase(object):
             raise RuntimeError, ("Sorry plotting is not available using %s.\n"
                                  % _plotter_package +
                                  "Use setPlotter to try a different plotter")
-    def plot(self, oplot=0, color=None, omit=(), symbol='line'):
+    def plot(self, oplot=0, color=None, omit=(), symbol='line', weighted=False):
         self._importPlotter()
         if oplot == 0:
-            self.spectralPlot = self._plotData()
+            self.spectralPlot = self._plotData(weighted=weighted)
             if color is None:
                 color = 'black'
         else:
@@ -600,18 +600,22 @@ class AnalysisBase(object):
         for src in srcNames:
             if total_counts is None:
                 total_counts = self._plotSource(src, color=color, 
-                                                show=(src not in omit))
+                                                show=(src not in omit), weighted=weighted)
             else:
                 total_counts += self._plotSource(src, color=color, 
-                                                 show=(src not in omit))
+                                                 show=(src not in omit), weighted=weighted)
         self.spectralPlot.overlay(self.e_vals, total_counts, color=color,
                                   symbol=symbol)
-        self._plotResiduals(total_counts, oplot=oplot, color=color)
-    def _plotResiduals(self, model, nobs=None, oplot=0, color='black'):
+        self._plotResiduals(total_counts, oplot=oplot, color=color, weighted=weighted)
+    def _plotResiduals(self, model, nobs=None, oplot=0, color='black', weighted=False):
         if nobs is None:
-            nobs = self.nobs
+            if weighted:
+                nobs = self.nobs_wt
+            else:
+                nobs = self.nobs
         resid = (nobs - model)/model
         resid_err = num.sqrt(nobs)/model
+        print ("Resid ", num.sum(nobs), model.sum(), resid.sum())
         if oplot and hasattr(self, 'residualPlot'):
             self.residualPlot.overlay(self.e_vals, resid, dy=resid_err,
                                       color=color, symbol='plus')
@@ -624,9 +628,12 @@ class AnalysisBase(object):
                                              xrange=self._xrange())
             zeros = num.zeros(len(self.e_vals))
             self.residualPlot.overlay(self.e_vals, zeros, symbol='dotted')
-    def _plotData(self, nobs=None):
+    def _plotData(self, nobs=None, weighted=False):
         if nobs is None:
-            nobs = self.nobs
+            if weighted:
+                nobs = self.nobs_wt
+            else:
+                nobs = self.nobs
             errors = num.sqrt(nobs)
         else:
             errors = []
@@ -636,6 +643,7 @@ class AnalysisBase(object):
                 else:
                     errors.append(ntilde/nsq)
         energies = self.e_vals
+        print ("Data ", num.sum(nobs))
         my_plot = self.plotter(energies, nobs, dy=errors,
                                xlog=1, ylog=1, xtitle='Energy (MeV)',
                                ytitle='counts / bin', xrange=self._xrange())
@@ -648,10 +656,11 @@ class AnalysisBase(object):
         else:
             return None
     def _plotSource(self, srcName, color='black', symbol='line', show=True,
-                    display=None):
+                    display=None, weighted=False):
         energies = self.e_vals
 
-        model_counts = self._srcCnts(srcName)
+        model_counts = self._srcCnts(srcName, weighted=weighted)
+        print ("srcName ", model_counts.sum())
 
         if display is None:
             display = self.spectralPlot
