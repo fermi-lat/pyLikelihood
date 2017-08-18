@@ -6,7 +6,7 @@ classes.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
-# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/SummedLikelihood.py,v 1.25 2016/05/02 19:00:02 echarles Exp $
+# $Header: /nfs/slac/g/glast/ground/cvs/pyLikelihood/python/SummedLikelihood.py,v 1.26 2016/09/15 21:27:41 echarles Exp $
 #
 
 import pyLikelihood as pyLike
@@ -88,11 +88,11 @@ class SummedLikelihood(AnalysisBase):
                 for src in self.sourceNames():
                     comp.logLike.syncSrcParams(src)
     def fit(self, verbosity=3, tol=None, optimizer=None,
-            covar=False, optObject=None):
+            covar=False, optObject=None, numericDerivs=False):
         if tol is None:
             tol = self.tol
         errors = self._errors(optimizer, verbosity, tol, covar=covar,
-                              optObject=optObject)
+                              optObject=optObject, numericDerivs=numericDerivs)
         negLogLike = -self.composite.value()
         self.saveBestFit(negLogLike)
         return negLogLike
@@ -179,7 +179,7 @@ class SummedLikelihood(AnalysisBase):
             component.freeze(i)
         self.saved_state = None
     def _errors(self, optimizer=None, verbosity=0, tol=None,
-                useBase=False, covar=False, optObject=None):
+                useBase=False, covar=False, optObject=None, numericDerivs=False):
         self._syncParams()
         if optimizer is None:
             optimizer = self.optimizer
@@ -191,6 +191,8 @@ class SummedLikelihood(AnalysisBase):
         else:
             myOpt = optObject
         self.optObject = myOpt
+        if numericDerivs:
+            myOpt.setNumericDerivFlag(numericDerivs)
         myOpt.find_min(verbosity, tol, self.tolType)
         errors = myOpt.getUncertainty(useBase)
         if covar:
