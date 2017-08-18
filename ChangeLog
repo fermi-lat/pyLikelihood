@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: echarles  Thu Aug 17 17:20:22 PDT 2017
+pyLikelihood/python
+
+Modified Files:
+	AnalysisBase.py SummedLikelihood.py 
+Log Message:
+Allow user to specify numeric derivatives in python interface
+    *
+------------------------------------------------------------
 TAG
 Tag name: pyLikelihood-02-04-02, operation: add
 Package: pyLikelihood
