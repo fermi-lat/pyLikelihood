@@ -120,7 +120,18 @@ class Source(object):
                 lines.append(prefix + " Nested: " + n)
         return "\n".join(lines) + "\n"
     def __getattr__(self, attrname):
-        return getattr(self.src, attrname)
+        #return getattr(self.src, attrname)
+        srcType = self.src.getType()
+        if srcType == "Composite":
+            cast = pyLike.CompositeSource.cast(self.src)
+        elif srcType == "Point":
+            cast = pyLike.PointSource.cast(self.src)
+        elif srcType == "Diffuse":
+            cast = pyLike.DiffuseSource.cast(self.src)
+        else:
+            return None        
+        return getattr(cast, attrname)
+
     def nested(self):
         if self.src.getType() != "Composite":
             return None
