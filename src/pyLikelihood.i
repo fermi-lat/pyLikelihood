@@ -115,6 +115,7 @@
   // Stuff that depends on SpatialFunction, MeanPsf, SourceModel
 #include "Likelihood/CompositeSource.h"
 #include "Likelihood/ConvolveHealpix.h"
+#include "Likelihood/RadialProfile.h"
 #include "Likelihood/RadialDisk.h"
 #include "Likelihood/RadialGaussian.h"
   // LogLike
@@ -294,6 +295,7 @@ using optimizers::Exception;
   // Stuff that depends on SpatialFunction, MeanPsf, SourceModel
 %include Likelihood/CompositeSource.h
 %include Likelihood/ConvolveHealpix.h
+%include Likelihood/RadialProfile.h
 %include Likelihood/RadialDisk.h
 %include Likelihood/RadialGaussian.h
   // LogLike
