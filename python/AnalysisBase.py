@@ -19,7 +19,7 @@ except ImportError, message:
 #    print "Caught ImportError: ", message
     pass
 
-_plotter_package = 'root'
+_plotter_package = 'mpl'
 
 class AnalysisBase(object):
     def __init__(self):
