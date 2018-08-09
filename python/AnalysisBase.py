@@ -734,9 +734,9 @@ class AnalysisBase(object):
         
         try:
             for ii in i:
-                self.model[ii].setFree(1)
+                self.model[ii].setFree(True)
         except TypeError:
-            self.model[i].setFree(1)
+            self.model[i].setFree(True)
     def freeze(self, i):
 
         '''Freezes a parameter with the given parameter index.  Use
@@ -745,9 +745,9 @@ class AnalysisBase(object):
         
         try:
             for ii in i:
-                self.model[ii].setFree(0)
+                self.model[ii].setFree(False)
         except TypeError:
-            self.model[i].setFree(0)
+            self.model[i].setFree(False)
     def writeXml(self, xmlFile=None):
 
         '''Write out an xml representation of the active model with
