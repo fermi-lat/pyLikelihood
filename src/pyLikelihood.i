@@ -542,6 +542,16 @@ using optimizers::Exception;
    }
 }
 
+%extend optimizers::Minuit {
+  static optimizers::Minuit * cast(optimizers::Optimizer * opt) {
+    optimizers::Minuit * min_opt = dynamic_cast<optimizers::Minuit *>(opt);
+    if (min_opt == 0) {
+      throw std::runtime_error("Cannot cast to a Minuit object.");
+    }
+    return min_opt;
+  }
+}
+
 %extend Likelihood::Event {
    std::pair<double, double> ra_dec() const {
       return std::make_pair(self->getDir().ra(), self->getDir().dec());
