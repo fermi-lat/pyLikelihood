@@ -113,7 +113,7 @@ def _loglike(x, like, par, srcName, offset, verbosity, no_optimizer,
     # Optimizer uses verbosity level one smaller than given here
     optverbosity = max(verbosity-1, 0)
 
-    par.setFree(0)
+    par.setFree()
     par.setValue(x)
     like.syncSrcParams(srcName)
 
@@ -492,7 +492,7 @@ def calc_int(like, srcName, cl=0.95, verbosity=0,
     fitstat = None
     if not skip_global_opt:
         # Make sure desired parameter is free during global optimization
-        par.setFree(1)
+        par.setFree(True)
         like.syncSrcParams(srcName)
 
         # Perform global optimization
@@ -526,11 +526,11 @@ def calc_int(like, srcName, cl=0.95, verbosity=0,
     # Freeze all other model parameters if requested (much faster!)
     if(freeze_all):
         for i in range(len(like.model.params)):
-            like.model[i].setFree(0)
+            like.model[i].setFree(False)
             like.syncSrcParams(like[i].srcName)
 
     # Freeze the parameter of interest
-    par.setFree(0)
+    par.setFree(False)
     like.syncSrcParams(srcName)
 
     # Set up the caches for the optimum values and nuisance parameters
@@ -890,7 +890,7 @@ def calc_chi2(like, srcName, cl=0.95, verbosity=0,
     fitstat = None
     if not skip_global_opt:
         # Make sure desired parameter is free during global optimization
-        par.setFree(1)
+        par.setFree(True)
         like.syncSrcParams(srcName)
 
         # Perform global optimization
@@ -922,11 +922,11 @@ def calc_chi2(like, srcName, cl=0.95, verbosity=0,
     # Freeze all other model parameters if requested (much faster!)
     if(freeze_all):
         for i in range(len(like.model.params)):
-            like.model[i].setFree(0)
+            like.model[i].setFree(False)
             like.syncSrcParams(like[i].srcName)
 
     # Freeze the parameter of interest
-    par.setFree(0)
+    par.setFree(False)
     like.syncSrcParams(srcName)
 
     # Set up the caches for the optimum values and nuisance parameters
@@ -1050,7 +1050,7 @@ if __name__ == "__main__":
     src_spectrum = like[srcName].funcs['Spectrum']
     par = src_spectrum.getParam("Index")
     if par:
-        par.setFree(0)
+        par.setFree(False)
         par.setValue(-2.0)
         like.syncSrcParams(srcName)
 

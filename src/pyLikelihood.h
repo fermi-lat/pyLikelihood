@@ -356,7 +356,7 @@ underlying C++ class from Python so that one can set the "free" flag, set
 the bounds, and the scale factor
 
 @verbatim
->>> like.model[1].setFree(1)
+>>> like.model[1].setFree(True)
 >>> like.model[3].setScale(1e-2)
 >>> like.model[3] = 1.1
 >>> like.model[3].setBounds(0.5, 2)

@@ -251,7 +251,7 @@ class SED(object):
 
         index=like[like.par_index(name, 'Index')]
         index.setTrueValue(self.powerlaw_index)
-        index.setFree(0)
+        index.setFree(False)
         like.syncSrcParams(name)
 
         # assume a canonical dnde=1e-11 at 1GeV index 2 starting value
