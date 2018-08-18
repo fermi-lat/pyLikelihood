@@ -113,7 +113,7 @@ def _loglike(x, like, par, srcName, offset, verbosity, no_optimizer,
     # Optimizer uses verbosity level one smaller than given here
     optverbosity = max(verbosity-1, 0)
 
-    par.setFree()
+    par.setFree(False)
     par.setValue(x)
     like.syncSrcParams(srcName)
 
