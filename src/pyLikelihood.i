@@ -625,3 +625,13 @@ using optimizers::Exception;
       self->operator=(rhs);
    }
 }
+%extend Likelihood::PiecewisePowerLaw {
+   static Likelihood::PiecewisePowerLaw * cast(optimizers::Function * func) {
+      Likelihood::PiecewisePowerLaw * ppl =
+         dynamic_cast<Likelihood::PiecewisePowerLaw *>(func);
+      if (ppl == 0) {
+         throw std::runtime_error("Cannot cast to a PiecewisePowerLaw.");
+      }
+      return ppl;
+   }
+}
