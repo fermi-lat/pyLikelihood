@@ -115,6 +115,7 @@
   // Stuff that depends on SpatialFunction, MeanPsf, SourceModel
 #include "Likelihood/CompositeSource.h"
 #include "Likelihood/ConvolveHealpix.h"
+#include "Likelihood/RadialProfile.h"
 #include "Likelihood/RadialDisk.h"
 #include "Likelihood/RadialGaussian.h"
   // LogLike
@@ -294,6 +295,7 @@ using optimizers::Exception;
   // Stuff that depends on SpatialFunction, MeanPsf, SourceModel
 %include Likelihood/CompositeSource.h
 %include Likelihood/ConvolveHealpix.h
+%include Likelihood/RadialProfile.h
 %include Likelihood/RadialDisk.h
 %include Likelihood/RadialGaussian.h
   // LogLike
@@ -540,6 +542,16 @@ using optimizers::Exception;
    }
 }
 
+%extend optimizers::Minuit {
+  static optimizers::Minuit * cast(optimizers::Optimizer * opt) {
+    optimizers::Minuit * min_opt = dynamic_cast<optimizers::Minuit *>(opt);
+    if (min_opt == 0) {
+      throw std::runtime_error("Cannot cast to a Minuit object.");
+    }
+    return min_opt;
+  }
+}
+
 %extend Likelihood::Event {
    std::pair<double, double> ra_dec() const {
       return std::make_pair(self->getDir().ra(), self->getDir().dec());
@@ -611,5 +623,15 @@ using optimizers::Exception;
 %extend optimizers::Parameter {
    void setEquals(const optimizers::Parameter & rhs) {
       self->operator=(rhs);
+   }
+}
+%extend Likelihood::PiecewisePowerLaw {
+   static Likelihood::PiecewisePowerLaw * cast(optimizers::Function * func) {
+      Likelihood::PiecewisePowerLaw * ppl =
+         dynamic_cast<Likelihood::PiecewisePowerLaw *>(func);
+      if (ppl == 0) {
+         throw std::runtime_error("Cannot cast to a PiecewisePowerLaw.");
+      }
+      return ppl;
    }
 }
