@@ -24,6 +24,12 @@ _funcFactory = pyLike.SourceFactory_funcFactory()
 def BinnedConfig(**kwargs):
     """
     """
+    use_edisp = kwargs.get('use_edisp',False)
+    if use_edisp:
+        edisp_bins = kwargs.get('edisp_bins',0)
+    else:
+        edisp_bins = -1
+    
     return pyLike.BinnedLikeConfig(kwargs.get('computePointSources',True),
                                    kwargs.get('applyPsfCorrections',True),
                                    kwargs.get('performConvolution',True),
@@ -34,7 +40,7 @@ def BinnedConfig(**kwargs):
                                    kwargs.get('psfEstimatorFtol',1e-3),
                                    kwargs.get('psfEstimatorPeakTh',1e-6),
                                    kwargs.get('verbose',True),
-                                   kwargs.get('use_edisp',False),
+                                   edisp_bins,
                                    kwargs.get('use_single_fixed_map', True),
                                    kwargs.get('use_linear_quadrature',False),
                                    kwargs.get('save_all_srcmaps',False),
