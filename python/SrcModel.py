@@ -99,6 +99,52 @@ class SourceModel(object):
             lines.append(self[src].__repr__('   ', self.printFreeOnly))
         return "\n".join(lines)
 
+    def addPrior(self, srcName, parName, funcname, **kwds):
+        par = self.srcs[srcName].funcs["Spectrum"].params[parName]
+        par.addPrior(funcname)
+        par.setPriorParams(**kwds)
+
+    def removePrior(self, srcName, parName):
+        par = self.srcs[srcName].funcs["Spectrum"].params[parName]
+        return par.removePrior()
+
+    def getPriorLogValue(self, srcName, parName):
+        par = self.srcs[srcName].funcs["Spectrum"].params[parName]
+        return par.log_prior_value()
+
+    def getPriorLogDeriv(self, srcName, parName):
+        par = self.srcs[srcName].funcs["Spectrum"].params[parName]
+        return par.log_prior_deriv()    
+
+    def removePriors(self):
+        for par in self.params:
+            par.removePrior()
+
+    def getPriors(self):
+        ret_dict = {}
+        for par in self.params:
+            prior_params = par.getPriorParams()
+            if prior_params is None:
+                continue
+            src_name = par.srcName
+            prior_funcname = 'LogGaussian'
+            prior_par_dict = dict(funcname=prior_funcname,
+                                  pars=prior_params)
+            if src_name in ret_dict:
+                ret_dict[src_name][par.getName()] = prior_par_dict
+            else:
+                ret_dict[src_name] = {par.getName():prior_par_dict}
+        return ret_dict
+
+    def addPriors(self, prior_dict):
+        for src_name, src_prior_dict in prior_dict.items():
+            for par_name, prior_par_dict in src_prior_dict.items():
+                funcname = prior_par_dict['funcname']
+                pars = prior_par_dict['pars']
+                self.addPrior(src_name, par_name, funcname, **pars)
+
+
+
 class Source(object):
     def __init__(self, src):
         self.src = src

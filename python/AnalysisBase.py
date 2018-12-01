@@ -8,6 +8,7 @@ Base class for Likelihood analysis Python modules.
 #
 
 import sys
+import yaml
 import numpy as num
 import pyLikelihood as pyLike
 from SrcModel import SourceModel
@@ -814,6 +815,42 @@ class AnalysisBase(object):
         self.model[indx].setBounds(bounds)
 
         return num.array(xvals), num.array(dlogLike)
+
+    def addPrior(self, srcName, parName, funcname, **kwds):
+        par = self.model.addPrior(srcName, parName, funcname, **kwds)
+        self.logLike.syncParams()
+
+    def removePrior(self, srcName, parName):
+        retVal = self.model.removePrior(srcName, parName)
+        self.logLike.syncParams()
+        return retVal
+
+    def getPriorLogValue(self, srcName, parName):
+        return self.model.getPriorLogValue(srcName, parName)
+
+    def getPriorLogDeriv(self, srcName, parName):
+        return self.model.getPriorLogDeriv(srcName, parName)
+
+    def removePriors(self):
+        self.model.removePriors()
+        self.logLike.syncParams()
+
+    def writePriorsYaml(self, filename):
+        self.logLike.syncParams()
+        prior_dict = self.model.getPriors()
+        if filename is None:
+            fout = sys.stdout
+        else:
+            fout = open(filename, 'w!')
+        yaml.dump(prior_dict, fout)
+        if filename is not None:
+            fout.close()
+
+    def readPriorsYaml(self, filename):
+        prior_dict = yaml.load(open(filename))
+        self.model.addPriors(prior_dict)
+        self.logLike.syncParams()
+
 
 def _quotefn(filename):
     if filename is None:
