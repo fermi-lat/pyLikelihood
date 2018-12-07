@@ -47,10 +47,14 @@ class LikelihoodState(object):
             self.negLogLike = negLogLike
         self.like = like
         self.pars = [_Parameter(par) for par in like.params()]
+        self.covariance = like.covariance
+        self.covar_is_current = like.covar_is_current 
     def restore(self, srcName=None):
         if srcName is None:
             for par, likePar in zip(self.pars, self.like.params()):
                 par.setDataMembers(likePar)
+            self.like.covariance = self.covariance
+            self.like.covar_is_current = self.covar_is_current 
         else:
             parNames = pyLikelihood.StringVector()
             self.like[srcName].src.spectrum().getParamNames(parNames)
