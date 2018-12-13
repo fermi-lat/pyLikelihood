@@ -56,6 +56,7 @@
 #include "Likelihood/FileFunction.h"
 #include "Likelihood/FitScanner.h"
 #include "Likelihood/FitUtils.h"
+#include "Likelihood/GaussianError.h"
 #include "Likelihood/LogGaussian.h"
 #include "Likelihood/LogNormalLog.h"
 #include "Likelihood/LogParabola.h"
@@ -232,6 +233,7 @@ using optimizers::Exception;
 %include Likelihood/FileFunction.h
 %include Likelihood/FitScanner.h
 %include Likelihood/FitUtils.h
+%include Likelihood/GaussianError.h
 %include Likelihood/LogGaussian.h
 %include Likelihood/LogNormalLog.h
 %include Likelihood/LogParabola.h
