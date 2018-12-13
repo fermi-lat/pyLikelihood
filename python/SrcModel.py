@@ -127,7 +127,7 @@ class SourceModel(object):
             if prior_params is None:
                 continue
             src_name = par.srcName
-            prior_funcname = 'LogGaussian'
+            prior_funcname = 'GaussianError'
             prior_par_dict = dict(funcname=prior_funcname,
                                   pars=prior_params)
             if src_name in ret_dict:
@@ -255,7 +255,7 @@ class Parameter(object):
         for key, value in kwds.items():
             prior.setParam(key, value)
     def addGaussianPrior(self, mean, sigma):
-        self.addPrior('LogGaussian')
+        self.addPrior('GaussianError')
         self.setPriorParams(Mean=mean, Sigma=sigma)
     def getPriorParams(self):
         prior = self.parameter.log_prior()
@@ -269,7 +269,7 @@ class Parameter(object):
         return pars
     def setGaussianPriorParams(self, mean, sigma):
         func = self.parameter.log_prior()
-        if func.getName() != 'LogGaussian':
+        if func.getName() != 'GaussianError':
             raise RuntimeError('Prior is not Gaussian')
         self.setPriorParams(Mean=mean, Sigma=sigma)
     def removePrior(self):
