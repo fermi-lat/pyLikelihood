@@ -817,7 +817,11 @@ class AnalysisBase(object):
         return num.array(xvals), num.array(dlogLike)
 
     def addPrior(self, srcName, parName, funcname, **kwds):
-        par = self.model.addPrior(srcName, parName, funcname, **kwds)
+        self.model.addPrior(srcName, parName, funcname, **kwds)
+        self.logLike.syncParams()
+
+    def addGaussianPrior(self, srcName, parName, mean, sigma):
+        self.model.addGaussianPrior(srcName, parName, mean, sigma)
         self.logLike.syncParams()
 
     def removePrior(self, srcName, parName):
@@ -831,8 +835,31 @@ class AnalysisBase(object):
     def getPriorLogDeriv(self, srcName, parName):
         return self.model.getPriorLogDeriv(srcName, parName)
 
+    def setPriorParams(self, srcName, parName, **kwds):
+        self.model.setPriorParams(srcName, parName, **kwds)
+        self.logLike.syncParams() 
+
+    def setGaussianPriorParams(self, srcName, parName, mean, sigma):
+        self.model.setGaussianPriorParams(srcName, parName, mean, sigma)
+        self.logLike.syncParams()                 
+
     def removePriors(self):
         self.model.removePriors()
+        self.logLike.syncParams()
+ 
+    def getPriors(self):
+        return self.model.getPriors()
+
+    def addPriors(self, prior_dict):
+        self.model.addPriors(prior_dict)
+        self.logLike.syncParams()
+
+    def constrain_norms(self, srcNames, cov_scale=1.0):
+        self.model.constrain_norms(srcNames, cov_scale)
+        self.logLike.syncParams()
+
+    def constrain_params(self, srcNames, cov_scale=1.0):
+        self.model.constrain_params(srcNames, cov_scale)
         self.logLike.syncParams()
 
     def writePriorsYaml(self, filename):
