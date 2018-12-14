@@ -104,6 +104,10 @@ class SourceModel(object):
         par.addPrior(funcname)
         par.setPriorParams(**kwds)
 
+    def addGaussianPrior(self, srcName, parName, mean, sigma):
+        par = self.srcs[srcName].funcs["Spectrum"].params[parName]
+        par.addGaussianPrior(mean, sigma)
+
     def removePrior(self, srcName, parName):
         par = self.srcs[srcName].funcs["Spectrum"].params[parName]
         return par.removePrior()
@@ -115,6 +119,14 @@ class SourceModel(object):
     def getPriorLogDeriv(self, srcName, parName):
         par = self.srcs[srcName].funcs["Spectrum"].params[parName]
         return par.log_prior_deriv()    
+
+    def setPriorParams(self, srcName, parName, **kwds):
+        par = self.srcs[srcName].funcs["Spectrum"].params[parName]
+        par.setPriorParams(**kwds)
+
+    def setGaussianPriorParams(self, srcName, parName, mean, sigma):
+        par = self.srcs[srcName].funcs["Spectrum"].params[parName]
+        par.setGaussianPriorParams(mean, sigma)
 
     def removePriors(self):
         for par in self.params:
@@ -143,6 +155,26 @@ class SourceModel(object):
                 pars = prior_par_dict['pars']
                 self.addPrior(src_name, par_name, funcname, **pars)
 
+    def constrain_norms(self, srcNames, cov_scale=1.0):
+        for name in srcNames:
+            par = self.srcs[name].funcs["Spectrum"].normPar()
+            err = par.error()
+            val = par.getValue()
+            if par.error() == 0.0 or not par.isFree():
+                continue            
+            self.addGaussianPrior(name, par.getName(), val, err * cov_scale)
+
+    def constrain_params(self, srcNames, cov_scale=1.0):
+        for name in srcNames:
+            free_pars = pyLike.ParameterVector()
+            self.srcs[name].funcs["Spectrum"].getFreeParams(free_pars)
+            for i in range(free_pars.size()):
+                par = free_pars[i]
+                err = par.error()
+                val = par.getValue()
+                if par.error() == 0.0 or not par.isFree():
+                    continue            
+                self.addGaussianPrior(name, par.getName(), val, err * cov_scale)
 
 
 class Source(object):
