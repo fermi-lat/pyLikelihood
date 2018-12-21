@@ -42,9 +42,12 @@ def BinnedConfig(**kwargs):
                                    kwargs.get('verbose',True),
                                    edisp_bins,
                                    kwargs.get('use_single_fixed_map', True),
-                                   kwargs.get('use_linear_quadrature',False),
-                                   kwargs.get('save_all_srcmaps',False),
-                                   kwargs.get('use_single_psf',False))
+                                   kwargs.get('use_linear_quadrature', False),
+                                   kwargs.get('save_all_srcmaps', False),
+                                   kwargs.get('use_single_psf', False),
+                                   kwargs.get('load_existing_srcmaps', True),
+                                   kwargs.get('delete_local_fixed', False))
+
 
 class BinnedObs(object):
     def __init__(self, srcMaps=None, expCube=None, binnedExpMap=None,
@@ -149,7 +152,8 @@ class BinnedObs(object):
         
 class BinnedAnalysis(AnalysisBase):
     def __init__(self, binnedData, srcModel=None, optimizer='Drmngb',
-                 use_bl2=False, verbosity=0, psfcorr=True, wmap=None, config=None):
+                 use_bl2=False, verbosity=0, psfcorr=True, 
+                 wmap=None, config=None, delete_local_fixed=False):
         AnalysisBase.__init__(self)
         if srcModel is None:
             srcModel, optimizer = self._srcDialog()
@@ -167,7 +171,8 @@ class BinnedAnalysis(AnalysisBase):
             raise ValueError("BinnedLikelihood2 is no longer supported")
 
         if config is None:
-            config = BinnedConfig(applyPsfCorrections=psfcorr)
+            config = BinnedConfig(applyPsfCorrections=psfcorr,
+                                  delete_local_fixed=delete_local_fixed)
 
         self.logLike = pyLike.BinnedLikelihood(binnedData.countsMap,
                                                binnedData.observation,
@@ -322,7 +327,9 @@ def binnedAnalysis(mode='ql', ftol=None, **pars):
         verbosity = 1
     like = BinnedAnalysis(obs, pars['srcmdl'], pars['optimizer'], 
                           use_bl2=False, verbosity=verbosity,
-                          psfcorr=pars['psfcorr'],wmap=pars['wmap'])
+                          psfcorr=pars['psfcorr'],wmap=pars['wmap'],
+                          delete_local_fixed=pars.get('delete_local_fixed', False))
+                          
     if ftol is not None:
         like.tol = ftol
     else:
