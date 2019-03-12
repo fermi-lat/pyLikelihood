@@ -24,12 +24,6 @@ _funcFactory = pyLike.SourceFactory_funcFactory()
 def BinnedConfig(**kwargs):
     """
     """
-    use_edisp = kwargs.get('use_edisp',False)
-    if use_edisp:
-        edisp_bins = kwargs.get('edisp_bins',0)
-    else:
-        edisp_bins = -1
-    
     return pyLike.BinnedLikeConfig(kwargs.get('computePointSources',True),
                                    kwargs.get('applyPsfCorrections',True),
                                    kwargs.get('performConvolution',True),
@@ -40,7 +34,7 @@ def BinnedConfig(**kwargs):
                                    kwargs.get('psfEstimatorFtol',1e-3),
                                    kwargs.get('psfEstimatorPeakTh',1e-6),
                                    kwargs.get('verbose',True),
-                                   edisp_bins,
+                                   kwargs.get('edisp_bins', 0),
                                    kwargs.get('use_single_fixed_map', True),
                                    kwargs.get('use_linear_quadrature', False),
                                    kwargs.get('save_all_srcmaps', False),
@@ -316,6 +310,7 @@ def binnedAnalysis(mode='ql', ftol=None, **pars):
     expcube = _null_file(pars['expcube'])
     expmap = _null_file(pars['bexpmap'])
     irfs = pars['irfs']
+    config = pars.get('config', None)
     try:
         phased_expmap = _null_file(pars['phased_expmap'])
     except KeyError:
@@ -327,9 +322,9 @@ def binnedAnalysis(mode='ql', ftol=None, **pars):
         verbosity = 1
     like = BinnedAnalysis(obs, pars['srcmdl'], pars['optimizer'], 
                           use_bl2=False, verbosity=verbosity,
-                          psfcorr=pars['psfcorr'],wmap=pars['wmap'],
-                          delete_local_fixed=pars.get('delete_local_fixed', False))
-                          
+                          psfcorr=pars['psfcorr'],wmap=pars['wmap'])
+                          config=config)
+
     if ftol is not None:
         like.tol = ftol
     else:
