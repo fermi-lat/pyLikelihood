@@ -322,7 +322,7 @@ def binnedAnalysis(mode='ql', ftol=None, **pars):
         verbosity = 1
     like = BinnedAnalysis(obs, pars['srcmdl'], pars['optimizer'], 
                           use_bl2=False, verbosity=verbosity,
-                          psfcorr=pars['psfcorr'],wmap=pars['wmap'])
+                          psfcorr=pars['psfcorr'],wmap=pars['wmap']),
     if ftol is not None:
         like.tol = ftol
     else:
