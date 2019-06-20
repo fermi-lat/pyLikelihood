@@ -323,8 +323,7 @@ def binnedAnalysis(mode='ql', ftol=None, **pars):
     like = BinnedAnalysis(obs, pars['srcmdl'], pars['optimizer'], 
                           use_bl2=False, verbosity=verbosity,
                           psfcorr=pars['psfcorr'],wmap=pars['wmap'],
-                          config=config,
-                          delete_local_fixed=pars.get('delete_local_fixed', False))
+                          config=config)
 
     if ftol is not None:
         like.tol = ftol
