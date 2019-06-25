@@ -135,11 +135,11 @@ def read_release_version():
     return None
 
 
-def write_release_version(version):
+def write_release_version(rel_version):
     """Write the release version to ``st_version.py``."""
     dirname = os.path.abspath(os.path.dirname(__file__))
     f = open(os.path.join(dirname, "st_version.py"), "wt")
-    f.write("__version__ = '%s'\n" % version)
+    f.write("__version__ = '%s'\n" % rel_version)
     f.close()
 
 
@@ -159,26 +159,27 @@ def get_git_version(abbrev=4):
     # If that doesn't work, fall back on the value that's in
     # _version.py.
     if git_version is not None:
-        version = git_version
+        the_version = git_version
     elif release_version is not None:
-        version = release_version
+        the_version = release_version
     elif keyword_version is not None:
-        version = keyword_version
+        the_version = keyword_version
     else:
-        version = 'unknown'
+        the_version = 'unknown'
 
     # If we still don't have anything, that's an error.
-    if version is None:
+    if the_version is None:
         raise ValueError("Cannot find the version number!")
 
     # If the current version is different from what's in the
     # _version.py file, update the file to be current.
-    if version != release_version and version != 'unknown':
-        write_release_version(version)
+    if the_version != release_version and the_version != 'unknown':
+        write_release_version(the_version)
 
     # Finally, return the current version.
-    return version
+    return the_version
 
+version = get_git_version
 
 if __name__ == "__main__":
     print(get_git_version())
