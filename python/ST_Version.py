@@ -138,9 +138,12 @@ def read_release_version():
 def write_release_version(rel_version):
     """Write the release version to ``st_version.py``."""
     dirname = os.path.abspath(os.path.dirname(__file__))
-    f = open(os.path.join(dirname, "st_version.py"), "wt")
-    f.write("__version__ = '%s'\n" % rel_version)
-    f.close()
+    try:
+        f = open(os.path.join(dirname, "st_version.py"), "wt")
+        f.write("__version__ = '%s'\n" % rel_version)
+        f.close()
+    except IOError:
+        print("Release area is read-only, not writing st_version.py")
 
 
 def get_git_version(abbrev=4):
