@@ -4,8 +4,12 @@
 # https://aka.ms/yaml
 
 trigger:
-- master
-- patch_branch
+  branches:
+    include:
+    - master
+  paths:
+    exclude:
+    - azure-pipelines.yml
 
 resources:
   repositories:
@@ -13,16 +17,11 @@ resources:
       type: github
       name: fermi-lat/ci
       endpoint: fermi-lat
-
-###### UPDATE VALUE WITH REPO NAME ######
-########## BEFORE DEPLOYMENT ############
-
+      
 variables:
 - group: DevOps Access Keys
 - name: repo
   value: pyLikelihood
-
-#########################################
 
 stages:
 
