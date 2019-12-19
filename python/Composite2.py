@@ -58,7 +58,7 @@ class Composite2(object):
             self.composite.setFreeParamValues(saved_values)
             return errors
         except RuntimeError, message:
-            print "Minos error encountered for parameter %i." % indx
+            print ("Minos error encountered for parameter %i." % indx)
             self.composite.setFreeParamValues(saved_values)
     def _compositeIndex(self, target_component, target_src, target_par):
         indx = target_component.par_index(target_src, target_par)

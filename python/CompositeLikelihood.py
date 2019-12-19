@@ -55,8 +55,8 @@ class CompositeLikelihood(object):
             self.composite.setFreeParamValues(saved_values)
             return errors
         except RuntimeError, message:
-            print "Minos error encountered for parameter %i." % par_index
-            print "Attempting to reset free parameters."
+            print ("Minos error encountered for parameter %i." % par_index)
+            print ("Attempting to reset free parameters.")
             for tiedName, component in zip(self.srcNames, self.components):
                 if component_name == tiedName:
                     component.thaw(component.par_index(srcname, parname))

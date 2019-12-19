@@ -155,7 +155,7 @@ def _integrand(x, f_of_x, like, par, srcName, maxval, verbosity,
                           optvalue_cache,nuisance_cache))
     f_of_x[x] = f
     if verbosity:
-        print "Function evaluation:", x, f
+        print ("Function evaluation:", x, f)
     return f
 
 def _approxroot(x, approx_cache, like, par, srcName, subval, verbosity):
@@ -169,7 +169,7 @@ def _approxroot(x, approx_cache, like, par, srcName, subval, verbosity):
         f = _loglike(x,like,par,srcName,subval,verbosity,True,None,None)
         approx_cache[x]=f
     if verbosity:
-        print "Approximate function root evaluation:", x, f
+        print ("Approximate function root evaluation:", x, f)
     return f
 
 def _root(x, like, par, srcName, subval, verbosity,
@@ -180,7 +180,7 @@ def _root(x, like, par, srcName, subval, verbosity,
     f = _loglike(x, like, par, srcName, subval, verbosity, no_optimizer,
                  optvalue_cache, nuisance_cache)
     if verbosity:
-        print "Exact function root evaluation:", x, f
+        print ("Exact function root evaluation:", x, f)
     return f
 
 def _splintroot(xhi, yseek, xlo, spl_rep):
@@ -375,7 +375,7 @@ def _find_interval(like, par, srcName, no_optimizer,
     return [xlo, xhi, ylo, yhi, exact_root_evals, approx_root_evals]
 
 def calc(like, srcName, *args, **kwargs):
-   print "IntegralUpperLimits.calc() is deprecated, use calc_int() instead"
+   print ("IntegralUpperLimits.calc() is deprecated, use calc_int() instead")
    return calc_int(like, srcName, *args,**kwargs)
 
 def calc_int(like, srcName, cl=0.95, verbosity=0,
@@ -497,14 +497,14 @@ def calc_int(like, srcName, cl=0.95, verbosity=0,
 
         # Perform global optimization
         if verbosity:
-            print "Finding global maximum"
+            print ("Finding global maximum")
         try:
             like.fit(optverbosity)
             fitstat = like.optObject.getRetCode()
             if verbosity and fitstat != 0:
-                print "Minimizer returned with non-zero code: ",fitstat
+                print ("Minimizer returned with non-zero code: ",fitstat)
         except RuntimeError:
-            print "Failed to find global maximum, results may be wrong"
+            print ("Failed to find global maximum, results may be wrong")
             pass
         pass
     
@@ -520,8 +520,8 @@ def calc_int(like, srcName, cl=0.95, verbosity=0,
     # limlo should not be allowed to go down to 0
     limlo = max(limlo,0.01*fiterr,1e-4)
     if verbosity:
-        print "Maximum of %g with %s = %g +/- %g"\
-              %(-maxval,srcName,fitval,fiterr)
+        print ("Maximum of %g with %s = %g +/- %g"\
+              %(-maxval,srcName,fitval,fiterr))
 
     # Freeze all other model parameters if requested (much faster!)
     if(freeze_all):
@@ -555,8 +555,8 @@ def calc_int(like, srcName, cl=0.95, verbosity=0,
     ###########################################################################
 
     if verbosity:
-        print "Finding integration bounds (delta log Like=%g)"\
-              %(delta_log_like_limits)
+        print ("Finding integration bounds (delta log Like=%g)"\
+              %(delta_log_like_limits))
 
     [xlo, xhi, ylo, yhi, exact_root_evals, approx_root_evals] = \
     _find_interval(like, par, srcName, all_frozen,
@@ -569,15 +569,15 @@ def calc_int(like, srcName, cl=0.95, verbosity=0,
         xhi = min(max(xhi, max(poi_values)*2.0), limhi)
 
     if verbosity:
-        print "Integration bounds: %g to %g (%d full fcn evals and %d approx)"\
-              %(xlo,xhi,exact_root_evals,approx_root_evals)
+        print ("Integration bounds: %g to %g (%d full fcn evals and %d approx)"\
+              %(xlo,xhi,exact_root_evals,approx_root_evals))
 
     profile_dlogL1 = -0.5*scipy.stats.chi2.isf(1-cl, 1)
     profile_dlogL2 = -0.5*scipy.stats.chi2.isf(1-2*(cl-0.5), 1)
 
     if yhi - delta_log_like_limits > profile_dlogL1:
-      print "calc_int error: parameter max", xhi, "is not large enough"
-      print "delta logLike =", yhi - delta_log_like_limits
+      print ("calc_int error: parameter max", xhi, "is not large enough")
+      print ("delta logLike =", yhi - delta_log_like_limits)
       return -1, {}
 
     ###########################################################################
@@ -602,7 +602,7 @@ def calc_int(like, srcName, cl=0.95, verbosity=0,
         epsrel = (1.0-cl)*1e-8
 
     if verbosity:
-        print "Integrating probability distribution"
+        print ("Integrating probability distribution")
 
     nfneval = -len(optvalue_cache)
     f_of_x = dict()
@@ -615,8 +615,8 @@ def calc_int(like, srcName, cl=0.95, verbosity=0,
     nfneval += len(optvalue_cache)
 
     if verbosity:
-        print "Total integral: %g +/- %g (%d fcn evals)"\
-              %(quad_ival,quad_ierr,nfneval)
+        print ("Total integral: %g +/- %g (%d fcn evals)"\
+              %(quad_ival,quad_ierr,nfneval))
 
     ###########################################################################
     #
@@ -673,21 +673,21 @@ def calc_int(like, srcName, cl=0.95, verbosity=0,
     if abs(spl_ival - quad_ival) < abs(trapz_ival - quad_ival):
         # Evaluate upper limit using spline
         if verbosity:
-            print "Using spline integral: %g (delta=%g)"\
-                  %(spl_ival,abs(spl_ival/quad_ival-1))
+            print ("Using spline integral: %g (delta=%g)"\
+                  %(spl_ival,abs(spl_ival/quad_ival-1)))
         xlim = xlim_spl
         ylim = ylim_spl
         if verbosity:
-            print "Spline search: %g (P=%g)"%(xlim,ylim)
+            print ("Spline search: %g (P=%g)"%(xlim,ylim))
     else:
         # Evaluate upper limit using trapezoidal rule
         if verbosity:
-            print "Using trapezoidal integral: %g (delta=%g)"\
-                  %(trapz_ival,abs(trapz_ival/quad_ival-1))
+            print ("Using trapezoidal integral: %g (delta=%g)"\
+                  %(trapz_ival,abs(trapz_ival/quad_ival-1)))
         xlim = xlim_trapz
         ylim = ylim_trapz
         if verbosity:
-            print "Trapezoidal search: %g (P=%g)"%(xlim,cl)
+            print ("Trapezoidal search: %g (P=%g)"%(xlim,cl))
 
     like.optimizer = original_optimizer
 
@@ -720,12 +720,12 @@ def calc_int(like, srcName, cl=0.95, verbosity=0,
     if (2.0*abs(int_pflux1-spl_pflux1)/abs(int_pflux1+spl_pflux1) > 0.05 or \
         2.0*abs(int_pflux2-spl_pflux2)/abs(int_pflux2+spl_pflux2) > 0.05):
         if verbosity:
-            print "Using linear interpolation for profile UL estimate"
+            print ("Using linear interpolation for profile UL estimate")
         profile_flux1 = int_pflux1
         profile_flux2 = int_pflux2
     else:
         if verbosity:
-            print "Using spline interpolation for profile UL estimate"
+            print ("Using spline interpolation for profile UL estimate")
         profile_flux1 = spl_pflux1
         profile_flux2 = spl_pflux2
 
@@ -895,14 +895,14 @@ def calc_chi2(like, srcName, cl=0.95, verbosity=0,
 
         # Perform global optimization
         if verbosity:
-            print "Finding global maximum"
+            print ("Finding global maximum")
         try:
             like.fit(optverbosity)
             fitstat = like.optObject.getRetCode()
             if verbosity and fitstat != 0:
-                print "Minimizer returned with non-zero code: ",fitstat
+                print ("Minimizer returned with non-zero code: ",fitstat)
         except RuntimeError:
-            print "Failed to find global maximum, results may be wrong"
+            print ("Failed to find global maximum, results may be wrong")
             pass
         pass
     
@@ -916,8 +916,8 @@ def calc_chi2(like, srcName, cl=0.95, verbosity=0,
     fiterr = par.error()
     limlo, limhi = par.getBounds()
     if verbosity:
-        print "Maximum of %g with %s = %g +/- %g"\
-              %(-maxval,srcName,fitval,fiterr)
+        print ("Maximum of %g with %s = %g +/- %g"\
+              %(-maxval,srcName,fitval,fiterr))
 
     # Freeze all other model parameters if requested (much faster!)
     if(freeze_all):
@@ -953,8 +953,8 @@ def calc_chi2(like, srcName, cl=0.95, verbosity=0,
     delta_log_like = 0.5*scipy.stats.chi2.isf(1-2*(cl-0.5), 1)
 
     if verbosity:
-        print "Finding limit (delta log Like=%g)"\
-              %(delta_log_like)
+        print ("Finding limit (delta log Like=%g)"\
+              %(delta_log_like))
 
     [xunused, xlim, yunused, ylim, exact_root_evals, approx_root_evals] = \
     _find_interval(like, par, srcName, all_frozen,
@@ -963,8 +963,8 @@ def calc_chi2(like, srcName, cl=0.95, verbosity=0,
                    True, 5, optvalue_cache, nuisance_cache)
 
     if verbosity:
-        print "Limit: %g (%d full fcn evals and %d approx)"\
-              %(xlim,exact_root_evals,approx_root_evals)
+        print ("Limit: %g (%d full fcn evals and %d approx)"\
+              %(xlim,exact_root_evals,approx_root_evals))
 
     ###########################################################################
     #
@@ -989,7 +989,7 @@ def calc_chi2(like, srcName, cl=0.95, verbosity=0,
             else:
                 pval = 0.5*(1+scipy.stats.chi2.cdf(-2*dlogL,1))
             if verbosity:
-                print "POI %g: Delta log Like = %g (Pr=%g)"%(xval,dlogL,pval)
+                print ("POI %g: Delta log Like = %g (Pr=%g)"%(xval,dlogL,pval))
 
         poi_probs.append(pval)
         poi_dlogL.append(dlogL)
@@ -1056,11 +1056,11 @@ if __name__ == "__main__":
 
     ul, results = calc_int(like, srcName, verbosity=1)
 
-    print results
+    print (results)
     
     for i in range(len(results["profile_x"])):
-        print results["profile_x"][i], results["profile_y"][i]
+        print (results["profile_x"][i], results["profile_y"][i])
 
-    print "Profile UL 1: %g (%g, %g)"%(results["prof_ul_flux1"],results["ul_frac"],results["prof_ul_dlogL1"])
-    print "Profile UL 2: %g (%g, %g)"%(results["prof_ul_flux2"],results["prof_ul_frac2"],results["prof_ul_dlogL2"])
-    print "UL: ",ul
+    print ("Profile UL 1: %g (%g, %g)"%(results["prof_ul_flux1"],results["ul_frac"],results["prof_ul_dlogL1"]))
+    print ("Profile UL 2: %g (%g, %g)"%(results["prof_ul_flux2"],results["prof_ul_frac2"],results["prof_ul_dlogL2"]))
+    print ("UL: ",ul)

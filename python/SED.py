@@ -238,7 +238,7 @@ class SED(object):
         saved_state = LikelihoodState(like)
 
         if self.freeze_background:
-            if verbosity: print 'Freezing all parameters'
+            if verbosity: print ('Freezing all parameters')
             # freeze all other sources
             for i in range(len(like.model.params)):
                 like.freeze(i)
@@ -261,7 +261,7 @@ class SED(object):
 
         for i,(e,lower,upper) in enumerate(zip(self.energy,self.lower_energy,self.upper_energy)):
 
-            if verbosity: print 'Calculating spectrum from %.0dMeV to %.0dMeV' % (lower,upper)
+            if verbosity: print ('Calculating spectrum from %.0dMeV to %.0dMeV' % (lower,upper))
 
             # goot starting guess for source
             prefactor=like[like.par_index(name, 'Prefactor')]
@@ -279,7 +279,7 @@ class SED(object):
             try:
                 like.fit(optverbosity,covar=True)
             except Exception, ex:
-                if verbosity: print 'ERROR gtlike fit: ', ex
+                if verbosity: print ('ERROR gtlike fit: ', ex)
 
             self.ts[i]=like.Ts(name,reoptimize=self.reoptimize_ts)
 
@@ -287,7 +287,7 @@ class SED(object):
             self.dnde[i] = prefactor.getTrueValue()
 
             if self.do_minos:
-                if verbosity: print 'Calculating minos errors from %.0dMeV to %.0dMeV' % (lower,upper)
+                if verbosity: print ('Calculating minos errors from %.0dMeV to %.0dMeV' % (lower,upper))
                 self.dnde_lower_err[i], self.dnde_upper_err[i] = like.minosError(name, 'Prefactor')
                 self.dnde_lower_err[i]*=(-1)*prefactor.getScale() # make lower errors positive
                 self.dnde_upper_err[i]*=prefactor.getScale()
@@ -302,13 +302,13 @@ class SED(object):
             self.eflux_err[i] = like.energyFluxError(name, lower, upper)
 
             if self.ts[i] < self.min_ts or self.always_upper_limit: 
-                if verbosity: print 'Calculating upper limit from %.0dMeV to %.0dMeV' % (lower,upper)
+                if verbosity: print ('Calculating upper limit from %.0dMeV to %.0dMeV' % (lower,upper))
                 self.dnde_ul[i], self.flux_ul[i], self.eflux_ul[i] = SED.upper_limit(like,name,self.ul_algorithm,lower,upper,
                                                                                      confidence=self.ul_confidence,
                                                                                      verbosity=verbosity)
 
             if verbosity:
-                print lower,upper,self.dnde[i],self.dnde_err[i],self.ts[i],self.dnde_ul[i]
+                print (lower,upper,self.dnde[i],self.dnde_err[i],self.ts[i],self.dnde_ul[i])
             
             self.npred[i] = like.NpredValue(name)
 
