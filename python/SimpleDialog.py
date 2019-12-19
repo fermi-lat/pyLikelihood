@@ -127,6 +127,6 @@ def answers():
 
 if __name__ == '__main__':
     foo = answers() 
-    print foo["infile"].value()
-    print foo["outfile"].value()
-    print foo["value"].value()
+    print (foo["infile"].value())
+    print (foo["outfile"].value())
+    print (foo["value"].value())

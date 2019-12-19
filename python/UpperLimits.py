@@ -162,7 +162,7 @@ class UpperLimit(object):
             try:
                 self.like[self.indx] = x
             except RuntimeError, message:
-                print x
+                print (x)
                 raise RuntimeError(message)
             self.fit(0, renorm=renorm)
             dlogLike.append(self.like() - logLike0)
@@ -170,7 +170,7 @@ class UpperLimit(object):
             yfit.add_pair(x, dlogLike[-1])
             i += 1
             if verbosity > 0:
-                print i, x, dlogLike[-1], fluxes[-1]
+                print (i, x, dlogLike[-1], fluxes[-1])
         if resample:
             new_xvals = num.linspace(min(xvals), max(xvals), len(xvals))
             new_dlogLike = []
@@ -179,13 +179,13 @@ class UpperLimit(object):
                 try:
                     self.like[self.indx] = x
                 except RuntimeError, message:
-                    print x
+                    print (x)
                     raise RuntimeError(message)
                 self.fit(0, renorm=renorm)
                 new_dlogLike.append(self.like() - logLike0)
                 new_fluxes.append(self.like[source].flux(emin, emax))
                 if verbosity > 0:
-                    print i, x, new_dlogLike[-1], new_fluxes[-1]
+                    print (i, x, new_dlogLike[-1], new_fluxes[-1])
             xvals = new_xvals
             dlogLike = new_dlogLike
             fluxes = new_fluxes
@@ -237,7 +237,7 @@ class UpperLimit(object):
             self.fit(0, renorm=renorm)
             dlogLike.append(self.like() - logLike0)
             if verbosity > 0:
-                print i, x, dlogLike[-1]
+                print (i, x, dlogLike[-1])
 
         # Restore model parameters to original values
         saved_state.restore()
@@ -359,7 +359,7 @@ class UpperLimit(object):
                                    emin, emax, logLike0, x0):
         xvals, dlogLike, fluxes = [], [], []
         if verbosity > 1:
-            print self.like.model
+            print (self.like.model)
         #
         # Fit a quadratic to a handful of points
         #
@@ -372,7 +372,7 @@ class UpperLimit(object):
             dlogLike.append(self.like() - logLike0)
             fluxes.append(self.like[source].flux(emin, emax))
             if verbosity > 0:
-                print i, x, dlogLike[-1], fluxes[-1]
+                print (i, x, dlogLike[-1], fluxes[-1])
             if dlogLike[-1] > delta and i > 2:
                 # We have already surpassed the desired delta and 
                 # have sufficient points for a quadratic fit, 
@@ -393,7 +393,7 @@ class UpperLimit(object):
             dx = abs(par.getValue())
         for i in range(niter):
             dlogLike = self._logLike(x0 + dx*nsigmax, renorm) - logLike0
-            #print "_find_dx:", dx, par.getValue(), dlogLike
+            #print ("_find_dx:", dx, par.getValue(), dlogLike)
             if dlogLike > mindelta:
                 break
             dx = max(abs(x0), factor*dx)
@@ -449,7 +449,7 @@ if __name__ == '__main__':
     import hippoplotter as plot
     from analysis import like
     ul = UpperLimits(like)
-    print ul['point source 0'].compute(renorm=True)
+    print (ul['point source 0'].compute(renorm=True))
     results = ul['point source 0'].results[0]
     plot.scatter(results.parvalues, results.dlogLike, xname='par value',
                  yname='dlogLike')

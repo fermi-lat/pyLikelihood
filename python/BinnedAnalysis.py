@@ -217,8 +217,8 @@ class BinnedAnalysis(AnalysisBase):
                    len(self.energies)-1)
         self.selectEbounds(kmin, kmax)
         if self.verbosity > 0:
-            print "setting energy bounds to "
-            print "%.2f  %.2f" % (self.emin, self.emax)
+            print ("setting energy bounds to ")
+            print ("%.2f  %.2f" % (self.emin, self.emax))
     def selectEbounds(self, kmin, kmax):
         self.emin = self.energies[kmin]
         self.emax = self.energies[kmax]

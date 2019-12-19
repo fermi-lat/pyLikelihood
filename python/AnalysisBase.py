@@ -17,7 +17,7 @@ from LikelihoodState import LikelihoodState
 try:
     from SimpleDialog import SimpleDialog, map, Param
 except ImportError, message:
-#    print "Caught ImportError: ", message
+#    print ("Caught ImportError: ", message)
     pass
 
 _plotter_package = 'mpl'
@@ -201,8 +201,8 @@ class AnalysisBase(object):
             self.logLike.setFreeParamValues(freeParams)
             return errors
         except RuntimeError, message:
-            print "Minos error encountered for parameter %i." % par_index
-            print "Attempting to reset free parameters."
+            print ("Minos error encountered for parameter %i." % par_index)
+            print ("Attempting to reset free parameters.")
             self.thaw(par_index)
             self.logLike.setFreeParamValues(freeParams)
             raise RuntimeError(message)
@@ -231,7 +231,7 @@ class AnalysisBase(object):
         
         saved_state = LikelihoodState(self)
         if verbosity > 0:
-            print "*** Start Ts_dl ***"
+            print ("*** Start Ts_dl ***")
         source_attributes = self.getExtraSourceAttributes()
         self.logLike.syncParams()
         src = self.logLike.getSource(srcName)
@@ -250,7 +250,7 @@ class AnalysisBase(object):
             tol = self.tol
         if reoptimize and n_free_base > 0:
             if verbosity > 0:
-                print "** Do reoptimize"
+                print ("** Do reoptimize")
             optFactory = pyLike.OptimizerFactory_instance()
             myOpt = optFactory.create(self.optimizer, self.logLike)
             Niter = 1
@@ -259,9 +259,9 @@ class AnalysisBase(object):
                     myOpt.find_min(0, tol)
                     break
                 except RuntimeError,e:
-                    print e
+                    print (e)
                 if verbosity > 0:
-                    print "** Iteration :",Niter
+                    print ("** Iteration :",Niter)
                 Niter += 1
         else:
             if approx and n_free_base > 0:
@@ -577,7 +577,7 @@ class AnalysisBase(object):
                     from HippoPlot import HippoPlot
                     self.plotter = HippoPlot
                 except ImportError:
-                    print "Failed importing Hippoplot.  Defaulting to MatPlotLib."
+                    print ("Failed importing Hippoplot.  Defaulting to MatPlotLib.")
                     from MPLPlot import MPLPlot
                     self.plotter = MPLPlot        
             elif _plotter_package == 'mpl':
@@ -808,7 +808,7 @@ class AnalysisBase(object):
                 self.optimize(verbosity, tol, optimizer, optObject)
             dlogLike.append(self.__call__() - logLike0)
             if verbosity > 1:
-                print i, x, dlogLike[-1]
+                print (i, x, dlogLike[-1])
 
         # Restore model parameters to original values
         saved_state.restore()

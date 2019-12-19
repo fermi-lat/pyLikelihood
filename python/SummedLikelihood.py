@@ -223,14 +223,14 @@ class SummedLikelihood(AnalysisBase):
             self.composite.setFreeParamValues(saved_values)
             return errors
         except RuntimeError, message:
-            print "Minos error encountered for parameter %i" % index
+            print ("Minos error encountered for parameter %i" % index)
             self.composite.setFreeParamValues(saved_values)
     def par_index(self, srcname, parname):
         return self.components[0].par_index(srcname, parname)
     def Ts(self, srcName, reoptimize=False, approx=True,
            tol=None, MaxIterations=10, verbosity=0):
         if verbosity > 0:
-            print "*** Start Ts_dl ***"
+            print ("*** Start Ts_dl ***")
         source_attributes = self.components[0].getExtraSourceAttributes()
         self.syncSrcParams()
         freeParams = pyLike.DoubleVector()
@@ -251,7 +251,7 @@ class SummedLikelihood(AnalysisBase):
    
         if reoptimize and n_free_base > 0:
             if verbosity > 0:
-                print "** Do reoptimize"
+                print ("** Do reoptimize")
             optFactory = pyLike.OptimizerFactory_instance()
             myOpt = optFactory.create(self.optimizer, self.composite)
             Niter = 1
@@ -260,9 +260,9 @@ class SummedLikelihood(AnalysisBase):
                     myOpt.find_min(0, tol)
                     break
                 except RuntimeError,e:
-                    print e
+                    print (e)
                 if verbosity > 0:
-                    print "** Iteration :",Niter
+                    print ("** Iteration :",Niter)
                 Niter += 1
         else:
             if approx and n_free_base > 0:

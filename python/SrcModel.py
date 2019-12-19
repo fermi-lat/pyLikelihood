@@ -30,7 +30,7 @@ class SourceModel(object):
         return src
     def add(self, source):
         try:
-            print "adding ", source.getName()
+            print ("adding ", source.getName())
             self.logLike.addSource(source)
             self._loadSources()
         except:

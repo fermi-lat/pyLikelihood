@@ -48,9 +48,9 @@ class DerivTester(object):
             except AssertionError:
                 parnames = pyLike.StringVector()
                 self.func.getFreeParamNames(parnames)
-                print "Parameter : ", i, parnames[i]
-                print "%.3e  "*len(num_derivs) % tuple(num_derivs)
-                print "%.3e  "*len(derivs) % tuple(derivs) + "\n"
+                print ("Parameter : ", i, parnames[i])
+                print ("%.3e  "*len(num_derivs) % tuple(num_derivs))
+                print ("%.3e  "*len(derivs) % tuple(derivs) + "\n")
         return tuple(params)
     def __getattr__(self, attrname):
         return getattr(self.func, attrname)
@@ -70,7 +70,7 @@ if __name__ == '__main__':
 
     for func in funcs:
         tester = DerivTester(func)
-        print "\n" + func
+        print ("\n" + func)
         verbose = 0
         if (func == 'PowerLaw2'):
             tester.func.parameter('Index').setValue(-1)
