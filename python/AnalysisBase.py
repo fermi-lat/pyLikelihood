@@ -584,7 +584,7 @@ class AnalysisBase(object):
                     from MPLPlot import MPLPlot
                     self.plotter = MPLPlot
         except ImportError:
-            raise RuntimeError, ("Sorry plotting is not available using %s.\n"
+            raise RuntimeError ("Sorry plotting is not available using %s.\n"
                                  % _plotter_package +
                                  "Use setPlotter to try a different plotter")
     def plot(self, oplot=0, color=None, omit=(), symbol='line', weighted=False):
