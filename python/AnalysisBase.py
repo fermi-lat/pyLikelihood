@@ -16,7 +16,7 @@ from LikelihoodState import LikelihoodState
 
 try:
     from SimpleDialog import SimpleDialog, map, Param
-except ImportError, message:
+except ImportError as message:
 #    print ("Caught ImportError: ", message)
     pass
 
@@ -200,7 +200,7 @@ class AnalysisBase(object):
             errors = self.optObject.Minos(free_indices[par_index], level)
             self.logLike.setFreeParamValues(freeParams)
             return errors
-        except RuntimeError, message:
+        except RuntimeError as message:
             print ("Minos error encountered for parameter %i." % par_index)
             print ("Attempting to reset free parameters.")
             self.thaw(par_index)
@@ -258,7 +258,7 @@ class AnalysisBase(object):
                 try:
                     myOpt.find_min(0, tol)
                     break
-                except RuntimeError,e:
+                except RuntimeError as e:
                     print (e)
                 if verbosity > 0:
                     print ("** Iteration :",Niter)
