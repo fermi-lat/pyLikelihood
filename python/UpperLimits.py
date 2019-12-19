@@ -161,7 +161,7 @@ class UpperLimit(object):
             xvals.append(x)
             try:
                 self.like[self.indx] = x
-            except RuntimeError, message:
+            except RuntimeError as message:
                 print (x)
                 raise RuntimeError(message)
             self.fit(0, renorm=renorm)
@@ -178,7 +178,7 @@ class UpperLimit(object):
             for i, x in enumerate(new_xvals):
                 try:
                     self.like[self.indx] = x
-                except RuntimeError, message:
+                except RuntimeError as message:
                     print (x)
                     raise RuntimeError(message)
                 self.fit(0, renorm=renorm)

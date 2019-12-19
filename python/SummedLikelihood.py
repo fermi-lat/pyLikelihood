@@ -222,7 +222,7 @@ class SummedLikelihood(AnalysisBase):
             errors = self.optObject.Minos(index, level)
             self.composite.setFreeParamValues(saved_values)
             return errors
-        except RuntimeError, message:
+        except RuntimeError as message:
             print ("Minos error encountered for parameter %i" % index)
             self.composite.setFreeParamValues(saved_values)
     def par_index(self, srcname, parname):
@@ -259,7 +259,7 @@ class SummedLikelihood(AnalysisBase):
                 try:
                     myOpt.find_min(0, tol)
                     break
-                except RuntimeError,e:
+                except RuntimeError as e:
                     print (e)
                 if verbosity > 0:
                     print ("** Iteration :",Niter)

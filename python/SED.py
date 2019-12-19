@@ -278,7 +278,7 @@ class SED(object):
 
             try:
                 like.fit(optverbosity,covar=True)
-            except Exception, ex:
+            except Exception as ex:
                 if verbosity: print ('ERROR gtlike fit: ', ex)
 
             self.ts[i]=like.Ts(name,reoptimize=self.reoptimize_ts)
