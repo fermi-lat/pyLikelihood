@@ -135,7 +135,7 @@ class UnbinnedObs(object):
             pass
         output.write("from UnbinnedAnalysis import *\n")
         output.write(("obs = UnbinnedObs(%s, %s, expMap=%s, expCube=%s, " +
-                      "irfs='%s')\n") % (`self.eventFiles`, `self.scFiles`,
+                      "irfs='%s')\n") % (pepr(self.eventFiles), repr(self.scFiles),
                                          _quotefn(self.expMap),
                                          _quotefn(self.expCube), self.irfs))
         if close:
