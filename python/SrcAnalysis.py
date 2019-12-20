@@ -11,7 +11,7 @@ import glob
 import numpy as num
 import pyLikelihood as pyLike
 from SrcModel import SourceModel
-from SimpleDialog import SimpleDialog, map, Param
+from SimpleDialog import SimpleDialog, Param 
 
 _funcFactory = pyLike.SourceFactory_funcFactory()
 
