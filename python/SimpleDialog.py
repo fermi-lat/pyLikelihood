@@ -11,18 +11,18 @@
 import os
 import sys
 import glob
-import Tkinter
-from FileDialog import LoadFileDialog
+import tkinter
+from tkinter.filedialog import LoadFileDialog
 
 class ParamDoubleEntry:
     def __init__(self, parent, label, row, default=0):
         self.parent = parent
-        self.variable = Tkinter.DoubleVar()
+        self.variable = tkinter.DoubleVar()
         self.variable.set(default)
-        name = Tkinter.Label(parent, text=label)
-        name.grid(column=0, row=row, sticky=Tkinter.E)
-        entry = Tkinter.Entry(parent, textvariable=self.variable,
-                              state=Tkinter.NORMAL, width=30)
+        name = tkinter.Label(parent, text=label)
+        name.grid(column=0, row=row, sticky=tkinter.E)
+        entry = tkinter.Entry(parent, textvariable=self.variable,
+                              state=tkinter.NORMAL, width=30)
         entry.grid(column=1, row=row)
     def value(self):
         return self.variable.get()
@@ -30,12 +30,12 @@ class ParamDoubleEntry:
 class ParamStringEntry:
     def __init__(self, parent, label, row, default=''):
         self.parent = parent
-        self.variable = Tkinter.StringVar()
+        self.variable = tkinter.StringVar()
         self.variable.set(default)
-        name = Tkinter.Label(parent, text = label)
-        name.grid(column=0, row=row, sticky=Tkinter.E)
-        entry = Tkinter.Entry(parent, textvariable=self.variable,
-                              width=30, state=Tkinter.NORMAL)
+        name = tkinter.Label(parent, text = label)
+        name.grid(column=0, row=row, sticky=tkinter.E)
+        entry = tkinter.Entry(parent, textvariable=self.variable,
+                              width=30, state=tkinter.NORMAL)
         entry.grid(column=1, row=row)
     def value(self):
         return self.variable.get()
@@ -49,12 +49,12 @@ class ParamFileEntry:
         else:
             self.pattern = pattern
         self.expand = expand
-        self.variable = Tkinter.StringVar()
+        self.variable = tkinter.StringVar()
         self.variable.set(default)
-        file = Tkinter.Button(parent, text=label, command=self.getFile, bd=1)
-        file.grid(column=0, row=row, sticky=Tkinter.E)
-        entry = Tkinter.Entry(parent, textvariable=self.variable,
-                              width=30, state=Tkinter.NORMAL)
+        file = tkinter.Button(parent, text=label, command=self.getFile, bd=1)
+        file.grid(column=0, row=row, sticky=tkinter.E)
+        entry = tkinter.Entry(parent, textvariable=self.variable,
+                              width=30, state=tkinter.NORMAL)
         entry.grid(column=1, row=row)
     def value(self):
         return self.variable.get()
@@ -71,12 +71,12 @@ class ParamFileEntry:
                 file = os.path.basename(file)
             self.variable.set(file)
 
-class SimpleDialog(Tkinter.Tk):
+class SimpleDialog(tkinter.Tk):
     _entryMap = {"file": ParamFileEntry,
                  "double": ParamDoubleEntry,
                  "string": ParamStringEntry}
     def __init__(self, paramDict, title="Parameter Dialog"):
-        Tkinter.Tk.__init__(self)
+        tkinter.Tk.__init__(self)
         self.paramDict = paramDict
         self.title(title)
         row = 0
@@ -86,7 +86,7 @@ class SimpleDialog(Tkinter.Tk):
             paramDict[item].value = self._entryMap[type](self, item, row,
                                                          default=default).value
             row += 1
-        done = Tkinter.Button(self, text='ok', command=lambda: self.ok(None))
+        done = tkinter.Button(self, text='ok', command=lambda: self.ok(None))
         done.grid(column=0, row=row)
         self.bind("<Return>", self.ok)
         self.bind("<Control_L>q", self.abort)
