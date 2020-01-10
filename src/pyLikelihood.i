@@ -6,7 +6,7 @@
 #include <fenv.h>
 #endif
 #include <cstddef>
-  // Stuff from other packages 
+  // Stuff from other packages
 #include "CLHEP/Random/RandFlat.h"
 #include "CLHEP/Random/Random.h"
 #include "astro/SolarSystem.h"
@@ -153,6 +153,7 @@ private:
    const std::string m_appName;
 };
 
+
 using optimizers::Parameter;
 using optimizers::ParameterNotFound;
 using optimizers::Function;
@@ -178,6 +179,7 @@ using optimizers::Exception;
 %template(FloatVectorVector) std::vector< std::vector<float> >;
 %template(SizetVector) std::vector<size_t>;
 %template(StringVector) std::vector<std::string>;
+;
 %include st_app/AppParGroup.h
 %include st_app/StApp.h
 %include astro/ProjBase.h
@@ -553,6 +555,18 @@ using optimizers::Exception;
     return min_opt;
   }
 }
+
+%extend optimizers::NewMinuit {
+  static optimizers::NewMinuit * cast(optimizers::Optimizer * opt) {
+    optimizers::NewMinuit * min_opt = dynamic_cast<optimizers::NewMinuit *>(opt);
+    if (min_opt == 0) {
+      throw std::runtime_error("Cannot cast to a NewMinuit object.");
+    }
+    return min_opt;
+  }
+}
+
+
 
 %extend Likelihood::Event {
    std::pair<double, double> ra_dec() const {
