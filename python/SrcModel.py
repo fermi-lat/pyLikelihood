@@ -81,7 +81,7 @@ class SourceModel(object):
                     func = src.funcs[funcName]
                     for param in func.paramNames:
                         self.params.append(func.getParam(param))
-                        src.funcs[funcName].appendParId(indx.next())
+                        src.funcs[funcName].appendParId(next(indx))
     def __setitem__(self, indx, value):
         self.params[indx].setValue(value)
         self.params[indx].setError(0)
