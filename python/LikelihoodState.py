@@ -34,8 +34,18 @@ class _Parameter(object):
     pyLikelihood.Parameter."""
     def __init__(self, par):
         self.par = pyLikelihood.Parameter(par.parameter)
-    def setDataMembers(self, par):
-        par.setEquals(self.par)
+    def setDataMembers(self, par=None):
+        if par is None:
+            par = self.par
+        par.setValue(self.par.getValue())
+        par.setBounds(self.par.getBounds())
+        par.setFree(self.par.isFree())
+        par.setScale(self.par.getScale())
+        par.setError(self.par.error())
+        par.setAlwaysFixed(self.par.alwaysFixed())
+        if self.par.has_prior():
+            par.setPrior(self.par.logPrior())
+
 
 class LikelihoodState(object):
     """Save the parameter state of a pyLikelihood object and provide a
