@@ -37,14 +37,8 @@ class _Parameter(object):
     def setDataMembers(self, par=None):
         if par is None:
             par = self.par
-        par.setValue(self.par.getValue())
-        par.setBounds(self.par.getBounds())
-        par.setFree(self.par.isFree())
-        par.setScale(self.par.getScale())
-        par.setError(self.par.error())
-        par.setAlwaysFixed(self.par.alwaysFixed())
-        if self.par.has_prior():
-            par.setPrior(self.par.logPrior())
+            return
+        par.setDataValues(self.par)
 
 
 class LikelihoodState(object):
