@@ -65,6 +65,9 @@
 #include "Likelihood/ProjMap.h"
 #include "Likelihood/PiecewisePowerLaw.h"
 #include "Likelihood/PowerLawSuperExpCutoff.h"
+#include "Likelihood/PowerLawSuperExpCutoff2.h"
+#include "Likelihood/PowerLawSuperExpCutoff3.h"
+#include "Likelihood/PowerLawSuperExpCutoff4.h"
 #include "Likelihood/PowerLaw2.h"
 #include "Likelihood/ResponseFunctions.h"
 #include "Likelihood/RoiCuts.h"
@@ -244,6 +247,9 @@ using optimizers::Exception;
 %include Likelihood/ProjMap.h
 %include Likelihood/PiecewisePowerLaw.h
 %include Likelihood/PowerLawSuperExpCutoff.h
+%include Likelihood/PowerLawSuperExpCutoff2.h
+%include Likelihood/PowerLawSuperExpCutoff3.h
+%include Likelihood/PowerLawSuperExpCutoff4.h
 %include Likelihood/PowerLaw2.h
 %include Likelihood/ResponseFunctions.h
 %include Likelihood/RoiCuts.h
