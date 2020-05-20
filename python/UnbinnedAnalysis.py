@@ -13,7 +13,7 @@ import pyLikelihood as pyLike
 from SrcModel import SourceModel
 from AnalysisBase import AnalysisBase, _quotefn, _null_file, num
 try:
-    from SimpleDialog import SimpleDialog, map, Param
+    from tkinter.simpledialog import SimpleDialog, map, Param
 except ImportError as message:
     pass
 
@@ -257,7 +257,7 @@ def unbinnedAnalysis(mode="ql", ftol=None, nee=21, **pars):
                 'srcmdl', 'optimizer')
     pargroup = pyLike.StApp_parGroup('gtlike')
     for item in parnames:
-        if not pars.has_key(item):
+        if item not in pars:
             if mode == 'ql':
                 pargroup.Prompt(item)
             try:

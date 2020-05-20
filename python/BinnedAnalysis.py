@@ -14,7 +14,7 @@ import pyLikelihood as pyLike
 from SrcModel import SourceModel
 from AnalysisBase import AnalysisBase, _quotefn, _null_file, num
 try:
-    from SimpleDialog import SimpleDialog, map, Param
+    from tkinter.simpledialog import SimpleDialog, map, Param
 except ImportError:
     pass
 
@@ -218,7 +218,7 @@ class BinnedAnalysis(AnalysisBase):
         self.selectEbounds(kmin, kmax)
         if self.verbosity > 0:
             print ("setting energy bounds to ")
-            print ("%.2f  %.2f" % (self.emin, self.emax))
+            print(("%.2f  %.2f" % (self.emin, self.emax)))
     def selectEbounds(self, kmin, kmax):
         self.emin = self.energies[kmin]
         self.emax = self.energies[kmax]
@@ -294,7 +294,7 @@ def binnedAnalysis(mode='ql', ftol=None, **pars):
                 'psfcorr','wmap', 'chatter')
     pargroup = pyLike.StApp_parGroup('gtlike')
     for item in parnames:
-        if not pars.has_key(item):
+        if item not in pars:
             if mode == 'ql':
                 pargroup.Prompt(item)
             try:

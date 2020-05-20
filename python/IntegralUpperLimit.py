@@ -44,7 +44,7 @@ def _guess_nuisance(x, like, cache):
     parameter before the optimizer is called by interpolating from
     previously found values. Not intended for use outside of this
     package."""
-    X = cache.keys()
+    X = list(cache.keys())
     X.sort()
     if len(X)<2:
         return
@@ -79,7 +79,7 @@ def _reset_nuisance(x, like, cache):
     optimizer. Not intended for use outside of this package."""
     sync_name = ""
     icache = 0
-    if cache.has_key(x):
+    if x in cache:
         params = cache[x]
         for iparam in range(len(like.model.params)):
             if sync_name != like[iparam].srcName:
@@ -127,7 +127,7 @@ def _loglike(x, like, par, srcName, offset, verbosity, no_optimizer,
     # we fail to reset the nuisance parameters to those previously found
     optvalue = None
     if ((optvalue_cache == None) or (nuisance_cache == None) or
-        (not optvalue_cache.has_key(x)) or
+        (x not in optvalue_cache) or
         (_reset_nuisance(x, like, nuisance_cache) == False)):
         try:
             if(nuisance_cache != None):
@@ -163,7 +163,7 @@ def _approxroot(x, approx_cache, like, par, srcName, subval, verbosity):
     approximate likelihood function. Not intended for use outside of
     this package."""
 
-    if approx_cache.has_key(x):
+    if x in approx_cache:
         f = approx_cache[x]
     else:
         f = _loglike(x,like,par,srcName,subval,verbosity,True,None,None)
@@ -642,7 +642,7 @@ def calc_int(like, srcName, cl=0.95, verbosity=0,
     # is picked to do the search.
     
     # Organize values computed into two vectors x & y
-    x = f_of_x.keys()
+    x = list(f_of_x.keys())
     x.sort()
     y=[]
     logy=[]
