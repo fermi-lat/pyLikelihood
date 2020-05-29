@@ -53,7 +53,7 @@ class SourceModel(object):
     def _addXmlAttributes(self, xmlFile):
         srcs = minidom.parse(xmlFile).getElementsByTagName('source')
         for item in srcs:
-            name = item.getAttribute('name').encode()
+            name = item.getAttribute('name')
             for key in item.attributes.keys():
                 value = item.getAttribute(key)
                 try:
