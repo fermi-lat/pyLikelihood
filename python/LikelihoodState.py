@@ -38,8 +38,13 @@ class _Parameter(object):
         if par is None:
             par = self.par
             return
-        par.setDataValues(self.par)
-
+        #For SummedLikelihood objects, there are multiple parameters that need to be updated,,
+        try:  #If it's at SummedLikelihood objects with multiple components, this will work
+            for param in par.pars:
+                param.setDataValues(self.par)
+        except:  # otherwise, fall back on original behaviour.
+            par.setDataValues(self.par)
+        #par.setEquals(self.par)
 
 class LikelihoodState(object):
     """Save the parameter state of a pyLikelihood object and provide a
