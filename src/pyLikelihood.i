@@ -237,6 +237,7 @@ using optimizers::Exception;
 %include Likelihood/Exception.h
 %include Likelihood/EquinoxRotation.h
 %include Likelihood/ExpCutoff.h
+%include Likelihood/ExpCutoffSEDPeak.h
 %include Likelihood/ExposureCube.h
 %include Likelihood/ExposureMap.h
 %include Likelihood/FileFunction.h
@@ -244,10 +245,13 @@ using optimizers::Exception;
 %include Likelihood/FitUtils.h
 %include Likelihood/GaussianError.h
 %include Likelihood/LogGaussian.h
+%include Likelihood/LogNormal.h
 %include Likelihood/LogNormalLog.h
 %include Likelihood/LogParabola.h
 %include Likelihood/ModelMap.h
 %include Likelihood/MultipleBrokenPowerLaw.h
+%include Likelihood/SmoothBrokenPowerLaw.h
+%include Likelihood/SmoothDoubleBrokenPowerLaw.h
 %include Likelihood/ProjMap.h
 %include Likelihood/PiecewisePowerLaw.h
 %include Likelihood/PowerLawSuperExpCutoff.h
