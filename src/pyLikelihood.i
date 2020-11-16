@@ -65,7 +65,7 @@
 #include "Likelihood/ModelMap.h"
 #include "Likelihood/MultipleBrokenPowerLaw.h"
 #include "Likelihood/SmoothBrokenPowerLaw.h"
-//#include "Likelihood/SmoothDoubleBrokenPowerLaw.h
+#include "Likelihood/SmoothDoubleBrokenPowerLaw.h"
 #include "Likelihood/ProjMap.h"
 #include "Likelihood/PiecewisePowerLaw.h"
 #include "Likelihood/PowerLawSuperExpCutoff.h"
@@ -251,7 +251,7 @@ using optimizers::Exception;
 %include Likelihood/ModelMap.h
 %include Likelihood/MultipleBrokenPowerLaw.h
 %include Likelihood/SmoothBrokenPowerLaw.h
-//%include Likelihood/SmoothDoubleBrokenPowerLaw.h
+%include Likelihood/SmoothDoubleBrokenPowerLaw.h
 %include Likelihood/ProjMap.h
 %include Likelihood/PiecewisePowerLaw.h
 %include Likelihood/PowerLawSuperExpCutoff.h
