@@ -36,6 +36,7 @@ class MPLPlot(object):
                  color='black', xrange=None, yrange=None):
         import matplotlib.pyplot as plt
         self.plt = plt
+        self.plt.ion()
         
         self.fig = plt.figure()
         self.ax=self.fig.add_subplot(111)
@@ -77,3 +78,5 @@ if __name__ == '__main__':
  
     plot0.overlay(x, y/2., symbol='point')
     plot2.overlay(x, 2*y, symbol='line', color='red')
+    import matplotlib.pyplot as plt
+    plt.show(block=True)
