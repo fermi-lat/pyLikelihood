@@ -26,6 +26,7 @@ target_include_directories(
 
 target_link_libraries(pyLikelihood PRIVATE Likelihood Python3::Python)
 
+
 ###############################################################
 # Installation
 ###############################################################
@@ -34,14 +35,13 @@ install(DIRECTORY python/ DESTINATION ${PYTHON_SITE_PKGDIR})
 
 install(
   TARGETS pyLikelihood
-  # EXPORT fermiTargets
+  EXPORT fermiTargets
   RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
   LIBRARY DESTINATION lib
   ARCHIVE DESTINATION lib
   INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
 )
-
 install(
-  TARGETS pyLikelihood
-  LIBRARY DESTINATION ${PYTHON_SITE_PKGDIR}
+  FILES ${CMAKE_CURRENT_BINARY_DIR}/pyLikelihood.py
+  DESTINATION ${PYTHON_SITE_PKGDIR}
 )
