@@ -334,12 +334,14 @@ using optimizers::Exception;
 %extend Likelihood::LogLike {
    static void set_ScaleFactor_complement(optimizers::Function * func, 
                                           bool use_complement) {
+       try{
       Likelihood::ScaleFactor * scaleFactor = 
          dynamic_cast<Likelihood::ScaleFactor *>(func);
       if (scaleFactor == 0) {
          throw std::runtime_error("Cannot cast to ScaleFactor object.");
       }
       scaleFactor->set_complement_flag(use_complement);
+   } catch(...) { throw std::runtime_error("pyLikelihood set_ScaleFactor_complement");}
    }
 }
 %extend Likelihood::LogLike {
