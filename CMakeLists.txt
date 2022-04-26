@@ -18,7 +18,12 @@ target_include_directories(
   $<INSTALL_INTERFACE:>
 )
 
-target_link_libraries(pyLikelihood PRIVATE Likelihood Python3::Python PkgConfig::f2c)
+target_link_libraries(
+  pyLikelihood
+  PUBLIC irfInterface irfLoader
+  PRIVATE Likelihood Python3::Python
+)
+#PkgConfig::f2c m)
 
 if(APPLE)
   target_link_options(pyLikelihood PRIVATE -bundle -flat_namespace)
