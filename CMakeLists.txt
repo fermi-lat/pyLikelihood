@@ -23,7 +23,6 @@ target_link_libraries(
   PUBLIC irfInterface irfLoader
   PRIVATE Likelihood Python3::Python
 )
-#PkgConfig::f2c m)
 
 if(APPLE)
   target_link_options(pyLikelihood PRIVATE -bundle -flat_namespace)
