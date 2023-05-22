@@ -53,7 +53,7 @@ class FluxDensity(object):
         return num.sqrt(num.dot(partials, num.dot(self.covar, partials)))
     def write_nuFnu(self, outfile, emin=100, emax=3e5, npts=500):
         estep = num.log(emax/emin)/(npts - 1)
-        energies = emin*num.exp(estep*num.arange(npts, dtype=num.float))
+        energies = emin*num.exp(estep*num.arange(npts, dtype=float))
         output = open(outfile, 'w')
         for ee in energies:
             F = self.value(ee)
