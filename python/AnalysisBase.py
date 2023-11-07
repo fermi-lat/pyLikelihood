@@ -792,8 +792,8 @@ class AnalysisBase(object):
                 break
 
         if fix_src_pars:
-            freePars = self.like.freePars(srcName)
-            self.setFreeFlag(srcName, freePars, 0)
+            freePars = self.freePars(srcName)
+            self.setFreeFlag(srcName, freePars, False)
             self.syncSrcParams(srcName)
 
         if tol is None:
