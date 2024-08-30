@@ -651,7 +651,7 @@ def calc_int(like, srcName, cl=0.95, verbosity=0,
         logy.append(math.log(f_of_x[xi]))
 
     # Evaluate upper limit using trapezoidal rule
-    trapz_ival = scipy.integrate.trapz(y,x)
+    trapz_ival = scipy.integrate.trapezoid(y,x)
     cint = 0
     Cint = [ 0 ]
     for i in range(len(x)-1):
