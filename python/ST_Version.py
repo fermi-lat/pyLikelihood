@@ -116,12 +116,12 @@ def read_release_keywords(keyword):
 
 
 def read_release_version():
-    """Read the release version from ``st_version.py``."""
+    """Read the release version from ``st_release_version.py``."""
     import re
     dirname = os.path.abspath(os.path.dirname(__file__))
 
     try:
-        f = open(os.path.join(dirname, "st_version.py"), "rt")
+        f = open(os.path.join(dirname, "st_release_version.py"), "rt")
         for line in f.readlines():
 
             m = re.match("__version__ = '([^']+)'", line)
@@ -136,19 +136,19 @@ def read_release_version():
 
 
 def write_release_version(rel_version):
-    """Write the release version to ``st_version.py``."""
+    """Write the release version to ``st_release_version.py``."""
     dirname = os.path.abspath(os.path.dirname(__file__))
     try:
-        f = open(os.path.join(dirname, "st_version.py"), "wt")
+        f = open(os.path.join(dirname, "st_release_version.py"), "wt")
         f.write("__version__ = '%s'\n" % rel_version)
         f.close()
     except IOError:
-        print("Release area is read-only, not writing st_version.py")
+        print("Release area is read-only, not writing st_release_version.py")
 
 
 def get_git_version(abbrev=4):
 
-    # Read in the version that's currently in st_version.py.
+    # Read in the version that's currently in st_release_version.py.
     release_version = read_release_version()
 
     # First try to get the current version using “git describe”.
