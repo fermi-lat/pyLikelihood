@@ -40,7 +40,8 @@ def BinnedConfig(**kwargs):
                                    kwargs.get('save_all_srcmaps', False),
                                    kwargs.get('use_single_psf', False),
                                    kwargs.get('load_existing_srcmaps', True),
-                                   kwargs.get('delete_local_fixed', False))
+                                   kwargs.get('delete_local_fixed', False),
+                                   kwargs.get('no_cached_weightmaps', False))
 
 
 class BinnedObs(object):
@@ -147,7 +148,8 @@ class BinnedObs(object):
 class BinnedAnalysis(AnalysisBase):
     def __init__(self, binnedData, srcModel=None, optimizer='Drmngb',
                  use_bl2=False, verbosity=0, psfcorr=True, 
-                 wmap=None, config=None, delete_local_fixed=False):
+                 wmap=None, config=None, delete_local_fixed=False,
+                 no_cached_weightmaps=False):
         AnalysisBase.__init__(self)
         if srcModel is None:
             srcModel, optimizer = self._srcDialog()
@@ -166,7 +168,8 @@ class BinnedAnalysis(AnalysisBase):
 
         if config is None:
             config = BinnedConfig(applyPsfCorrections=psfcorr,
-                                  delete_local_fixed=delete_local_fixed)
+                                  delete_local_fixed=delete_local_fixed,
+                                  no_cached_weightmaps=no_cached_weightmaps)
 
         self.logLike = pyLike.BinnedLikelihood(binnedData.countsMap,
                                                binnedData.observation,
