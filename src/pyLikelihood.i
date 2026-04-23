@@ -410,14 +410,14 @@ optimizers::FunctionFactory * SourceFactory_funcFactory() {
 }
 %}
 // Keep the original %extend in case SourceFactory wrapping works
-%extend Likelihood::SourceFactory {
-   static optimizers::FunctionFactory * funcFactory() {
-      optimizers::FunctionFactory * myFuncFactory 
-         = new optimizers::FunctionFactory;
-      Likelihood::AppHelpers::addFunctionPrototypes(myFuncFactory);
-      return myFuncFactory;
-   }
-}
+//%extend Likelihood::SourceFactory {
+//   static optimizers::FunctionFactory * funcFactory() {
+//      optimizers::FunctionFactory * myFuncFactory 
+//         = new optimizers::FunctionFactory;
+//      Likelihood::AppHelpers::addFunctionPrototypes(myFuncFactory);
+//      return myFuncFactory;
+//   }
+//}
 %extend Likelihood::SpatialMap {
    static Likelihood::SpatialMap * cast(optimizers::Function * func) {
       Likelihood::SpatialMap * spatial_map = 
