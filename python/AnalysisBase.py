@@ -522,8 +522,8 @@ class AnalysisBase(object):
             return True
         return False
     def _separation(self, src1, src2):
-        dir1 = pyLike.PointSource_cast(src1).getDir()
-        dir2 = pyLike.PointSource_cast(src2).getDir()
+        dir1 = pyLike.PointSource.cast(src1).getDir()
+        dir2 = pyLike.PointSource.cast(src2).getDir()
         return dir1.difference(dir2)*180./num.pi
     def saveCurrentFit(self):
 

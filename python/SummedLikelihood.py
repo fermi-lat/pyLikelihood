@@ -294,7 +294,7 @@ class SummedLikelihood(AnalysisBase):
         for src in srcNames:
             parameter = self.normPar(src)
             if (parameter.isFree() and 
-                self.components[0]._isDiffuseOrNearby(src)):
+                self.components[0].isDiffuseOrNearby(src)):
                 oldValue = parameter.getValue()
                 newValue = oldValue*self.renormFactor
                 # ensure new value is within parameter bounds
@@ -309,7 +309,7 @@ class SummedLikelihood(AnalysisBase):
             npred = self.NpredValue(src)
             totalNpred += npred
             if (self.normPar(src).isFree() and 
-                self.components[0]._isDiffuseOrNearby(src)):
+                self.components[0].isDiffuseOrNearby(src)):
                 freeNpred += npred
         return freeNpred, totalNpred
     def setSpectrum(self, srcName, functionName):
