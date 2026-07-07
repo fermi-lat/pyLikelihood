@@ -40,7 +40,7 @@ class CompositeLikelihood(object):
             optimizer = self.optimizer
         if tol is None:
             tol = self.tol
-        optFactory = pyLike.OptimizerFactory_instance()
+        optFactory = pyLike.OptimizerFactory.instance()
         myOpt = optFactory.create(optimizer, self.composite)
         myOpt.find_min_only(verbosity, tol, self.tolType)
     def minosError(self, component_name, srcname, parname,level=1):
@@ -113,7 +113,7 @@ class CompositeLikelihood(object):
         if tol is None:
             tol = self.tol
         if optObject is None:
-            optFactory = pyLike.OptimizerFactory_instance()
+            optFactory = pyLike.OptimizerFactory.instance()
             myOpt = optFactory.create(optimizer, self.composite)
         else:
             myOpt = optObject

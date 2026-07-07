@@ -94,9 +94,9 @@ class AnalysisBase(object):
             optimizer = self.optimizer
         if tol is None:
             tol = self.tol
-        optFactory = pyLike.OptimizerFactory_instance()
+        optFactory = pyLike.OptimizerFactory.instance()
         if optObject is None:
-            optFactory = pyLike.OptimizerFactory_instance()
+            optFactory = pyLike.OptimizerFactory.instance()
             myOpt = optFactory.create(optimizer, self.logLike)
         else:
             myOpt = optObject
@@ -112,7 +112,7 @@ class AnalysisBase(object):
         if tol is None:
             tol = self.tol
         if optObject is None:
-            optFactory = pyLike.OptimizerFactory_instance()
+            optFactory = pyLike.OptimizerFactory.instance()
             myOpt = optFactory.create(optimizer, self.logLike)
         else:
             myOpt = optObject
@@ -251,7 +251,7 @@ class AnalysisBase(object):
         if reoptimize and n_free_base > 0:
             if verbosity > 0:
                 print ("** Do reoptimize")
-            optFactory = pyLike.OptimizerFactory_instance()
+            optFactory = pyLike.OptimizerFactory.instance()
             myOpt = optFactory.create(self.optimizer, self.logLike)
             Niter = 1
             while Niter <= MaxIterations:
@@ -303,7 +303,7 @@ class AnalysisBase(object):
         if tol is None:
             tol = self.tol
         if reoptimize:
-            optFactory = pyLike.OptimizerFactory_instance()
+            optFactory = pyLike.OptimizerFactory.instance()
             myOpt = optFactory.create(self.optimizer, self.logLike)
             myOpt.find_min_only(0, tol, self.tolType)
         else:
@@ -497,7 +497,7 @@ class AnalysisBase(object):
         srcNames = self.sourceNames()
         for src in srcNames:
             parameter = self.normPar(src)
-            if parameter.isFree() and self._isDiffuseOrNearby(src):
+            if parameter.isFree() and self.isDiffuseOrNearby(src):
                 oldValue = parameter.getValue()
                 newValue = oldValue*self.renormFactor
                 # ensure new value is within parameter bounds
@@ -511,10 +511,10 @@ class AnalysisBase(object):
         for src in srcNames:
             npred = self.logLike.NpredValue(src)
             totalNpred += npred
-            if self.normPar(src).isFree() and self._isDiffuseOrNearby(src):
+            if self.normPar(src).isFree() and self.isDiffuseOrNearby(src):
                 freeNpred += npred
         return freeNpred, totalNpred
-    def _isDiffuseOrNearby(self, srcName):
+    def isDiffuseOrNearby(self, srcName):
         if (self[srcName].src.getType() in ['Diffuse','Composite'] or 
             self._ts_src.getType() in ['Diffuse','Composite']):
             return True
