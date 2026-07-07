@@ -18,7 +18,7 @@ try:
 except ImportError:
     pass
 
-_funcFactory = pyLike.SourceFactory_funcFactory()
+_funcFactory = pyLike.SourceFactory.funcFactory()
 
 
 def BinnedConfig(**kwargs):
