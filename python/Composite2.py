@@ -43,7 +43,7 @@ class Composite2(object):
             optimizer = self.optimizer
         if tol is None:
             tol = self.tol
-        optFactory = pyLike.OptimizerFactory_instance()
+        optFactory = pyLike.OptimizerFactory.instance()
         myOpt = optFactory.create(optimizer, self.composite)
         myOpt.find_min_only(verbosity, tol, self.tolType)
     def minosError(self, component, srcname, parname, level=1):
@@ -71,7 +71,7 @@ class Composite2(object):
         if tol is None:
             tol = self.tol
         if optObject is None:
-            optFactory = pyLike.OptimizerFactory_instance()
+            optFactory = pyLike.OptimizerFactory.instance()
             myOpt = optFactory.create(optimizer, self.composite)
         else:
             myOpt = optObject

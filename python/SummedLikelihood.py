@@ -102,7 +102,7 @@ class SummedLikelihood(AnalysisBase):
             optimizer = self.optimizer
         if tol is None:
             tol = self.tol
-        optFactory = pyLike.OptimizerFactory_instance()
+        optFactory = pyLike.OptimizerFactory.instance()
         myOpt = optFactory.create(optimizer, self.composite)
         myOpt.find_min_only(verbosity, tol, self.tolType)
         self.saveBestFit()
@@ -186,7 +186,7 @@ class SummedLikelihood(AnalysisBase):
         if tol is None:
             tol = self.tol
         if optObject is None:
-            optFactory = pyLike.OptimizerFactory_instance()
+            optFactory = pyLike.OptimizerFactory.instance()
             myOpt = optFactory.create(optimizer, self.composite)
         else:
             myOpt = optObject
@@ -252,7 +252,7 @@ class SummedLikelihood(AnalysisBase):
         if reoptimize and n_free_base > 0:
             if verbosity > 0:
                 print ("** Do reoptimize")
-            optFactory = pyLike.OptimizerFactory_instance()
+            optFactory = pyLike.OptimizerFactory.instance()
             myOpt = optFactory.create(self.optimizer, self.composite)
             Niter = 1
             while Niter <= MaxIterations:
@@ -294,7 +294,7 @@ class SummedLikelihood(AnalysisBase):
         for src in srcNames:
             parameter = self.normPar(src)
             if (parameter.isFree() and 
-                self.components[0]._isDiffuseOrNearby(src)):
+                self.components[0].isDiffuseOrNearby(src)):
                 oldValue = parameter.getValue()
                 newValue = oldValue*self.renormFactor
                 # ensure new value is within parameter bounds
@@ -309,7 +309,7 @@ class SummedLikelihood(AnalysisBase):
             npred = self.NpredValue(src)
             totalNpred += npred
             if (self.normPar(src).isFree() and 
-                self.components[0]._isDiffuseOrNearby(src)):
+                self.components[0].isDiffuseOrNearby(src)):
                 freeNpred += npred
         return freeNpred, totalNpred
     def setSpectrum(self, srcName, functionName):

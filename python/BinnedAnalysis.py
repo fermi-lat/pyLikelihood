@@ -18,7 +18,7 @@ try:
 except ImportError:
     pass
 
-_funcFactory = pyLike.SourceFactory_funcFactory()
+_funcFactory = pyLike.SourceFactory.funcFactory()
 
 
 def BinnedConfig(**kwargs):
@@ -66,9 +66,9 @@ class BinnedObs(object):
         else:
             self.irfs = irfs
 
-        pyLike.AppHelpers_checkExposureMap(srcMaps, binnedExpMap)
+        pyLike.AppHelpers.checkExposureMap(srcMaps, binnedExpMap)
         # EAC switch to using AppHelpers...
-        self.countsMap = pyLike.AppHelpers_readCountsMap(srcMaps)
+        self.countsMap = pyLike.AppHelpers.readCountsMap(srcMaps)
         self._createObservation(srcMaps, expCube, self.irfs)
     def _createObservation(self, srcMaps, expCube, irfs):
         self._respFuncs = pyLike.ResponseFunctions()
@@ -84,7 +84,7 @@ class BinnedObs(object):
                                                 self._roiCuts,
                                                 self._scData)
         # EAC: Use AppHelpers to get the right type of BinnedExposure map
-        self._bexpmap = pyLike.AppHelpers_readBinnedExposure(self.binnedExpMap)
+        self._bexpmap = pyLike.AppHelpers.readBinnedExposure(self.binnedExpMap)
         if self.phased_expmap is not None:
             self._phased_expmap = pyLike.WcsMap2(self.phased_expmap)
             self.observation = pyLike.Observation(self._respFuncs,
