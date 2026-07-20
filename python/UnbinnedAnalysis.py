@@ -17,7 +17,7 @@ try:
 except ImportError as message:
     pass
 
-_funcFactory = pyLike._pyLikelihood.SourceFactory_funcFactory()
+_funcFactory = pyLike._pyLikelihood.SourceFactory.funcFactory()
 
 def _resolveFileList(files):
     fileList = files.split(',')
