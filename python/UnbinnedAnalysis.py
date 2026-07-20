@@ -269,8 +269,8 @@ def unbinnedAnalysis(mode="ql", ftol=None, nee=21, **pars):
     evfilename = pars['evfile']
     if evfilename.find('@') == 0:
         evfilename = evfilename[1:]
-    evfiles = pyLike.Util_resolveFitsFiles(evfilename)
-    scfiles = pyLike.Util_resolveFitsFiles(pars['scfile'])
+    evfiles = pyLike.Util.resolveFitsFiles(evfilename)
+    scfiles = pyLike.Util.resolveFitsFiles(pars['scfile'])
     obs = UnbinnedObs(evfiles, scfiles,
                       expMap=_null_file(pars['expmap']),
                       expCube=_null_file(pars['expcube']),
