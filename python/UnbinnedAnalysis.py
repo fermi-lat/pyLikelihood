@@ -70,9 +70,9 @@ class UnbinnedObs(object):
     def _checkCuts(self, eventFile, expMap=None, expCube=None):
         if eventFile is not None:
             eventFiles = self._fileList(eventFile)
-            checkCuts = pyLike.AppHelpers_checkCuts
-            checkTimeCuts = pyLike.AppHelpers_checkTimeCuts
-            checkExpMapCuts = pyLike.AppHelpers_checkExpMapCuts
+            checkCuts = pyLike.AppHelpers.checkCuts
+            checkTimeCuts = pyLike.AppHelpers.checkTimeCuts
+            checkExpMapCuts = pyLike.AppHelpers.checkExpMapCuts
             for file in eventFiles[1:]:
                 checkCuts(eventFiles[0], 'EVENTS', file, 'EVENTS', False)
             if expMap is not None and expMap != '':
@@ -97,7 +97,7 @@ class UnbinnedObs(object):
         return output
     def _fileList(self, files):
         if isinstance(files, str):
-            return pyLike.Util_resolveFitsFiles(files)
+            return pyLike.Util.resolveFitsFiles(files)
         else:
             return files
     def _readData(self, scFile, eventFile):
