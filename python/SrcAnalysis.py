@@ -13,7 +13,7 @@ import pyLikelihood as pyLike
 from SrcModel import SourceModel
 from SimpleDialog import SimpleDialog, Param 
 
-_funcFactory = pyLike.SourceFactory.funcFactory()
+_funcFactory = pyLike.SourceFactory_funcFactory()
 
 def _resolveFileList(files):
     fileList = files.split(',')
@@ -50,8 +50,8 @@ class Observation(object):
     def _checkCuts(self, eventFile, expMap=None, expCube=None):
         if eventFile is not None:
             eventFiles = self._fileList(eventFile)
-            checkCuts = pyLike.AppHelpers.checkCuts
-            checkTimeCuts = pyLike.AppHelpers.checkTimeCuts
+            checkCuts = pyLike.AppHelpers_checkCuts
+            checkTimeCuts = pyLike.AppHelpers_checkTimeCuts
             for file in eventFiles[1:]:
                 checkCuts(eventFiles[0], 'EVENTS', file, 'EVENTS')
             if expMap is not None and expMap != '':

@@ -6,7 +6,7 @@
 
 import pyLikelihood as pyLike
 
-_funcFactory = pyLike.SourceFactory.funcFactory()
+_funcFactory = pyLike.SourceFactory_funcFactory()
 
 def compare_floats(x, y, tol=1e-4):
     if x == 0:

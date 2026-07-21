@@ -17,7 +17,7 @@ try:
 except ImportError as message:
     pass
 
-_funcFactory = pyLike._pyLikelihood.SourceFactory.funcFactory()
+_funcFactory = pyLike._pyLikelihood.SourceFactory_funcFactory()
 
 def _resolveFileList(files):
     fileList = files.split(',')
@@ -70,9 +70,9 @@ class UnbinnedObs(object):
     def _checkCuts(self, eventFile, expMap=None, expCube=None):
         if eventFile is not None:
             eventFiles = self._fileList(eventFile)
-            checkCuts = pyLike.AppHelpers.checkCuts
-            checkTimeCuts = pyLike.AppHelpers.checkTimeCuts
-            checkExpMapCuts = pyLike.AppHelpers.checkExpMapCuts
+            checkCuts = pyLike.AppHelpers_checkCuts
+            checkTimeCuts = pyLike.AppHelpers_checkTimeCuts
+            checkExpMapCuts = pyLike.AppHelpers_checkExpMapCuts
             for file in eventFiles[1:]:
                 checkCuts(eventFiles[0], 'EVENTS', file, 'EVENTS', False)
             if expMap is not None and expMap != '':
@@ -97,7 +97,7 @@ class UnbinnedObs(object):
         return output
     def _fileList(self, files):
         if isinstance(files, str):
-            return pyLike.Util.resolveFitsFiles(files)
+            return pyLike.Util_resolveFitsFiles(files)
         else:
             return files
     def _readData(self, scFile, eventFile):
@@ -269,8 +269,8 @@ def unbinnedAnalysis(mode="ql", ftol=None, nee=21, **pars):
     evfilename = pars['evfile']
     if evfilename.find('@') == 0:
         evfilename = evfilename[1:]
-    evfiles = pyLike.Util.resolveFitsFiles(evfilename)
-    scfiles = pyLike.Util.resolveFitsFiles(pars['scfile'])
+    evfiles = pyLike.Util_resolveFitsFiles(evfilename)
+    scfiles = pyLike.Util_resolveFitsFiles(pars['scfile'])
     obs = UnbinnedObs(evfiles, scfiles,
                       expMap=_null_file(pars['expmap']),
                       expCube=_null_file(pars['expcube']),
