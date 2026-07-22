@@ -13,7 +13,7 @@ import pyLikelihood as pyLike
 from SrcModel import SourceModel
 from SimpleDialog import SimpleDialog, Param 
 
-_funcFactory = pyLike.SourceFactory_funcFactory()
+_funcFactory = pyLike.SourceFactory.funcFactory()
 
 def _resolveFileList(files):
     fileList = files.split(',')

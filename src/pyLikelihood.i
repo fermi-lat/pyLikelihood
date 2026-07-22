@@ -401,22 +401,22 @@ using optimizers::Exception;
    }
 }
 // Keep the original %extend in case SourceFactory wrapping works
-//%extend Likelihood::SourceFactory {
-//   static optimizers::FunctionFactory * funcFactory() {
-//      optimizers::FunctionFactory * myFuncFactory 
-//         = new optimizers::FunctionFactory;
-//      Likelihood::AppHelpers::addFunctionPrototypes(myFuncFactory);
-//      return myFuncFactory;
-//   }
-//}
-// Standalone function that doesn't depend on SourceFactory being wrapped
-%inline %{ optimizers::FunctionFactory * SourceFactory_funcFactory() {
-   optimizers::FunctionFactory * myFuncFactory 
-      = new optimizers::FunctionFactory;
-   Likelihood::AppHelpers::addFunctionPrototypes(myFuncFactory);
-   return myFuncFactory;
+%extend Likelihood::SourceFactory {
+   static optimizers::FunctionFactory * funcFactory() {
+      optimizers::FunctionFactory * myFuncFactory 
+         = new optimizers::FunctionFactory;
+      Likelihood::AppHelpers::addFunctionPrototypes(myFuncFactory);
+      return myFuncFactory;
    }
- %}
+}
+// Standalone function that doesn't depend on SourceFactory being wrapped
+//%inline %{ optimizers::FunctionFactory * SourceFactory_funcFactory() {
+//   optimizers::FunctionFactory * myFuncFactory 
+//      = new optimizers::FunctionFactory;
+//   Likelihood::AppHelpers::addFunctionPrototypes(myFuncFactory);
+//   return myFuncFactory;
+//   }
+// %}
 
 %extend Likelihood::SpatialMap {
    static Likelihood::SpatialMap * cast(optimizers::Function * func) {
