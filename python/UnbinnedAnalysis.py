@@ -255,7 +255,7 @@ def unbinnedAnalysis(mode="ql", ftol=None, nee=21, **pars):
     """Return an UnbinnedAnalysis object using the data in gtlike.par"""
     parnames = ('irfs', 'scfile', 'evfile', 'expmap', 'expcube', 
                 'srcmdl', 'optimizer')
-    pargroup = pyLike.StApp_parGroup('gtlike')
+    pargroup = pyLike.StApp.parGroup('gtlike')
     for item in parnames:
         if item not in pars:
             if mode == 'ql':
