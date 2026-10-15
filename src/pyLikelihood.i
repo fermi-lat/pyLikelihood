@@ -167,6 +167,41 @@ using optimizers::Function;
 using optimizers::Exception;
 %}
 %include stl.i
+// Accept os.PathLike objects (e.g. pathlib.Path) wherever a std::string is
+// expected (ScienceTools issue #74). str and bytes behave as before.
+%typemap(typecheck, precedence=SWIG_TYPECHECK_STRING) std::string, const std::string & {
+  $1 = (PyUnicode_Check($input) || PyBytes_Check($input) ||
+        PyObject_HasAttrString($input, "__fspath__")) ? 1 : 0;
+}
+%typemap(in) const std::string & (std::string temp) {
+  PyObject * path = PyOS_FSPath($input);   // str/bytes unchanged, Path -> str
+  if (path == NULL) SWIG_fail;
+  if (PyBytes_Check(path)) {
+    temp.assign(PyBytes_AS_STRING(path), PyBytes_GET_SIZE(path));
+  } else {
+    Py_ssize_t n;
+    const char * s = PyUnicode_AsUTF8AndSize(path, &n);
+    if (s == NULL) { Py_DECREF(path); SWIG_fail; }
+    temp.assign(s, n);
+  }
+  Py_DECREF(path);
+  $1 = &temp;
+}
+%typemap(in) std::string {
+  PyObject * path = PyOS_FSPath($input);
+  if (path == NULL) SWIG_fail;
+  if (PyBytes_Check(path)) {
+    $1.assign(PyBytes_AS_STRING(path), PyBytes_GET_SIZE(path));
+  } else {
+    Py_ssize_t n;
+    const char * s = PyUnicode_AsUTF8AndSize(path, &n);
+    if (s == NULL) { Py_DECREF(path); SWIG_fail; }
+    $1.assign(s, n);
+  }
+  Py_DECREF(path);
+}
+// The standard string typemaps' cleanup code refers to their own variables.
+%typemap(freearg) std::string, const std::string & ""
 %exception {
    try {
       $action
