@@ -77,10 +77,15 @@ class Observation(object):
     def __call__(self):
         return self.observation
     def _fileList(self, files):
+        # Accept path-like objects (e.g. pathlib.Path), singly or in a list.
+        if files is None:
+            return files
+        if isinstance(files, os.PathLike):
+            files = os.fspath(files)
         if isinstance(files, str):
             return [files]
         else:
-            return files
+            return [os.fspath(f) for f in files]
     def _readData(self, scFile, eventFile):
         self._readScData(scFile)
         self._readEvents(eventFile)
