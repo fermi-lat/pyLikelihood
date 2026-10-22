@@ -177,7 +177,7 @@ using optimizers::Exception;
   PyObject * path = PyOS_FSPath($input);   // str/bytes unchanged, Path -> str
   if (path == NULL) SWIG_fail;
   if (PyBytes_Check(path)) {
-    temp.assign(PyBytes_AS_STRING(path), PyBytes_GET_SIZE(path));
+    temp.assign(PyBytes_AsString(path), PyBytes_Size(path));
   } else {
     Py_ssize_t n;
     const char * s = PyUnicode_AsUTF8AndSize(path, &n);
@@ -191,7 +191,7 @@ using optimizers::Exception;
   PyObject * path = PyOS_FSPath($input);
   if (path == NULL) SWIG_fail;
   if (PyBytes_Check(path)) {
-    $1.assign(PyBytes_AS_STRING(path), PyBytes_GET_SIZE(path));
+    $1.assign(PyBytes_AsString(path), PyBytes_Size(path));
   } else {
     Py_ssize_t n;
     const char * s = PyUnicode_AsUTF8AndSize(path, &n);
