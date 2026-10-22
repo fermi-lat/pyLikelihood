@@ -22,7 +22,7 @@ target_include_directories(
 target_link_libraries(
   pyLikelihood
   PUBLIC irfInterface irfLoader
-  PRIVATE Likelihood Python3::Python
+  PRIVATE Likelihood Python3::SABIModule
 )
 
 if(APPLE)
